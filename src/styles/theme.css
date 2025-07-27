@@ -1,0 +1,6 @@
+@theme {
+    --container-8xl: 100rem;
+    --color-primary: var(--primary);
+    --color-primary-light: var(--primary-light);
+    --color-secondary-typo: var(--secondary-typo);
+}
