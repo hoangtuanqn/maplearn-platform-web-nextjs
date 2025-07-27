@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormLoginType, loginSchema } from "../../auth.schema";
 import useCapsLockWarning from "~/hooks/useCapsLockWarning";
 import Loading from "~/app/(student)/_components/Loading";
 import LoginGoogle from "~/app/(student)/_components/Button/LoginGoogle";
@@ -14,55 +13,81 @@ import { Button } from "~/components/ui/button";
 import publicApi from "~/libs/apis/publicApi";
 import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { setLocalStorage } from "~/libs/localStorage";
 import { useAuth } from "~/hooks/useAuth";
-import { handleApiError } from "~/libs/apis/http";
+import { FormRegisterType, registerSchema } from "../../auth.schema";
+import axios from "axios";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
     const { login } = useAuth();
     const router = useRouter();
-    const form = useForm<FormLoginType>({
+    const form = useForm<FormRegisterType>({
         mode: "onBlur",
-        resolver: zodResolver(loginSchema),
+        resolver: zodResolver(registerSchema),
         defaultValues: {
+            full_name: "",
+            email: "",
             username: "",
             password: "",
+            confirmPassword: "",
         },
     });
 
     // Khai báo mutation
-    const loginMutation = useMutation({
-        mutationFn: (data: FormLoginType) => publicApi.post("/auth/login", data),
+    const registerMutaion = useMutation({
+        mutationFn: (data: FormRegisterType) => publicApi.post("/auth/register", data),
 
         onSuccess: (res) => {
-            // Người dùng bật bảo vệ 2 lớp
-            if (res.data?.["2fa_required"] && res.data?.token) {
-                toast.info("Vui lòng nhập 2FA để tiếp tục!");
-                setLocalStorage("token2fa", res.data?.token ?? "");
-                router.push("/auth/verify-otp/" + res.data?.token);
-            } else {
-                login(res.data.data);
-                router.push("/");
-                toast.success("Đăng nhập thành công!");
-            }
+            login(res.data.data);
+            router.push("/");
+            toast.success("Tạo tài khoản thành công!");
         },
-
         onError: (error) => {
-            handleApiError(error);
+            if (axios.isAxiosError(error)) {
+                const errors = error.response?.data?.errors;
+                for (const key in errors) {
+                    return toast.error(`${errors?.[key]}`);
+                }
+            }
         },
     });
 
-    const onSubmit: SubmitHandler<FormLoginType> = async (data) => {
-        loginMutation.mutate(data);
+    const onSubmit: SubmitHandler<FormRegisterType> = async (data) => {
+        registerMutaion.mutate(data);
     };
     return (
         <>
-            {loginMutation.isPending && <Loading />}
+            {registerMutaion.isPending && <Loading />}
             <div className="w-full">
-                <h3 className="mb-10 text-center text-xl font-semibold uppercase">Đăng nhập</h3>
+                <h3 className="mb-10 text-center text-xl font-semibold uppercase">Tạo tài khoản</h3>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="full_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Họ và tên </FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Nhập họ và tên của bạn" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Địa chỉ email của bạn</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Nhập địa chỉ email của bạn" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormField
                             control={form.control}
                             name="username"
@@ -100,8 +125,32 @@ const FormLogin = () => {
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Xác nhận lại mật khẩu</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Xác nhận lại mật khẩu"
+                                            onKeyDown={handleKeyEvent}
+                                            onKeyUp={handleKeyEvent}
+                                            onFocus={handleFocus}
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    {isCapsLockOn && (
+                                        <span className="text-yellow-500">Chú ý: Bạn đang bật Caps Lock</span>
+                                    )}
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <Button type="submit" className="w-full cursor-pointer text-white">
-                            Đăng nhập
+                            Tạo tài khoản
                         </Button>
                     </form>
                 </Form>
@@ -117,9 +166,9 @@ const FormLogin = () => {
                     </div>
                 </div>
                 <div className="mt-10 text-center text-sm">
-                    <span>Chưa có tài khoản? </span>
-                    <Link className="underline hover:text-gray-900" href="/auth/register">
-                        Đăng ký
+                    <span>Bạn đã có tài khoản? </span>
+                    <Link className="underline hover:text-gray-900" href="/auth/login">
+                        Đăng nhập
                     </Link>
                 </div>
             </div>
