@@ -1,5 +1,6 @@
 import { CalendarRange } from "lucide-react";
-import { NewType } from "~/app/(student)/auth/types/menu.type";
+import { NewType } from "../SidebarLeft/entities.type";
+import Image from "next/image";
 type NewLinkProps = NewType & {
     variant?: "home" | "posts";
 };
@@ -11,7 +12,7 @@ const NewLink = ({ title, url, image, createdAt, variant = "home" }: NewLinkProp
                 <a href={url}>
                     <div className="flex gap-4 p-3">
                         <div className="aspect-square w-16 shrink-0 overflow-hidden rounded-md">
-                            <img alt={title} className="w-full" src={image} />
+                            <Image width={56} height={56} alt={title} className="w-full" src={image} />
                         </div>
                         <div className="flex flex-col justify-around">
                             <div className="text-primary mb-2 line-clamp-3 text-[14.75px] font-semibold">{title}</div>
@@ -27,7 +28,13 @@ const NewLink = ({ title, url, image, createdAt, variant = "home" }: NewLinkProp
     }
     return (
         <a className="flex cursor-pointer items-start rounded-md py-3" href={url}>
-            <img className="h-[4.75rem] w-[4.75rem] overflow-hidden rounded-lg" alt={title} src={image} />
+            <Image
+                width={76}
+                height={76}
+                className="h-[4.75rem] w-[4.75rem] overflow-hidden rounded-lg"
+                alt={title}
+                src={image}
+            />
             <div className="ml-4 flex h-full min-h-[4.75rem] flex-1 flex-col justify-between gap-2">
                 <p className="text-primary line-clamp-3 font-medium">{title}</p>
                 <div className="flex items-center gap-2 text-gray-500">

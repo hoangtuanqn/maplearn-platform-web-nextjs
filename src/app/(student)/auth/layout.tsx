@@ -6,7 +6,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <section className="min-h-screen rounded-2xl bg-[#FDFDFD] py-10 max-xl:pt-12 xl:flex xl:items-center xl:justify-center">
             <div className="text-secondary-typo flex w-full px-6 md:px-20">
                 <section className="hidden flex-1 pr-32 xl:block">
-                    <h2 className="mb-2 text-4xl font-bold opacity-90">Chào mừng trở lại</h2>
+                    <h2 className="mb-2 text-4xl font-bold opacity-90">Hệ thống học tập</h2>
                     <Image
                         src="/assets/images/common/study.png"
                         alt="Welcome to Login"

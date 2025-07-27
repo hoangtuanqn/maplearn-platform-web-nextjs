@@ -5,15 +5,16 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { UserType } from "~/app/(student)/(home)/type/teacher.type";
+
 import privateApi from "~/libs/apis/privateApi";
 import { AppDispatch, RootState } from "~/store";
 import { setUser } from "~/store/userSlice";
+import { UserType } from "~/types/user.schema";
 
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user.user) ?? null;
 
     // ✅ Hàm login
     const login = (user: UserType) => {

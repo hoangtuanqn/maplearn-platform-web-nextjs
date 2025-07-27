@@ -1,6 +1,7 @@
+
 import { Metadata } from "next";
-import FormVerifyOtp from "../_components/FormVerifyOtp";
 import { redirect } from "next/navigation";
+import FormVerifyOtp from "../_components/FormVerifyOtp";
 
 export const metadata: Metadata = {
     title: "Xác minh tài khoản",

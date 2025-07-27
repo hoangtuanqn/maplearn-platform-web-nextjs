@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserType } from "~/app/(student)/(home)/type/teacher.type";
+import { UserType } from "~/types/user.schema";
+
 
 interface UserState {
     user: UserType | null;

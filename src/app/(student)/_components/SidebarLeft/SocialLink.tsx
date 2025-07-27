@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SidebarType } from "~/app/(student)/auth/types/menu.type";
+import { SidebarType } from "./entities.type";
 
 export default function SocialLink({ title, url, image }: SidebarType) {
     return (

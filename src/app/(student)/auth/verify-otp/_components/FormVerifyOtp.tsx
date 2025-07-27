@@ -18,6 +18,8 @@ import { setUser } from "~/store/userSlice";
 const FormVerifyOtp = () => {
     const dispatch = useDispatch();
     const params = useParams<{ token: string }>();
+    const token2fa = decodeURIComponent(params.token);
+
     const router = useRouter();
     const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
     const verify2faMutation = useMutation({
@@ -53,18 +55,18 @@ const FormVerifyOtp = () => {
             toast.error("Mã xác nhận phải có đúng 6 kí tự!");
         } else {
             verify2faMutation.mutate({
-                token: params.token ?? "",
+                token: token2fa ?? "",
                 otp: pin,
             });
         }
     }
     useLayoutEffect(() => {
-        if (getLocalStorage("token2fa") !== params.token) {
+        if (getLocalStorage("token2fa") !== token2fa) {
             toast.error("Truy cập không hợp lệ!");
             return router.push("/auth/login");
         }
         setIsValidToken(true);
-    }, [router, params.token]);
+    }, [router, token2fa]);
     if (isValidToken === null) return <Loading />;
     return (
         <>

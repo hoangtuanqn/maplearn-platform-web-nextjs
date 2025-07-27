@@ -14,7 +14,6 @@ export default function LayoutGetInfoMe({ children }: { children: React.ReactNod
             try {
                 const res = await publicApi.post("/auth/me");
                 const user = res.data.data;
-
                 // Htuanqn: Lưu thông tin user
                 dispatch(setUser(user));
             } catch {

@@ -6,25 +6,24 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../login.schema";
+import { FormLoginType, loginSchema } from "../login.schema";
 import useCapsLockWarning from "~/hooks/useCapsLockWarning";
 import Loading from "~/app/(student)/_components/Loading";
 import LoginGoogle from "~/app/(student)/_components/Button/LoginGoogle";
 import LoginFacebook from "~/app/(student)/_components/Button/LoginFacebook";
 import { Button } from "~/components/ui/button";
-import { FormLoginValues, OTPType } from "../../types/auth.type";
 import publicApi from "~/libs/apis/publicApi";
 import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { setLocalStorage } from "~/libs/localStorage";
-import { setUser } from "~/store/userSlice";
-import { useDispatch } from "react-redux";
+import { useAuth } from "~/hooks/useAuth";
+import { handleApiError } from "~/libs/apis/http";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
-    const dispatch = useDispatch();
+    const { login } = useAuth();
     const router = useRouter();
-    const form = useForm<FormLoginValues>({
+    const form = useForm<FormLoginType>({
         mode: "onBlur",
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -35,40 +34,27 @@ const FormLogin = () => {
 
     // Khai báo mutation
     const loginMutation = useMutation({
-        mutationFn: (data: FormLoginValues | OTPType) => publicApi.post("/auth/login", data),
+        mutationFn: (data: FormLoginType) => publicApi.post("/auth/login", data),
 
         onSuccess: (res) => {
             // Người dùng bật bảo vệ 2 lớp
             if (res.data?.["2fa_required"] && res.data?.token) {
-                // console.log(res.data);
-
-                // setVerify2fa({ required: true, token: res.data.token });
                 toast.info("Vui lòng nhập 2FA để tiếp tục!");
                 setLocalStorage("token2fa", res.data?.token ?? "");
                 router.push("/auth/verify-otp/" + res.data?.token);
-                // Bật phần nhập mã 2FA
             } else {
-                dispatch(setUser(res.data.data));
-                toast.success("Đăng nhập thành công!");
-                // Login thành công
+                login(res.data.data);
                 router.push("/");
+                toast.success("Đăng nhập thành công!");
             }
         },
 
         onError: (error) => {
-            if (axios.isAxiosError(error)) {
-                if (error.code === "ERR_NETWORK") {
-                    toast.error("Không thể kết nối tới server!");
-                } else {
-                    toast.error("Thông tin đăng nhập không hợp lệ!");
-                }
-            } else {
-                toast.error("Đã xảy ra lỗi không xác định!");
-            }
+            handleApiError(error);
         },
     });
 
-    const onSubmit: SubmitHandler<FormLoginValues> = async (data) => {
+    const onSubmit: SubmitHandler<FormLoginType> = async (data) => {
         loginMutation.mutate(data);
     };
     return (
@@ -126,7 +112,7 @@ const FormLogin = () => {
                         <span className="block h-[1.5px] w-20 bg-black/40"></span> <span>hoặc tiếp tục với</span>
                         <span className="block h-[1.5px] w-20 bg-black/40"></span>
                     </div>
-                    <div className="mt-4 flex justify-center gap-2 text-[12px] sm:flex-row sm:text-sm">
+                    <div className="mt-4 flex justify-center gap-4 text-[12px] sm:flex-row sm:text-sm">
                         <LoginGoogle />
                         <LoginFacebook />
                     </div>

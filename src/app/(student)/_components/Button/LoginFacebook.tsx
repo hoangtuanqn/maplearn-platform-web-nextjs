@@ -6,15 +6,15 @@ const LoginFacebook = () => {
     return (
         <button
             onClick={() => (window.location.href = `${APP.API_ROOT}/api/v1/auth/facebook`)}
-            className="flex cursor-pointer items-center gap-4 rounded-xl bg-[#4285F4] px-4 py-2 text-white shadow"
+            className="cursor-pointer"
         >
-            <div className="t1-flex-center h-7 w-7 rounded-xl">
+            <div className="t1-flex-center rounded-xl">
                 <Image
-                    src="/assets/icons/facebook.png"
+                    src="/assets/icons/facebook.webp"
                     alt="Facebook"
                     className="object-cover"
-                    width={24}
-                    height={24}
+                    width={35}
+                    height={35}
                 />
             </div>
         </button>

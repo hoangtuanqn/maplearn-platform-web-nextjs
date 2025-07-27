@@ -4,8 +4,8 @@ import HeaderSection from "./HeaderSection";
 import publicApi from "~/libs/apis/publicApi";
 import { useQuery } from "@tanstack/react-query";
 import { SkeletonTeacherCard } from "../../(home)/_components/SkeletonTeacherCard";
-import { UserType } from "../type/teacher.type";
 import Image from "next/image";
+import { UserType } from "~/types/user.schema";
 
 const fetchTeachers = async () => {
     const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
@@ -13,11 +13,7 @@ const fetchTeachers = async () => {
 };
 
 const Teachers = () => {
-    const {
-        data: teachers = [],
-        isLoading,
-        isError,
-    } = useQuery<UserType[]>({
+    const { data: teachers = [], isLoading } = useQuery<UserType[]>({
         queryKey: ["teachers"],
         queryFn: fetchTeachers,
     });
@@ -63,7 +59,7 @@ const Teachers = () => {
                             <SwiperSlide key={full_name}>
                                 <a href="#" className="relative block h-45 w-32 shrink-0 overflow-hidden rounded-xl">
                                     <Image
-                                        src={avatar}
+                                        src={avatar ?? ""}
                                         alt={full_name}
                                         className="aspect-[11/16] h-full w-full object-cover"
                                         width={128}

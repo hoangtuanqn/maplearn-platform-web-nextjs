@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { SidebarType } from "~/app/(student)/auth/types/menu.type";
-
+import { SidebarType } from "./entities.type";
+import Image from "next/image";
 export const MenuItemLink = ({ title, image, url, className }: SidebarType) => {
     return (
         <Link
@@ -8,7 +8,7 @@ export const MenuItemLink = ({ title, image, url, className }: SidebarType) => {
             href={url}
         >
             <div className="t1-flex-center">
-                <img src={image} alt={title} className={className} />
+                <Image width={24} height={24} src={image} alt={title} className={className} />
             </div>
             <p className="text-primary ml-4 font-medium">{title}</p>
         </Link>

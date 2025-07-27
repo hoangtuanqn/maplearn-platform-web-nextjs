@@ -4,6 +4,7 @@ import FooterLaptop from "./Laptop";
 import FooterMobile from "./Mobile";
 import ScrollToTopButton from "./ScrollToTopButton";
 import { Toaster } from "~/components/ui/sonner";
+import ChatBotAI from "../ChatBotAI";
 // import ChatBotAI from "../ChatBotAI";
 const Footer = () => {
     return (
@@ -12,7 +13,7 @@ const Footer = () => {
             <FooterMobile />
             <Tooltip anchorSelect=".view_tooltip" />
             <ScrollToTopButton />
-            {/* <ChatBotAI /> */}
+            <ChatBotAI />
             <Toaster position="top-center" expand={true} richColors />
         </>
     );
