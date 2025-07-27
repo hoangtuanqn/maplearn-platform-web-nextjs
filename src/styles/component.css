@@ -1,0 +1,8 @@
+@layer components {
+    /* custom reusable components (e.g. buttons, cards) */
+    .t1-flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

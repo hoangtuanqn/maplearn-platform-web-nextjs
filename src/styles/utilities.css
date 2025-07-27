@@ -1,0 +1,8 @@
+@layer utilities {
+    /* custom utility classes (e.g. .text-shadow, .scrollbar-none) */
+    .block-heading {
+        font-size: 15.75px;
+        font-weight: 500;
+        color: var(--secondary-typo);
+    }
+}
