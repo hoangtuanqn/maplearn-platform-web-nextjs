@@ -1,4 +1,5 @@
 "use client";
+import z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import Loading from "~/app/(student)/_components/Loading";
@@ -7,7 +8,6 @@ import { Button } from "~/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "~/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "~/components/ui/input-otp";
-import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLayoutEffect, useState } from "react";
@@ -71,46 +71,38 @@ const FormVerifyOtp = () => {
     return (
         <>
             {verify2faMutation.isPending && <Loading />}
-            <div className="mx-auto max-w-full rounded-xl px-4 py-10 text-center sm:px-8">
-                <header className="mb-8">
-                    <h1 className="mb-1 text-2xl font-bold">Mã xác nhận</h1>
-                    <p className="text-sm text-slate-500">
-                        Nhập mã 6 chữ số trong ứng dụng <b className="font-bold text-gray-500">Google Authenticator</b>
-                    </p>
-                </header>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-center space-y-6">
-                        <FormField
-                            control={form.control}
-                            name="pin"
-                            render={({ field }) => (
-                                <FormItem className="mx-auto">
-                                    <FormControl className="mx-auto">
-                                        <InputOTP maxLength={6} {...field}>
-                                            <InputOTPGroup>
-                                                <InputOTPSlot index={0} />
-                                                <InputOTPSlot index={1} />
-                                                <InputOTPSlot index={2} />
-                                            </InputOTPGroup>
-                                            <InputOTPSeparator />
-                                            <InputOTPGroup>
-                                                <InputOTPSlot index={3} />
-                                                <InputOTPSlot index={4} />
-                                                <InputOTPSlot index={5} />
-                                            </InputOTPGroup>
-                                        </InputOTP>
-                                    </FormControl>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-center space-y-6">
+                    <FormField
+                        control={form.control}
+                        name="pin"
+                        render={({ field }) => (
+                            <FormItem className="mx-auto">
+                                <FormControl className="mx-auto">
+                                    <InputOTP maxLength={6} {...field}>
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} />
+                                            <InputOTPSlot index={1} />
+                                            <InputOTPSlot index={2} />
+                                        </InputOTPGroup>
+                                        <InputOTPSeparator />
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={3} />
+                                            <InputOTPSlot index={4} />
+                                            <InputOTPSlot index={5} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="mx-auto w-fit text-white">
-                            Xác nhận
-                        </Button>
-                    </form>
-                </Form>
-            </div>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit" className="mx-auto w-fit text-white">
+                        Xác nhận
+                    </Button>
+                </form>
+            </Form>
         </>
     );
 };

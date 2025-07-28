@@ -1,7 +1,7 @@
 "use client";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCapsLockWarning from "~/hooks/useCapsLockWarning";
@@ -10,22 +10,32 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useAuth } from "~/hooks/useAuth";
-import { FormRegisterType, registerSchema } from "../../auth.schema";
+import { FormResetPasswordType, resetPasswordSchema } from "../../auth.schema";
 import axios from "axios";
 import authApi from "~/apiRequest/auth";
+import { useEffect, useMemo } from "react";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
 
-const FormLogin = () => {
+const FormResetPassword = () => {
+    const searchParams = useSearchParams();
+    // Parse token và email từ query param
+    const config = useMemo(() => {
+        try {
+            const tokenParam = searchParams.get("token");
+            return tokenParam ? JSON.parse(atob(tokenParam)) : null;
+        } catch {
+            return null;
+        }
+    }, [searchParams]);
+
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
     const { login } = useAuth();
     const router = useRouter();
-    const form = useForm<FormRegisterType>({
+    const form = useForm<FormResetPasswordType>({
         mode: "onBlur",
-        resolver: zodResolver(registerSchema),
+        resolver: zodResolver(resetPasswordSchema),
         defaultValues: {
-            full_name: "",
-            email: "",
-            username: "",
+            email: config?.email ?? "",
             password: "",
             confirmPassword: "",
         },
@@ -33,11 +43,11 @@ const FormLogin = () => {
 
     // Khai báo mutation
     const registerMutaion = useMutation({
-        mutationFn: (data: FormRegisterType) => authApi.create(data),
+        mutationFn: (data: FormResetPasswordType) => authApi.resetPassword(data),
         onSuccess: (res) => {
             login(res.data.data);
             router.push("/");
-            toast.success("Tạo tài khoản thành công!");
+            toast.success("Đã đặt lại mật khẩu thành công!");
         },
         onError: (error) => {
             if (axios.isAxiosError(error)) {
@@ -49,9 +59,15 @@ const FormLogin = () => {
         },
     });
 
-    const onSubmit: SubmitHandler<FormRegisterType> = async (data) => {
+    const onSubmit: SubmitHandler<FormResetPasswordType> = async (data) => {
         registerMutaion.mutate(data);
     };
+    useEffect(() => {
+        // Xác minh thêm token có đúng hay k? để đẩy người dùng đi luôn
+        if (!config?.token || !config?.email) {
+            router.push("/auth/forgot-password");
+        }
+    }, [config, router]);
     return (
         <>
             {registerMutaion.isPending && <Loading />}
@@ -59,53 +75,28 @@ const FormLogin = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                         control={form.control}
-                        name="full_name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Họ và tên </FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Nhập họ và tên của bạn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Địa chỉ email của bạn</FormLabel>
                                 <FormControl>
-                                    <Input type="email" placeholder="Nhập địa chỉ email của bạn" {...field} />
+                                    <Input type="email" placeholder="Nhập địa chỉ email của bạn" {...field} disabled />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="username"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Tên tài khoản</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Nhập tên tài khoản của bạn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+
                     <FormField
                         control={form.control}
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Mật khẩu</FormLabel>
+                                <FormLabel>Mật khẩu mới</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="password"
-                                        placeholder="Nhập mật khẩu của bạn"
+                                        placeholder="Nhập mật khẩu mới của bạn"
                                         onKeyDown={handleKeyEvent}
                                         onKeyUp={handleKeyEvent}
                                         onFocus={handleFocus}
@@ -141,8 +132,9 @@ const FormLogin = () => {
                             </FormItem>
                         )}
                     />
+
                     <Button type="submit" className="w-full text-white">
-                        Tạo tài khoản
+                        Xác nhận
                     </Button>
                 </form>
             </Form>
@@ -150,4 +142,4 @@ const FormLogin = () => {
     );
 };
 
-export default FormLogin;
+export default FormResetPassword;
