@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserType } from "~/types/user.schema";
-
+import { UserType } from "~/schemaValidate/user.schema";
 
 interface UserState {
     user: UserType | null;

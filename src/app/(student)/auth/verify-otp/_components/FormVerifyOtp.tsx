@@ -105,7 +105,7 @@ const FormVerifyOtp = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="mx-auto w-fit cursor-pointer text-white">
+                        <Button type="submit" className="mx-auto w-fit text-white">
                             Xác nhận
                         </Button>
                     </form>

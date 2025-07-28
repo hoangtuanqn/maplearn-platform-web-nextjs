@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import privateApi from "~/libs/apis/privateApi";
 import { AppDispatch, RootState } from "~/store";
 import { setUser } from "~/store/userSlice";
-import { UserType } from "~/types/user.schema";
+import { UserType } from "~/schemaValidate/user.schema";
 
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();

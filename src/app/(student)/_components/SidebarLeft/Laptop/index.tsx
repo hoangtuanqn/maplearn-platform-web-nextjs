@@ -18,7 +18,7 @@ const SideBarLaptop = () => {
                     <>
                         <Link
                             className="mb-1 flex cursor-pointer items-center justify-start rounded-lg px-3 py-2 hover:bg-[rgba(26,79,140,0.06)]"
-                            href=""
+                            href="/profile"
                         >
                             <div
                                 className="t1-flex-center h-8 w-8 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
@@ -35,7 +35,7 @@ const SideBarLaptop = () => {
                             </div>
                         </Link>
 
-                        <MenuItemLink title="Thông tin cá nhân" url={""} image="/assets/icons/user-info.svg" />
+                        <MenuItemLink title="Thông tin cá nhân" url="/profile" image="/assets/icons/user-info.svg" />
                         <MenuItemLink title="Khóa học của tôi" url={""} image="/assets/icons/my-courses.svg" />
                         <MenuItemLink title="Khoá học đã lưu" url={""} image="/assets/icons/saved-courses.svg" />
                     </>

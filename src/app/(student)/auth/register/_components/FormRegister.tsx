@@ -149,7 +149,7 @@ const FormLogin = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full cursor-pointer text-white">
+                        <Button type="submit" className="w-full text-white">
                             Tạo tài khoản
                         </Button>
                     </form>

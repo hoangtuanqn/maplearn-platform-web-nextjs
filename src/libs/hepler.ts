@@ -13,3 +13,6 @@ export const getCharacterName = (name: string | null | undefined) => {
     const arrName = name.split(" ");
     return arrName[arrName.length - 1].substring(0, 1);
 };
+export const isActiveRoute = (pathname: string, listRoutePath: string[]) => {
+    return listRoutePath.includes(pathname);
+};

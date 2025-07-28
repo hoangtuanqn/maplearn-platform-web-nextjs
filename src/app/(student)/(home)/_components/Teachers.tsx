@@ -5,7 +5,7 @@ import publicApi from "~/libs/apis/publicApi";
 import { useQuery } from "@tanstack/react-query";
 import { SkeletonTeacherCard } from "../../(home)/_components/SkeletonTeacherCard";
 import Image from "next/image";
-import { UserType } from "~/types/user.schema";
+import { UserType } from "~/schemaValidate/user.schema";
 
 const fetchTeachers = async () => {
     const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
