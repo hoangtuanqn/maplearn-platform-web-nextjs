@@ -140,7 +140,7 @@ const HeaderLaptop = () => {
                                                 }}
                                             >
                                                 <div className="w-36 rounded-lg bg-white p-1 shadow-md">
-                                                    <Link href="">
+                                                    <Link href="/profile">
                                                         <button className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-black duration-150 hover:bg-[#ededed]">
                                                             Cá nhân
                                                         </button>

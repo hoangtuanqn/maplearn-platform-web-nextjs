@@ -1,7 +1,7 @@
 "use client";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCapsLockWarning from "~/hooks/useCapsLockWarning";
@@ -15,18 +15,19 @@ import axios from "axios";
 import authApi from "~/apiRequest/auth";
 import { useEffect, useMemo } from "react";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
+import zxcvbn from "zxcvbn";
+import { base64UrlDecode } from "~/libs/hepler";
 
 const FormResetPassword = () => {
-    const searchParams = useSearchParams();
+    const { token } = useParams<{ token: string }>();
     // Parse token và email từ query param
     const config = useMemo(() => {
         try {
-            const tokenParam = searchParams.get("token");
-            return tokenParam ? JSON.parse(atob(tokenParam)) : null;
+            return token ? JSON.parse(base64UrlDecode(token)) : null;
         } catch {
             return null;
         }
-    }, [searchParams]);
+    }, [token]);
 
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
     const { login } = useAuth();
@@ -43,7 +44,11 @@ const FormResetPassword = () => {
 
     // Khai báo mutation
     const registerMutaion = useMutation({
-        mutationFn: (data: FormResetPasswordType) => authApi.resetPassword(data),
+        mutationFn: (data: FormResetPasswordType) =>
+            authApi.resetPassword({
+                ...data,
+                token: config?.token ?? "",
+            }),
         onSuccess: (res) => {
             login(res.data.data);
             router.push("/");
@@ -60,6 +65,10 @@ const FormResetPassword = () => {
     });
 
     const onSubmit: SubmitHandler<FormResetPasswordType> = async (data) => {
+        if (zxcvbn(form.watch("password")).score < 2) {
+            toast.error("Mật khẩu quá yếu! Vui lòng nhập mật khẩu khác mạnh hơn!");
+            return;
+        }
         registerMutaion.mutate(data);
     };
     useEffect(() => {

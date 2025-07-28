@@ -21,7 +21,14 @@ export function useAuth() {
         dispatch(setUser(user));
     };
 
-    // ✅ Query để lấy thông tin user
+    const updateProfile = (payload: Partial<UserType>) => {
+        dispatch(
+            setUser({
+                ...user,
+                ...payload,
+            } as UserType),
+        );
+    };
 
     // ✅ Mutation để logout
     const logoutUser = useMutation({
@@ -45,6 +52,7 @@ export function useAuth() {
 
     return {
         user,
+        updateProfile,
         login,
         logout: () => logoutUser.mutate(),
     };

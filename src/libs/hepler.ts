@@ -32,3 +32,17 @@ export function getPasswordStrength(password: string): PasswordStrengthType {
         suggestions: result.feedback.suggestions,
     };
 }
+// Decode base64 url safe
+export function base64UrlDecode(data: string): string {
+    // Bổ sung dấu '=' nếu thiếu
+    const padLength = data.length % 4;
+    if (padLength) {
+        data += "=".repeat(4 - padLength);
+    }
+    // Chuyển ký tự URL-safe về chuẩn base64
+    data = data.replace(/-/g, "+").replace(/_/g, "/");
+    // Giải mã base64 về chuỗi
+    const decoded = atob(data);
+
+    return decoded;
+}

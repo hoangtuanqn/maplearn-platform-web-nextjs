@@ -1,10 +1,24 @@
 import { Metadata } from "next";
-import FormResetPassword from "./_components/FormResetPassword";
+import FormResetPassword from "../_components/FormResetPassword";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import authApi from "~/apiRequest/auth";
 export const metadata: Metadata = {
     title: "Đặt lại mật khẩu",
 };
-const ResetPasswordPage = () => {
+const ResetPasswordPage = async ({ params }: { params: Promise<{ token: string }> }) => {
+    const { token } = await params;
+    if (!token) {
+        redirect("/auth/login");
+    } else {
+        try {
+            await authApi.checkTokenResetPassword({
+                token,
+            });
+        } catch {
+            redirect("/auth/login");
+        }
+    }
     return (
         <>
             <div className="w-full">

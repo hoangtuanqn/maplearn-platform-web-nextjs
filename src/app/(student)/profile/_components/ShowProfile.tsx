@@ -59,14 +59,22 @@ const ShowProfile = () => {
                     <div>{profile.birth_year}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
+                    <div className="w-48 text-gray-400">Tỉnh thành</div>
+                    <div>{profile.city}</div>
+                </div>
+                <div className="flex flex-col gap-2 md:flex-row">
+                    <div className="w-48 text-gray-400">Trường học</div>
+                    <div>{profile.school}</div>
+                </div>
+                <div className="flex flex-col gap-2 md:flex-row">
                     <div className="w-48 text-gray-400">Link Facebook</div>
-                    <a
-                        href={profile.facebook_link}
+                    <Link
+                        href={profile.facebook_link ?? ""}
                         target="_blank"
                         className="text-primary break-all duration-75 hover:opacity-75"
                     >
                         {profile.facebook_link}
-                    </a>
+                    </Link>
                 </div>
             </div>
         </>

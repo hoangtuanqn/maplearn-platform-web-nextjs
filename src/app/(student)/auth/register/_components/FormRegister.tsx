@@ -14,6 +14,7 @@ import { FormRegisterType, registerSchema } from "../../auth.schema";
 import axios from "axios";
 import authApi from "~/apiRequest/auth";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
+import zxcvbn from "zxcvbn";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
@@ -50,6 +51,10 @@ const FormLogin = () => {
     });
 
     const onSubmit: SubmitHandler<FormRegisterType> = async (data) => {
+        if (zxcvbn(form.watch("password")).score < 2) {
+            toast.error("Mật khẩu quá yếu! Vui lòng nhập mật khẩu khác mạnh hơn!");
+            return;
+        }
         registerMutaion.mutate(data);
     };
     return (

@@ -10,6 +10,7 @@ const authApi = {
     create: (data: FormRegisterType) => publicApi.post("/auth/register", data),
     login: (data: FormLoginType) => publicApi.post("/auth/login", data),
     forgotPassword: (data: FormForgotPasswordType) => publicApi.post("/auth/forgot-password", data),
-    resetPassword: (data: FormResetPasswordType) => publicApi.post("/auth/reset-password", data),
+    resetPassword: (data: FormResetPasswordType & { token: string }) => publicApi.post("/auth/reset-password", data),
+    checkTokenResetPassword: (data: { token: string }) => publicApi.post("/auth/check-token-reset-password", data),
 };
 export default authApi;

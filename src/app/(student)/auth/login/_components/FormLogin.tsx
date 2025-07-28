@@ -15,6 +15,7 @@ import { setLocalStorage } from "~/libs/localStorage";
 import { useAuth } from "~/hooks/useAuth";
 import { handleApiError } from "~/libs/apis/http";
 import authApi from "~/apiRequest/auth";
+import axios from "axios";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
@@ -47,7 +48,11 @@ const FormLogin = () => {
         },
 
         onError: (error) => {
-            handleApiError(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(error?.response?.data?.error);
+            } else {
+                handleApiError(error);
+            }
         },
     });
 
