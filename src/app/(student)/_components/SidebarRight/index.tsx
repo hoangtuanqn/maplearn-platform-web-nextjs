@@ -1,4 +1,4 @@
-import News from "./News";
+import Posts from "./Posts";
 import ExamCountdown from "./ExamCountdown";
 // import CourseActive from "./CourseActive";
 const SidebarRight = () => {
@@ -12,7 +12,7 @@ const SidebarRight = () => {
                 <div className="flex flex-col gap-5"></div>
                 <ExamCountdown />
                 {/* <CourseActive /> */}
-                <News />
+                <Posts />
             </div>
         </aside>
     );

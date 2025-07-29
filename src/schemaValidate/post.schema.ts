@@ -24,6 +24,7 @@ const PostSchema = z.object({
     tags: z.array(TagSchema),
     creator: CreatorSchema,
 });
+export type PostType = z.infer<typeof PostSchema>;
 
 // Pagination Metadata Schema
 const PaginationMetaSchema = z.object({

@@ -20,30 +20,31 @@ const headerLinks = [
         label: "Trang chủ",
         icon: HomeIcon,
         href: "/",
-        isActive: true,
+        macher: ["/"],
     },
     {
         label: "Khóa học",
         icon: GraduationIcon,
-        href: "/khoa-hoc",
+        href: "/courses",
+        macher: ["/courses"],
     },
     {
         label: "Thi thử",
         icon: DocumentIcon,
-        href: "/exam_online",
-        isActive: false,
+        href: "/exam-online",
+        macher: ["/exam-online"],
     },
     {
         label: "Tin tức",
         icon: NewsIcon,
         href: "/posts",
-        isActive: false,
+        macher: ["/posts", "/posts/:slug"],
     },
     {
         label: "Tài liệu",
         icon: EntertainmentIcon,
-        href: "/tai-lieu",
-        isActive: false,
+        href: "/documents",
+        macher: ["/documents"],
     },
 ];
 const HeaderLaptop = () => {

@@ -1,12 +1,10 @@
+"use client";
+import { isActiveRoute } from "~/libs/hepler";
 import { ItemLinkType } from "../../Header/Laptop/HeaderLink";
 
-const FooterMobileLink = ({
-    label,
-    icon: Icon,
-    href,
-    iconColor = "var(--primary-light)",
-    isActive = false,
-}: ItemLinkType) => {
+const FooterMobileLink = ({ label, icon: Icon, href, iconColor = "var(--primary-light)", macher }: ItemLinkType) => {
+    const isActive = isActiveRoute(href, macher);
+
     return (
         <li className="flex-1">
             <a className="t1-flex-center relative flex h-full w-full flex-col gap-0.5" href={href}>
@@ -14,7 +12,9 @@ const FooterMobileLink = ({
                     <Icon color={iconColor} isActive={isActive} />
                 </div>
                 <span
-                    className={`text-center text-xs text-gray-600 md:text-sm ${isActive && `text-primary font-bold`}`}
+                    className={`text-center text-xs md:text-sm ${
+                        isActive ? "text-primary font-bold" : "text-gray-600"
+                    }`}
                 >
                     {label}
                 </span>

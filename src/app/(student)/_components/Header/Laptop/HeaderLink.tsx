@@ -1,13 +1,18 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ElementType } from "react";
+import { isActiveRoute } from "~/libs/hepler";
 export type ItemLinkType = {
     icon: ElementType;
     label: string;
     href: string;
     iconColor?: string;
-    isActive?: boolean;
+    macher: string[];
 };
-const HeaderLink = ({ label, icon: Icon, href, isActive = false }: ItemLinkType) => {
+const HeaderLink = ({ label, icon: Icon, href, macher }: ItemLinkType) => {
+    const pathname = usePathname();
+
     return (
         <Link className="cursor-pointer" href={href}>
             <div className="h-max w-max">
@@ -16,7 +21,7 @@ const HeaderLink = ({ label, icon: Icon, href, isActive = false }: ItemLinkType)
                     data-tooltip-content={label}
                     style={{ height: "56px" }}
                 >
-                    <Icon isActive={isActive} />
+                    <Icon isActive={isActiveRoute(pathname, macher)} />
                 </div>
             </div>
         </Link>

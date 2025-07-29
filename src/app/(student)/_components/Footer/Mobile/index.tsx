@@ -10,30 +10,31 @@ const footerLinks = [
         label: "Trang chủ",
         icon: HomeIcon,
         href: "/",
-        isActive: true,
+        macher: ["/"],
     },
     {
         label: "Khóa học",
         icon: GraduationIcon,
-        href: "/khoa-hoc",
-        isActive: false,
+        href: "/course",
+        macher: ["/course"],
     },
     {
         label: "Đấu trường",
         icon: DocumentIcon,
         href: "/dau-truong-ly-thuyet",
+        macher: ["/exam-online"],
     },
     {
         label: "Thi online",
         icon: NewsIcon,
-        href: "/thi-online",
-        isActive: false,
+        href: "/exam-online",
+        macher: ["/exam-online"],
     },
     {
         label: "Đăng nhập",
         icon: EntertainmentIcon,
-        href: "/dang-nhap",
-        isActive: false,
+        href: "/login",
+        macher: ["/login"],
     },
 ];
 const FooterMobile = () => {

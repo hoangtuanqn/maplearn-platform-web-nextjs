@@ -1,3 +1,4 @@
+import { match } from "path-to-regexp";
 import zxcvbn from "zxcvbn";
 import { PasswordStrengthType } from "~/app/(student)/auth/auth.schema";
 
@@ -17,7 +18,12 @@ export const getCharacterName = (name: string | null | undefined) => {
     return arrName[arrName.length - 1].substring(0, 1);
 };
 export const isActiveRoute = (pathname: string, listRoutePath: string[]) => {
-    return listRoutePath.includes(pathname);
+    const cleanPath = pathname.split("?")[0]; // Loại bỏ query string
+
+    return listRoutePath.some((route) => {
+        const matcher = match(route, { decode: decodeURIComponent });
+        return matcher(cleanPath) !== false;
+    });
 };
 
 // Check độ mạnh mật khẩu

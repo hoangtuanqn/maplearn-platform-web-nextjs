@@ -5,8 +5,6 @@ import HomeTab from "./HomeTab";
 import SidebarLeft from "../../_components/SidebarLeft";
 import ExamCountdown from "../../_components/SidebarRight/ExamCountdown";
 import SidebarRight from "../../_components/SidebarRight";
-import "swiper/css";
-import "swiper/css/pagination";
 const Home = () => {
     return (
         <>

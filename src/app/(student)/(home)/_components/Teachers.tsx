@@ -1,12 +1,12 @@
 // Import Swiper React components
-"use client"
+"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import HeaderSection from "./HeaderSection";
 import publicApi from "~/libs/apis/publicApi";
 import { useQuery } from "@tanstack/react-query";
-import { SkeletonTeacherCard } from "../../(home)/_components/SkeletonTeacherCard";
 import Image from "next/image";
 import { UserType } from "~/schemaValidate/user.schema";
+import Skeleton from "react-loading-skeleton";
 
 const fetchTeachers = async () => {
     const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
@@ -49,8 +49,11 @@ const Teachers = () => {
                         // Hiển thị 6 khung skeleton trong Swiper khi đang tải
                         <>
                             {[...Array(6)].map((_, index) => (
-                                <SwiperSlide key={index}>
-                                    <SkeletonTeacherCard />
+                                <SwiperSlide
+                                    key={index}
+                                    className="block !h-45 w-32 shrink-0 overflow-hidden rounded-xl pr-2"
+                                >
+                                    <Skeleton className="block h-full shrink-0 overflow-hidden rounded-xl" />
                                 </SwiperSlide>
                             ))}
                         </>
