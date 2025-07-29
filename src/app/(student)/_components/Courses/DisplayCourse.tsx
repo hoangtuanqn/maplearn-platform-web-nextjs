@@ -1,5 +1,6 @@
 import { User } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 interface DisplayCourseType {
     thumbnail: string;
@@ -8,7 +9,7 @@ interface DisplayCourseType {
 }
 const DisplayCourse = ({ thumbnail, title, teacher }: DisplayCourseType) => {
     return (
-        <a href="#" className="text-secondary-typo block h-full w-full rounded-xl">
+        <Link href="#" className="text-secondary-typo block h-full w-full rounded-xl">
             <Image
                 width={184}
                 height={184}
@@ -21,7 +22,7 @@ const DisplayCourse = ({ thumbnail, title, teacher }: DisplayCourseType) => {
                 <User style={{ fill: "currentColor" }} />
                 <span className="line-clamp-2">{teacher}</span>
             </div>
-        </a>
+        </Link>
     );
 };
 

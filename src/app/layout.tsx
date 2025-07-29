@@ -2,11 +2,13 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import "~/styles/global.css";
 import "react-loading-skeleton/dist/skeleton.css";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import QueryProvider from "~/wrapper/QueryProvider";
 import { ReduxProvider } from "~/wrapper/ReduxProvider";
 import TopProgressBar from "~/components/TopProgressBar";
+import Script from "next/script";
 const inter = Inter({
     subsets: ["latin"],
     display: "swap", // giúp tránh bị trắng chữ khi font chưa load
@@ -24,6 +26,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={inter.className}>
+                <Script
+                    type="text/javascript"
+                    id="MathJax-script"
+                    async
+                    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+                ></Script>
                 <TopProgressBar />
                 <ReduxProvider>
                     <QueryProvider>{children}</QueryProvider>

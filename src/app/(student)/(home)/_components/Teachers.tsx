@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { UserType } from "~/schemaValidate/user.schema";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 const fetchTeachers = async () => {
     const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
@@ -61,7 +62,7 @@ const Teachers = () => {
                         // Khi đã có dữ liệu
                         teachers.map(({ full_name, avatar, gender }) => (
                             <SwiperSlide key={full_name}>
-                                <a href="#" className="relative block h-45 w-32 shrink-0 overflow-hidden rounded-xl">
+                                <Link href="#" className="relative block h-45 w-32 shrink-0 overflow-hidden rounded-xl">
                                     <Image
                                         src={avatar ?? ""}
                                         alt={full_name}
@@ -73,7 +74,7 @@ const Teachers = () => {
                                     <span className="absolute bottom-3 w-full px-2 text-center text-xs font-medium text-white">
                                         {`${gender === "male" ? "Thầy" : "Cô"} ${full_name}`}
                                     </span>
-                                </a>
+                                </Link>
                             </SwiperSlide>
                         ))
                     )}

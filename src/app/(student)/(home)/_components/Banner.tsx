@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 
 import Image from "next/image";
+import Link from "next/link";
 // Banner có thể bấm vô được hay không
 const bannerImages = [
     {
@@ -32,7 +33,7 @@ const Banner = () => {
             >
                 {bannerImages.map(({ url, image }) => (
                     <SwiperSlide key={image + url}>
-                        <a
+                        <Link
                             href={url || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -47,7 +48,7 @@ const Banner = () => {
                                 height={511}
                                 width={1536}
                             />
-                        </a>
+                        </Link>
                     </SwiperSlide>
                 ))}
             </Swiper>

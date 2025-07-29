@@ -36,8 +36,16 @@ const SideBarLaptop = () => {
                         </Link>
 
                         <MenuItemLink title="Thông tin cá nhân" url="/profile" image="/assets/icons/user-info.svg" />
-                        <MenuItemLink title="Khóa học của tôi" url={""} image="/assets/icons/my-courses.svg" />
-                        <MenuItemLink title="Khoá học đã lưu" url={""} image="/assets/icons/saved-courses.svg" />
+                        <MenuItemLink
+                            title="Khóa học của tôi"
+                            url={"/profile/my-courses"}
+                            image="/assets/icons/my-courses.svg"
+                        />
+                        <MenuItemLink
+                            title="Khoá học đã lưu"
+                            url={"/profile/saved-courses"}
+                            image="/assets/icons/saved-courses.svg"
+                        />
                     </>
                 ) : (
                     <MenuItemLink title="Đăng nhập" url={""} image="/assets/icons/login.svg" />

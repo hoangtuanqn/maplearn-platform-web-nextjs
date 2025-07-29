@@ -35,7 +35,11 @@ export const userSchema = z.object({
         .optional()
         .or(z.literal("").transform(() => undefined)),
     school: z.string().min(2, "Tên trường phải có ít nhất 2 ký tự").optional(),
-    city: z.string().min(2, "Tên thành phố phải có ít nhất 2 ký tự").optional(),
+    city: z
+        .string()
+        .min(2, "Tên thành phố phải có ít nhất 2 ký tự")
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
     role: z.enum(["student", "teacher", "admin"]).optional(),
     banned: z.boolean().optional(),
     email_verified_at: z.string().optional(),

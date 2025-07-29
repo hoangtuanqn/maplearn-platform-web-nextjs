@@ -17,9 +17,11 @@ const CreatorSchema = z.object({
 const PostSchema = z.object({
     id: z.number(),
     slug: z.string(),
-    thumbnail: z.string().url(),
     title: z.string(),
+    thumbnail: z.string().url(),
+    content: z.string().optional(),
     views: z.number(),
+    status: z.boolean().optional(),
     created_at: z.string(),
     tags: z.array(TagSchema),
     creator: CreatorSchema,
@@ -48,6 +50,8 @@ const PaginationMetaSchema = z.object({
     to: z.number().nullable(),
     total: z.number(),
 });
+
+
 
 // Final API Response Schema
 export const PostListResponseSchema = z.object({

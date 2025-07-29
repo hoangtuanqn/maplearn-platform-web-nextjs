@@ -36,23 +36,23 @@ const sidebarMenuLink = [
         icon: ContactRound,
     },
     {
-        url: "/my-courses",
-        matcher: ["/my-courses"],
+        url: "/profile/my-courses",
+        matcher: ["/profile/my-courses"],
         name: "Khóa học của tôi",
         icon: GraduationCap,
     },
     {
-        url: "/saved-courses",
-        matcher: ["/saved-courses"],
+        url: "/profile/saved-courses",
+        matcher: ["/profile/saved-courses"],
         name: "Khóa học đã lưu",
         icon: Bookmark,
     },
-    {
-        url: "/saved-questions",
-        matcher: ["/saved-questions"],
-        name: "Câu hỏi đã lưu",
-        icon: NotebookPen,
-    },
+    // {
+    //     url: "/profile/saved-questions",
+    //     matcher: ["/profile/saved-questions"],
+    //     name: "Câu hỏi đã lưu",
+    //     icon: NotebookPen,
+    // },
     // {
     //     url: "/inventory",
     //     matcher: ["/inventory"],

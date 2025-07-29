@@ -2,11 +2,12 @@ import React from "react";
 import { NewType } from "../../_components/SidebarLeft/entities.type";
 import { CalendarRange } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const PostIItem = ({ title, url, image, createdAt }: NewType) => {
     return (
         <div className="bg-white shadow-sm sm:rounded-lg">
-            <a href={url}>
+            <Link href={url}>
                 <div className="flex gap-4 p-3">
                     <div className="aspect-square w-16 shrink-0 overflow-hidden rounded-md">
                         <Image width={56} height={56} alt={title} className="w-full object-cover" src={image} />
@@ -19,7 +20,7 @@ const PostIItem = ({ title, url, image, createdAt }: NewType) => {
                         </div>
                     </div>
                 </div>
-            </a>
+            </Link>
         </div>
     );
 };

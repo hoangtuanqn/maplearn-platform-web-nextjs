@@ -14,7 +14,10 @@ import otherApi from "~/apiRequest/others";
 import { ProvinceType } from "~/schemaValidate/other.schama";
 import profileApi from "~/apiRequest/profile";
 import Loading from "~/app/(student)/_components/Loading";
-
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { cn } from "~/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
     const [provinces, setProvinces] = useState<ProvinceType>([]);
@@ -24,8 +27,8 @@ const FormEdit = () => {
         defaultValues: {
             full_name: user?.full_name ?? "",
             birth_year: user?.birth_year,
-            gender: user?.gender ?? "male",
-            school: user?.school ?? "male",
+            gender: user?.gender ?? "other",
+            school: user?.school ?? "",
             city: user?.city ?? "",
             facebook_link: user?.facebook_link ?? "",
             phone_number: user?.phone_number ?? "",
@@ -50,7 +53,17 @@ const FormEdit = () => {
         }
         mutate(data);
     };
-
+    useEffect(() => {
+        form.reset({
+            full_name: user?.full_name ?? "",
+            birth_year: user?.birth_year,
+            gender: user?.gender ?? "other",
+            school: user?.school ?? "",
+            city: user?.city ?? "",
+            facebook_link: user?.facebook_link ?? "",
+            phone_number: user?.phone_number ?? "",
+        });
+    }, [user, form]);
     useEffect(() => {
         const fetchProvinces = async () => {
             try {
@@ -63,6 +76,7 @@ const FormEdit = () => {
 
         fetchProvinces();
     }, []);
+    if (!user) return <Loading />;
     return (
         <>
             {isPending && <Loading />}
@@ -136,26 +150,62 @@ const FormEdit = () => {
                             </FormItem>
                         )}
                     />
+
                     <FormField
                         control={form.control}
                         name="city"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex w-full flex-col">
                                 <FormLabel className="text-sm font-normal">Tỉnh thành</FormLabel>
-                                <Select value={field.value} onValueChange={field.onChange}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Tỉnh thành của bạn" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            {provinces.map((province) => (
-                                                <SelectItem key={province.province_code} value={province.name}>
-                                                    {province.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                className={cn(
+                                                    "justify-between",
+                                                    !field.value && "text-muted-foreground",
+                                                )}
+                                            >
+                                                {field.value
+                                                    ? provinces.find((province) => province.name === field.value)?.name
+                                                    : "Tỉnh thành của bạn"}
+                                                <ChevronsUpDown className="opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="p-0">
+                                        <Command>
+                                            <CommandInput placeholder="Tìm kiếm..." className="h-9" />
+                                            <CommandList>
+                                                <CommandEmpty>Không tìm thấy dữ liệu.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {provinces.map((province) => (
+                                                        <CommandItem
+                                                            value={province.name}
+                                                            key={province.province_code}
+                                                            onSelect={() => {
+                                                                form.setValue("city", province.name);
+                                                            }}
+                                                        >
+                                                            {province.name}
+                                                            <Check
+                                                                className={cn(
+                                                                    "ml-auto",
+                                                                    province.name === field.value
+                                                                        ? "opacity-100"
+                                                                        : "opacity-0",
+                                                                )}
+                                                            />
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+
                                 <FormMessage />
                             </FormItem>
                         )}
