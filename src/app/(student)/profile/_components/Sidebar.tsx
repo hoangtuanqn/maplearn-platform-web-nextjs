@@ -31,7 +31,7 @@ const SidebarProfileLink = ({ pathname, url, matcher, Icon, name }: SidebarProfi
 const sidebarMenuLink = [
     {
         url: "/profile",
-        matcher: ["/profile", "/profile/edit"],
+        matcher: ["/profile", "/profile/edit", "/profile/change-password"],
         name: "Thông tin cá nhân",
         icon: ContactRound,
     },

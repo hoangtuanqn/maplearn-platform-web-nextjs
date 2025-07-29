@@ -27,7 +27,7 @@ const ShowProfile = () => {
                         <Link href="/profile/edit">
                             <Button className="px-5 text-white">Chỉnh sửa thông tin</Button>
                         </Link>
-                        <Link href="/student/profile/edit">
+                        <Link href="/profile/change-password">
                             <Button variant={"outline"} className="px-5">
                                 Thay đổi mật khẩu
                             </Button>

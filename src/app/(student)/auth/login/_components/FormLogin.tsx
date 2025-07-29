@@ -94,6 +94,7 @@ const FormLogin = () => {
                                     />
                                 </FormControl>
 
+                                    <FormMessage />
                                 <div className="flex justify-between">
                                     {isCapsLockOn && (
                                         <span className="text-yellow-500">Chú ý: Bạn đang bật Caps Lock</span>
@@ -102,7 +103,6 @@ const FormLogin = () => {
                                         Quên mật khẩu?
                                     </Link>
                                 </div>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />

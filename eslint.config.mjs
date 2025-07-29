@@ -6,11 +6,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+    baseDirectory: __dirname,
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+    // Import config từ next
+    ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+    // Cấu hình bổ sung
+    {
+        files: ["**/*.ts", "**/*.tsx"], // Hoặc thêm *.js nếu cần
+        rules: {
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                {
+                    argsIgnorePattern: "^_", // Bỏ qua biến bắt đầu bằng _
+                    varsIgnorePattern: "^_", // Bỏ qua biến khai báo bắt đầu bằng _
+                },
+            ],
+        },
+    },
 ];
 
 export default eslintConfig;

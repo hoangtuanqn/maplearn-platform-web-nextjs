@@ -105,7 +105,7 @@ export default function News() {
         <>
             <div className="mt-6 mb-2 flex items-center justify-between">
                 <p className="text-primary text-base font-medium">Tin tức</p>
-                <Link className="cursor-pointer" href="">
+                <Link className="cursor-pointer" href="/posts">
                     <p className="t1-flex-center justify-between gap-1 text-gray-500 italic">
                         <span>Xem tất cả</span>
                         <TrendingUp />

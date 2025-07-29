@@ -38,9 +38,29 @@ export const userSchema = z.object({
     city: z.string().min(2, "Tên thành phố phải có ít nhất 2 ký tự").optional(),
     role: z.enum(["student", "teacher", "admin"]).optional(),
     banned: z.boolean().optional(),
-    email_verified_at: z.string().datetime("Thời gian xác minh email không hợp lệ").optional(),
-    created_at: z.string().datetime("Thời gian tạo không hợp lệ").optional(),
-    updated_at: z.string().datetime("Thời gian cập nhật không hợp lệ").optional(),
+    email_verified_at: z.string().optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
 });
 
 export type UserType = z.infer<typeof userSchema>;
+
+export const changePasswordSchema = z
+    .object({
+        password_old: z.string().nonempty("Vui lòng nhập mật khẩu cũ"),
+        password_new: z
+            .string()
+            .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+            .max(255, "Chỉ được nhập tối đa 255 kí tự")
+            .nonempty("Vui lòng nhập mật khẩu"),
+        confirmPassword: z.string().nonempty("Vui lòng nhập lại mật khẩu"),
+    })
+    .refine((data) => data.password_new !== data.password_old, {
+        message: "Mật khẩu mới và cũ phải khác nhau",
+        path: ["password_new"], // hiển thị lỗi ở confirmPassword
+    })
+    .refine((data) => data.password_new === data.confirmPassword, {
+        message: "Mật khẩu xác nhận không khớp",
+        path: ["confirmPassword"], // hiển thị lỗi ở confirmPassword
+    });
+export type FormChangePasswordType = z.infer<typeof changePasswordSchema>;

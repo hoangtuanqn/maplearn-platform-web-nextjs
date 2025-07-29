@@ -8,7 +8,7 @@ const privateApi = axios.create({
 
 // Refresh Token khi hết hạn
 const refreshToken = () => {
-    axios.get(`${APP.API_URL}/auth/refresh`, { withCredentials: true });
+    return axios.post(`${APP.API_URL}/auth/refresh`, null, { withCredentials: true });
 };
 privateApi.interceptors.response.use(
     (response) => response,
@@ -18,7 +18,7 @@ privateApi.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true; // ngăn lặp vô hạn nếu refresh token cũng lỗi
             try {
-                refreshToken();
+                await refreshToken(); // cần await
                 return privateApi(originalRequest); // Retry request ban đầu
             } catch (error) {
                 console.log(">>> Log instance Axios error: ", error);

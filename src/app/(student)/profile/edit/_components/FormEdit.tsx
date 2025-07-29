@@ -14,7 +14,6 @@ import otherApi from "~/apiRequest/others";
 import { ProvinceType } from "~/schemaValidate/other.schama";
 import profileApi from "~/apiRequest/profile";
 import Loading from "~/app/(student)/_components/Loading";
-import { useRouter } from "next/navigation";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
