@@ -115,7 +115,7 @@ const FormEdit = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-sm font-normal">Giới tính</FormLabel>
-                                <Select value={field.value} onValueChange={field.onChange}>
+                                <Select defaultValue={user?.gender} onValueChange={field.onChange}>
                                     <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Giới tính của bạn" />
                                     </SelectTrigger>

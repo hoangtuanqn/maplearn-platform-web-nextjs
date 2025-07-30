@@ -21,7 +21,7 @@ export const userSchema = z.object({
         .regex(/^[0-9+() -]+$/, "Số điện thoại không hợp lệ")
         .optional()
         .or(z.literal("").transform(() => undefined)),
-    gender: z.enum(["male", "female", "other"]),
+    gender: z.enum(["male", "female", "other"], "Vui lòng chọn giới tính"),
     avatar: z.string().url("URL avatar không hợp lệ").optional(),
     birth_year: z
         .number()
@@ -34,7 +34,11 @@ export const userSchema = z.object({
         .url("URL Facebook không hợp lệ")
         .optional()
         .or(z.literal("").transform(() => undefined)),
-    school: z.string().min(2, "Tên trường phải có ít nhất 2 ký tự").optional(),
+    school: z
+        .string()
+        .min(2, "Tên trường phải có ít nhất 2 ký tự")
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
     city: z
         .string()
         .min(2, "Tên thành phố phải có ít nhất 2 ký tự")

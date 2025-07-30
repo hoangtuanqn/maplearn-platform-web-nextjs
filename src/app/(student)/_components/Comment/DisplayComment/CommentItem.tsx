@@ -3,7 +3,7 @@ import { getCharacterName } from "~/libs/hepler";
 import { configSymbolComment } from "../config";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
-const ItemComment = ({ name, content, time }: { name: string; content: string; time: string }) => {
+const ItemComment = ({ role, name, content, time }: { role: string; name: string; content: string; time: string }) => {
     const htmlContent = content.replace(/\n/g, "<br />"); // Thay \n thành <br />
 
     return (
@@ -13,7 +13,9 @@ const ItemComment = ({ name, content, time }: { name: string; content: string; t
             </div>
             <div className="bg-primary/5 w-full rounded-xl p-5 text-gray-800">
                 <div className="text-primary">
-                    <span className="mr-2 font-bold">{name}</span>
+                    <span className={`mr-2 font-bold ${role !== "student" ? "text-red-500" : "text-primary"}`}>
+                        {name}
+                    </span>
                     <span className="text-xs">{time}</span>
                 </div>
                 <div className="mt-1 text-sm">

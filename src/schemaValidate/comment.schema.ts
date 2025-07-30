@@ -1,8 +1,5 @@
 import z from "zod";
-const CreatorSchema = z.object({
-    id: z.number(),
-    full_name: z.string(),
-});
+import { CreatorSchema } from "./common.schema";
 
 const ReplySchema = z.object({
     id: z.number(),

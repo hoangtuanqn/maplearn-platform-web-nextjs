@@ -2,7 +2,7 @@ import publicApi from "~/libs/apis/publicApi";
 import { PostListResponse } from "~/schemaValidate/post.schema";
 export const POSTS_PER_PAGE = 16;
 export const postApi = {
-    getPosts: (page: number = 1, limit: number = 16, search: string = "") =>
+    getPosts: (page: number = 1, limit: number = POSTS_PER_PAGE, search: string = "") =>
         publicApi.get<PostListResponse>(
             search
                 ? `/posts?page=${page}&limit=${limit}&filter[title]=${search}`
@@ -21,4 +21,5 @@ export const postApi = {
         publicApi.patch(`/comments/${commentId}`, {
             description: data.comment, // alias tại đây
         }),
+    incrementView: (slug: string) => publicApi.post(`/posts/${slug}/view`),
 };

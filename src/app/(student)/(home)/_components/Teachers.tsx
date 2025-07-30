@@ -2,7 +2,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import HeaderSection from "./HeaderSection";
-import publicApi from "~/libs/apis/publicApi";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { UserType } from "~/schemaValidate/user.schema";

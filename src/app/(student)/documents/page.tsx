@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import DocumentList from "./_components/DocumentList";
+import { Suspense } from "react";
+import Loading from "../_components/Loading";
 export const metadata: Metadata = {
     title: "Tổng hợp tài liệu học tập",
 };
@@ -7,7 +9,9 @@ export const metadata: Metadata = {
 const DocumentPage = () => {
     return (
         <section className="min-h-screen px-5 pb-10">
-            <DocumentList />
+            <Suspense fallback={<Loading />}>
+                <DocumentList />
+            </Suspense>
         </section>
     );
 };

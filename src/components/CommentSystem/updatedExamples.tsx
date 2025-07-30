@@ -1,6 +1,6 @@
 /**
  * Updated Examples - Sử dụng CommentSystem với API được tổ chức tốt
- * 
+ *
  * Sau khi tái cấu trúc, bây giờ chỉ cần chỉ định `type` và `identifier`,
  * hệ thống sẽ tự động sử dụng API phù hợp từ file comment.ts
  */
@@ -13,8 +13,8 @@ import EnhancedFormComment from "~/components/CommentSystem/EnhancedFormComment"
 export const PostCommentExample = ({ postSlug }: { postSlug: string }) => {
     return (
         <CommentSystem
-            type="post"                    // Tự động sử dụng postApi
-            identifier={postSlug}          // slug của post
+            type="post" // Tự động sử dụng postApi
+            identifier={postSlug} // slug của post
             showSkeleton={true}
             skeletonCount={6}
             showReplies={true}
@@ -28,8 +28,8 @@ export const PostCommentExample = ({ postSlug }: { postSlug: string }) => {
 export const CourseCommentExample = ({ courseId }: { courseId: string }) => {
     return (
         <CommentSystem
-            type="course"                  // Tự động sử dụng courseApi
-            identifier={courseId}          // ID của course
+            type="course" // Tự động sử dụng courseApi
+            identifier={courseId} // ID của course
             showSkeleton={true}
             skeletonCount={3}
             showReplies={true}
@@ -39,11 +39,11 @@ export const CourseCommentExample = ({ courseId }: { courseId: string }) => {
                 const commentTime = new Date(comment.created_at).getTime();
                 const now = new Date().getTime();
                 const thirtyMinutes = 30 * 60 * 1000;
-                return Boolean(user && user.id === comment.user_id && (now - commentTime) < thirtyMinutes);
+                return Boolean(user && user.id === comment.user_id && now - commentTime < thirtyMinutes);
             }}
             canDelete={(comment, user) => {
                 const userRole = (user as { role?: string })?.role;
-                return Boolean(user && (userRole === 'admin' || user.id === comment.user_id));
+                return Boolean(user && (userRole === "admin" || user.id === comment.user_id));
             }}
             className="mt-6"
         />
@@ -54,12 +54,12 @@ export const CourseCommentExample = ({ courseId }: { courseId: string }) => {
 export const LessonCommentExample = ({ lessonId }: { lessonId: string }) => {
     return (
         <CommentSystem
-            type="lesson"                  // Tự động sử dụng lessonApi
-            identifier={lessonId}          // ID của lesson
-            showReplies={false}            // Lesson không cần replies
+            type="lesson" // Tự động sử dụng lessonApi
+            identifier={lessonId} // ID của lesson
+            showReplies={false} // Lesson không cần replies
             showSkeleton={true}
             skeletonCount={3}
-            className="bg-gray-50 p-4 rounded-lg"
+            className="rounded-lg bg-gray-50 p-4"
         />
     );
 };
@@ -68,8 +68,8 @@ export const LessonCommentExample = ({ lessonId }: { lessonId: string }) => {
 export const VideoCommentExample = ({ videoId }: { videoId: string }) => {
     return (
         <CommentSystem
-            type="video"                   // Tự động sử dụng videoApi
-            identifier={videoId}           // ID của video
+            type="video" // Tự động sử dụng videoApi
+            identifier={videoId} // ID của video
             FormComponent={EnhancedFormComment}
             showSkeleton={false}
             showReplies={true}
@@ -83,9 +83,9 @@ export const VideoCommentExample = ({ videoId }: { videoId: string }) => {
                 },
                 onDelete: (commentId) => {
                     console.log(`Deleted video comment ${commentId}`);
-                }
+                },
             }}
-            className="max-w-4xl mx-auto"
+            className="mx-auto max-w-4xl"
         />
     );
 };
@@ -94,8 +94,8 @@ export const VideoCommentExample = ({ videoId }: { videoId: string }) => {
 export const ExamCommentExample = ({ examId }: { examId: string }) => {
     return (
         <CommentSystem
-            type="exam"                    // Tự động sử dụng examApi
-            identifier={examId}            // ID của exam
+            type="exam" // Tự động sử dụng examApi
+            identifier={examId} // ID của exam
             showReplies={true}
             maxReplyDepth={1}
             // Custom permissions cho exam
@@ -109,9 +109,9 @@ export const ExamCommentExample = ({ examId }: { examId: string }) => {
             }}
             canDelete={(comment, user) => {
                 const userRole = (user as { role?: string })?.role;
-                return Boolean(user && userRole === 'admin');
+                return Boolean(user && userRole === "admin");
             }}
-            className="border-t pt-6 mt-6"
+            className="mt-6 border-t pt-6"
         />
     );
 };
@@ -126,8 +126,8 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
                 // Override API functions nếu cần logic đặc biệt
                 create: async (data) => {
                     const response = await fetch(`/api/custom/${contentId}/comments`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             content: data.comment,
                             parent_id: data.reply_id,
@@ -140,8 +140,8 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
                 },
                 update: async (commentId, data) => {
                     const response = await fetch(`/api/custom/comments/${commentId}`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             content: data.comment,
                             updated_at: new Date().toISOString(),
@@ -151,11 +151,11 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
                 },
                 delete: async (commentId) => {
                     const response = await fetch(`/api/custom/comments/${commentId}`, {
-                        method: 'DELETE',
-                        headers: { 'X-Soft-Delete': 'true' }, // Soft delete
+                        method: "DELETE",
+                        headers: { "X-Soft-Delete": "true" }, // Soft delete
                     });
                     return response.json();
-                }
+                },
             }}
             className="space-y-4"
         />
@@ -164,15 +164,15 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
 
 /**
  * 🚀 Lợi ích của cách tổ chức mới:
- * 
+ *
  * 1. **Đơn giản hơn**: Chỉ cần chỉ định type, API được chọn tự động
  * 2. **Maintainable**: Tất cả API endpoint được quản lý tập trung
  * 3. **Extensible**: Dễ dàng thêm type mới vào commentApiHelper
  * 4. **Consistent**: Tất cả comment APIs có cùng interface
  * 5. **Type Safe**: Full TypeScript support
- * 
+ *
  * 🔧 Cách thêm type mới:
- * 
+ *
  * 1. Thêm API functions vào `comment.ts`:
  *    ```ts
  *    export const newTypeApi = {
@@ -182,7 +182,7 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
  *        getComments: (id) => ...,
  *    };
  *    ```
- * 
+ *
  * 2. Thêm case vào `commentApiHelper.getApiForType()`:
  *    ```ts
  *    case "newType":
@@ -193,7 +193,7 @@ export const CustomAPIExample = ({ contentId }: { contentId: string }) => {
  *            getComments: newTypeApi.getComments,
  *        };
  *    ```
- * 
+ *
  * 3. Sử dụng ngay lập tức:
  *    ```tsx
  *    <CommentSystem type="newType" identifier={id} />

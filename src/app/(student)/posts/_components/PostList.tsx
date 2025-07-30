@@ -22,7 +22,7 @@ const PostList = () => {
     const search = searchParams.get("search") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["posts", page, search],
+        queryKey: ["user/posts", page, search],
         queryFn: () => fetchPosts(page, POSTS_PER_PAGE, search),
     });
 

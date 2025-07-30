@@ -83,8 +83,7 @@ export const commentApiHelper = {
                         }),
                     deleteComment: postApi.deleteComment,
                     updateComment: postApi.updateComment,
-                    getComments: (identifier: string) => 
-                        publicApi.get(`/comments?type=post&slug=${identifier}`),
+                    getComments: (identifier: string) => publicApi.get(`/comments?type=post&slug=${identifier}`),
                 };
             case "course":
                 return {
