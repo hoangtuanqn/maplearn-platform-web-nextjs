@@ -8,20 +8,16 @@ import Image from "next/image";
 import { UserType } from "~/schemaValidate/user.schema";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
-
-const fetchTeachers = async () => {
-    const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
-    return res.data;
-};
+import { teacherApi } from "~/apiRequest/teachers";
 
 const Teachers = () => {
     const { data: teachers = [], isLoading } = useQuery<UserType[]>({
-        queryKey: ["teachers"],
-        queryFn: fetchTeachers,
+        queryKey: ["user/teachers"],
+        queryFn: teacherApi.getTeachers,
     });
     return (
         <div className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">
-            <HeaderSection title="Giáo viên MapLearn" />
+            <HeaderSection title="Giáo viên MapLearn" url="/teachers" />
             <div className="overflow-hidden rounded-xl py-4">
                 <Swiper
                     pagination={{

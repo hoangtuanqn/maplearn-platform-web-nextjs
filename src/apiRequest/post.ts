@@ -17,4 +17,8 @@ export const postApi = {
             type: "post",
         }),
     deleteComment: (commentId: string) => publicApi.delete(`/comments/${commentId}`),
+    updateComment: (commentId: string, data: { comment: string }) =>
+        publicApi.patch(`/comments/${commentId}`, {
+            description: data.comment, // alias tại đây
+        }),
 };

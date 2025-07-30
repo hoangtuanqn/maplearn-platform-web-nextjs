@@ -3,6 +3,16 @@ const CreatorSchema = z.object({
     id: z.number(),
     full_name: z.string(),
 });
+
+const ReplySchema = z.object({
+    id: z.number(),
+    description: z.string(),
+    reply_id: z.number().nullable(),
+    created_at: z.string(),
+    user_id: z.number(),
+    creator: CreatorSchema,
+});
+
 export const CommentSchema = z.object({
     id: z.number(),
     description: z.string(),
@@ -10,16 +20,7 @@ export const CommentSchema = z.object({
     created_at: z.string(),
     user_id: z.number().optional(),
     creator: CreatorSchema.nullable(),
-    replies: z.array(
-        z.object({
-            id: z.number(),
-            description: z.string(),
-            reply_id: z.number().nullable(),
-            created_at: z.string(),
-            user_id: z.number(),
-            creator: CreatorSchema,
-        }),
-    ),
+    replies: z.array(ReplySchema).optional().default([]),
 });
 export type CommentType = z.infer<typeof CommentSchema>;
 

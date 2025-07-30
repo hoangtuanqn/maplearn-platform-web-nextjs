@@ -7,7 +7,7 @@ import { useAuth } from "~/hooks/useAuth";
 import { ChatHistoriesType } from "../../../api/chat/ai/types/ChatBotType.type";
 import ChatBubble from "./components/ChatBubble";
 import ChatLoading from "./components/ChatLoading";
-
+import { useNotificationSound } from "~/hooks/useNotificationSound";
 const helloMessageModel = (name: string = "khách") => ({
     role: "model",
     parts: [
@@ -24,6 +24,7 @@ const ChatBotAI = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { value: message, onChange, setValue: setMessage } = useInput("");
     const [chatHistories, setChatHistories] = useState<ChatHistoriesType[]>([]);
+    const { playSound } = useNotificationSound();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -42,6 +43,7 @@ const ChatBotAI = () => {
         } catch (error) {
             console.error("Lỗi gọi API AI >> ", error);
         } finally {
+            playSound();
             setChatHistories((prev) => [...prev, { role: "model", parts: [{ text: modelReply }] }]);
             setIsPending(false);
         }
