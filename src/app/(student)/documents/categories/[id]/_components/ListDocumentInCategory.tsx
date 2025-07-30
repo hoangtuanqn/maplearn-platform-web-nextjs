@@ -6,11 +6,16 @@ import DocumentItem from "../../../_components/DocumentItem";
 import { handleIncrementDownload } from "../../../_components/DocumentList";
 import DocumentSkeleton from "../../../_components/DocumentSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
+import { useSearchParams } from "next/navigation";
 
 const ListDocumentInCategory = ({ id }: { id: number }) => {
+    const searchParams = useSearchParams();
+    const page = Number(searchParams.get("page")) || 1;
+    const search = searchParams.get("search") || "";
+    const sort = searchParams.get("sort") || "";
     const { data: documents, isLoading } = useQuery({
-        queryKey: ["documents/in-category", id],
-        queryFn: () => documentApi.getDocumentsInCategory(1, 20, id, ""),
+        queryKey: ["documents/in-category", id, search, page, sort],
+        queryFn: () => documentApi.getDocumentsInCategory(page, DOCUMENTS_PER_PAGE, id, search, sort),
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
     const total = documents?.data.data.total || 0;
@@ -24,6 +29,9 @@ const ListDocumentInCategory = ({ id }: { id: number }) => {
                     <DocumentItem key={document.id} {...document} callback={handleIncrementDownload} />
                 ))}
             </div>
+            {!isLoading && documents?.data.data?.data.length === 0 && (
+                <p className="text-center text-xl font-bold">Không tìm thấy tài liệu phù hợp</p>
+            )}
             {!isLoading && <PaginationNav totalPages={totalPages} />}
         </>
     );

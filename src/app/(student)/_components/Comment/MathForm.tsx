@@ -18,7 +18,7 @@ const FormCommentMath = ({
     setComment: React.Dispatch<React.SetStateAction<string>>;
     handleSubmitComment: () => void;
 }) => {
-    "use no memo";
+
     const [choice, setChoice] = useState<number>(0);
     const dataPayload = {
         choice,

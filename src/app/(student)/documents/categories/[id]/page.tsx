@@ -8,6 +8,7 @@ import { documentApi } from "~/apiRequest/documents";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import CategoryOtherSidebar from "./_components/CategoryOtherSidebar";
+import SearchDocumentInCategory from "./_components/SearchDocumentInCategory";
 
 const getDocument = cache(async (id: string) => {
     const { data } = await documentApi.getCategory(id);
@@ -59,15 +60,13 @@ const DocumentCategoryPage = async ({ params }: { params: Promise<{ id: string }
                                 </div>
                             </div>
                         </div>
-                        <div className="flex-1 max-lg:w-full">
-                            <Input placeholder="Tìm kiếm tài liệu theo từ khóa" className="ml-auto lg:w-[400px]" />
-                        </div>
+                        <SearchDocumentInCategory id={+id} />
                     </div>
                     <div>
                         <ListDocumentInCategory id={+id} />
                     </div>
                 </div>
-                <CategoryOtherSidebar />
+                <CategoryOtherSidebar id={+id} />
             </div>
         </section>
     );

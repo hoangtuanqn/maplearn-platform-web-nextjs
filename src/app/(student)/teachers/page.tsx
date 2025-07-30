@@ -25,12 +25,15 @@ const ProfilePage = async () => {
                             alt={teacher.full_name}
                             className="aspect-square w-full rounded-xl object-cover"
                         />
-                        <span className="mt-4 line-clamp-2 w-full font-medium">Thầy {teacher.full_name}</span>
 
-                        <div className="mt-1 flex items-center gap-1 text-xs font-medium">
+                        <span className="mt-2 line-clamp-2 block text-center font-bold">
+                            {teacher.gender === "male" ? "Thầy" : "Cô"} {teacher.full_name}
+                        </span>
+
+                        {/* <div className="mt-1 flex items-center gap-1 text-xs font-medium">
                             <GraduationCap style={{ fill: "currentColor" }} />
                             <span className="line-clamp-2">Giáo viên môn vật lý THPT</span>
-                        </div>
+                        </div> */}
                     </Link>
                 ))}
             </div>

@@ -52,3 +52,24 @@ export function base64UrlDecode(data: string): string {
 
     return decoded;
 }
+export function getFormattedVietnameseDate(): string {
+    const now: Date = new Date();
+
+    const options: Intl.DateTimeFormatOptions = {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    };
+
+    // Lấy chuỗi ngày theo định dạng tiếng Việt
+    let formatted: string = now.toLocaleDateString("vi-VN", options);
+
+    // Viết hoa chữ cái đầu (đề phòng trình duyệt trả về chữ thường)
+    formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
+    // Thay dấu phẩy bằng dấu gạch ngang
+    formatted = formatted.replace(",", " -");
+
+    return formatted;
+}

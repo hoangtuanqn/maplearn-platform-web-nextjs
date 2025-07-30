@@ -9,8 +9,8 @@ import SelectCourse from "./SelectCourse";
 import SelectObject from "./SelectObject";
 import CategorySidebar from "./CategorySidebar";
 import DocumentItem from "./DocumentItem";
-async function fetchDocuments(page: number, limit: number, search: string) {
-    const res = await documentApi.getDocuments(page, limit, search);
+async function fetchDocuments(page: number, limit: number, search: string, sort: string = "") {
+    const res = await documentApi.getDocuments(page, limit, search, sort);
     const allDocuments = res.data;
     return {
         documents: allDocuments.data.data,
@@ -28,10 +28,11 @@ const DocumentList = () => {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
     const search = searchParams.get("search") || "";
+    const sort = searchParams.get("sort") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["user/documents", page, search],
-        queryFn: () => fetchDocuments(page, DOCUMENTS_PER_PAGE, search),
+        queryKey: ["user/documents", page, search, sort],
+        queryFn: () => fetchDocuments(page, DOCUMENTS_PER_PAGE, search, sort),
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
 

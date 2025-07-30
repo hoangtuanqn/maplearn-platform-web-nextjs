@@ -4,10 +4,18 @@ import { CategoryDocumentListResponse, CategoryDocumentResponse } from "../schem
 export const DOCUMENTS_PER_PAGE = 20;
 export const CATEGORIES_DOCUMENT_PER_PAGE = 10;
 export const documentApi = {
-    getDocuments: async (page: number = 1, limit: number = DOCUMENTS_PER_PAGE, search: string = "") => {
+    getDocuments: async (
+        page: number = 1,
+        limit: number = DOCUMENTS_PER_PAGE,
+        search: string = "",
+        querySortOther: string = "",
+    ) => {
         let query = `/documents?page=${page}&limit=${limit}`;
         if (search) {
             query += `&filter[title]=${search}`;
+        }
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
         }
         return publicApi.get<DocumentListResponse>(query);
     },
@@ -16,10 +24,14 @@ export const documentApi = {
         limit: number = DOCUMENTS_PER_PAGE,
         categoryId: number = 1,
         search: string = "",
+        querySortOther: string = "",
     ) => {
         let query = `/documents?page=${page}&limit=${limit}&filter[category_id]=${categoryId}`;
         if (search) {
             query += `&filter[title]=${search}`;
+        }
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
         }
         return publicApi.get<DocumentListResponse>(query);
     },
