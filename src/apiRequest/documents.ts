@@ -9,6 +9,7 @@ export const documentApi = {
         limit: number = DOCUMENTS_PER_PAGE,
         search: string = "",
         querySortOther: string = "",
+        queryOther: string = "",
     ) => {
         let query = `/documents?page=${page}&limit=${limit}`;
         if (search) {
@@ -16,6 +17,9 @@ export const documentApi = {
         }
         if (querySortOther) {
             query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
+        }
+        if (queryOther) {
+            query += `&${queryOther}`; // Các value khác nếu cần
         }
         return publicApi.get<DocumentListResponse>(query);
     },

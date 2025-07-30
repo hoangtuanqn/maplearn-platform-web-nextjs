@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { teacherApi } from "~/apiRequest/teachers";
 import Link from "next/link";
 import Image from "next/image";
-import { GraduationCap } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Tất cả các giáo viên",

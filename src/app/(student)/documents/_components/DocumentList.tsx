@@ -9,8 +9,19 @@ import SelectCourse from "./SelectCourse";
 import SelectObject from "./SelectObject";
 import CategorySidebar from "./CategorySidebar";
 import DocumentItem from "./DocumentItem";
-async function fetchDocuments(page: number, limit: number, search: string, sort: string = "") {
-    const res = await documentApi.getDocuments(page, limit, search, sort);
+import { buildLaravelFilterQuery } from "~/libs/hepler";
+async function fetchDocuments(
+    page: number,
+    limit: number,
+    search: string,
+    sort: string = "",
+    { subject = "", grade_level = "" } = {},
+) {
+    const queryString = buildLaravelFilterQuery({
+        subject,
+        grade_level,
+    });
+    const res = await documentApi.getDocuments(page, limit, search, sort, queryString);
     const allDocuments = res.data;
     return {
         documents: allDocuments.data.data,
@@ -28,11 +39,13 @@ const DocumentList = () => {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
     const search = searchParams.get("search") || "";
+    const subject = searchParams.get("subject") || "";
+    const grade_level = searchParams.get("grade_level") || "";
     const sort = searchParams.get("sort") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["user/documents", page, search, sort],
-        queryFn: () => fetchDocuments(page, DOCUMENTS_PER_PAGE, search, sort),
+        queryKey: ["user/documents", page, search, sort, subject, grade_level],
+        queryFn: () => fetchDocuments(page, DOCUMENTS_PER_PAGE, search, sort, { subject, grade_level }),
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
 

@@ -2,7 +2,6 @@ import Image from "next/image";
 import React, { cache } from "react";
 import { Clock, DownloadCloud } from "lucide-react";
 import { formatter } from "~/libs/format";
-import { Input } from "~/components/ui/input";
 import ListDocumentInCategory from "./_components/ListDocumentInCategory";
 import { documentApi } from "~/apiRequest/documents";
 import { Metadata } from "next";

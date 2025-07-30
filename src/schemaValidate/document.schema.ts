@@ -10,6 +10,8 @@ const DocumentSchema = z.object({
     created_at: z.string(),
     tags: z.array(TagSchema),
     creator: z.array(CreatorSchema),
+    subject: z.string(),
+    grade_level: z.string(),
 });
 
 // Final API Response Schema
