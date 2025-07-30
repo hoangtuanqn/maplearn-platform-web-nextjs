@@ -1,21 +1,22 @@
 import { Metadata } from "next";
 import React, { cache } from "react";
-import publicApi from "~/libs/apis/publicApi";
 import "~/styles/custom-post.scss";
 import PostListSidebar from "./_components/PostListSidebar";
 import UpdateViewClient from "./_components/UpdateViewClient";
 import PostContent from "./_components/PostContent";
+import { postApi } from "~/apiRequest/post";
 
 const getPost = cache(async (slug: string) => {
     const {
         data: { data: post },
-    } = await publicApi.get(`/posts/${slug}`);
+    } = await postApi.getDetail(slug);
     return post;
 });
 
 // ✅ Tạo metadata động từ dữ liệu bài viết
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-    const post = await getPost(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await getPost(slug);
     return {
         title: post.posts.title,
         description: post.posts.description || "Chi tiết bài viết",
@@ -26,9 +27,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-// ✅ Trang chi tiết bài viết
-const DetailPostPage = async ({ params }: { params: { slug: string } }) => {
-    const { slug } = params;
+const DetailPostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params;
     const post = await getPost(slug); // Dùng lại, không gọi API thêm
 
     return (

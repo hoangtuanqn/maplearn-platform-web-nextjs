@@ -12,3 +12,11 @@ export const handleApiError = (error: unknown, message?: string) => {
         toast.error("Lỗi không xác định! Vui lòng thử lại sau!");
     }
 };
+export const handleApiError2 = (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+        const errors = error.response?.data?.errors;
+        for (const key in errors) {
+            return toast.error(`${errors?.[key]}`);
+        }
+    }
+};

@@ -5,20 +5,10 @@ import React, { useState } from "react";
 import Choice from "./Choice";
 import { MathJaxContext, MathJax } from "better-react-mathjax";
 import FormCommentNoMath from "./NormalForm";
-import FxMath from "./FxMath";
-import HashMath from "./HashMath";
-import AlphaMath from "./AlphaMath";
-const config = {
-    loader: { load: ["[tex]/require", "[tex]/ams"] },
-    tex: {
-        packages: ["base", "require", "ams"],
-        inlineMath: [
-            ["$", "$"],
-            ["\\(", "\\)"],
-        ],
-        displayMath: [["$$", "$$"]],
-    },
-};
+import FxMath from "./SymbolMath/FxMath";
+import HashMath from "./SymbolMath/HashMath";
+import AlphaMath from "./SymbolMath/AlphaMath";
+import { configSymbolComment } from "./config";
 const FormCommentMath = ({
     comment,
     setComment,
@@ -35,8 +25,9 @@ const FormCommentMath = ({
         setChoice,
         comment,
         setComment,
-        handleSubmitComment,    
+        handleSubmitComment,
     };
+    const htmlContent = comment.replace(/\n/g, "<br />"); // Thay \n thành <br />
     return (
         <div className="flex-1">
             {choice != 0 ? (
@@ -46,9 +37,9 @@ const FormCommentMath = ({
                             <span className="mb-2 block text-xs">Xem trước:</span>
                             <div className="text-black">
                                 <div className="h-fit">
-                                    <MathJaxContext config={config}>
+                                    <MathJaxContext config={configSymbolComment}>
                                         <MathJax className="text-sm" dynamic inline>
-                                            {comment}
+                                            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
                                         </MathJax>
                                     </MathJaxContext>
                                 </div>

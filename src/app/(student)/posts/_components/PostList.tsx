@@ -2,19 +2,14 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import publicApi from "~/libs/apis/publicApi";
-import { PostListResponse } from "~/schemaValidate/post.schema";
 import SearchPosts from "./SearchPosts";
 import PostIItem from "./PostIItem";
 import PostSkeleton from "../../_components/SidebarRight/PostSkeleton";
 import { PaginationNav } from "../../_components/Pagination";
-
-const USERS_PER_PAGE = 16;
+import { postApi, POSTS_PER_PAGE } from "~/apiRequest/post";
 
 async function fetchPosts(page: number, limit: number, search: string) {
-    const res = await publicApi.get<PostListResponse>(
-        search ? `/posts?page=${page}&limit=${limit}&filter[title]=${search}` : `/posts?page=${page}&limit=${limit}`,
-    );
+    const res = await postApi.getPosts(page, limit, search);
     const allPosts = res.data;
     return {
         posts: allPosts.data.data,
@@ -28,12 +23,12 @@ const PostList = () => {
 
     const { data, isLoading } = useQuery({
         queryKey: ["posts", page, search],
-        queryFn: () => fetchPosts(page, USERS_PER_PAGE, search),
+        queryFn: () => fetchPosts(page, POSTS_PER_PAGE, search),
     });
 
     const posts = data?.posts || [];
     const total = data?.total || 0;
-    const totalPages = Math.ceil(total / USERS_PER_PAGE);
+    const totalPages = Math.ceil(total / POSTS_PER_PAGE);
     return (
         <>
             <SearchPosts />
@@ -42,7 +37,7 @@ const PostList = () => {
             )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 {isLoading
-                    ? Array.from({ length: USERS_PER_PAGE }).map((_, i) => <PostSkeleton key={i} />)
+                    ? Array.from({ length: POSTS_PER_PAGE }).map((_, i) => <PostSkeleton key={i} />)
                     : posts.map((post) => (
                           <PostIItem
                               key={post.id}

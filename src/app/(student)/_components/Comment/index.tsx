@@ -21,10 +21,14 @@ const FormComment = ({
         <div className="flex gap-3">
             {profile ? (
                 <>
-                    <div className="t1-flex-center hidden h-12 w-12 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-xl leading-12 font-medium text-white xl:flex">
+                    <div className="t1-flex-center hidden h-10 w-10 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-xl leading-12 font-medium text-white xl:flex">
                         {getCharacterName(profile.full_name || null)}
                     </div>
-                    <FormCommentMath comment={comment} setComment={setComment} handleSubmitComment={handleSubmitComment} />
+                    <FormCommentMath
+                        comment={comment}
+                        setComment={setComment}
+                        handleSubmitComment={handleSubmitComment}
+                    />
                 </>
             ) : (
                 <div

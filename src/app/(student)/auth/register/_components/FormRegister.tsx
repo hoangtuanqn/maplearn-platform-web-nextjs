@@ -11,10 +11,10 @@ import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useAuth } from "~/hooks/useAuth";
 import { FormRegisterType, registerSchema } from "../../auth.schema";
-import axios from "axios";
 import authApi from "~/apiRequest/auth";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
 import zxcvbn from "zxcvbn";
+import { handleApiError2 } from "~/libs/apis/http";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
@@ -41,12 +41,7 @@ const FormLogin = () => {
             toast.success("Tạo tài khoản thành công!");
         },
         onError: (error) => {
-            if (axios.isAxiosError(error)) {
-                const errors = error.response?.data?.errors;
-                for (const key in errors) {
-                    return toast.error(`${errors?.[key]}`);
-                }
-            }
+            handleApiError2(error);
         },
     });
 

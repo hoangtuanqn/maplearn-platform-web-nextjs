@@ -10,7 +10,7 @@ import { ReduxProvider } from "~/wrapper/ReduxProvider";
 import TopProgressBar from "~/components/TopProgressBar";
 import Script from "next/script";
 const inter = Inter({
-    subsets: ["latin"],
+    subsets: ["latin", "vietnamese"],
     display: "swap", // giúp tránh bị trắng chữ khi font chưa load
 });
 

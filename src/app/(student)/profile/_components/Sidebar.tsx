@@ -3,7 +3,7 @@ import { useAuth } from "~/hooks/useAuth";
 import { getCharacterName, isActiveRoute } from "~/libs/hepler";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bookmark, ChevronRight, ContactRound, GraduationCap, NotebookPen } from "lucide-react";
+import { Bookmark, ChevronRight, ContactRound, GraduationCap } from "lucide-react";
 import { ElementType } from "react";
 type SidebarProfileLinkProps = {
     pathname: string;

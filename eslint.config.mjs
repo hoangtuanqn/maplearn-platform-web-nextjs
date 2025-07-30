@@ -24,6 +24,7 @@ const eslintConfig = [
                     varsIgnorePattern: "^_", // Bỏ qua biến khai báo bắt đầu bằng _
                 },
             ],
+            // "@typescript-eslint/no-explicit-any": "off",
         },
     },
 ];

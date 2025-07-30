@@ -1,18 +1,17 @@
 "use client";
-
 import { TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import NewLink from "./NewLink";
-import { PostListResponse, PostType } from "~/schemaValidate/post.schema";
-import publicApi from "~/libs/apis/publicApi";
+import { PostType } from "~/schemaValidate/post.schema";
 import PostSkeleton from "./PostSkeleton";
+import { postApi } from "~/apiRequest/post";
 
 export default function News() {
     const { data, isLoading, error } = useQuery({
         queryKey: ["posts", 10],
         queryFn: async () => {
-            const res = await publicApi.get<PostListResponse>("/posts?limit=10");
+            const res = await postApi.getPosts(1, 10);
             return res.data.data.data || [];
         },
     });

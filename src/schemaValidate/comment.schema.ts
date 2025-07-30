@@ -1,37 +1,32 @@
-import { z } from "zod";
-
-// Tag Schema
-const TagSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    created_at: z.string(),
-});
-
-// Creator Schema
+import z from "zod";
 const CreatorSchema = z.object({
     id: z.number(),
     full_name: z.string(),
 });
-
-// Post Schema
-const PostSchema = z.object({
+export const CommentSchema = z.object({
     id: z.number(),
-    slug: z.string(),
-    title: z.string(),
-    thumbnail: z.string().url(),
-    content: z.string().optional(),
-    views: z.number(),
-    status: z.boolean().optional(),
+    description: z.string(),
+    reply_id: z.number().nullable(),
     created_at: z.string(),
-    tags: z.array(TagSchema),
-    creator: CreatorSchema,
+    user_id: z.number().optional(),
+    creator: CreatorSchema.nullable(),
+    replies: z.array(
+        z.object({
+            id: z.number(),
+            description: z.string(),
+            reply_id: z.number().nullable(),
+            created_at: z.string(),
+            user_id: z.number(),
+            creator: CreatorSchema,
+        }),
+    ),
 });
-export type PostType = z.infer<typeof PostSchema>;
+export type CommentType = z.infer<typeof CommentSchema>;
 
 // Pagination Metadata Schema
 const PaginationMetaSchema = z.object({
     current_page: z.number(),
-    data: z.array(PostSchema),
+    data: z.array(CommentSchema),
     first_page_url: z.string(),
     from: z.number().nullable(),
     last_page: z.number(),
@@ -52,10 +47,9 @@ const PaginationMetaSchema = z.object({
 });
 export type PaginationMeta = z.infer<typeof PaginationMetaSchema>;
 
-// Final API Response Schema
-export const PostListResponseSchema = z.object({
+export const CommnetListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),
     data: PaginationMetaSchema,
 });
-export type PostListResponse = z.infer<typeof PostListResponseSchema>;
+export type CommentListResponse = z.infer<typeof CommnetListResponseSchema>;

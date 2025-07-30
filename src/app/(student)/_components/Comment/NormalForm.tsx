@@ -8,7 +8,7 @@ const FormCommentNoMath = ({
     setChoice,
     comment,
     setComment,
-    handleSubmitComment
+    handleSubmitComment,
 }: {
     choice: number;
     setChoice: React.Dispatch<React.SetStateAction<number>>;
@@ -19,7 +19,7 @@ const FormCommentNoMath = ({
     return (
         <div className="bg-primary/3 rounded-xl p-4 text-gray-500">
             <textarea
-                className="scrollbar-hide w-full resize-none border-none outline-none [&::-webkit-scrollbar]:hidden"
+                className="w-full resize-none border-none outline-none [&::-webkit-scrollbar]:hidden"
                 maxLength={1000}
                 onChange={(e) => setComment(e.target.value)}
                 rows={4}
