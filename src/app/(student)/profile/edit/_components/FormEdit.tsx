@@ -18,6 +18,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
     const [provinces, setProvinces] = useState<ProvinceType>([]);
@@ -34,6 +35,7 @@ const FormEdit = () => {
             phone_number: user?.phone_number ?? "",
         },
     });
+    useUnsavedChangesWarning(form.formState.isDirty);
 
     const { mutate, isPending } = useMutation({
         mutationFn: (data: UserType) => profileApi.update(data),

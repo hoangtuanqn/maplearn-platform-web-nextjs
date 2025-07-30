@@ -7,6 +7,7 @@ import ListDocumentInCategory from "./_components/ListDocumentInCategory";
 import { documentApi } from "~/apiRequest/documents";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import CategoryOtherSidebar from "./_components/CategoryOtherSidebar";
 
 const getDocument = cache(async (id: string) => {
     const { data } = await documentApi.getCategory(id);
@@ -34,19 +35,21 @@ const DocumentCategoryPage = async ({ params }: { params: Promise<{ id: string }
         redirect("/documents");
     }
     return (
-        <section className="min-h-screen px-5 pb-10">
-            <div className="flex h-[2000px] flex-col gap-8 lg:flex-row">
+        <section className="min-h-screen pb-10">
+            <div className="flex flex-col gap-8 lg:flex-row">
                 <div className="flex-1 rounded-xl bg-white p-4 lg:flex-3/4">
-                    <div className="flex items-end justify-between gap-4">
+                    <div className="flex flex-col items-end justify-between gap-4 lg:flex-row">
                         <div className="t1-flex-center gap-4">
-                            <div className="space-y-2">
+                            <div className="hidden space-y-2 lg:block">
                                 <Image src={"/assets/icons/file.svg"} width={64} height={63} alt="Icon" />
                             </div>
-                            <div>
-                                <h1 className="text-primary text-base font-bold uppercase">{document.name}</h1>
-                                <div className="mt-2 flex gap-4 text-gray-400">
+                            <div className="flex flex-col max-lg:items-center">
+                                <h1 className="text-primary inline-block text-center text-base font-bold uppercase">
+                                    {document.name}
+                                </h1>
+                                <div className="mt-2 flex flex-row items-start gap-x-4 gap-y-2 text-gray-400 max-lg:text-xs">
                                     <div className="t1-flex-center gap-1">
-                                        <DownloadCloud />{" "}
+                                        <DownloadCloud />
                                         <span>Đã có {formatter.number(document.total_downloads)} lượt tải</span>
                                     </div>
                                     <div className="t1-flex-center gap-1">
@@ -56,15 +59,15 @@ const DocumentCategoryPage = async ({ params }: { params: Promise<{ id: string }
                                 </div>
                             </div>
                         </div>
-                        <Input placeholder="Tìm kiếm tài liệu theo từ khóa" className="min-w-[400px]" />
+                        <div className="flex-1 max-lg:w-full">
+                            <Input placeholder="Tìm kiếm tài liệu theo từ khóa" className="ml-auto lg:w-[400px]" />
+                        </div>
                     </div>
                     <div>
-                        <ListDocumentInCategory />
+                        <ListDocumentInCategory id={+id} />
                     </div>
                 </div>
-                <div className="sticky top-[70px] h-fit rounded-xl bg-white p-4 lg:flex-1/4">
-                    <h2 className="text-primary text-base font-bold uppercase">Kho tài liệu khác</h2>
-                </div>
+                <CategoryOtherSidebar />
             </div>
         </section>
     );

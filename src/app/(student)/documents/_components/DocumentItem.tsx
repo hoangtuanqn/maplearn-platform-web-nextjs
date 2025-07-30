@@ -24,7 +24,7 @@ const DocumentItem = ({
 }) => {
     return (
         <div className="flex gap-3.5 rounded-xl bg-[#EFF0F1] p-4">
-            <div className="flex shrink-0 flex-col items-center">
+            <div className="hidden shrink-0 flex-col items-center lg:flex">
                 <Image
                     src="/assets/icons/pdf.svg"
                     width={72}
@@ -46,18 +46,26 @@ const DocumentItem = ({
 
             <div className="flex flex-col justify-between">
                 <div>
-                    <h2 className="line-clamp-3 text-xs leading-5 font-bold text-slate-600 uppercase lg:text-sm">
-                        {title}
-                    </h2>
+                    <h2 className="line-clamp-3 text-sm leading-5 font-bold text-slate-600 uppercase">{title}</h2>
                     <div className="mt-3 flex flex-wrap gap-x-1 gap-y-1.5">
                         {tags.map((tag) => (
                             <Tag key={tag.id}>{tag.name}</Tag>
                         ))}
                     </div>
+                    <Button
+                        className="border-primary text-primary mt-3 w-full bg-white text-xs lg:hidden"
+                        asChild
+                        onClick={() => callback(id.toString())}
+                        variant={"outline"}
+                    >
+                        <a href={source} target="_blank" rel="noopener noreferrer">
+                            <Download /> Tải xuống
+                        </a>
+                    </Button>
                 </div>
                 <div>
                     <div className="mt-3 h-[1px] bg-gray-300"></div>
-                    <div className="mt-3 flex flex-col justify-between text-gray-500 max-lg:items-start lg:flex-row">
+                    <div className="mt-3 flex flex-row justify-between text-gray-500 max-lg:items-start">
                         <div className="t1-flex-center gap-1">
                             <DownloadCloud /> {formatter.number(download_count)} lượt tải
                         </div>

@@ -17,6 +17,13 @@ async function fetchDocuments(page: number, limit: number, search: string) {
         total: allDocuments.data.total,
     };
 }
+export const handleIncrementDownload = async (documentId: string) => {
+    try {
+        await documentApi.incrementDownload(documentId);
+    } catch (error) {
+        console.error("Error incrementing download count:", error);
+    }
+};
 const DocumentList = () => {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
@@ -31,13 +38,6 @@ const DocumentList = () => {
     const documents = data?.documents || [];
     const total = data?.total || 0;
     const totalPages = Math.ceil(total / DOCUMENTS_PER_PAGE);
-    const handleIncrementDownload = async (documentId: string) => {
-        try {
-            await documentApi.incrementDownload(documentId);
-        } catch (error) {
-            console.error("Error incrementing download count:", error);
-        }
-    };
 
     return (
         <div className="flex flex-col gap-8 lg:flex-row">
