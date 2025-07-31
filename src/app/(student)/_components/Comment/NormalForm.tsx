@@ -29,7 +29,9 @@ const FormCommentNoMath = ({
             <div className="flex justify-between">
                 <Choice choice={choice} setChoice={setChoice} />
                 <div className="t1-flex-center gap-3">
-                    <span className="font-semibold">{comment.length}/1000 kí tự</span>
+                    <span className={`font-semibold ${comment.length == 1000 ? "text-red-500" : "text-gray-500"}`}>
+                        {comment.length}/1000 kí tự
+                    </span>
                     <SendHorizontal
                         className={`size-5 ${comment.length == 0 ? "disabled:text-primary/30 cursor-not-allowed" : "text-primary cursor-pointer"}`}
                         onClick={() => handleSubmitComment()}

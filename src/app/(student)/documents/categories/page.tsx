@@ -5,7 +5,10 @@ import { CloudDownload, Folder } from "lucide-react";
 import Link from "next/link";
 import { documentApi } from "~/apiRequest/documents";
 import { formatter } from "~/libs/format";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: "Danh mục tài liệu",
+};
 const CategoriesPage = async () => {
     const {
         data: {

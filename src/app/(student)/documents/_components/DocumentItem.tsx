@@ -4,10 +4,12 @@ import { Button } from "~/components/ui/button";
 import Tag from "./Tag";
 import { Clock, Download, DownloadCloud } from "lucide-react";
 import { formatter } from "~/libs/format";
+import Link from "next/link";
 
 const DocumentItem = ({
     id,
     title,
+    slug,
     tags,
     download_count,
     created_at,
@@ -16,6 +18,7 @@ const DocumentItem = ({
 }: {
     id: number;
     title: string;
+    slug: string;
     tags: { id: number; name: string }[];
     download_count: number;
     created_at: string;
@@ -25,13 +28,19 @@ const DocumentItem = ({
     return (
         <div className="flex gap-3.5 rounded-xl bg-[#EFF0F1] p-4">
             <div className="hidden shrink-0 flex-col items-center lg:flex">
-                <Image
-                    src="/assets/icons/pdf.svg"
-                    width={72}
-                    height={92}
-                    alt="Icon SVG PDF"
-                    className="h-auto max-sm:w-[80%]"
-                />
+                <Link
+                    className="line-clamp-3 text-sm leading-5 font-bold text-slate-600 uppercase"
+                    href={`/documents/${slug}`}
+                >
+                    <Image
+                        src="/assets/icons/pdf.svg"
+                        width={72}
+                        height={92}
+                        alt="Icon SVG PDF"
+                        className="h-auto max-sm:w-[80%]"
+                    />
+                </Link>
+
                 <Button
                     className="border-primary text-primary mt-3 w-full bg-white text-xs"
                     asChild
@@ -46,7 +55,14 @@ const DocumentItem = ({
 
             <div className="flex flex-1 shrink-0 flex-col justify-between">
                 <div>
-                    <h2 className="line-clamp-3 text-sm leading-5 font-bold text-slate-600 uppercase">{title}</h2>
+                    <h2>
+                        <Link
+                            className="line-clamp-3 text-sm leading-5 font-bold text-slate-600 uppercase"
+                            href={`/documents/${slug}`}
+                        >
+                            {title}
+                        </Link>
+                    </h2>
                     <div className="mt-3 flex flex-wrap gap-x-1 gap-y-1.5">
                         {tags.map((tag) => (
                             <Tag key={tag.id}>{tag.name}</Tag>

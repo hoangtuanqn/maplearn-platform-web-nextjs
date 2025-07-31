@@ -1,5 +1,5 @@
 import publicApi from "~/libs/apis/publicApi";
-import { DocumentListResponse } from "~/schemaValidate/document.schema";
+import { DocumentListResponse, DocumentResponse } from "~/schemaValidate/document.schema";
 import { CategoryDocumentListResponse, CategoryDocumentResponse } from "../schemaValidate/categoryDocument";
 export const DOCUMENTS_PER_PAGE = 20;
 export const CATEGORIES_DOCUMENT_PER_PAGE = 10;
@@ -23,6 +23,7 @@ export const documentApi = {
         }
         return publicApi.get<DocumentListResponse>(query);
     },
+    getDetailDocument: (slug: string) => publicApi.get<DocumentResponse>(`/documents/${slug}`),
     getDocumentsInCategory: async (
         page: number = 1,
         limit: number = DOCUMENTS_PER_PAGE,

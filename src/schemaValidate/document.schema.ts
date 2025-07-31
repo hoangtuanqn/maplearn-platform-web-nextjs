@@ -2,9 +2,10 @@ import z from "zod";
 import { CreatorSchema, paginationMetaSchemaFn, TagSchema } from "./common.schema";
 
 // Document schema
-const DocumentSchema = z.object({
+export const DocumentSchema = z.object({
     id: z.number(),
     title: z.string(),
+    slug: z.string(),
     download_count: z.number(),
     source: z.string().default(""),
     created_at: z.string(),
@@ -13,7 +14,12 @@ const DocumentSchema = z.object({
     subject: z.string(),
     grade_level: z.string(),
 });
-
+const _DocumentResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: DocumentSchema,
+});
+export type DocumentResponse = z.infer<typeof _DocumentResponseSchema>;
 // Final API Response Schema
 export const DocumentListResponseSchema = z.object({
     success: z.boolean(),
