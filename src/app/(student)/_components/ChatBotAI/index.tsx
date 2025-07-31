@@ -8,6 +8,8 @@ import { ChatHistoriesType } from "../../../api/chat/ai/types/ChatBotType.type";
 import ChatBubble from "./components/ChatBubble";
 import ChatLoading from "./components/ChatLoading";
 import { useNotificationSound } from "~/hooks/useNotificationSound";
+
+
 const helloMessageModel = (name: string = "khách") => ({
     role: "model",
     parts: [

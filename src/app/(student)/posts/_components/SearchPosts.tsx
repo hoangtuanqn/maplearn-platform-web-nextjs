@@ -3,6 +3,7 @@
 import { Input } from "~/components/ui/input";
 import useSearch from "~/hooks/useSearch";
 import { FilterPosts } from "./FilterPosts";
+// import SearchAdvanceModal from "./SearchAdvance";
 
 const SearchPosts = () => {
     const { keyword, setKeyword } = useSearch("/posts");
@@ -18,6 +19,7 @@ const SearchPosts = () => {
                 />
             </div>
             <FilterPosts />
+            {/* <SearchAdvanceModal /> */}
         </div>
     );
 };

@@ -10,7 +10,7 @@ const SearchDocumentInCategory = ({ id }: { id: number }) => {
         <div className="flex flex-1 gap-2 max-lg:w-full">
             <div className="w-full">
                 <Input
-                    placeholder="Tìm kiếm tài liệu theo từ khóa"
+                    placeholder="Tìm kiếm theo từ khóa"
                     className="ml-auto lg:w-[400px]"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}

@@ -11,15 +11,16 @@ const bannerImages = [
         image: "/assets/images/banner/banner-1.jpg",
     },
     {
-        url: "https://www.facebook.com/phamhoangtuanqn/",
+        url: "",
         image: "/assets/images/banner/banner-2.jpg",
     },
-    {
-        url: "",
-        image: "/assets/images/banner/banner-3.png",
-    },
+    // {
+    //     url: "",
+    //     image: "/assets/images/banner/banner-3.png",
+    // },
 ];
 const Banner = () => {
+    
     return (
         <div className="mt-4 overflow-hidden rounded-xl xl:mt-6">
             <Swiper

@@ -48,10 +48,10 @@ const SideBarLaptop = () => {
                         />
                     </>
                 ) : (
-                    <MenuItemLink title="Đăng nhập" url={""} image="/assets/icons/login.svg" />
+                    <MenuItemLink title="Đăng nhập" url={"/auth/login"} image="/assets/icons/login.svg" />
                 )}
                 <div className="my-3 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
-                <MenuItemLink title="Khóa học" url="/khoa-hoc" image="/assets/icons/course.svg" />
+                <MenuItemLink title="Khóa học" url="/courses" image="/assets/icons/course.svg" />
                 <MenuItemLink title="Thi online" url={""} image="/assets/icons/online-exam.svg" />
                 <MenuItemLink
                     title="Đấu trường lý thuyết"

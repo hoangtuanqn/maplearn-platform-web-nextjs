@@ -46,11 +46,11 @@ export const documentApi = {
     },
 
     getCategories: async (page: number = 1, limit: number = CATEGORIES_DOCUMENT_PER_PAGE, search: string = "") => {
-        let query = `/category_documents?page=${page}&limit=${limit}`;
+        let query = `/category-documents?page=${page}&limit=${limit}`;
         if (search) {
             query += `&search=${search}`;
         }
         return publicApi.get<CategoryDocumentListResponse>(query);
     },
-    getCategory: (categoryId: string) => publicApi.get<CategoryDocumentResponse>(`/category_documents/${categoryId}`),
+    getCategory: (categoryId: string) => publicApi.get<CategoryDocumentResponse>(`/category-documents/${categoryId}`),
 };

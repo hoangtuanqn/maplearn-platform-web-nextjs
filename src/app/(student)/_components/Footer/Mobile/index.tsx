@@ -33,8 +33,8 @@ const footerLinks = [
     {
         label: "Đăng nhập",
         icon: EntertainmentIcon,
-        href: "/login",
-        macher: ["/login"],
+        href: "/auth/login",
+        macher: ["/auth/login"],
     },
 ];
 const FooterMobile = () => {

@@ -2,21 +2,18 @@
 
 import { Input } from "~/components/ui/input";
 import useSearch from "~/hooks/useSearch";
-import { FilterDocuments } from "./FilterDocuments";
 
-const SearchDocument = () => {
-    const { keyword, setKeyword } = useSearch("/documents");
+
+const SearchDocument = ({ url }: { url: string }) => {
+    const { keyword, setKeyword } = useSearch(url);
     return (
-        <div className="flex w-full flex-1 gap-2 max-lg:mt-6 lg:min-w-[400px]">
-            <div className="w-full">
-                <Input
-                    className="bg-white"
-                    placeholder="Tìm kiếm tài liệu theo từ khóa"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                />
-            </div>
-            <FilterDocuments />
+        <div className="w-full">
+            <Input
+                className="bg-white"
+                placeholder="Tìm kiếm tài liệu theo từ khóa"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+            />
         </div>
     );
 };

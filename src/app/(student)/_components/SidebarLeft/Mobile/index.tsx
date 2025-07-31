@@ -14,7 +14,7 @@ const SideBarMobile = () => {
                 </div>
                 <Link
                     className="flex cursor-pointer items-center rounded-lg px-4 py-2.5 hover:bg-[rgba(26,79,140,0.06)]"
-                    href="/khoa-hoc"
+                    href="/courses"
                 >
                     <div className="t1-flex-center size-8">
                         <Image width={24} height={24} src="/assets/icons/course.svg" alt="" />

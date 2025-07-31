@@ -41,9 +41,9 @@ export function FilterDocuments() {
                 </DialogTrigger>
                 <DialogContent className="bg-white sm:max-w-[600px]">
                     <DialogHeader>
-                        <DialogTitle>Tìm kiếm tài liệu</DialogTitle>
+                        <DialogTitle>Tìm kiếm</DialogTitle>
                         <DialogDescription>
-                            Lọc và tìm kiếm tài liệu nhanh chóng bằng cách nhập thông tin bên dưới.
+                            Lọc và tìm kiếm nhanh chóng bằng cách nhập thông tin bên dưới.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">

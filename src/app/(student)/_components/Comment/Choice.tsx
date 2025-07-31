@@ -6,7 +6,7 @@ const Choice = ({ choice, setChoice }: { choice: number; setChoice: React.Dispat
     return (
         <div className="flex items-center gap-1 [&>button]:cursor-pointer">
             <button
-                className={`flex-center size-6 rounded-sm ${choice == 1 && "bg-primary/30"}`}
+                className={`t1-flex-center size-6 rounded-sm ${choice == 1 && "bg-primary/30"}`}
                 onClick={() => handleChange(1)}
             >
                 <svg
@@ -32,7 +32,7 @@ const Choice = ({ choice, setChoice }: { choice: number; setChoice: React.Dispat
                 </svg>
             </button>
             <button
-                className={`flex-center size-6 rounded-sm ${choice == 2 && "bg-primary/30"}`}
+                className={`t1-flex-center size-6 rounded-sm ${choice == 2 && "bg-primary/30"}`}
                 onClick={() => handleChange(2)}
             >
                 <svg
@@ -52,7 +52,7 @@ const Choice = ({ choice, setChoice }: { choice: number; setChoice: React.Dispat
                 </svg>
             </button>
             <button
-                className={`flex-center size-6 rounded-sm ${choice == 3 && "bg-primary/30"}`}
+                className={`t1-flex-center size-6 rounded-sm ${choice == 3 && "bg-primary/30"}`}
                 onClick={() => handleChange(3)}
             >
                 <svg

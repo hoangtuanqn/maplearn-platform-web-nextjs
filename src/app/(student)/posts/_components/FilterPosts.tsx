@@ -35,7 +35,7 @@ export function FilterPosts() {
         <Dialog>
             <form>
                 <DialogTrigger asChild>
-                    <Button variant="outline" className="bg-white">
+                    <Button variant="outline" className="view_tooltip bg-white" data-tooltip-content={"Tìm kiếm thêm"}>
                         <SlidersHorizontal />
                     </Button>
                 </DialogTrigger>

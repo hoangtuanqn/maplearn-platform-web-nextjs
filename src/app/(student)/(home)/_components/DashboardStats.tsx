@@ -62,7 +62,7 @@ const DashboardStats = () => {
                         className="flex flex-col items-center gap-3 rounded-xl bg-[linear-gradient(278.32deg,_#BAE2FF_1.57%,_#E7F5FF_107.77%)] px-3.5 py-4 md:flex-row"
                         href="/ca-nhan/khoa-hoc"
                     >
-                        <div className="flex-center size-12 rounded-lg bg-[#A8DBFF]">
+                        <div className="t1-flex-center size-12 rounded-lg bg-[#A8DBFF]">
                             <svg
                                 width={27}
                                 height={23}
@@ -85,7 +85,7 @@ const DashboardStats = () => {
                         </div>
                     </Link>
                     <div className="flex flex-col items-center gap-3 rounded-xl bg-[linear-gradient(278.91deg,_#FFDCB3_0.46%,_#FFF4F4_119.68%)] px-3.5 py-4 md:flex-row">
-                        <div className="flex-center size-12 rounded-lg bg-[#FFD6A6]">
+                        <div className="t1-flex-center size-12 rounded-lg bg-[#FFD6A6]">
                             <svg
                                 width={28}
                                 height={26}
@@ -108,7 +108,7 @@ const DashboardStats = () => {
                         </div>
                     </div>
                     <div className="flex flex-col items-center gap-3 rounded-xl bg-[linear-gradient(278.19deg,_#CBCCFF_-18.91%,_#F5E6FF_100%)] px-3.5 py-4 md:flex-row">
-                        <div className="flex-center size-12 rounded-lg bg-[#DFC7FD]">
+                        <div className="t1-flex-center size-12 rounded-lg bg-[#DFC7FD]">
                             <svg
                                 width={20}
                                 height={27}

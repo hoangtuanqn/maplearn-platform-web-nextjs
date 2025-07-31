@@ -10,6 +10,8 @@ import SelectObject from "./SelectObject";
 import CategorySidebar from "./CategorySidebar";
 import DocumentItem from "./DocumentItem";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
+import SearchDocument from "./SearchDocument";
+import { FilterDocuments } from "./FilterDocuments";
 async function fetchDocuments(
     page: number,
     limit: number,
@@ -57,8 +59,14 @@ const DocumentList = () => {
         <div className="flex flex-col gap-8 lg:flex-row">
             <div className="flex-1 lg:flex-3/4">
                 <h1 className="text-primary text-xl font-bold uppercase">THƯ VIỆN TÀI LIỆU</h1>
-                <SelectObject />
-                <SelectCourse />
+                <SelectObject url="/documents" />
+                <div className="flex w-full flex-col items-end lg:flex-row">
+                    <SelectCourse url="/documents" />
+                    <div className="flex w-full flex-1 gap-2 max-lg:mt-6 lg:min-w-[400px]">
+                        <SearchDocument url="/documents" />
+                        <FilterDocuments />
+                    </div>
+                </div>
                 <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
                     {isLoading ? (
                         [...Array(20).keys()].map((index) => <DocumentSkeleton key={index} />)

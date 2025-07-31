@@ -1,3 +1,4 @@
+"use client";
 import { GraduationCap } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -5,7 +6,7 @@ import { gradesLevelApi } from "~/apiRequest/gradesLevel";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 
-const SelectObject = () => {
+const SelectObject = ({ url }: { url: string }) => {
     const { data: objects, isLoading } = useQuery({
         queryKey: ["user/objects"],
         queryFn: async () => {
@@ -30,7 +31,7 @@ const SelectObject = () => {
         }
         params.set("page", "1");
 
-        router.push(`/documents?${params.toString()}`);
+        router.push(`${url}?${params.toString()}`);
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
     useEffect(() => {
