@@ -2,7 +2,7 @@ import DisplayCourse from "../../_components/Courses/DisplayCourse";
 import HeaderSection from "./HeaderSection";
 
 const Courses = () => {
-    const categories = ["Khóa học HOT", "Khóa học lớp 12", "Khóa học lớp 11", "Khóa học lớp 10", "Khóa học lớp 9"];
+    const categories = ["Khóa học nổi bật", "Khóa học lớp 12", "Khóa học lớp 11", "Khóa học lớp 10", "Khóa học lớp 9"];
     const courses = [
         {
             id: 1,
