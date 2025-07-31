@@ -48,7 +48,9 @@ export function useSearchQueryFormSort(allowedFields: string[]) {
         const sortString = Object.entries(formValues)
             .map(([key, dir]) => (dir === "desc" ? `-${key}` : key))
             .join(",");
-
+        if (params.get("page")) {
+            params.set("page", "1");
+        }
         if (sortString) {
             params.set("sort", sortString);
         } else {

@@ -4,6 +4,8 @@ import React from "react";
 import { documentApi } from "~/apiRequest/documents";
 import CategoryItem from "../../../_components/CategoryItem";
 import CategorySkeleton from "../../../_components/CategorySkeleton";
+import Link from "next/link";
+import { TrendingUp } from "lucide-react";
 
 const CategoryOtherSidebar = ({ id }: { id: number }) => {
     const { data: categories, isPending } = useQuery({
@@ -16,10 +18,16 @@ const CategoryOtherSidebar = ({ id }: { id: number }) => {
     });
     return (
         <div className="sticky top-[70px] h-fit rounded-xl bg-white p-4 lg:flex-1/4">
-            <h2 className="text-primary text-base font-bold uppercase">Kho tài liệu khác</h2>
+            <div className="text-primary flex items-center justify-between">
+                <h2 className="text-base font-bold uppercase">Kho tài liệu khác</h2>
+                <Link href={"/documents/categories"} className="flex gap-2">
+                    Xem tất cả <TrendingUp />
+                </Link>
+            </div>
             {isPending && [...Array(10)].map((_, index) => <CategorySkeleton key={index} />)}
             {categories?.map((category) => {
-                if (category.id !== id) return <CategoryItem key={category.id} category={category} />;
+                if (category.id !== id && category.total_documents)
+                    return <CategoryItem key={category.id} category={category} />;
             })}
         </div>
     );

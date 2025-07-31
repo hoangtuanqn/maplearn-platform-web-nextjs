@@ -18,11 +18,18 @@ const SelectObject = () => {
     const [activeTab, setActiveTab] = useState("all");
     const handleChoiceTab = (tab: string) => {
         const params = new URLSearchParams(window.location.search);
-        setActiveTab(tab);
-        params.set("grade_level", tab);
-        if (tab === "all") {
+        const isSameTab = tab === activeTab;
+
+        const newTab = isSameTab ? "all" : tab;
+        setActiveTab(newTab);
+
+        if (newTab === "all") {
             params.delete("grade_level");
+        } else {
+            params.set("grade_level", newTab);
         }
+        params.set("page", "1");
+
         router.push(`/documents?${params.toString()}`);
         window.scrollTo({ top: 0, behavior: "smooth" });
     };

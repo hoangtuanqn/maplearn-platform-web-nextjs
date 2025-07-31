@@ -44,7 +44,7 @@ const DocumentItem = ({
                 </Button>
             </div>
 
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-1 shrink-0 flex-col justify-between">
                 <div>
                     <h2 className="line-clamp-3 text-sm leading-5 font-bold text-slate-600 uppercase">{title}</h2>
                     <div className="mt-3 flex flex-wrap gap-x-1 gap-y-1.5">

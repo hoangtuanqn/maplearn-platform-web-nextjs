@@ -30,7 +30,7 @@ const ListDocumentInCategory = ({ id }: { id: number }) => {
                 ))}
             </div>
             {!isLoading && documents?.data.data?.data.length === 0 && (
-                <p className="text-center text-xl font-bold">Không tìm thấy tài liệu phù hợp</p>
+                <p className="text-center text-xl font-bold">Không tìm thấy tài liệu</p>
             )}
             {!isLoading && <PaginationNav totalPages={totalPages} />}
         </>

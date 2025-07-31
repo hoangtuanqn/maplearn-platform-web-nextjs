@@ -26,7 +26,10 @@ const CategorySidebar = () => {
                 </Link>
             </div>
             {isPending && [...Array(10)].map((_, index) => <CategorySkeleton key={index} />)}
-            {categories?.map((category) => <CategoryItem key={category.id} category={category} />)}
+            {/* Chuyển sang dạng boolean: Có tài liệu thì mới hiển thị danh mục ra */}
+            {categories?.map(
+                (category) => !!category.total_documents && <CategoryItem key={category.id} category={category} />,
+            )}
         </div>
     );
 };

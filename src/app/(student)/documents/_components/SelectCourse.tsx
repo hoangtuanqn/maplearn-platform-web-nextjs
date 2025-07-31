@@ -34,6 +34,9 @@ const SelectCourse = () => {
         if (tab === "all") {
             params.delete("subject");
         }
+        if (tab !== activeTab) {
+            params.set("page", "1");
+        }
         router.push(`/documents?${params.toString()}`);
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
