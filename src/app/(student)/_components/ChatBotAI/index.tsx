@@ -8,8 +8,7 @@ import { ChatHistoriesType } from "../../../api/chat/ai/types/ChatBotType.type";
 import ChatBubble from "./components/ChatBubble";
 import ChatLoading from "./components/ChatLoading";
 import { useNotificationSound } from "~/hooks/useNotificationSound";
-
-
+import { notificate } from "~/libs/notification";
 const helloMessageModel = (name: string = "khách") => ({
     role: "model",
     parts: [
@@ -42,6 +41,7 @@ const ChatBotAI = () => {
             });
             modelReply =
                 data.data?.candidates[0].content.parts[0].text || "Bạn hỏi 1 câu mà tôi không biết trả lời sao luôn á!";
+            notificate(modelReply);
         } catch (error) {
             console.error("Lỗi gọi API AI >> ", error);
         } finally {

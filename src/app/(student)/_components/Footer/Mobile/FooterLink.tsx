@@ -2,9 +2,15 @@
 import { isActiveRoute } from "~/libs/hepler";
 import { ItemLinkType } from "../../Header/Laptop/HeaderLink";
 import Link from "next/link";
+// @ts-expect-error: no types for @mycv/f8-notification
+import { initNotifications } from "@mycv/f8-notification";
+import { useEffect } from "react";
 
 const FooterMobileLink = ({ label, icon: Icon, href, iconColor = "var(--primary-light)", macher }: ItemLinkType) => {
     const isActive = isActiveRoute(href, macher);
+    useEffect(() => {
+        initNotifications({ cooldown: 1000 });
+    }, []);
 
     return (
         <li className="flex-1">
