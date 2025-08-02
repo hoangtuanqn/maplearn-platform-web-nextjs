@@ -1,6 +1,6 @@
 import z from "zod";
 
-const subjectSchema = z.object({
+export const subjectSchema = z.object({
     id: z.number(),
     name: z.string(),
     status: z.boolean(),

@@ -6,7 +6,7 @@ import SearchPosts from "./SearchPosts";
 import PostIItem from "./PostIItem";
 import PostSkeleton from "../../_components/SidebarRight/PostSkeleton";
 import { PaginationNav } from "../../_components/Pagination";
-import { postApi, POSTS_PER_PAGE } from "~/apiRequest/post";
+import postApi, { POSTS_PER_PAGE } from "~/apiRequest/post";
 
 async function fetchPosts(page: number, limit: number, search: string, sort: string) {
     const res = await postApi.getPosts(page, limit, search, sort);
@@ -23,7 +23,7 @@ const PostList = () => {
     const sort = searchParams.get("sort") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["user/posts", page, search, sort],
+        queryKey: ["user", "posts", page, search, sort],
         queryFn: () => fetchPosts(page, POSTS_PER_PAGE, search, sort),
     });
 

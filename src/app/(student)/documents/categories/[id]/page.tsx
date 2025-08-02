@@ -3,7 +3,7 @@ import React, { cache } from "react";
 import { Clock, DownloadCloud } from "lucide-react";
 import { formatter } from "~/libs/format";
 import ListDocumentInCategory from "./_components/ListDocumentInCategory";
-import { documentApi } from "~/apiRequest/documents";
+import documentApi from "~/apiRequest/documents";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import CategoryOtherSidebar from "./_components/CategoryOtherSidebar";
@@ -37,7 +37,7 @@ const DocumentCategoryPage = async ({ params }: { params: Promise<{ id: string }
     return (
         <section className="min-h-screen pb-10">
             <div className="flex flex-col gap-8 lg:flex-row">
-                <div className="flex-1 rounded-xl bg-white p-4 lg:flex-3/4">
+                <div className="flex-1 rounded-xl bg-white p-4 lg:flex-3/4 shadow-sm">
                     <div className="flex flex-col items-end justify-between gap-4 lg:flex-row">
                         <div className="t1-flex-center gap-4">
                             <div className="hidden space-y-2 lg:block">

@@ -1,8 +1,8 @@
 import publicApi from "~/libs/apis/publicApi";
-import { postApi } from "./post";
+import postApi from "./post";
 
 // Course Comments API
-export const courseApi = {
+export const courseCommentApi = {
     comment: (data: { courseId: string; comment: string; reply_id: string | null }) =>
         publicApi.post("/comments", {
             course_id: data.courseId,
@@ -88,14 +88,14 @@ export const commentApiHelper = {
             case "course":
                 return {
                     comment: (data: { identifier: string; comment: string; reply_id: string | null }) =>
-                        courseApi.comment({
+                        courseCommentApi.comment({
                             courseId: data.identifier,
                             comment: data.comment,
                             reply_id: data.reply_id,
                         }),
-                    deleteComment: courseApi.deleteComment,
-                    updateComment: courseApi.updateComment,
-                    getComments: courseApi.getComments,
+                    deleteComment: courseCommentApi.deleteComment,
+                    updateComment: courseCommentApi.updateComment,
+                    getComments: courseCommentApi.getComments,
                 };
             case "lesson":
                 return {

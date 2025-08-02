@@ -5,7 +5,7 @@ import { formatter } from "~/libs/format";
 import { Report } from "./_components/Report";
 import { ShareButton } from "../../_components/Shared/ShareButton";
 import DocumentsByCategory from "./_components/DocumentsByCategory";
-import { documentApi } from "~/apiRequest/documents";
+import documentApi from "~/apiRequest/documents";
 import { Metadata } from "next";
 const getDocument = cache(async (slug: string) => {
     const {

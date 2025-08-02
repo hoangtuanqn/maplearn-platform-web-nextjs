@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { documentApi, DOCUMENTS_PER_PAGE } from "~/apiRequest/documents";
+import documentApi, { DOCUMENTS_PER_PAGE } from "~/apiRequest/documents";
 import DocumentItem from "../../../_components/DocumentItem";
 import { handleIncrementDownload } from "../../../_components/DocumentList";
 import DocumentSkeleton from "../../../_components/DocumentSkeleton";

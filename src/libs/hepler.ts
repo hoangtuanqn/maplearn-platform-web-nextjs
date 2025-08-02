@@ -78,5 +78,6 @@ export const buildLaravelFilterQuery = (filters: Record<string, string | number 
     const queryParams = Object.entries(filters)
         .map(([key, value]) => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(String(value))}`)
         .join("&");
-    return queryParams;
-}
+
+    return queryParams ?? "";
+};

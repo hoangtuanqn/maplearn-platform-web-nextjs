@@ -1,14 +1,14 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { postApi } from "~/apiRequest/post";
+import postApi from "~/apiRequest/post";
 import NewLink from "~/app/(student)/_components/SidebarRight/NewLink";
 import PostSkeleton from "~/app/(student)/_components/SidebarRight/PostSkeleton";
 import { PostType } from "~/schemaValidate/post.schema";
 
 const PostListSidebar = ({ slugCurrent }: { slugCurrent: string }) => {
     const { data, isLoading } = useQuery({
-        queryKey: ["user/posts", "sidebar"],
+        queryKey: ["user", "posts", "sidebar"],
         queryFn: async () => {
             const res = await postApi.getPosts(1, 10);
             return res.data.data.data || [];

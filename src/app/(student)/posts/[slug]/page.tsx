@@ -4,7 +4,7 @@ import "~/styles/custom-post.scss";
 import PostListSidebar from "./_components/PostListSidebar";
 import UpdateViewClient from "./_components/UpdateViewClient";
 import PostContent from "./_components/PostContent";
-import { postApi } from "~/apiRequest/post";
+import postApi from "~/apiRequest/post";
 
 const getPost = cache(async (slug: string) => {
     const {

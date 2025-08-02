@@ -1,14 +1,15 @@
 "use client";
 import { GraduationCap } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { gradesLevelApi } from "~/apiRequest/gradesLevel";
+import { useRouter, useSearchParams } from "next/navigation";
+import gradesLevelApi from "~/apiRequest/gradesLevel";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 
 const SelectObject = ({ url }: { url: string }) => {
+    const searchParams = useSearchParams();
     const { data: objects, isLoading } = useQuery({
-        queryKey: ["user/objects"],
+        queryKey: ["user", "objects"],
         queryFn: async () => {
             const response = await gradesLevelApi.getGradesLevels();
             return response.data.data;
@@ -16,7 +17,7 @@ const SelectObject = ({ url }: { url: string }) => {
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState("all");
+    const [activeTab, setActiveTab] = useState(searchParams.get("grade_level") || "all");
     const handleChoiceTab = (tab: string) => {
         const params = new URLSearchParams(window.location.search);
         const isSameTab = tab === activeTab;

@@ -1,7 +1,7 @@
 import publicApi from "~/libs/apis/publicApi";
 import { PostListResponse } from "~/schemaValidate/post.schema";
 export const POSTS_PER_PAGE = 16;
-export const postApi = {
+const postApi = {
     getPosts: (page: number = 1, limit: number = POSTS_PER_PAGE, search: string = "", sort: string = "") => {
         let query = `/posts?page=${page}&limit=${limit}`;
         if (search) {
@@ -27,3 +27,4 @@ export const postApi = {
         }),
     incrementView: (slug: string) => publicApi.post(`/posts/${slug}/view`),
 };
+export default postApi;

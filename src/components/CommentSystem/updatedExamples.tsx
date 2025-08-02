@@ -24,11 +24,11 @@ export const PostCommentExample = ({ postSlug }: { postSlug: string }) => {
     );
 };
 
-// ✅ Ví dụ 2: Course Comments (sử dụng courseApi)
+// ✅ Ví dụ 2: Course Comments (sử dụng courseCommentApi)
 export const CourseCommentExample = ({ courseId }: { courseId: string }) => {
     return (
         <CommentSystem
-            type="course" // Tự động sử dụng courseApi
+            type="course" // Tự động sử dụng courseCommentApi
             identifier={courseId} // ID của course
             showSkeleton={true}
             skeletonCount={3}

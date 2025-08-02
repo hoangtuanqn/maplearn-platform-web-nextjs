@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import NewLink from "./NewLink";
 import { PostType } from "~/schemaValidate/post.schema";
 import PostSkeleton from "./PostSkeleton";
-import { postApi } from "~/apiRequest/post";
+import postApi from "~/apiRequest/post";
 
 export default function News() {
     const { data, isLoading, error } = useQuery({

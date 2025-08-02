@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { postApi } from "~/apiRequest/post";
+import postApi from "~/apiRequest/post";
 
 export default function UpdateViewClient({ slug }: { slug: string }) {
     const calledRef = useRef(false); // Đảm bảo chỉ gọi 1 lần

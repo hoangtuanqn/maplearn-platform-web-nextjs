@@ -7,11 +7,11 @@ import Image from "next/image";
 import { UserType } from "~/schemaValidate/user.schema";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
-import { teacherApi } from "~/apiRequest/teachers";
+import teacherApi from "~/apiRequest/teachers";
 
 const Teachers = () => {
     const { data: teachers = [], isLoading } = useQuery<UserType[]>({
-        queryKey: ["user/teachers"],
+        queryKey: ["user", "teachers"],
         queryFn: teacherApi.getTeachers,
     });
     return (

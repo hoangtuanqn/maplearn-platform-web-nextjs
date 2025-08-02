@@ -2,14 +2,14 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
-import { documentApi } from "~/apiRequest/documents";
+import documentApi from "~/apiRequest/documents";
 import CategorySkeleton from "./CategorySkeleton";
 import { TrendingUp } from "lucide-react";
 import CategoryItem from "./CategoryItem";
 
 const CategorySidebar = () => {
     const { data: categories, isPending } = useQuery({
-        queryKey: ["user/categories"],
+        queryKey: ["user", "categories"],
         queryFn: async () => {
             const res = await documentApi.getCategories(1, 10);
             return res.data.data.data;

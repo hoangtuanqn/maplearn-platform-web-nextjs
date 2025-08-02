@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const PostsPage = () => {
     return (
-        <section className="min-h-screen px-5 pb-10">
+        <section className="min-h-screen px-4 pb-10">
             <Suspense fallback={<Loading />}>
                 <PostList />
             </Suspense>

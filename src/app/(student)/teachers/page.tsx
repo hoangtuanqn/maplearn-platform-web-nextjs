@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { teacherApi } from "~/apiRequest/teachers";
+import teacherApi from "~/apiRequest/teachers";
 import Link from "next/link";
 import Image from "next/image";
 

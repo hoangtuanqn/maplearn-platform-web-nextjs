@@ -3,7 +3,7 @@ import React from "react";
 import Tag from "../_components/Tag";
 import { CloudDownload, Folder } from "lucide-react";
 import Link from "next/link";
-import { documentApi } from "~/apiRequest/documents";
+import documentApi from "~/apiRequest/documents";
 import { formatter } from "~/libs/format";
 import { Metadata } from "next";
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ const CategoriesPage = async () => {
 
     return (
         <section className="min-h-screen pb-10">
-            <div className="flex-1 rounded-xl bg-white p-4">
+            <div className="flex-1 rounded-xl bg-white p-4 shadow-sm">
                 <h1 className="text-primary text-lg font-semibold">Tổng hợp kho tài liệu</h1>
                 <div className="mt-4 grid gap-x-2.5 gap-y-4 lg:grid-cols-4">
                     {categories.map((cate) => (

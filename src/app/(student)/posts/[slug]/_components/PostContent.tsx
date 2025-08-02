@@ -13,7 +13,7 @@ import { Report } from "./Report";
 const PostContent = ({ post }: { post: { posts: PostType } }) => {
     return (
         <>
-            <div className="h-fit shrink-0 rounded-xl bg-white p-8 2xl:flex-3/4">
+            <div className="h-fit shrink-0 rounded-xl bg-white p-8 shadow-sm 2xl:flex-3/4">
                 {/* Header */}
                 <div className="flex justify-between text-sm text-gray-500">
                     <div className="flex items-center gap-2">

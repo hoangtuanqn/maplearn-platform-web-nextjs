@@ -1,16 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 // import SearchDocument from "./SearchDocument";
-import { useRouter } from "next/navigation";
-import { subjectApi } from "~/apiRequest/subject";
+import { useRouter, useSearchParams } from "next/navigation";
+import subjectApi from "~/apiRequest/subject";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 
 const SelectCourse = ({ url }: { url: string }) => {
+    const searchParams = useSearchParams();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState("all");
+    const [activeTab, setActiveTab] = useState(searchParams.get("subject") || "all");
     const { data: subjects, isLoading } = useQuery({
-        queryKey: ["user/subjects"],
+        queryKey: ["user", "subjects"],
         queryFn: async () => {
             const response = await subjectApi.getSubjects();
             return [

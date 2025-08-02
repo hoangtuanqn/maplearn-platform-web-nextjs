@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { documentApi, DOCUMENTS_PER_PAGE } from "~/apiRequest/documents";
+import documentApi, { DOCUMENTS_PER_PAGE } from "~/apiRequest/documents";
 import DocumentSkeleton from "./DocumentSkeleton";
 import { useSearchParams } from "next/navigation";
 import { PaginationNav } from "../../_components/Pagination";
@@ -46,7 +46,7 @@ const DocumentList = () => {
     const sort = searchParams.get("sort") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["user/documents", page, search, sort, subject, grade_level],
+        queryKey: ["user", "documents", page, search, sort, subject, grade_level],
         queryFn: () => fetchDocuments(page, DOCUMENTS_PER_PAGE, search, sort, { subject, grade_level }),
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
