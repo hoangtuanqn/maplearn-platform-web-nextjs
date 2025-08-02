@@ -20,6 +20,15 @@ const _DocumentResponseSchema = z.object({
     data: DocumentSchema,
 });
 export type DocumentResponse = z.infer<typeof _DocumentResponseSchema>;
+
+// ** Document same category schema
+const _DocumentSameCategoryResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(DocumentSchema),
+});
+export type DocumentSameCategoryResponse = z.infer<typeof _DocumentSameCategoryResponseSchema>;
+
 // Final API Response Schema
 export const DocumentListResponseSchema = z.object({
     success: z.boolean(),
