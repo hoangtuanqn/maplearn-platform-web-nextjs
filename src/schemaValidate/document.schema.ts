@@ -8,6 +8,7 @@ export const DocumentSchema = z.object({
     slug: z.string(),
     download_count: z.number(),
     source: z.string().default(""),
+    category_id: z.number(),
     created_at: z.string(),
     tags: z.array(TagSchema),
     creator: z.array(CreatorSchema),

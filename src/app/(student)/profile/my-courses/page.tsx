@@ -155,6 +155,7 @@ const MyCoursesPage = () => {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                     {myCourses.map((course) => (
                         <DisplayCourse
+                            slug=""
                             key={course.url}
                             thumbnail={course.thumbnail}
                             title={course.title}

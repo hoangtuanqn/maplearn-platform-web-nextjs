@@ -39,6 +39,7 @@ const Courses = () => {
                         <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
                             {level.courses?.map((course) => (
                                 <DisplayCourse
+                                    slug={course.slug}
                                     key={course.id}
                                     thumbnail={course.thumbnail}
                                     title={course.name}
