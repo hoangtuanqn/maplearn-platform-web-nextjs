@@ -1,5 +1,5 @@
 import publicApi from "~/libs/apis/publicApi";
-import { CategoriesCoursesResponse, CoursesResponse } from "~/schemaValidate/course.schema";
+import { CategoriesCoursesResponse, CourseGetDetailResponse, CourseListResponse } from "~/schemaValidate/course.schema";
 export const CATEGORY_COURSE_PER_PAGE = 20;
 export const COURSE_PER_PAGE = 20;
 const courseApi = {
@@ -20,7 +20,10 @@ const courseApi = {
         if (queryOther) {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
-        return publicApi.get<CoursesResponse>(query);
+        return publicApi.get<CourseListResponse>(query);
+    },
+    getDetailCourse: (slug: string) => {
+        return publicApi.get<CourseGetDetailResponse>(`/courses/${slug}`);
     },
     getCategories: (page: number = 1, limit: number = CATEGORY_COURSE_PER_PAGE) =>
         publicApi.get<CategoriesCoursesResponse>(`/course-categories?page=${page}&limit=${limit}`),

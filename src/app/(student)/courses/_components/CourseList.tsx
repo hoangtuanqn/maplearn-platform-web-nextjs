@@ -38,6 +38,7 @@ const CourseList = () => {
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
                 {courses?.data?.map((course) => (
                     <DisplayCourse
+                        slug={course.slug}
                         key={course.id}
                         thumbnail={course.thumbnail}
                         title={course.name}

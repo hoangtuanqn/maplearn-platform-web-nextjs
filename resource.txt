@@ -1,22 +1,2 @@
-lỗi từ gọi API AI
-// {
-//     "error": "Đã xảy ra lỗi khi gửi dữ liệu đến AI",
-//     "details": {
-//         "error": {
-//             "code": 400,
-//             "message": "Invalid JSON payload received. Unknown name \"contents\" at 'contents': Cannot find field.",
-//             "status": "INVALID_ARGUMENT",
-//             "details": [
-//                 {
-//                     "@type": "type.googleapis.com/google.rpc.BadRequest",
-//                     "fieldViolations": [
-//                         {
-//                             "field": "contents",
-//                             "description": "Invalid JSON payload received. Unknown name \"contents\" at 'contents': Cannot find field."
-//                         }
-//                     ]
-//                 }
-//             ]
-//         }
-//     }
-// }
+- Rating : https://www.npmjs.com/package/@smastrom/react-rating
+- Plyr: https://plyr.io/

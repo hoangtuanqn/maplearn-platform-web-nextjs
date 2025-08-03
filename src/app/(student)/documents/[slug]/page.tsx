@@ -7,6 +7,7 @@ import { ShareButton } from "../../_components/Shared/ShareButton";
 import DocumentsByCategory from "./_components/DocumentsByCategory";
 import documentApi from "~/apiRequest/documents";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 const getDocument = cache(async (slug: string) => {
     const {
         data: { data: document },
@@ -28,7 +29,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 const DocumentDetailPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
-    const document = await getDocument(slug); // Dùng lại, không gọi API thêm
+    let document;
+    try {
+        document = await getDocument(slug); // Dùng lại, không gọi API thêm
+    } catch (error) {
+        console.error("Error fetching document:", error);
+        redirect("/404"); // Redirect to 404 page if document not found
+    }
+    console.log("document.category_id >>", document.category_id);
+
     return (
         <section className="min-h-screen pb-10">
             <div className="flex flex-1 gap-4 rounded-xl max-lg:flex-col">
@@ -66,7 +75,7 @@ const DocumentDetailPage = async ({ params }: { params: Promise<{ slug: string }
                         <iframe src={document.source} width="100%" className="min-h-screen border"></iframe>
                     </div>
                 </div>
-                <DocumentsByCategory />
+                <DocumentsByCategory idCategory={document.category_id} />
             </div>
         </section>
     );

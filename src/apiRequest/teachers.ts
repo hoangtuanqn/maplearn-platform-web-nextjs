@@ -1,10 +1,10 @@
 import publicApi from "~/libs/apis/publicApi";
-import { UserType } from "~/schemaValidate/user.schema";
+import { TeacherListType } from "~/schemaValidate/teachher.schema";
 
 const teacherApi = {
     getTeachers: async () => {
-        const res = await publicApi.get<UserType[]>("/user?filter[role]=teacher");
-        return res.data;
+        const res = await publicApi.get<TeacherListType>("/teachers");
+        return res.data.data;
     },
 };
 export default teacherApi;

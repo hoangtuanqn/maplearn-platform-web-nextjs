@@ -4,13 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import HeaderSection from "./HeaderSection";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { UserType } from "~/schemaValidate/user.schema";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import teacherApi from "~/apiRequest/teachers";
 
 const Teachers = () => {
-    const { data: teachers = [], isLoading } = useQuery<UserType[]>({
+    const { data: teachers = [], isLoading } = useQuery({
         queryKey: ["user", "teachers"],
         queryFn: teacherApi.getTeachers,
     });
@@ -55,9 +54,12 @@ const Teachers = () => {
                         </>
                     ) : (
                         // Khi đã có dữ liệu
-                        teachers.map(({ full_name, avatar, gender }) => (
+                        teachers.map(({ user: { id, full_name, avatar, gender } }) => (
                             <SwiperSlide key={full_name}>
-                                <Link href="#" className="relative block h-45 w-32 shrink-0 overflow-hidden rounded-xl">
+                                <Link
+                                    href={`/teachers/${id}`}
+                                    className="relative block h-45 w-32 shrink-0 overflow-hidden rounded-xl"
+                                >
                                     <Image
                                         src={avatar ?? ""}
                                         alt={full_name}

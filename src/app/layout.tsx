@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import "~/styles/global.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "@smastrom/react-rating/style.css";
 
 import "swiper/css";
 import "swiper/css/pagination";

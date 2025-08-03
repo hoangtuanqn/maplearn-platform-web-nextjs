@@ -1,6 +1,7 @@
 import z from "zod";
 import { paginationMetaSchemaFn } from "./common.schema";
 import { subjectSchema } from "./subject.schema";
+import { teacherSchema } from "./teachher.schema";
 // * Category Course
 const CategoryCourseSchema = z.object({
     id: z.number(),
@@ -21,7 +22,7 @@ export const CategoriesCoursesResponseSchema = z.object({
 export type CategoriesCoursesResponse = z.infer<typeof CategoriesCoursesResponseSchema>;
 
 // * Course
-const DepartmentSchema = z.object({
+export const departmentSchema = z.object({
     id: z.number(),
     name: z.string(),
 });
@@ -40,16 +41,41 @@ export const courseSchema = z.object({
     slug: z.string(),
     thumbnail: z.string().url(),
     price: z.string(),
+    grade_level_id: z.number(),
     subject_id: z.number(),
     category_id: z.number(),
     department_id: z.number(),
-    department: z.array(DepartmentSchema),
+    department: z.array(departmentSchema),
     subject: z.array(subjectShortSchema),
     category: z.array(CategoryShortSchema),
 });
-export const CoursesResponseSchema = z.object({
+export const CourseListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),
     data: paginationMetaSchemaFn(courseSchema),
 });
-export type CoursesResponse = z.infer<typeof CoursesResponseSchema>;
+export type CourseListResponse = z.infer<typeof CourseListResponseSchema>;
+
+// * Course Detail
+
+export const CourseDetailSchema = courseSchema.extend({
+    description: z.string(),
+    intro_video: z.string().url(),
+    teachers: z.array(
+        teacherSchema.omit({ user: true, departments: true }).extend({
+            user: z.object({
+                id: z.number(),
+                full_name: z.string(),
+                avatar: z.string().url(),
+            }),
+        }),
+    ),
+});
+
+export type CourseDetail = z.infer<typeof CourseDetailSchema>;
+export const CourseDetailResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: CourseDetailSchema,
+});
+export type CourseGetDetailResponse = z.infer<typeof CourseDetailResponseSchema>;
