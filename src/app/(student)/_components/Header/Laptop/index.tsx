@@ -65,7 +65,7 @@ const HeaderLaptop = () => {
                     <div className="max-w-8xl mx-auto w-full items-center px-4 pl-6.5">
                         <div className="flex w-full items-center justify-between">
                             <div className="flex items-center max-xl:hidden">
-                                <div className="">
+                                <div>
                                     <Link className="cursor-pointer" href={"/"}>
                                         <span className="sr-only">MapLearn</span>
                                         <Image
@@ -77,15 +77,13 @@ const HeaderLaptop = () => {
                                         />
                                     </Link>
                                 </div>
-                                <div>
-                                    {/* <div className="block w-[calc(100%-1.25rem)] pr-4 text-base"></div> */}
-                                    <button className="flex w-48 cursor-pointer items-center justify-between">
-                                        <div className="pr-4 text-base">
-                                            {/* <p className="line-clamp-1 w-full text-start text-[#a3b6c6]">Tìm kiếm</p> */}
-                                        </div>
-                                        {/* <Search /> */}
-                                    </button>
-                                </div>
+                                {/* <div className="block w-[calc(100%-1.25rem)] pr-4 text-base"></div> */}
+                                {/* <button className="flex w-48 cursor-pointer items-center justify-between"> */}
+                                {/* <div className="pr-4 text-base"> */}
+                                {/* <p className="line-clamp-1 w-full text-start text-[#a3b6c6]">Tìm kiếm</p> */}
+                                {/* </div> */}
+                                {/* <Search /> */}
+                                {/* </button> */}
                             </div>
                             <div className="flex shrink-1 justify-center">
                                 <div className="relative flex items-center">

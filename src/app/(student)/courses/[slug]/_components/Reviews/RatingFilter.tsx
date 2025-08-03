@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 const RatingFilter = ({
     data: { sortBy, setSortBy, filterRating, setFilterRating },

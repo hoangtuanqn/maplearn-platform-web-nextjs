@@ -6,15 +6,23 @@ import Link from "next/link";
 import documentApi from "~/apiRequest/documents";
 import { formatter } from "~/libs/format";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 export const metadata: Metadata = {
     title: "Danh mục tài liệu",
 };
 const CategoriesPage = async () => {
-    const {
-        data: {
-            data: { data: categories },
-        },
-    } = await documentApi.getCategories();
+    let categories;
+    try {
+        const {
+            data: {
+                data: { data },
+            },
+        } = await documentApi.getCategories();
+        categories = data;
+    } catch (error) {
+        console.error("Failed to fetch categories:", error);
+        redirect("/404");
+    }
 
     return (
         <section className="min-h-screen pb-10">

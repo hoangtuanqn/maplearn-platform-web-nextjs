@@ -1,6 +1,6 @@
-import { RatingDistributionList, ReviewCourseListResponse } from "./../schemaValidate/reviewCourse.schema";
+import { RatingDistributionList, RatingVoteResponse, ReviewCourseListResponse } from "./../schemaValidate/reviewCourse.schema";
 import publicApi from "~/libs/apis/publicApi";
-const COURSE_REVIEWS_PER_PAGE = 5;
+export const COURSE_REVIEWS_PER_PAGE = 5;
 const reviewCourseApi = {
     getCourseReviews: async (
         page: number = 1,
@@ -26,6 +26,10 @@ const reviewCourseApi = {
     // get rating distribution
     getRatingDistribution: async (slug: string) => {
         const response = await publicApi.get<RatingDistributionList>(`/course-reviews/${slug}/ratings/distribution`);
+        return response.data;
+    },
+    voteReviewCourse: async (reviewId: number, is_like: boolean) => {
+        const response = await publicApi.post<RatingVoteResponse>(`/course-reviews/${reviewId}/vote`, { is_like });
         return response.data;
     },
 };
