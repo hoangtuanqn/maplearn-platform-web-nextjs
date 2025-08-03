@@ -3,6 +3,7 @@ import { Rating } from "@smastrom/react-rating";
 import Image from "next/image";
 import Link from "next/link";
 import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
+import { ShareButton } from "~/app/(student)/_components/Shared/ShareButton";
 
 const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) => {
     return (
@@ -15,14 +16,17 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                 <p className="mt-2 text-xs text-white sm:text-sm">{course.description}</p>
 
                 {/* Đánh giá + học viên */}
-                <div className="mt-4 flex flex-wrap items-end gap-1 text-xs sm:text-sm">
-                    <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
-                    <Rating style={{ maxWidth: 120 }} value={course.rating.average_rating} readOnly />
-                    <span>({course.rating.total_reviews} xếp hạng)</span>
-                    <span className="ml-2 font-bold">{course.enrollments_count} học viên đã tham gia</span>
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="flex flex-1 items-end gap-1 text-xs sm:text-sm">
+                        <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
+                        <Rating style={{ maxWidth: 120 }} value={course.rating.average_rating} readOnly />
+                        <span>({course.rating.total_reviews} xếp hạng)</span>
+                        <span className="ml-2 font-bold">{course.enrollments_count} học viên đã tham gia</span>
+                    </div>
+                    <ShareButton />
                 </div>
             </div>
-            <div className="bg-white p-4 sm:p-8">
+            <div className="bg-white p-4 sm:px-8">
                 {/* Thông tin giảng viên */}
                 <div className="mt-6">
                     <h3 className="mb-4 text-base font-semibold text-gray-800 sm:text-lg">Giáo viên giảng dạy</h3>

@@ -11,6 +11,7 @@ const reviewCourseSchema = z.object({
     created_at: z.string(),
     likes_count: z.number().default(0),
     dislikes_count: z.number().default(0),
+    is_liked: z.boolean().nullable().optional().default(null),
     user: userSchema.pick({
         id: true,
         full_name: true,
@@ -29,6 +30,7 @@ const ratingDistributionSchema = z.object({
     star: z.number(),
     count: z.number(),
     percentage: z.number(),
+    user_has_voted: z.boolean().default(false),
 });
 // export type RatingDistribution = z.infer<typeof ratingDistributionSchema>;
 const _ratingDistributionListSchema = z.object({
@@ -37,3 +39,10 @@ const _ratingDistributionListSchema = z.object({
     data: z.array(ratingDistributionSchema),
 });
 export type RatingDistributionList = z.infer<typeof _ratingDistributionListSchema>;
+
+const _ratingVoteSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: reviewCourseSchema,
+});
+export type RatingVoteResponse = z.infer<typeof _ratingVoteSchema>;

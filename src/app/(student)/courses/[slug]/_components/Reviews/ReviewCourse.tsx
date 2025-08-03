@@ -1,24 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { useQuery } from "@tanstack/react-query";
-import reviewCourseApi from "~/apiRequest/reviewCourse";
+import reviewCourseApi, { COURSE_REVIEWS_PER_PAGE } from "~/apiRequest/reviewCourse";
 import RatingSummary from "./RatingSummary";
 import RatingFilter from "./RatingFilter";
 import ReviewList from "./ReviewList";
+import { ReviewCourse as reviewCourse } from "~/schemaValidate/reviewCourse.schema";
 
 const ReviewCourse = ({ course }: { course: CourseDetail }) => {
     const [sortBy, setSortBy] = useState("-id");
+    const [commentCount, setCommentCount] = useState(COURSE_REVIEWS_PER_PAGE);
     const [filterRating, setFilterRating] = useState<number | null>(null);
+
+    const [reviews, setReviews] = useState<reviewCourse[]>([]);
     const { data, isLoading } = useQuery({
-        queryKey: ["user", "course", "reviews", course.id, sortBy, filterRating],
+        queryKey: ["user", "course", "reviews", course.id, commentCount, sortBy, filterRating],
         queryFn: async () => {
-            const response = await reviewCourseApi.getCourseReviews(1, 5, course.slug, filterRating, sortBy);
+            const response = await reviewCourseApi.getCourseReviews(1, commentCount, course.slug, filterRating, sortBy);
             return response.data.data;
         },
         staleTime: 1000 * 60 * 5, // 5 phút
     });
-    const reviews = data?.data || [];
+
+    useEffect(() => {
+        if (!isLoading && data) {
+            setReviews(data.data || []);
+        }
+    }, [isLoading, data]);
 
     return (
         <div className="mt-4 overflow-hidden bg-white shadow-sm lg:rounded-xl">
@@ -30,7 +39,7 @@ const ReviewCourse = ({ course }: { course: CourseDetail }) => {
 
             <RatingFilter data={{ sortBy, setSortBy, filterRating, setFilterRating }} />
 
-            <ReviewList reviews={reviews} isLoading={isLoading} countAll={data?.total || 0} />
+            <ReviewList data={{ reviews, setReviews, isLoading, countAll: data?.total || 0, setCommentCount }} />
         </div>
     );
 };
