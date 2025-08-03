@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import teacherApi from "~/apiRequest/teachers";
 import Link from "next/link";
 import Image from "next/image";
+import { getFullName } from "~/libs/hepler";
 
 export const metadata: Metadata = {
     title: "Tất cả các giáo viên",
@@ -26,7 +27,7 @@ const ProfilePage = async () => {
                         />
 
                         <span className="mt-2 line-clamp-2 block text-center font-bold">
-                            {teacher.gender === "male" ? "Thầy" : "Cô"} {teacher.full_name}
+                            {getFullName(teacher.gender, teacher.full_name)}
                         </span>
 
                         {/* <div className="mt-1 flex items-center gap-1 text-xs font-medium">

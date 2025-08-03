@@ -7,6 +7,7 @@ import Image from "next/image";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import teacherApi from "~/apiRequest/teachers";
+import { getFullName } from "~/libs/hepler";
 
 const Teachers = () => {
     const { data: teachers = [], isLoading } = useQuery({
@@ -69,7 +70,7 @@ const Teachers = () => {
                                     />
                                     <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-[rgba(0,0,0,0.6)] from-0% via-[rgba(0,0,0,0.2)] via-30% to-transparent to-40%"></div>
                                     <span className="absolute bottom-3 w-full px-2 text-center text-xs font-medium text-white">
-                                        {`${gender === "male" ? "Thầy" : "Cô"} ${full_name}`}
+                                        {getFullName(gender, full_name)}
                                     </span>
                                 </Link>
                             </SwiperSlide>
