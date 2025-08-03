@@ -40,7 +40,11 @@ export const courseSchema = z.object({
     name: z.string(),
     slug: z.string(),
     thumbnail: z.string().url(),
-    price: z.string(),
+    price: z.number().default(0),
+    rating: z.object({
+        average_rating: z.number(),
+        total_reviews: z.number(),
+    }),
     grade_level_id: z.number(),
     subject_id: z.number(),
     category_id: z.number(),
@@ -61,6 +65,7 @@ export type CourseListResponse = z.infer<typeof CourseListResponseSchema>;
 export const CourseDetailSchema = courseSchema.extend({
     description: z.string(),
     intro_video: z.string().url(),
+    enrollments_count: z.number().default(0),
     teachers: z.array(
         teacherSchema.omit({ user: true, departments: true }).extend({
             user: z.object({

@@ -15,10 +15,11 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                 <p className="mt-2 text-xs text-white sm:text-sm">{course.description}</p>
 
                 {/* Đánh giá + học viên */}
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-                    <Rating style={{ maxWidth: 120 }} value={4.5} readOnly />
-                    <span>(300 xếp hạng)</span>
-                    <span className="ml-2 font-bold">500 học viên đã tham gia</span>
+                <div className="mt-4 flex flex-wrap items-end gap-1 text-xs sm:text-sm">
+                    <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
+                    <Rating style={{ maxWidth: 120 }} value={course.rating.average_rating} readOnly />
+                    <span>({course.rating.total_reviews} xếp hạng)</span>
+                    <span className="ml-2 font-bold">{course.enrollments_count} học viên đã tham gia</span>
                 </div>
             </div>
             <div className="bg-white p-4 sm:p-8">
@@ -26,6 +27,9 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                 <div className="mt-6">
                     <h3 className="mb-4 text-base font-semibold text-gray-800 sm:text-lg">Giáo viên giảng dạy</h3>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {course.teachers.length === 0 && (
+                            <h2 className="text-gray-500">Không có giáo viên đang giảng dạy trong khóa này</h2>
+                        )}
                         {course.teachers.map(({ user: teacher, ...info }, idx) => (
                             <Link
                                 href={`/teachers/${teacher.id}`}

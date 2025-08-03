@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { DocumentSchema } from "./document.schema";
-
+// !Đây là phần schema: Báo cáo bài viết, tài liệu bị sai
 // Schema cho response khi thất bại
 export const reportFailSchema = z.object({
     success: z.literal(false),

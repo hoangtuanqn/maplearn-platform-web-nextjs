@@ -39,10 +39,13 @@ const CourseList = () => {
                 {courses?.data?.map((course) => (
                     <DisplayCourse
                         slug={course.slug}
+                        price={course.price}
                         key={course.id}
                         thumbnail={course.thumbnail}
                         title={course.name}
                         teacher={course.department[0].name}
+                        rating={course.rating.average_rating}
+                        totalReviews={course.rating.total_reviews}
                     />
                 ))}
             </div>

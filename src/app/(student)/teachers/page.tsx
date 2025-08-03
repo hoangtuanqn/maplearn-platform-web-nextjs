@@ -17,7 +17,11 @@ const ProfilePage = async () => {
             <h1 className="text-primary text-base font-bold uppercase">Tất cả giáo viên</h1>
             <div className="mt-6 grid grid-cols-7 gap-5 gap-y-8">
                 {res?.map(({ user: teacher }) => (
-                    <Link key={teacher.id} href="#" className="text-secondary-typo block h-full w-full rounded-xl">
+                    <Link
+                        key={teacher.id}
+                        href={`/teachers/${teacher.id}`}
+                        className="text-secondary-typo block h-full w-full rounded-xl"
+                    >
                         <Image
                             width={184}
                             height={184}

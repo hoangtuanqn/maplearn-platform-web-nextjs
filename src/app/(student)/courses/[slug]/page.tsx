@@ -9,6 +9,8 @@ import courseApi from "~/apiRequest/course.schema";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import { formatter } from "~/libs/format";
+import ReviewCourse from "./_components/Reviews/ReviewCourse";
 const getCourse = cache(async (slug: string) => {
     const {
         data: { data: post },
@@ -49,14 +51,18 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                 <div className="w-full flex-9/12 max-lg:order-2">
                     <ContentLesson course={course as CourseDetail} />
                     <ListLessonCourse />
+                    <ReviewCourse course={course as CourseDetail} />
                 </div>
                 <div className="h-fit w-full flex-3/12 rounded-xl bg-white p-8 shadow-sm max-lg:order-1 lg:sticky lg:top-[70px]">
                     <div className="flex flex-col gap-4">
                         <div className="flex justify-center">
                             <IntroCourse thumbnail={course.thumbnail} video={course.intro_video} />
                         </div>
-                        <div className="gap-2 text-center">
-                            <h2 className="t1-gradient-text text-base font-bold">Giáo viên: Tổ toán học MapLearn</h2>
+                        <div className="flex flex-col gap-2 text-center text-base">
+                            <h2 className="t1-gradient-text font-bold">Giáo viên: Tổ toán học MapLearn</h2>
+                            <span className="block font-bold text-black">
+                                Học phí: {formatter.number(course.price) + "đ"}
+                            </span>
                         </div>
 
                         <div className="t1-flex-center gap-2">
@@ -73,6 +79,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                         </div>
                         <Button variant={"outline"}>Mua ngay</Button>
                         <p className="text-center text-xs">Đảm bảo hoàn tiền trong 30 ngày</p>
+
                         <div className="rounded-lg bg-gray-50 p-4">
                             <span className="mb-2 block text-sm font-semibold text-gray-700">Khóa này bao gồm</span>
                             <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
