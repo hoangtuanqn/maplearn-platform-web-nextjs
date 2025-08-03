@@ -81,3 +81,11 @@ export const buildLaravelFilterQuery = (filters: Record<string, string | number 
 
     return queryParams ?? "";
 };
+
+export const getFullName = (gender: string, fullName: string) => {
+    if (gender === "male") {
+        return `Thầy ${fullName}`;
+    } else {
+        return `Cô ${fullName}`;
+    }
+};

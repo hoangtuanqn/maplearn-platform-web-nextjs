@@ -1,6 +1,6 @@
 import z from "zod";
 import { userSchema } from "./user.schema";
-import { departmentSchema } from "./course.schema";
+import { CourseDetailSchema, departmentSchema } from "./course.schema";
 const pivotSchema = z.object({
     course_id: z.number().int().positive(),
     teacher_id: z.number().int().positive(),
@@ -21,3 +21,13 @@ export const teacherListResponseSchema = z.object({
     data: z.array(teacherSchema),
 });
 export type TeacherListType = z.infer<typeof teacherListResponseSchema>;
+
+const teacherDetailSchema = teacherSchema.extend({
+    courses: CourseDetailSchema.omit({ teachers: true }).array(),
+});
+export const teacherDetailResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: teacherDetailSchema,
+});
+export type TeacherDetailType = z.infer<typeof teacherDetailResponseSchema>;
