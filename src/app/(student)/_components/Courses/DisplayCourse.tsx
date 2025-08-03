@@ -3,13 +3,25 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Rating } from "@smastrom/react-rating";
+import { formatter } from "~/libs/format";
 interface DisplayCourseType {
     thumbnail: string;
     title: string;
     teacher: string;
     slug: string;
+    rating: number;
+    totalReviews: number;
+    price: number;
 }
-const DisplayCourse = ({ thumbnail, title, teacher, slug }: DisplayCourseType) => {
+const DisplayCourse = ({
+    thumbnail,
+    title,
+    price = 0,
+    rating = 0,
+    totalReviews = 0,
+    teacher,
+    slug,
+}: DisplayCourseType) => {
     return (
         <Link href={`/courses/${slug}`} className="text-secondary-typo block h-full w-full rounded-xl">
             <Image
@@ -25,11 +37,13 @@ const DisplayCourse = ({ thumbnail, title, teacher, slug }: DisplayCourseType) =
                 <span className="line-clamp-2">{teacher}</span>
             </div>
             <div className="flex items-center gap-1 text-xs">
-                <span className="font-bold text-[#FFB23F]">4.6</span>
-                <Rating style={{ maxWidth: 60 }} value={4.5} readOnly />
-                <span>(500)</span>
+                <span className="font-bold text-[#FFB23F]">{rating}</span>
+                <Rating style={{ maxWidth: 60 }} value={rating} readOnly />
+                <span>({totalReviews})</span>
             </div>
-            <span className="block font-bold text-black">600.000đ</span>
+            <span className="block font-bold text-black">
+                {price == 0 ? "Miễn phí" : formatter.number(price ?? 0) + "đ"}
+            </span>
         </Link>
     );
 };

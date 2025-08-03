@@ -154,12 +154,18 @@ const MyCoursesPage = () => {
             <div className="flex flex-col gap-4 font-medium">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                     {myCourses.map((course) => (
+                        // Ch có data thật
                         <DisplayCourse
                             slug=""
+                            price={0}
                             key={course.url}
                             thumbnail={course.thumbnail}
                             title={course.title}
                             teacher={course.teacher}
+                            rating={1}
+
+                            totalReviews={0}
+
                         />
                     ))}
                 </div>

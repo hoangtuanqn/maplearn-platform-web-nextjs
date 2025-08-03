@@ -1,6 +1,6 @@
 export const formatter = {
     date: (date: Date) => date.toLocaleDateString("vi-VN"),
-    number: (amount: number) => amount.toLocaleString("vi-VN"),
+    number: (amount: number) => Intl.NumberFormat("vi-VN").format(amount),
 };
 
 export const formatPhoneNumber = (phone: string | number): string => {
