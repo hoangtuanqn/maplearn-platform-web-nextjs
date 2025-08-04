@@ -5,7 +5,10 @@ const cartApi = {
     getCarts: () => publicApi.get<CartsResponse>("/carts"),
 
     // Xóa từng item
-    removeCartItem: (courseId: number) => publicApi.delete(`/carts/${courseId}`),
+    removeCartItem: (cardIds: number[]) => publicApi.delete(`/carts/cleanup`, { data: { cart_id: cardIds } }),
+    toggleCartAll: (isActive: boolean) => publicApi.patch(`/cart-items/toggle-all`, { is_active: isActive }),
+    toggleCartItem: (id: number, isActive: boolean) =>
+        publicApi.patch(`/cart-items/${id}/toggle`, { is_active: isActive }),
 
     // Xóa tất cả các item
     removeCartItems: () => publicApi.delete(`/carts`),

@@ -51,11 +51,12 @@ import { courseSchema } from "./course.schema";
 
 const cartSchema = z.object({
     id: z.number(),
-    user_id: z.number(),
+user_id: z.number(),
     course_id: z.number(),
     price_snapshot: z.number(),
     created_at: z.string(),
     updated_at: z.string(),
+    is_active: z.boolean().default(true),
     course: courseSchema,
 });
 
