@@ -7,7 +7,7 @@ import FormComment from "~/app/(student)/_components/Comment";
 import ItemComment from "~/app/(student)/_components/Comment/DisplayComment/CommentItem";
 import CommentSkeleton from "~/app/(student)/posts/[slug]/_components/CommentSkeleton";
 import Loading from "~/app/(student)/_components/Loading";
-import { ConfirmAlertDialog } from "~/components/Confirm";
+import { DangerConfirm } from "~/components/DangerConfirm";
 import { CommentType } from "~/schemaValidate/comment.schema";
 import { UserType } from "~/schemaValidate/user.schema";
 
@@ -172,7 +172,7 @@ const CommentSystem: React.FC<CommentSystemProps> = ({
                         )}
 
                         {checkCanDelete(item, user) && (
-                            <ConfirmAlertDialog
+                            <DangerConfirm
                                 message="Bạn có chắc chắn muốn xóa bình luận này không?"
                                 action={() => {
                                     handleDeleteComment(item.id.toString());
@@ -180,7 +180,7 @@ const CommentSystem: React.FC<CommentSystemProps> = ({
                                 }}
                             >
                                 <button className="cursor-pointer hover:text-red-600">Xóa</button>
-                            </ConfirmAlertDialog>
+                            </DangerConfirm>
                         )}
                     </div>
                 )}

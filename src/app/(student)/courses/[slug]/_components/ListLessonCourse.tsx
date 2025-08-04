@@ -1,71 +1,30 @@
 "use client";
 import React, { useState } from "react";
-import { ChevronDown, Eye } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CircularProgressbar } from "react-circular-progressbar";
-const chapters = [
-    {
-        id: 1,
-        title: "Chương 1: Phương trình bậc nhất",
-        lessons: [
-            "Bài 1: Khái niệm phương trình",
-            "Bài 2: Phương trình bậc nhất một ẩn",
-            "Bài 3: Biến đổi và giải phương trình đơn giản",
-            "Bài 4: Dạng tổng quát và phương pháp giải",
-            "Bài 5: Ứng dụng thực tế của phương trình bậc nhất",
-        ],
-    },
-    {
-        id: 2,
-        title: "Chương 2: Hệ phương trình",
-        lessons: [
-            "Bài 1: Giới thiệu về hệ phương trình",
-            "Bài 2: Phương pháp thế",
-            "Bài 3: Phương pháp cộng đại số",
-            "Bài 4: Phương pháp đồ thị",
-            "Bài 5: Bài toán thực tế liên quan đến hệ phương trình",
-        ],
-    },
-    {
-        id: 3,
-        title: "Chương 3: Bất phương trình",
-        lessons: [
-            "Bài 1: Bất phương trình bậc nhất một ẩn",
-            "Bài 2: Biểu diễn tập nghiệm trên trục số",
-            "Bài 3: Giải bất phương trình chứa tham số",
-            "Bài 4: Ứng dụng bất phương trình vào bài toán thực tế",
-        ],
-    },
-    {
-        id: 4,
-        title: "Chương 4: Hàm số và đồ thị",
-        lessons: [
-            "Bài 1: Khái niệm về hàm số",
-            "Bài 2: Hàm số bậc nhất",
-            "Bài 3: Đồ thị hàm số bậc nhất",
-            "Bài 4: Sự biến thiên và tính đơn điệu",
-            "Bài 5: Bài toán liên quan đến đồ thị",
-        ],
-    },
-    {
-        id: 5,
-        title: "Chương 5: Ôn tập cuối kỳ",
-        lessons: [
-            "Bài 1: Ôn tập phương trình và hệ phương trình",
-            "Bài 2: Ôn tập bất phương trình",
-            "Bài 3: Ôn tập hàm số và đồ thị",
-            "Bài 4: Giải đề kiểm tra mẫu",
-        ],
-    },
-];
+import { useQuery } from "@tanstack/react-query";
+import courseApi from "~/apiRequest/course.schema";
+import { useParams } from "next/navigation";
+import { formatter } from "~/libs/format";
+
 const ListLessonCourse = () => {
+    const params = useParams<{ slug: string }>();
     const [open, setOpen] = useState(1);
     const percentage = 20;
+    const { data: chapters } = useQuery({
+        queryKey: ["course", "chapters"],
+        queryFn: async () => {
+            const res = await courseApi.getChapterLessonList(params.slug);
+            return res.data.data;
+        },
+        staleTime: 1000 * 60 * 5, // 5 phút
+    });
     return (
         <div className="rounded-xl bg-white p-4 shadow-sm sm:p-8">
             <p className="text-base font-bold">Nội dung khóa học</p>
             <div className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
-                {chapters.map((chapter) => (
+                {chapters?.map((chapter) => (
                     <div key={chapter.id} className="rounded-md">
                         <div
                             className="flex cursor-pointer items-center gap-2 rounded-md bg-[#f3f3f3] px-3 py-2 duration-150 hover:bg-[#ebebeb] sm:gap-3.5 sm:px-5"
@@ -117,18 +76,36 @@ const ListLessonCourse = () => {
                                     transition={{ duration: 0.3 }}
                                     className="mt-2 overflow-hidden sm:mt-3 [&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-[#e5e5e5]"
                                 >
-                                    {chapter.lessons.map((lesson, index) => (
-                                        <div key={index} className="py-0.5 sm:py-1">
-                                            <div className="flex w-full cursor-pointer justify-between gap-2 rounded-lg px-3 py-2 text-xs duration-150 hover:bg-[#f3f3f3] sm:px-5 sm:text-sm">
-                                                <div className="text-xs text-slate-600 sm:text-[13.125px]">
-                                                    <span>#{index + 1}. </span>
-                                                    <span>{lesson}</span>
+                                    {chapter.lessons?.map((lesson, index) => (
+                                        <div key={lesson.id} className="py-0.5 sm:py-1">
+                                            <div className="flex w-full cursor-pointer justify-between gap-2 rounded-lg px-3 py-2 text-xs duration-150 hover:bg-[#f3f3f3] max-lg:flex-col sm:px-5 sm:text-sm">
+                                                <div className="items-cente flex gap-2">
+                                                    <div className="text-xs text-slate-600 sm:text-[13.125px]">
+                                                        <span>#{index + 1}. </span>
+                                                        <span>{lesson.title}</span>
+                                                    </div>
+                                                    {/* Học thử */}
+                                                    {lesson.is_free && (
+                                                        <span className="rounded-md border border-green-400 bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+                                                            Được học thử
+                                                        </span>
+                                                    )}
                                                 </div>
-                                                <div className="flex items-center gap-1 sm:gap-2">
-                                                    <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
-                                                    <span className="text-xs font-normal text-[#828B9E] sm:text-sm">
-                                                        70
+                                                <div className="flex items-center gap-2 max-lg:justify-between">
+                                                    {/* <span className="bg-primary/90 ml-2 rounded-md px-2 py-0.5 text-xs font-semibold text-white">
+                                                                Đã hoàn thành
+                                                            </span> */}
+                                                    {/* Chưa hoàn thành */}
+                                                    <span className="ml-2 rounded-md bg-[#F3F4F6] px-2 py-0.5 text-xs font-semibold text-[#6B7280]">
+                                                        Chưa hoàn thành
                                                     </span>
+
+                                                    <div className="flex items-center gap-1">
+                                                        <span className="text-xs font-normal text-[#828B9E]">
+                                                            {formatter.duration(40 * 60 * 200)}
+                                                        </span>
+                                                    </div>
+                                                    {/* Hiển thị badge bạn đã xem */}
                                                 </div>
                                             </div>
                                         </div>

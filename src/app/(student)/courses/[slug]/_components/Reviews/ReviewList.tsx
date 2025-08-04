@@ -53,19 +53,17 @@ const ReviewList = ({
         <>
             {isVoteLoading && <Loading />}
             <div className="px-3 py-4 sm:px-6 sm:py-6">
-                <div className="space-y-4 sm:space-y-6">
+                <div className="space-y-3">
                     {isLoading ? (
                         [...Array(5).keys()].map((index) => <ReviewSkeleton key={index} />)
                     ) : reviews?.length === 0 ? (
                         <div className="text-secondary-typo text-center text-sm">Không có đánh giá!</div>
                     ) : (
                         <>
-                            {reviews?.map((review, index) => (
+                            {reviews?.map((review) => (
                                 <div
                                     key={review.id}
-                                    className={`rounded-xl border border-slate-200 bg-slate-50/50 p-4 transition-all duration-200 hover:bg-slate-50 hover:shadow-md sm:rounded-2xl sm:p-6 ${
-                                        index === 0 ? "ring-2 ring-blue-500/10" : ""
-                                    }`}
+                                    className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 transition-all duration-200 hover:bg-slate-50 hover:shadow-md sm:rounded-2xl sm:p-6"
                                 >
                                     {/* Review Header */}
                                     <div className="mb-3 flex items-start justify-between gap-2 sm:mb-4">

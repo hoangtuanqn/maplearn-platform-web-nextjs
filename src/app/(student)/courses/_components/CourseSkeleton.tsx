@@ -4,17 +4,20 @@ import Skeleton from "react-loading-skeleton";
 const CourseSkeleton = () => {
     return (
         <div className="flex flex-col">
-            <div className="flex-1 mt-4">
+            <div className="mt-4 flex-1">
                 <Skeleton height={221} className="aspect-square w-full !rounded-xl" />
             </div>
-            <div className="flex-1 mt-1">
+            <div className="mt-1 flex-1">
                 <Skeleton height={42} className="w-full !rounded-xl" />
             </div>
-            <div className="flex-1 mt-1">
-                <Skeleton height={20} className="w-full !rounded-xl" />
+            <div className="mt-1 flex-1">
+                <Skeleton height={18} width={120} className="w-full !rounded-xl" />
             </div>
             <div className="flex-1">
-                <Skeleton height={21} className="w-full !rounded-xl" />
+                <Skeleton height={18} width={100} className="w-full !rounded-xl" />
+            </div>
+            <div>
+                <Skeleton height={16} width={100} className="w-full !rounded-xl" />
             </div>
         </div>
     );

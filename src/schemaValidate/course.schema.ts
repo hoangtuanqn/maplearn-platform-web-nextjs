@@ -49,9 +49,15 @@ export const courseSchema = z.object({
     subject_id: z.number(),
     category_id: z.number(),
     department_id: z.number(),
+    start_date: z.string(),
+    end_date: z.string(),
+    status: z.boolean(),
     department: z.array(departmentSchema),
     subject: z.array(subjectShortSchema),
     category: z.array(CategoryShortSchema),
+    is_favorite: z.boolean().default(true),
+    is_enrolled: z.boolean().default(false),
+    is_cart: z.boolean().default(false),
 });
 export const CourseListResponseSchema = z.object({
     success: z.boolean(),
@@ -66,6 +72,7 @@ export const CourseDetailSchema = courseSchema.extend({
     description: z.string(),
     intro_video: z.string().url(),
     enrollments_count: z.number().default(0),
+
     teachers: z.array(
         teacherSchema.omit({ user: true, departments: true }).extend({
             user: z.object({
