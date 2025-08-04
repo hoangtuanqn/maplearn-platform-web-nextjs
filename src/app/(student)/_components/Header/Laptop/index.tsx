@@ -107,7 +107,7 @@ const HeaderLaptop = () => {
                                             </div>
                                             {/* THêm bagde số lượng sản phẩm trong giỏ hàng */}
                                             <div className="absolute -top-1.5 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-[11.175px] font-bold text-white">
-                                                10
+                                                {user.cart_item_count ?? 0}
                                             </div>
                                         </Link>
 

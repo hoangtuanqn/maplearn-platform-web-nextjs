@@ -12,9 +12,11 @@ import Loading from "~/app/(student)/_components/Loading";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { handleApiError } from "~/libs/apis/http";
 import { ShowCartSonner } from "~/app/(student)/_components/ShowCartSonner";
+import { useAuth } from "~/hooks/useAuth";
 const ButtonAction = () => {
     const { slug } = useParams<{ slug: string }>();
     const [course, setCourse] = useState<CourseDetail | null>(null);
+    const { user, updateProfile } = useAuth();
     const { data, isLoading } = useQuery({
         queryKey: ["user", "course", slug],
         queryFn: async () => {
@@ -52,6 +54,9 @@ const ButtonAction = () => {
         mutationKey: ["course", "action"],
         mutationFn: async () => courseApi.addCourseToCart(course?.id ?? 0),
         onSuccess: () => {
+            updateProfile({
+                cart_item_count: (user?.cart_item_count ?? 0) + 1,
+            });
             ShowCartSonner({
                 title: course?.name ?? "Khóa học",
                 image: course?.thumbnail ?? "",

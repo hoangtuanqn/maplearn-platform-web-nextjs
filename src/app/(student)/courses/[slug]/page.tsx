@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import { formatter } from "~/libs/format";
 import ReviewCourse from "./_components/Reviews/ReviewCourse";
 import ButtonAction from "./_components/ButtonAction";
+import RelatedCourses from "./_components/RelatedCourses";
 const getCourse = cache(async (slug: string) => {
     const {
         data: { data: post },
@@ -53,6 +54,8 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                     <ContentLesson course={course as CourseDetail} />
                     <ListLessonCourse />
                     <ReviewCourse course={course as CourseDetail} />
+                    {/* Các khóa học cùng danh mục */}
+                    <RelatedCourses idCategory={course.category_id} />
                 </div>
                 {/* Layout Bên phải */}
                 <div className="h-fit w-full flex-3/12 rounded-xl bg-white p-8 shadow-sm max-lg:order-1 lg:sticky lg:top-[70px]">

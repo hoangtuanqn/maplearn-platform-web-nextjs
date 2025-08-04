@@ -35,7 +35,7 @@ export function ShowCartSonner({ title, image, url = "#", message = "Đã thực
         ),
         {
             position: "bottom-right",
-            duration: 100000,
+            duration: 5000,
         },
     );
 }

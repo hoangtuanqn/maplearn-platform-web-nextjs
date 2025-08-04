@@ -1,5 +1,5 @@
 import publicApi from "~/libs/apis/publicApi";
-import { CartsResponse } from "~/schemaValidate/cart.schema";
+import { CartsResponse, SummaryResponse } from "~/schemaValidate/cart.schema";
 
 const cartApi = {
     getCarts: () => publicApi.get<CartsResponse>("/carts"),
@@ -13,5 +13,9 @@ const cartApi = {
     // Xóa tất cả các item
     removeCartItems: () => publicApi.delete(`/carts`),
     addCartItem: (courseId: number) => publicApi.post(`/carts/${courseId}`),
+
+    // Get summary of cart
+    getCartSummary: (numberIds: number[]) =>
+        publicApi.post<SummaryResponse>(`/cart-items/summary`, { cart_id: numberIds }),
 };
 export default cartApi;
