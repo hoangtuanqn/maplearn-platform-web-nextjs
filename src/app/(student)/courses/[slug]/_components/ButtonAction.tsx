@@ -95,12 +95,15 @@ const ButtonAction = () => {
                         <>
                             <div className="t1-flex-center gap-2">
                                 {course?.is_cart ? (
-                                    <Button className="text-primary flex-7/8" variant={"outline"}>
-                                        <Link href="/carts" className="flex items-center gap-2">
+                                    <Link href="/carts" className="ư flex-7/8">
+                                        <Button
+                                            className="text-primary flex w-full items-center gap-2"
+                                            variant={"outline"}
+                                        >
                                             <TrendingUp />
                                             Chuyển đến giỏ hàng
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </Link>
                                 ) : (
                                     <Button
                                         className="flex-7/8 text-white"
@@ -123,7 +126,6 @@ const ButtonAction = () => {
                                 </Button>
                             </div>
                             <Button variant={"outline"}>Mua ngay</Button>
-                            
                         </>
                     )}
                 </>
