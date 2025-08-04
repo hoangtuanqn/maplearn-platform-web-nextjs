@@ -102,7 +102,7 @@ const ListLessonCourse = () => {
 
                                                     <div className="flex items-center gap-1">
                                                         <span className="text-xs font-normal text-[#828B9E]">
-                                                            {formatter.duration(40 * 60 * 200)}
+                                                            {formatter.duration(lesson.duration)}
                                                         </span>
                                                     </div>
                                                     {/* Hiển thị badge bạn đã xem */}

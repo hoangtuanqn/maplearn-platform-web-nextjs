@@ -2,7 +2,19 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
-const ChatBubble = ({ role, text, name }: { role: "user" | "model"; name?: string; text: string }) => {
+
+import ListCourseChatBotAI from "./ListCourseChatBotAI";
+const ChatBubble = ({
+    role,
+    text,
+    name,
+    course_id = [],
+}: {
+    role: "user" | "model";
+    name?: string;
+    text: string;
+    course_id?: number[];
+}) => {
     const isUser = role === "user";
     name = isUser ? name || "Bạn" : "ChatBot AI";
     const bubbleClass = isUser
@@ -20,6 +32,8 @@ const ChatBubble = ({ role, text, name }: { role: "user" | "model"; name?: strin
                     </ReactMarkdown>
                 )}
             </div>
+
+            <ListCourseChatBotAI course_id={course_id} role={role} />
             <div className={`flex ${isUser ? `justify-end pr-0.5` : `justify-start pl-0.5`}`}>
                 <span className={`text-[10px] text-gray-600`}>{name}</span>
             </div>

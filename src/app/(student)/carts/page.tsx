@@ -69,7 +69,7 @@ const CartPage = () => {
                             <h1 className="text-primary text-3xl font-bold max-lg:text-xl">Giỏ hàng của bạn</h1>
                             <div className="mt-1 flex max-lg:text-sm">
                                 <span>
-                                    Đã chọn <span className="font-bold">{data?.items?.length ?? 0} khóa học </span>-
+                                    Đã chọn <span className="font-bold">{selectedItems.length ?? 0} khóa học </span>-
                                     Tiết kiệm được <span className="font-bold text-green-500">900.000đ</span>
                                 </span>
                             </div>

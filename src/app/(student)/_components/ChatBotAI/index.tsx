@@ -17,6 +17,23 @@ const helloMessageModel = (name: string = "khách") => ({
         },
     ],
 });
+type MessageTye = {
+    message: string;
+    course_id: number[];
+};
+function extractJSON(input: string) {
+    const match = input.match(/{[\s\S]*}/); // tìm đoạn bắt đầu bằng { và kết thúc bằng }
+    if (match) {
+        try {
+            return JSON.parse(match[0]); // parse ra object
+        } catch (err) {
+            console.error("Lỗi khi parse JSON:", err);
+            return input;
+        }
+    }
+    return null;
+}
+
 const ChatBotAI = () => {
     // const [isClose, setIsClose] = useState(false);
     const { user } = useAuth();
@@ -25,7 +42,12 @@ const ChatBotAI = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { value: message, onChange, setValue: setMessage } = useInput("");
     const [chatHistories, setChatHistories] = useState<ChatHistoriesType[]>([]);
+    const [ids, setIds] = useState<{ id: number; course_id: number[] }[]>([]);
     const { playSound } = useNotificationSound();
+    const [dataParse, setDataParse] = useState<MessageTye>({
+        message: "",
+        course_id: [],
+    });
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,14 +57,29 @@ const ChatBotAI = () => {
         const newHistories: ChatHistoriesType[] = [...chatHistories, { role: "user", parts: [{ text: message }] }];
         setChatHistories(newHistories);
         let modelReply = "Hiện tại máy chủ đang quá tải nên chưa thể hỗ trợ bạn được!";
+
         try {
             const data = await axios.post("/api/chat/ai", {
                 contents: newHistories,
             });
-            modelReply =
-                data.data?.candidates[0].content.parts[0].text || "Bạn hỏi 1 câu mà tôi không biết trả lời sao luôn á!";
+
+            if (data.data?.candidates[0].content.parts[0].text) {
+                const parse = extractJSON(data.data?.candidates[0].content.parts[0].text);
+                setDataParse(parse);
+                modelReply =
+                    parse?.message ||
+                    data.data?.candidates[0].content.parts[0].text ||
+                    "Xin lỗi, mình không hiểu câu hỏi của bạn";
+                if (parse?.course_id && parse?.course_id.length > 0) {
+                    setIds((prev) => [...prev, { id: chatHistories.length + 2, course_id: parse.course_id || [] }]);
+                }
+            }
             notificate(modelReply);
         } catch (error) {
+            setDataParse({
+                message: "Xin lỗi, mình không hiểu câu hỏi của bạn. 2",
+                course_id: [],
+            } as MessageTye);
             console.error("Lỗi gọi API AI >> ", error);
         } finally {
             playSound();
@@ -111,14 +148,21 @@ const ChatBotAI = () => {
                         ref={frameChat}
                         style={{ scrollbarWidth: "thin", scrollbarColor: "#a5a5a5 transparent" }}
                     >
-                        {chatHistories.map((history, index) => (
-                            <ChatBubble
-                                key={index}
-                                role={history.role}
-                                text={history.parts[0].text}
-                                name={user?.full_name}
-                            />
-                        ))}
+                        {chatHistories.map((history, index) => {
+                            console.log(ids, "ids", index + 1, "dataParse?.course_id  :: ", dataParse?.course_id);
+                            // nếu ids.includes(index + 1) = true thì truyền dataParse?.course_id ngược thì lại truyền về []
+                            return (
+                                <ChatBubble
+                                    key={index}
+                                    course_id={
+                                        ids.filter((item) => item.id === index + 1).flatMap((item) => item.course_id) || []
+                                    }
+                                    role={history.role}
+                                    text={history.parts[0].text}
+                                    name={user?.full_name}
+                                />
+                            );
+                        })}
                         {isPending && <ChatLoading />}
                     </div>
                     <form
