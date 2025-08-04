@@ -57,6 +57,8 @@ export const courseSchema = z.object({
     category: z.array(CategoryShortSchema),
     is_favorite: z.boolean().default(true),
     is_enrolled: z.boolean().default(false),
+    duration: z.number().default(0),
+    lesson_count: z.number().default(0),
     is_cart: z.boolean().default(false),
 });
 export const CourseListResponseSchema = z.object({

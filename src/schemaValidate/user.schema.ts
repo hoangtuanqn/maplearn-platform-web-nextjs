@@ -49,6 +49,7 @@ export const userSchema = z.object({
     email_verified_at: z.string().optional(),
     created_at: z.string().optional(),
     updated_at: z.string().optional(),
+    cart_item_count: z.number().default(0).optional(),
 });
 
 export type UserType = z.infer<typeof userSchema>;
