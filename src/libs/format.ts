@@ -1,6 +1,20 @@
 export const formatter = {
     date: (date: Date) => date.toLocaleDateString("vi-VN"),
     number: (amount: number) => Intl.NumberFormat("vi-VN").format(amount),
+    duration: (seconds: number): string => {
+        const d = Math.floor(seconds / (3600 * 24));
+        const h = Math.floor((seconds % (3600 * 24)) / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+
+        const parts = [];
+        if (d > 0) parts.push(`${d} ngày`);
+        if (h > 0) parts.push(`${h}h`);
+        if (m > 0) parts.push(`${m}p`);
+        if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+
+        return parts.join(":");
+    },
 };
 
 export const formatPhoneNumber = (phone: string | number): string => {
@@ -13,3 +27,4 @@ export const formatPhoneNumber = (phone: string | number): string => {
     // Tách các phần và format
     return `${digits.slice(0, 4)}.${digits.slice(4, 7)}.${digits.slice(7)}`;
 };
+// Chuyển đổi giây sang phút, giờ, ngày, tháng hợp lý. VD: 30 => 30 giây, 90 => 1 phút 30 giây, 3600 => 1 giờ, 86400 => 1 ngày, 2592000 => 1 tháng

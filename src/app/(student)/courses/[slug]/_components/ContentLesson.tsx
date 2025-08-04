@@ -26,9 +26,9 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                     <ShareButton />
                 </div>
             </div>
-            <div className="bg-white p-4 sm:px-8">
+            <div className="space-y-6 bg-white p-4 sm:p-8">
                 {/* Thông tin giảng viên */}
-                <div className="mt-6">
+                <div>
                     <h3 className="mb-4 text-base font-semibold text-gray-800 sm:text-lg">Giáo viên giảng dạy</h3>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {course.teachers.length === 0 && (

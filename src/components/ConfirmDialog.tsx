@@ -10,7 +10,7 @@ import {
     AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 
-export function ConfirmAlertDialog({
+export function ConfirmDialog({
     children,
     message,
     action,
@@ -19,18 +19,19 @@ export function ConfirmAlertDialog({
     message: string;
     action: () => void;
 }) {
+    // Dành cho những thao tác bình thường
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
             <AlertDialogContent className="bg-white">
                 <AlertDialogHeader>
                     <AlertDialogTitle>Thao tác này có chắc chắn không?</AlertDialogTitle>
-                    <AlertDialogDescription>{message} Nó không thể hoàn tác lại được đâu nhé!</AlertDialogDescription>
+                    <AlertDialogDescription>{message}</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Hủy thao tác</AlertDialogCancel>
-                    <AlertDialogAction className="bg-red-500 text-white hover:bg-red-500/90" onClick={action}>
-                        Vẫn thực hiện
+                    <AlertDialogCancel>Đóng</AlertDialogCancel>
+                    <AlertDialogAction className="text-white" onClick={action}>
+                        Tiếp tục
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

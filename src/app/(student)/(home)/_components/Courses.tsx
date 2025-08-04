@@ -32,23 +32,27 @@ const Courses = () => {
                 </>
             )}
             {gradeLevels?.map((level) => {
-                if (level.courses.length === 0) return null; // Skip if no courses
+                if (level.courses.length === 0) return null; // Bỏ qua nếu ko có khóa học nào
                 return (
                     <div key={level.id} className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">
                         <HeaderSection title={"Khóa học " + level.name} url={`/courses?grade_level=${level.slug}`} />
                         <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
-                            {level.courses?.map((course) => (
-                                <DisplayCourse
-                                    slug={course.slug}
-                                    price={course.price}
-                                    key={course.id}
-                                    thumbnail={course.thumbnail}
-                                    title={course.name}
-                                    teacher={course.department[0]?.name}
-                                    rating={course.rating.average_rating}
-                                    totalReviews={course.rating.total_reviews}
-                                />
-                            ))}
+                            {level.courses?.map((course) => {
+                                if (course.is_enrolled) return null; // Bỏ qua nếu mua rồi
+                                return (
+                                    <DisplayCourse
+                                        is_enrolled={course.is_enrolled}
+                                        slug={course.slug}
+                                        price={course.price}
+                                        key={course.id}
+                                        thumbnail={course.thumbnail}
+                                        title={course.name}
+                                        teacher={course.department[0]?.name}
+                                        rating={course.rating.average_rating}
+                                        totalReviews={course.rating.total_reviews}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 );

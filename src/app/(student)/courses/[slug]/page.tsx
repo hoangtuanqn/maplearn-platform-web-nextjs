@@ -2,15 +2,14 @@ import React, { cache } from "react";
 import "react-circular-progressbar/dist/styles.css";
 import IntroCourse from "./IntroCourse";
 import ListLessonCourse from "./_components/ListLessonCourse";
-import { Button } from "~/components/ui/button";
 import ContentLesson from "./_components/ContentLesson";
-import { Heart, ShoppingCart } from "lucide-react";
 import courseApi from "~/apiRequest/course.schema";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { formatter } from "~/libs/format";
 import ReviewCourse from "./_components/Reviews/ReviewCourse";
+import ButtonAction from "./_components/ButtonAction";
 const getCourse = cache(async (slug: string) => {
     const {
         data: { data: post },
@@ -38,21 +37,24 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
         res = await getCourse(slug);
     } catch (error) {
         console.log("Error fetching course details:", error);
-        redirect("/404");
+        redirect("/courses");
     }
     const course: CourseDetail | null = res || null;
-    if (!course) {
-        redirect("/404");
+    // Ko tồn tại khóa học hoặc khóa học không tồn tại
+    if (!course || !course.status) {
+        redirect("/courses");
     }
 
     return (
         <div className="min-h-screen">
             <div className="flex max-lg:flex-col lg:gap-3.5">
+                {/* Layout Bên trái */}
                 <div className="w-full flex-9/12 max-lg:order-2">
                     <ContentLesson course={course as CourseDetail} />
                     <ListLessonCourse />
                     <ReviewCourse course={course as CourseDetail} />
                 </div>
+                {/* Layout Bên phải */}
                 <div className="h-fit w-full flex-3/12 rounded-xl bg-white p-8 shadow-sm max-lg:order-1 lg:sticky lg:top-[70px]">
                     <div className="flex flex-col gap-4">
                         <div className="flex justify-center">
@@ -60,24 +62,19 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                         </div>
                         <div className="flex flex-col gap-2 text-center text-base">
                             <h2 className="t1-gradient-text font-bold">Giáo viên: Tổ toán học MapLearn</h2>
-                            <span className="block font-bold text-black">
-                                Học phí: {formatter.number(course.price) + "đ"}
-                            </span>
+                            <div className="mt-1">
+                                {/* Giá tiền cũ, dạng bị gạch bỏ */}
+                                <span className="text-sm text-gray-500 line-through">
+                                    {course.price > 0 && formatter.number(course.price + 400000) + "đ"}
+                                </span>
+                                <span className="block font-bold text-black">
+                                    Học phí: {formatter.number(course.price) + "đ"}
+                                </span>
+                            </div>
                         </div>
 
-                        <div className="t1-flex-center gap-2">
-                            <Button className="flex-7/8 text-white">
-                                <ShoppingCart /> Thêm vào giỏ hàng
-                            </Button>
-                            <Button
-                                variant={"outline"}
-                                className="view_tooltip flex-1/8"
-                                data-tooltip-content={"Thêm vào danh sách yêu thích"}
-                            >
-                                <Heart />
-                            </Button>
-                        </div>
-                        <Button variant={"outline"}>Mua ngay</Button>
+                        <ButtonAction />
+
                         <p className="text-center text-xs">Đảm bảo hoàn tiền trong 30 ngày</p>
 
                         <div className="rounded-lg bg-gray-50 p-4">
