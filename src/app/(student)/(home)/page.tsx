@@ -6,6 +6,7 @@ import Courses from "./_components/Courses";
 import SidebarRight from "../_components/SidebarRight";
 import Teachers from "./_components/Teachers";
 import DashboardStats from "./_components/DashboardStats";
+import ListCourseRecommended from "./_components/ListCourseRecommended";
 
 const StudentHomePage = () => {
     return (
@@ -26,6 +27,9 @@ const StudentHomePage = () => {
                     <DashboardStats />
                     {/* Giáo viên */}
                     <Teachers />
+
+                    {/* Đề xuất khóa học cho bạn */}
+                    <ListCourseRecommended />
 
                     {/* Danh sách các khóa học */}
                     <Courses />

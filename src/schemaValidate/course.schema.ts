@@ -68,6 +68,12 @@ export const CourseListResponseSchema = z.object({
 });
 export type CourseListResponse = z.infer<typeof CourseListResponseSchema>;
 
+export const CourseListRecommendedResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(courseSchema),
+});
+export type CourseListRecommendedResponse = z.infer<typeof CourseListRecommendedResponseSchema>;
 // * Course Detail
 
 export const CourseDetailSchema = courseSchema.extend({

@@ -83,9 +83,9 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                         <div className="rounded-lg bg-gray-50 p-4">
                             <span className="mb-2 block text-sm font-semibold text-gray-700">Khóa này bao gồm</span>
                             <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
-                                <li>61,5 giờ video theo yêu cầu</li>
-                                <li>25 bài giảng</li>
-                                <li>34 tài nguyên có thể tải xuống</li>
+                                <li>{formatter.duration(course.duration)} tổng thời lượng theo</li>
+                                <li>{course.lesson_count} bài giảng</li>
+                                <li>Tất cả tài nguyên có thể tải xuống</li>
                                 <li>Truy cập trên thiết bị di động</li>
                             </ul>
                         </div>
