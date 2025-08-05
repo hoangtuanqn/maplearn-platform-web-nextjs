@@ -13,10 +13,8 @@ import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { setLocalStorage } from "~/libs/localStorage";
 import { useAuth } from "~/hooks/useAuth";
-import { handleApiError } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 import authApi from "~/apiRequest/auth";
-import axios from "axios";
-
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
     const { login } = useAuth();
@@ -48,11 +46,7 @@ const FormLogin = () => {
         },
 
         onError: (error) => {
-            if (axios.isAxiosError(error)) {
-                toast.error(error?.response?.data?.error);
-            } else {
-                handleApiError(error);
-            }
+            notificationErrorApi(error);
         },
     });
 
@@ -94,7 +88,7 @@ const FormLogin = () => {
                                     />
                                 </FormControl>
 
-                                    <FormMessage />
+                                <FormMessage />
                                 <div className="flex justify-between">
                                     {isCapsLockOn && (
                                         <span className="text-yellow-500">Chú ý: Bạn đang bật Caps Lock</span>

@@ -14,7 +14,7 @@ const Footer = () => {
             <Tooltip anchorSelect=".view_tooltip" className="z-300" />
             <ScrollToTopButton />
             <ChatBotAI />
-            <Toaster position="top-center" expand={true} richColors />
+            <Toaster position="top-center" expand={true} richColors duration={50000} />
         </>
     );
 };

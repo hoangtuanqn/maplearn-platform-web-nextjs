@@ -67,3 +67,10 @@ export const passwordStrengthSchema = z.object({
 
 // Type tương ứng (nếu cần):
 export type PasswordStrengthType = z.infer<typeof passwordStrengthSchema>;
+export type ResetPasswordPageProps = {
+    success: boolean;
+    message: string;
+    data?: {
+        email: string;
+    };
+};

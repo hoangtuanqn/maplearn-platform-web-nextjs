@@ -1,3 +1,4 @@
+import { ResetPasswordPageProps } from "./../app/(student)/auth/auth.schema";
 import {
     FormForgotPasswordType,
     FormLoginType,
@@ -11,6 +12,10 @@ const authApi = {
     login: (data: FormLoginType) => publicApi.post("/auth/login", data),
     forgotPassword: (data: FormForgotPasswordType) => publicApi.post("/auth/forgot-password", data),
     resetPassword: (data: FormResetPasswordType & { token: string }) => publicApi.post("/auth/reset-password", data),
-    checkTokenResetPassword: (data: { token: string }) => publicApi.post("/auth/check-token-reset-password", data),
+    checkTokenResetPassword: (data: { token: string }) =>
+        publicApi.post<ResetPasswordPageProps>("/auth/check-token-reset-password", data),
+
+    verifyEmail: (token: string) => publicApi.post("/auth/verify-email", { token }),
+    resendVerifyEmail: (email: string) => publicApi.post("/auth/resend-verify-email", { email }),
 };
 export default authApi;

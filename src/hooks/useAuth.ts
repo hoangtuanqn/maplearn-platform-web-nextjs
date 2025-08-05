@@ -10,6 +10,7 @@ import privateApi from "~/libs/apis/privateApi";
 import { AppDispatch, RootState } from "~/store";
 import { setUser } from "~/store/userSlice";
 import { UserType } from "~/schemaValidate/user.schema";
+import { notificationErrorApi } from "~/libs/apis/http";
 
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +30,18 @@ export function useAuth() {
             } as UserType),
         );
     };
+    // Mutation resend verify email
+    const resendVerifyEmail = useMutation({
+        mutationFn: () => privateApi.post("/auth/resend-verify-email", {
+            email: user?.email,
+        }),
+        onSuccess: () => {
+            toast.success("Đã gửi lại email xác thực!");
+        },
+        onError: (error) => {
+            notificationErrorApi(error);
+        },
+    });
 
     // ✅ Mutation để logout
     const logoutUser = useMutation({
@@ -53,6 +66,7 @@ export function useAuth() {
     return {
         user,
         updateProfile,
+        resendVerifyEmail,
         login,
         logout: () => logoutUser.mutate(),
     };
