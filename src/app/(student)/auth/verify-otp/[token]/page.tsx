@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import FormVerifyOtp from "../_components/FormVerifyOtp";
 
 export const metadata: Metadata = {
-    title: "Xác minh tài khoản",
+    title: "Xác minh bảo mật hai lớp",
 };
 
 const VerifyOtp = async ({ params }: { params: Promise<{ token: string }> }) => {

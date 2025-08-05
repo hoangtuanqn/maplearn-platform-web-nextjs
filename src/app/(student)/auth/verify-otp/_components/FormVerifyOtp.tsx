@@ -14,6 +14,7 @@ import { useLayoutEffect, useState } from "react";
 import { getLocalStorage, removeLocalStorage } from "~/libs/localStorage";
 import { useDispatch } from "react-redux";
 import { setUser } from "~/store/userSlice";
+import { notificationErrorApi } from "~/libs/apis/http";
 
 const FormVerifyOtp = () => {
     const dispatch = useDispatch();
@@ -30,8 +31,8 @@ const FormVerifyOtp = () => {
             dispatch(setUser(res.data.data));
             toast.success("Đăng nhập tài khoản thành công!");
         },
-        onError: () => {
-            toast.error("Mã xác nhận không hợp lệ!");
+        onError: (error) => {
+            notificationErrorApi(error);
         },
     });
 

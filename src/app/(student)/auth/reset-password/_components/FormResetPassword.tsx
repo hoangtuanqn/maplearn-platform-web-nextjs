@@ -11,24 +11,13 @@ import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useAuth } from "~/hooks/useAuth";
 import { FormResetPasswordType, resetPasswordSchema } from "../../auth.schema";
-import axios from "axios";
 import authApi from "~/apiRequest/auth";
-import { useEffect, useMemo } from "react";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
 import zxcvbn from "zxcvbn";
-import { base64UrlDecode } from "~/libs/hepler";
+import { notificationErrorApi } from "~/libs/apis/http";
 
-const FormResetPassword = () => {
-    const { token } = useParams<{ token: string }>();
-    // Parse token và email từ query param
-    const config = useMemo(() => {
-        try {
-            return token ? JSON.parse(base64UrlDecode(token)) : null;
-        } catch {
-            return null;
-        }
-    }, [token]);
-
+const FormResetPassword = ({ email }: { email: string }) => {
+    const { token } = useParams();
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
     const { login } = useAuth();
     const router = useRouter();
@@ -36,7 +25,7 @@ const FormResetPassword = () => {
         mode: "onBlur",
         resolver: zodResolver(resetPasswordSchema),
         defaultValues: {
-            email: config?.email ?? "",
+            email: email ?? "",
             password: "",
             confirmPassword: "",
         },
@@ -47,7 +36,7 @@ const FormResetPassword = () => {
         mutationFn: (data: FormResetPasswordType) =>
             authApi.resetPassword({
                 ...data,
-                token: config?.token ?? "",
+                token: token as string, // Chuyển đổi token sang chuỗi
             }),
         onSuccess: (res) => {
             login(res.data.data);
@@ -55,12 +44,7 @@ const FormResetPassword = () => {
             toast.success("Đã đặt lại mật khẩu thành công!");
         },
         onError: (error) => {
-            if (axios.isAxiosError(error)) {
-                const errors = error.response?.data?.errors;
-                for (const key in errors) {
-                    return toast.error(`${errors?.[key]}`);
-                }
-            }
+            notificationErrorApi(error);
         },
     });
 
@@ -71,12 +55,6 @@ const FormResetPassword = () => {
         }
         registerMutaion.mutate(data);
     };
-    useEffect(() => {
-        // Xác minh thêm token có đúng hay k? để đẩy người dùng đi luôn
-        if (!config?.token || !config?.email) {
-            router.push("/auth/forgot-password");
-        }
-    }, [config, router]);
     return (
         <>
             {registerMutaion.isPending && <Loading />}

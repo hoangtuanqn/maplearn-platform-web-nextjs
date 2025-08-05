@@ -14,7 +14,7 @@ import { FormRegisterType, registerSchema } from "../../auth.schema";
 import authApi from "~/apiRequest/auth";
 import PasswordStrengthMeter from "~/app/(student)/_components/Auth/PasswordStrengthMeter";
 import zxcvbn from "zxcvbn";
-import { handleApiError2 } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 
 const FormLogin = () => {
     const { isCapsLockOn, handleKeyEvent, handleFocus } = useCapsLockWarning();
@@ -38,10 +38,10 @@ const FormLogin = () => {
         onSuccess: (res) => {
             login(res.data.data);
             router.push("/");
-            toast.success("Tạo tài khoản thành công!");
+            toast.success("Tạo tài khoản thành công! Vui lòng kiểm tra email để xác thực tài khoản của bạn.");
         },
         onError: (error) => {
-            handleApiError2(error);
+            notificationErrorApi(error);
         },
     });
 

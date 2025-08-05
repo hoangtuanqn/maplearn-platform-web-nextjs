@@ -48,7 +48,7 @@ const DisplayCourse = ({
                     Bán chạy
                 </div>
             </div>
-            <span className="mt-4 w-full font-medium hover:line-clamp-none lg:line-clamp-2">{title}</span>
+            <h3 className="mt-4 w-full font-medium hover:line-clamp-none lg:line-clamp-2">{title}</h3>
 
             <div className="my-1 flex items-center gap-1 text-xs font-medium">
                 <User style={{ fill: "currentColor" }} />

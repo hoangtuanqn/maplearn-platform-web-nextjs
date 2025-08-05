@@ -3,10 +3,10 @@ import SelectObject from "../documents/_components/SelectObject";
 import SelectCourse from "../documents/_components/SelectCourse";
 import SearchDocument from "../documents/_components/SearchDocument";
 import Skeleton from "react-loading-skeleton";
-import { FilterDocuments } from "../documents/_components/FilterDocuments";
 import { Metadata } from "next";
 import SelectCategory from "./_components/SelectCategory";
 import CourseList from "./_components/CourseList";
+import { FilterCourses } from "./_components/FilerCourses";
 export const metadata: Metadata = {
     title: "Tất cả khóa học",
 };
@@ -29,7 +29,7 @@ const CoursePage = () => {
                     <div className="flex w-full flex-1 gap-2 max-lg:mt-6 lg:min-w-[400px]">
                         <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
                             <SearchDocument url="/courses" />
-                            <FilterDocuments />
+                            <FilterCourses />
                         </Suspense>
                     </div>
                 </div>

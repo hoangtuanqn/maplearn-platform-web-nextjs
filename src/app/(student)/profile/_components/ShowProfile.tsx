@@ -4,12 +4,17 @@ import React from "react";
 import { Button } from "~/components/ui/button";
 import { useAuth } from "~/hooks/useAuth";
 import { getCharacterName, getGender } from "~/libs/hepler";
+import Loading from "../../_components/Loading";
 
 const ShowProfile = () => {
-    const { user: profile } = useAuth();
+    const { user: profile, resendVerifyEmail } = useAuth();
     if (!profile) return;
+    const handleResendVerifyEmail = () => {
+        resendVerifyEmail.mutate();
+    };
     return (
         <>
+            {resendVerifyEmail.isPending && <Loading />}
             <div className="flex w-fit flex-col gap-4 font-medium">
                 <div className="mb-5 flex items-center gap-8">
                     <div className="t1-flex-center h-24 w-24 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-3xl leading-12 font-medium text-white">
@@ -36,7 +41,14 @@ const ShowProfile = () => {
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
                     <div className="w-48 text-gray-400">Email</div>
-                    <div>{profile.email}</div>
+                    <div className="flex items-center gap-3">
+                        <span className={`${!profile.email_verified_at && "text-slate-300"}`}>{profile.email}</span>
+                        {!profile.email_verified_at && (
+                            <Button variant="outline" size="sm" onClick={handleResendVerifyEmail} className="text-xs">
+                                Gửi lại email xác thực
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
                     <div className="w-48 text-gray-400">Số điện thoại</div>

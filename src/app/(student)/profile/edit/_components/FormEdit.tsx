@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { userSchema, UserType } from "~/schemaValidate/user.schema";
+import { profileSchema, ProfileType, UserType } from "~/schemaValidate/user.schema";
 import { useAuth } from "~/hooks/useAuth";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useMutation } from "@tanstack/react-query";
@@ -19,11 +19,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover
 import { cn } from "~/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
+
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
     const [provinces, setProvinces] = useState<ProvinceType>([]);
-    const form = useForm<UserType>({
-        resolver: zodResolver(userSchema),
+    const form = useForm<ProfileType>({
+        resolver: zodResolver(profileSchema),
         mode: "onBlur",
         defaultValues: {
             full_name: user?.full_name ?? "",
@@ -38,9 +39,9 @@ const FormEdit = () => {
     useUnsavedChangesWarning(form.formState.isDirty);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UserType) => profileApi.update(data),
+        mutationFn: (data: ProfileType) => profileApi.update(data),
         onSuccess: (_, data) => {
-            updateProfile(data);
+            updateProfile(data as UserType);
             toast.success("Cập nhật thông tin thành công!");
         },
         onError: () => {
@@ -48,7 +49,7 @@ const FormEdit = () => {
         },
     });
 
-    const onSubmit = (data: UserType) => {
+    const onSubmit = (data: ProfileType) => {
         if (isPending) {
             toast.warning("Thao tác quá nhanh!");
             return;
