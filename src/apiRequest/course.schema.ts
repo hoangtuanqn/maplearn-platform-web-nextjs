@@ -45,8 +45,6 @@ const courseApi = {
     },
 
     actionCourseToFavorite: (courseId: number, action: "add" | "check" | "remove") => {
-        console.log("chạy 2 lần nè");
-
         if (action === "check") {
             return publicApi.get(`/courses/${courseId}/favorite`);
         }

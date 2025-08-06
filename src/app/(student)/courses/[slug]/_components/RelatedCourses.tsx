@@ -24,12 +24,14 @@ const RelatedCourses = ({ idCategory }: { idCategory: number }) => {
                     <DisplayCourse
                         key={course.id}
                         price={course.price}
+                        finalPrice={course.final_price}
                         slug={course.slug}
                         thumbnail={course.thumbnail}
                         title={course.name}
                         teacher={course.department[0].name}
                         rating={course.rating.average_rating}
                         totalReviews={course.rating.total_reviews}
+                        is_best_seller={course.is_best_seller}
                     />
                 ))}
             </div>

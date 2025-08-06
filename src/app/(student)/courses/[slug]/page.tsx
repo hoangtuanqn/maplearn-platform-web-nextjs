@@ -67,8 +67,8 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                             <h2 className="t1-gradient-text font-bold">Giáo viên: Tổ toán học MapLearn</h2>
                             <div className="mt-1">
                                 {/* Giá tiền cũ, dạng bị gạch bỏ */}
-                                <span className="text-sm text-gray-500 line-through">
-                                    {course.price > 0 && formatter.number(course.price + 400000) + "đ"}
+                                <span className="text-sm text-slate-500 line-through">
+                                    {course.final_price < course.price && formatter.number(course.price) + "đ"}
                                 </span>
                                 <span className="block font-bold text-black">
                                     Học phí: {formatter.number(course.price) + "đ"}
@@ -83,7 +83,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                         <div className="rounded-lg bg-gray-50 p-4">
                             <span className="mb-2 block text-sm font-semibold text-gray-700">Khóa này bao gồm</span>
                             <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">
-                                <li>{formatter.duration(course.duration)} tổng thời lượng theo</li>
+                                <li>{formatter.durationToHours(course.duration)} tổng thời lượng học</li>
                                 <li>{course.lesson_count} bài giảng</li>
                                 <li>Tất cả tài nguyên có thể tải xuống</li>
                                 <li>Truy cập trên thiết bị di động</li>

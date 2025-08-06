@@ -15,7 +15,7 @@ function isPathMatch(pattern: string, pathname: string): boolean {
 }
 
 export function middleware(request: NextRequest) {
-    const token = request.cookies.get("jwt_token")?.value;
+    const token = request.cookies.get("jwt_token")?.value || request.cookies.get("jwt_refresh")?.value;
     const pathname = request.nextUrl.pathname;
 
     // Redirect nếu đã đăng nhập mà vào login/register

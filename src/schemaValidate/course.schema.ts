@@ -41,6 +41,7 @@ export const courseSchema = z.object({
     slug: z.string(),
     thumbnail: z.string().url(),
     price: z.number().default(0),
+    final_price: z.number().default(0), // Giá cuối cùng sau khi áp dụng giảm giá (auto discount)
     rating: z.object({
         average_rating: z.number(),
         total_reviews: z.number(),
@@ -52,6 +53,7 @@ export const courseSchema = z.object({
     start_date: z.string(),
     end_date: z.string(),
     status: z.boolean(),
+    is_best_seller: z.boolean().default(false), // sản phẩm bán chạy
     department: z.array(departmentSchema),
     subject: z.array(subjectShortSchema),
     category: z.array(CategoryShortSchema),

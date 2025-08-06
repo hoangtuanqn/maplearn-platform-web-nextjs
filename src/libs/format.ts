@@ -15,6 +15,13 @@ export const formatter = {
 
         return parts.join(":");
     },
+    // Chuyển đổi giây sang số giờ
+    durationToHours: (seconds: number): string => {
+        const hours = Math.floor(seconds / 3600);
+        if (hours === 0) return "Dưới 1 giờ";
+        if (hours === 1) return "1 giờ";
+        return `${hours} giờ`;
+    },
 };
 
 export const formatPhoneNumber = (phone: string | number): string => {

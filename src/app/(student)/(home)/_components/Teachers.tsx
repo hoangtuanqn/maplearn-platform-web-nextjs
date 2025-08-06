@@ -13,6 +13,7 @@ const Teachers = () => {
     const { data: teachers = [], isLoading } = useQuery({
         queryKey: ["user", "teachers"],
         queryFn: teacherApi.getTeachers,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
     return (
         <div className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">

@@ -33,7 +33,7 @@ const ChatBubble = ({
                 )}
             </div>
 
-            <ListCourseChatBotAI course_id={course_id} role={role} />
+            <ListCourseChatBotAI course_id={course_id} />
             <div className={`flex ${isUser ? `justify-end pr-0.5` : `justify-start pl-0.5`}`}>
                 <span className={`text-[10px] text-gray-600`}>{name}</span>
             </div>

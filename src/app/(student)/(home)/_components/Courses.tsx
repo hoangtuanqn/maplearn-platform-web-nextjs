@@ -44,12 +44,14 @@ const Courses = () => {
                                         is_enrolled={course.is_enrolled}
                                         slug={course.slug}
                                         price={course.price}
+                                        finalPrice={course.final_price}
                                         key={course.id}
                                         thumbnail={course.thumbnail}
                                         title={course.name}
                                         teacher={course.department[0]?.name}
                                         rating={course.rating.average_rating}
                                         totalReviews={course.rating.total_reviews}
+                                        is_best_seller={course.is_best_seller}
                                     />
                                 );
                             })}

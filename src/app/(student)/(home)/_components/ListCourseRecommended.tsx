@@ -20,7 +20,7 @@ const ListCourseRecommended = () => {
     return (
         <>
             <div className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">
-                <HeaderSection title={"Gợi ý khóa học phù hợp"} />
+                <HeaderSection title={"Được gợi ý cho bạn"} />
                 <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
                     {isLoading && [...Array(8).keys()].map((index) => <CourseSkeleton key={index} />)}
                     {courses?.map((course) => {
@@ -30,12 +30,14 @@ const ListCourseRecommended = () => {
                                 is_enrolled={course.is_enrolled}
                                 slug={course.slug}
                                 price={course.price}
+                                finalPrice={course.final_price}
                                 key={course.id}
                                 thumbnail={course.thumbnail}
                                 title={course.name}
                                 teacher={course.department[0]?.name}
                                 rating={course.rating.average_rating}
                                 totalReviews={course.rating.total_reviews}
+                                is_best_seller={course.is_best_seller}
                             />
                         );
                     })}

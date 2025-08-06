@@ -31,6 +31,7 @@ const ListCourseFavorite = () => {
                     // Ch có data thật
                     <DisplayCourse
                         price={course.price}
+                        finalPrice={course.final_price}
                         slug={course.slug}
                         key={course.id}
                         thumbnail={course.thumbnail}

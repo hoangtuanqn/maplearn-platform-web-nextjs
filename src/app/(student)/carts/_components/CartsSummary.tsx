@@ -60,7 +60,7 @@ const CartsSummary = ({ carts, selectedItems }: { carts: CartsResponse["data"] |
                     <div className="flex flex-col">
                         <span className="max-lg:text-xs">Tổng thời lượng</span>
                         <span className="text-primary font-bold max-lg:text-sm">
-                            {formatter.duration(summary?.total_duration ?? 0)}
+                            {formatter.durationToHours(summary?.total_duration ?? 0)}
                         </span>
                     </div>
                 </div>
