@@ -1,21 +1,21 @@
-import publicApi from "~/libs/apis/publicApi";
+import privateApi from "~/libs/apis/privateApi";
 import { CartsResponse, SummaryResponse } from "~/schemaValidate/cart.schema";
 
 const cartApi = {
-    getCarts: () => publicApi.get<CartsResponse>("/carts"),
+    getCarts: () => privateApi.get<CartsResponse>("/carts"),
 
     // Xóa từng item
-    removeCartItem: (cardIds: number[]) => publicApi.delete(`/carts/cleanup`, { data: { cart_id: cardIds } }),
-    toggleCartAll: (isActive: boolean) => publicApi.patch(`/cart-items/toggle-all`, { is_active: isActive }),
+    removeCartItem: (cardIds: number[]) => privateApi.delete(`/carts/cleanup`, { data: { cart_id: cardIds } }),
+    toggleCartAll: (isActive: boolean) => privateApi.patch(`/cart-items/toggle-all`, { is_active: isActive }),
     toggleCartItem: (id: number, isActive: boolean) =>
-        publicApi.patch(`/cart-items/${id}/toggle`, { is_active: isActive }),
+        privateApi.patch(`/cart-items/${id}/toggle`, { is_active: isActive }),
 
     // Xóa tất cả các item
-    removeCartItems: () => publicApi.delete(`/carts`),
-    addCartItem: (courseId: number) => publicApi.post(`/carts/${courseId}`),
+    removeCartItems: () => privateApi.delete(`/carts`),
+    addCartItem: (courseId: number) => privateApi.post(`/carts/${courseId}`),
 
     // Get summary of cart
     getCartSummary: (numberIds: number[]) =>
-        publicApi.post<SummaryResponse>(`/cart-items/summary`, { cart_id: numberIds }),
+        privateApi.post<SummaryResponse>(`/cart-items/summary`, { cart_id: numberIds }),
 };
 export default cartApi;

@@ -122,9 +122,9 @@ const ListCarts = ({
             <section className="mt-4 flex flex-col gap-2 divide-y divide-slate-200 px-4 pb-4 max-lg:px-1">
                 {!isLoading && carts?.items.length === 0 && (
                     <div className="t1-flex-center w-full flex-col">
-                        <DisplayNoData title="Không có khóa học nào trong giỏ hàng. Hãy tiếp tục mua sắm" />
+                        <DisplayNoData title="Không có khóa học nào trong giỏ hàng." />
                         <Button className="mx-auto mt-4 w-fit text-white max-lg:w-full">
-                            <Link href="/courses">Tiếp tục mua sắm</Link>
+                            <Link href="/courses">Tiếp tục tìm kiếm khóa học</Link>
                         </Button>
                     </div>
                 )}
@@ -159,7 +159,8 @@ const ListCarts = ({
                                 </div>
                                 <div className="mt-3 flex gap-6 text-xs font-bold text-slate-500 max-lg:mt-1 max-lg:gap-2">
                                     <span className="flex items-center gap-1">
-                                        <Clock className="h-4 w-4 max-lg:h-3 max-lg:w-3" /> 8 giờ học
+                                        <Clock className="h-4 w-4 max-lg:h-3 max-lg:w-3" />{" "}
+                                        {formatter.durationToHours(course.course.duration)}
                                     </span>
                                     <span className="flex items-center gap-1">
                                         <BookOpen className="h-4 w-4 max-lg:h-3 max-lg:w-3" /> 8 bài học
@@ -192,7 +193,7 @@ const ListCarts = ({
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2 max-lg:mt-2 max-lg:flex-row max-lg:justify-end">
+                        <div className="sticky flex h-fit flex-col gap-2 rounded-lg bg-white max-lg:mt-2 max-lg:flex-row max-lg:justify-end">
                             <DangerConfirm
                                 action={() => removeCartIds([course.id])}
                                 message={`Bạn có chắc chắn muốn xóa khóa học ${course.course.name} khỏi giỏ hàng không?`}

@@ -91,12 +91,14 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
                         <DisplayCourse
                             key={course.id}
                             price={course.price}
+                            finalPrice={course.final_price}
                             slug={course.slug}
                             thumbnail={course.thumbnail}
                             title={course.name}
                             teacher={getFullName(teacher.user.gender, teacher.user.full_name)}
                             rating={course.rating.average_rating}
                             totalReviews={course.rating.total_reviews}
+                            is_best_seller={course.is_best_seller}
                         />
                     ))}
                 </div>

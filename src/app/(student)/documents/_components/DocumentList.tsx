@@ -12,6 +12,7 @@ import DocumentItem from "./DocumentItem";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
 import SearchDocument from "./SearchDocument";
 import { FilterDocuments } from "./FilterDocuments";
+import { formatter } from "~/libs/format";
 async function fetchDocuments(
     page: number,
     limit: number,
@@ -67,7 +68,9 @@ const DocumentList = () => {
                         <FilterDocuments />
                     </div>
                 </div>
-                <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <h2 className="mt-5 text-right text-base font-bold text-black">{formatter.number(total)} kết quả</h2>
+
+                <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-2">
                     {isLoading ? (
                         [...Array(20).keys()].map((index) => <DocumentSkeleton key={index} />)
                     ) : documents?.length === 0 ? (

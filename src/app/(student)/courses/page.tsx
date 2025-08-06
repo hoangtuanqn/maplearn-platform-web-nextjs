@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 import { Metadata } from "next";
 import SelectCategory from "./_components/SelectCategory";
 import CourseList from "./_components/CourseList";
-import { FilterCourses } from "./_components/FilerCourses";
+import { FilterCourses } from "./_components/FilterCourses";
 export const metadata: Metadata = {
     title: "Tất cả khóa học",
 };
@@ -33,6 +33,7 @@ const CoursePage = () => {
                         </Suspense>
                     </div>
                 </div>
+
                 <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
                     <CourseList />
                 </Suspense>

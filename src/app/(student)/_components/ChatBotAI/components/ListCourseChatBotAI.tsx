@@ -6,7 +6,13 @@ import Skeleton from "react-loading-skeleton";
 import publicApi from "~/libs/apis/publicApi";
 import { formatter } from "~/libs/format";
 
-const ListCourseChatBotAI = ({ course_id, role }: { course_id: number[]; role: "user" | "model" }) => {
+type CourseChatBotAI = {
+    name: string;
+    slug: string;
+    thumbnail: string;
+    price: number;
+};
+const ListCourseChatBotAI = ({ course_id }: { course_id: number[] }) => {
     const { data, isLoading } = useQuery({
         queryKey: ["list-course-chatbot-ai", course_id],
         queryFn: async () => {
@@ -16,13 +22,10 @@ const ListCourseChatBotAI = ({ course_id, role }: { course_id: number[]; role: "
             return response.data?.data || []; // Trả về danh sách khóa học
         },
     });
-    console.log("data >>> ", data);
-
-    // if (role === "user" || course_id.length === 0) return null; // Chỉ hiển thị danh sách khóa học cho ChatBot AI
 
     return (
         <>
-            <div className="mt-3 mb-1 flex flex-col gap-1">
+            <div className="mt-3 flex flex-col gap-1">
                 {course_id.length > 0 &&
                     isLoading &&
                     [...Array(course_id.length)].map((_, index) => (
@@ -40,7 +43,7 @@ const ListCourseChatBotAI = ({ course_id, role }: { course_id: number[]; role: "
                         </div>
                     ))}
 
-                {data?.map((course) => (
+                {data?.map((course: CourseChatBotAI) => (
                     <div
                         key={course.name}
                         className="border-primary rounded-lg border bg-white p-3 transition hover:shadow"
@@ -54,7 +57,7 @@ const ListCourseChatBotAI = ({ course_id, role }: { course_id: number[]; role: "
                                 className="rounded-md border border-gray-100 object-cover"
                             />
                             <div className="ml-3 flex-1">
-                                <h2 className="mb-0.5 line-clamp-2  text-sm font-semibold text-gray-800">
+                                <h2 className="mb-0.5 line-clamp-2 text-sm font-semibold text-gray-800">
                                     {course.name}
                                 </h2>
                                 <span className="text-xs font-bold text-black">{formatter.number(course.price)}đ</span>

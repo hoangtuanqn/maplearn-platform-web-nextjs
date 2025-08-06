@@ -11,18 +11,22 @@ interface DisplayCourseType {
     slug: string;
     rating: number;
     totalReviews: number;
-    price: number;
+    price: number; // Giá gốc
+    finalPrice?: number; // Giá hiện tại, có thể là 0 nếu miễn phí (Giá này là giá sau khi áp dụng Auto Discount)
     is_enrolled?: boolean;
+    is_best_seller?: boolean; // Khóa học bán chạy
 }
 const DisplayCourse = ({
     thumbnail,
     title,
     price = 0,
+    finalPrice = 0,
     rating = 0,
     totalReviews = 0,
     teacher,
     slug,
     is_enrolled = false,
+    is_best_seller = false,
 }: DisplayCourseType) => {
     return (
         <Link href={`/courses/${slug}`} className="text-secondary-typo relative block h-full w-full rounded-xl">
@@ -41,12 +45,14 @@ const DisplayCourse = ({
                     </span>
                 )} */}
 
-                <span className="absolute top-2 left-2 rounded bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
+                {/* <span className="absolute top-2 left-2 rounded bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
                     -20%
-                </span>
-                <div className="absolute top-2 right-2 rounded bg-gradient-to-r from-yellow-500 to-orange-500 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
-                    Bán chạy
-                </div>
+                </span> */}
+                {is_best_seller && (
+                    <div className="absolute top-2 right-2 rounded bg-gradient-to-r from-yellow-500 to-orange-500 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
+                        Bán chạy
+                    </div>
+                )}
             </div>
             <h3 className="mt-4 w-full font-medium hover:line-clamp-none lg:line-clamp-2">{title}</h3>
 
@@ -57,7 +63,7 @@ const DisplayCourse = ({
             <div className="flex items-center gap-1 text-xs">
                 <span className="font-bold text-[#FFB23F]">{rating}</span>
                 <Rating style={{ maxWidth: 60 }} value={rating} readOnly />
-                <span>({totalReviews})</span>
+                <span className="text-slate-400">({totalReviews})</span>
             </div>
             {is_enrolled ? (
                 <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
@@ -65,11 +71,20 @@ const DisplayCourse = ({
                 </span>
             ) : (
                 <>
-                    <span className="block font-bold text-black">
-                        {price == 0 ? "Miễn phí" : formatter.number(price ?? 0) + "đ"}
-                    </span>
-                    {price > 0 && (
-                        <span className="mt-1 block text-xs font-semibold text-green-600">Đã giảm 400.000đ</span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-black">
+                            {finalPrice === 0 ? "Miễn phí" : formatter.number(finalPrice ?? 0) + "đ"}
+                        </span>
+                        {price > 0 && finalPrice < price && (
+                            <span className="text-xs font-semibold text-slate-600 line-through">
+                                {formatter.number(price) + "đ"}
+                            </span>
+                        )}
+                    </div>
+                    {finalPrice < price && (
+                        <span className="mt-1 block text-xs font-semibold text-green-600">
+                            Đã giảm {formatter.number(price - finalPrice)}đ
+                        </span>
                     )}
                 </>
             )}

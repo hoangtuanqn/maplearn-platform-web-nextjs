@@ -18,7 +18,7 @@ const OrderSummary = () => {
                     </li>
                     <li className="flex items-center justify-between border-b border-slate-200 py-2 max-lg:py-1">
                         <span className="max-lg:text-xs">Điểm thưởng MapLearn</span>
-                        <span className="text-primary font-bold max-lg:text-sm">1.200 điểm</span>
+                        <span className="text-primary font-bold max-lg:text-sm">0 điểm</span>
                     </li>
                     <li className="mt-2 flex items-end justify-between py-2 max-lg:mt-1 max-lg:py-1">
                         <span className="font-bold max-lg:text-sm">Thành tiền</span>
