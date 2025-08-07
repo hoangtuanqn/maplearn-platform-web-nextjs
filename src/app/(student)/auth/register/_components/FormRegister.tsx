@@ -40,9 +40,7 @@ const FormLogin = () => {
             router.push("/");
             toast.success("Tạo tài khoản thành công! Vui lòng kiểm tra email để xác thực tài khoản của bạn.");
         },
-        onError: (error) => {
-            notificationErrorApi(error);
-        },
+        onError: notificationErrorApi,
     });
 
     const onSubmit: SubmitHandler<FormRegisterType> = async (data) => {

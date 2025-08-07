@@ -17,10 +17,10 @@ const Loading = () => {
         };
     }, []);
     return (
-        <div className="fixed inset-0 z-2000 flex items-center justify-center bg-black/40">
-            <div className="flex flex-col gap-5">
-                <ThreeDot variant="bounce" color="var(--primary)" size="medium" text="" textColor="" />
-                <span className="text-primary font-bold">Đang xử lý ....</span>
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/30 backdrop-blur-xs">
+            <div className="flex flex-col items-center gap-4 rounded-lg p-6">
+                <ThreeDot variant="bounce" color="var(--primary)" size="large" text="" textColor="" />
+                <span className="font-bold text-white">Đang xử lý...</span>
             </div>
         </div>
     );

@@ -22,6 +22,7 @@ const invoiceApi = {
         return privateApi.get<InvoiceListResponse>(query);
     },
 
-    getInvoiceDetail: (code: string) => privateApi.get<InvoiceDetailResponse>(`/invoices/${code}`),
+    getInvoiceDetail: (code: string, headers: { [key: string]: string }) =>
+        privateApi.get<InvoiceDetailResponse>(`/invoices/${code}`, { headers }),
 };
 export default invoiceApi;

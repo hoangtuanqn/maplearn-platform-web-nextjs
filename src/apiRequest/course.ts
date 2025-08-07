@@ -32,7 +32,7 @@ const courseApi = {
     getDetailCourse: (slug: string) => {
         return publicApi.get<CourseGetDetailResponse>(`/courses/${slug}`);
     },
-    getCourseRecommended: () => publicApi.get<CourseListRecommendedResponse>(`/courses/recommended`),
+    getCourseRecommended: () => privateApi.get<CourseListRecommendedResponse>(`/courses/recommended`),
     getCategories: (page: number = 1, limit: number = CATEGORY_COURSE_PER_PAGE) =>
         publicApi.get<CategoriesCoursesResponse>(`/course-categories?page=${page}&limit=${limit}`),
 

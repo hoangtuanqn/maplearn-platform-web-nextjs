@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import CourseSkeleton from "../../courses/_components/CourseSkeleton";
 import courseApi from "~/apiRequest/course";
 import { useAuth } from "~/hooks/useAuth";
+import { useState } from "react";
 
 const ListCourseRecommended = () => {
     const { data: courses, isLoading } = useQuery({
@@ -15,8 +16,9 @@ const ListCourseRecommended = () => {
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
+
     const { user } = useAuth();
-    if (!user) return null; // Chỉ hiển thị nếu đã đăng nhập
+    if (!user) return null;
     return (
         <>
             <div className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">

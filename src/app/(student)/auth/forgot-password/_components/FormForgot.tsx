@@ -8,7 +8,7 @@ import Loading from "~/app/(student)/_components/Loading";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { handleApiError } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 import authApi from "~/apiRequest/auth";
 const FormForgot = () => {
     const form = useForm<FormForgotPasswordType>({
@@ -29,9 +29,7 @@ const FormForgot = () => {
             );
             form.reset();
         },
-        onError: (error) => {
-            handleApiError(error);
-        },
+        onError: notificationErrorApi,
     });
 
     const onSubmit: SubmitHandler<FormForgotPasswordType> = async (data) => {

@@ -2,9 +2,9 @@
 "use client";
 import { Howl } from "howler";
 
-export const useNotificationSound = () => {
+export const useNotificationSound = (file = "notification.mp3") => {
     const sound = new Howl({
-        src: ["/assets/musics/notification.mp3"],
+        src: [`/assets/musics/${file}`],
         volume: 1.0,
     });
 

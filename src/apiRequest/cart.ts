@@ -1,5 +1,5 @@
 import privateApi from "~/libs/apis/privateApi";
-import { CartsResponse, SummaryResponse } from "~/schemaValidate/cart.schema";
+import { CartsResponse, CheckoutResponse, SummaryResponse } from "~/schemaValidate/cart.schema";
 
 const cartApi = {
     getCarts: () => privateApi.get<CartsResponse>("/carts"),
@@ -17,5 +17,7 @@ const cartApi = {
     // Get summary of cart
     getCartSummary: (numberIds: number[]) =>
         privateApi.post<SummaryResponse>(`/cart-items/summary`, { cart_id: numberIds }),
+
+    checkout: (data: { payment_method: string }) => privateApi.post<CheckoutResponse>(`/carts/checkout`, data),
 };
 export default cartApi;

@@ -43,9 +43,7 @@ const FormResetPassword = ({ email }: { email: string }) => {
             router.push("/");
             toast.success("Đã đặt lại mật khẩu thành công!");
         },
-        onError: (error) => {
-            notificationErrorApi(error);
-        },
+        onError: notificationErrorApi,
     });
 
     const onSubmit: SubmitHandler<FormResetPasswordType> = async (data) => {
