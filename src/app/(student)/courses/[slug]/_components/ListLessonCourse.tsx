@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useQuery } from "@tanstack/react-query";
-import courseApi from "~/apiRequest/course.schema";
+import courseApi from "~/apiRequest/course";
 import { useParams } from "next/navigation";
 import { formatter } from "~/libs/format";
 

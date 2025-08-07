@@ -15,7 +15,7 @@ const CartsSummary = ({ carts, selectedItems }: { carts: CartsResponse["data"] |
     useEffect(() => {
         if (carts) {
             const filtered = carts.items.filter((course) => selectedItems.includes(course.id));
-            console.log("dafilteredta >>", carts.items, " ", selectedItems);
+            // console.log("dafilteredta >>", carts.items, " ", selectedItems);
 
             setData(filtered);
         } else {

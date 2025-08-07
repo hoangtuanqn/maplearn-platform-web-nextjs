@@ -88,18 +88,7 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
                 <h2 className="text-primary mb-4 text-base font-semibold">Tất cả khoá học</h2>
                 <div className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2">
                     {teacher.courses?.map((course) => (
-                        <DisplayCourse
-                            key={course.id}
-                            price={course.price}
-                            finalPrice={course.final_price}
-                            slug={course.slug}
-                            thumbnail={course.thumbnail}
-                            title={course.name}
-                            teacher={getFullName(teacher.user.gender, teacher.user.full_name)}
-                            rating={course.rating.average_rating}
-                            totalReviews={course.rating.total_reviews}
-                            is_best_seller={course.is_best_seller}
-                        />
+                        <DisplayCourse key={course.id} course={course} />
                     ))}
                 </div>
             </div>

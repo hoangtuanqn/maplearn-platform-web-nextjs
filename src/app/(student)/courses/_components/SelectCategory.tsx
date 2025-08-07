@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import MapLearnIcon from "../../_components/Icons/MapLearnIcon";
 import { useQuery } from "@tanstack/react-query";
-import courseApi from "~/apiRequest/course.schema";
+import courseApi from "~/apiRequest/course";
 import { formatter } from "~/libs/format";
 import CategoryCourseSkeleton from "./CategoryCourseSkeleton";
 import { useRouter, useSearchParams } from "next/navigation";

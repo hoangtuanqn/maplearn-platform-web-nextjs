@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course.schema";
+import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
 import DisplayCourse from "~/app/(student)/_components/Courses/DisplayCourse";
 import CourseSkeleton from "~/app/(student)/courses/_components/CourseSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
@@ -29,17 +29,7 @@ const ListCourseFavorite = () => {
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
                 {coursesFavorite?.data?.map((course) => (
                     // Ch có data thật
-                    <DisplayCourse
-                        price={course.price}
-                        finalPrice={course.final_price}
-                        slug={course.slug}
-                        key={course.id}
-                        thumbnail={course.thumbnail}
-                        title={course.name}
-                        teacher={course.department[0].name}
-                        rating={course.rating.average_rating}
-                        totalReviews={course.rating.total_reviews}
-                    />
+                    <DisplayCourse key={course.id} course={course} />
                 ))}
             </div>
             {!isLoading && (coursesFavorite?.data?.length ?? 0) > 0 && (

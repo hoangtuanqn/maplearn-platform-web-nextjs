@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import courseApi from "~/apiRequest/course.schema";
+import courseApi from "~/apiRequest/course";
 import DisplayCourse from "~/app/(student)/_components/Courses/DisplayCourse";
 import CourseSkeleton from "../../_components/CourseSkeleton";
 
@@ -21,18 +21,7 @@ const RelatedCourses = ({ idCategory }: { idCategory: number }) => {
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                 {isLoading && [...Array(5)].map((_, index) => <CourseSkeleton key={index} />)}
                 {courses?.map((course) => (
-                    <DisplayCourse
-                        key={course.id}
-                        price={course.price}
-                        finalPrice={course.final_price}
-                        slug={course.slug}
-                        thumbnail={course.thumbnail}
-                        title={course.name}
-                        teacher={course.department[0].name}
-                        rating={course.rating.average_rating}
-                        totalReviews={course.rating.total_reviews}
-                        is_best_seller={course.is_best_seller}
-                    />
+                    <DisplayCourse key={course.id} course={course} />
                 ))}
             </div>
         </div>

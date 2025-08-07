@@ -8,7 +8,7 @@ const LoginFacebook = () => {
             onClick={() => (window.location.href = `${APP.API_ROOT}/api/v1/auth/facebook`)}
             className="cursor-pointer"
         >
-            <div className="t1-flex-center rounded-xl">
+            <div className="t1-flex-center rounded-xl view_tooltip" data-tooltip-content="Đăng nhập bằng Facebook">
                 <Image
                     src="/assets/icons/facebook.webp"
                     alt="Facebook"

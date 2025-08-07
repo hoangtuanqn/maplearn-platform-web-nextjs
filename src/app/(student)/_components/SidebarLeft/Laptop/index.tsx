@@ -34,7 +34,6 @@ const SideBarLaptop = () => {
                                 <p className="text-cp line-clamp-1 text-gray-500">{user?.username}</p>
                             </div>
                         </Link>
-
                         <MenuItemLink title="Thông tin cá nhân" url="/profile" image="/assets/icons/user-info.svg" />
                         <MenuItemLink
                             title="Khóa học của tôi"
@@ -45,7 +44,12 @@ const SideBarLaptop = () => {
                             title="Khoá học đã lưu"
                             url={"/profile/saved-courses"}
                             image="/assets/icons/saved-courses.svg"
-                        />
+                        />{" "}
+                        {/* <MenuItemLink
+                            title="Hóa đơn của tôi"
+                            url={"/profile/saved-courses"}
+                            image="/assets/icons/saved-courses.svg"
+                        /> */}
                     </>
                 ) : (
                     <MenuItemLink title="Đăng nhập" url={"/auth/login"} image="/assets/icons/login.svg" />

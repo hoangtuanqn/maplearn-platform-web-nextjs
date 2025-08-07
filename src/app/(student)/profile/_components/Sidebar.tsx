@@ -3,7 +3,7 @@ import { useAuth } from "~/hooks/useAuth";
 import { getCharacterName, isActiveRoute } from "~/libs/hepler";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bookmark, ChevronRight, ContactRound, GraduationCap } from "lucide-react";
+import { Bookmark, ChevronRight, ContactRound, GraduationCap, ReceiptCent } from "lucide-react";
 import { ElementType } from "react";
 type SidebarProfileLinkProps = {
     pathname: string;
@@ -25,7 +25,7 @@ const SidebarProfileLink = ({ pathname, url, matcher, Icon, name }: SidebarProfi
             <div className="grow">{name}</div>
             <ChevronRight />
         </div>
-    </Link>
+</Link>
 );
 
 const sidebarMenuLink = [
@@ -46,6 +46,12 @@ const sidebarMenuLink = [
         matcher: ["/profile/saved-courses"],
         name: "Khóa học đã lưu",
         icon: Bookmark,
+    },
+    {
+        url: "/profile/invoices",
+        matcher: ["/profile/invoices"],
+        name: "Hóa đơn của tôi",
+        icon: ReceiptCent,
     },
     // {
     //     url: "/profile/saved-questions",

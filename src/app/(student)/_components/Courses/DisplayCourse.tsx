@@ -1,94 +1,151 @@
+"use client";
+
 import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import { formatter } from "~/libs/format";
-interface DisplayCourseType {
-    thumbnail: string;
-    title: string;
-    teacher: string;
-    slug: string;
-    rating: number;
-    totalReviews: number;
-    price: number; // Giá gốc
-    finalPrice?: number; // Giá hiện tại, có thể là 0 nếu miễn phí (Giá này là giá sau khi áp dụng Auto Discount)
-    is_enrolled?: boolean;
-    is_best_seller?: boolean; // Khóa học bán chạy
-}
-const DisplayCourse = ({
-    thumbnail,
-    title,
-    price = 0,
-    finalPrice = 0,
-    rating = 0,
-    totalReviews = 0,
-    teacher,
-    slug,
-    is_enrolled = false,
-    is_best_seller = false,
-}: DisplayCourseType) => {
+import { motion, AnimatePresence } from "framer-motion";
+import { CourseType } from "~/schemaValidate/course.schema";
+import ButtonActionCourse from "./_components/ButtonActionCourse";
+
+const DisplayCourse = ({ course }: { course: CourseType }) => {
+    const [showInfo, setShowInfo] = useState(false);
+    const [position, setPosition] = useState<"left" | "right">("right");
+
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Auto adjust tooltip direction
+    useEffect(() => {
+        if (showInfo && containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            const spaceRight = window.innerWidth - rect.right;
+            const tooltipWidth = 320; // your tooltip width + margin
+
+            if (spaceRight < tooltipWidth) {
+                setPosition("left");
+            } else {
+                setPosition("right");
+            }
+        }
+    }, [showInfo]);
+
+    const tooltipOffset = 210;
+
     return (
-        <Link href={`/courses/${slug}`} className="text-secondary-typo relative block h-full w-full rounded-xl">
-            <div className="relative">
-                <Image
-                    width={184}
-                    height={184}
-                    src={thumbnail}
-                    alt={teacher}
-                    className="aspect-square w-full rounded-xl object-cover"
-                />
-                {/* Làm badge giảm giá */}
-                {/* {price > 0 && (
-                    <span className="absolute top-2 right-2 rounded-md bg-[#FFB23F] px-2 py-1 text-xs font-bold text-white">
-                        -20%
-                    </span>
-                )} */}
-
-                {/* <span className="absolute top-2 left-2 rounded bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
-                    -20%
-                </span> */}
-                {is_best_seller && (
-                    <div className="absolute top-2 right-2 rounded bg-gradient-to-r from-yellow-500 to-orange-500 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
-                        Bán chạy
-                    </div>
-                )}
-            </div>
-            <h3 className="mt-4 w-full font-medium hover:line-clamp-none lg:line-clamp-2">{title}</h3>
-
-            <div className="my-1 flex items-center gap-1 text-xs font-medium">
-                <User style={{ fill: "currentColor" }} />
-                <span className="line-clamp-2">{teacher}</span>
-            </div>
-            <div className="flex items-center gap-1 text-xs">
-                <span className="font-bold text-[#FFB23F]">{rating}</span>
-                <Rating style={{ maxWidth: 60 }} value={rating} readOnly />
-                <span className="text-slate-400">({totalReviews})</span>
-            </div>
-            {is_enrolled ? (
-                <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
-                    Bạn đã mua khóa học này
-                </span>
+        <div
+            className="relative inline-block w-full"
+            onMouseEnter={() => setShowInfo(true)}
+            onMouseLeave={() => setShowInfo(false)}
+            ref={containerRef}
+        >
+            {position === "left" ? (
+                <div className="absolute top-0 bottom-0 -left-4 z-10 w-4 bg-transparent"></div>
             ) : (
-                <>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-black">
-                            {finalPrice === 0 ? "Miễn phí" : formatter.number(finalPrice ?? 0) + "đ"}
-                        </span>
-                        {price > 0 && finalPrice < price && (
-                            <span className="text-xs font-semibold text-slate-600 line-through">
-                                {formatter.number(price) + "đ"}
+                <div className="absolute top-0 -right-4 bottom-0 z-10 w-4 bg-transparent"></div>
+            )}
+
+            <Link
+                href={`/courses/${course.slug}`}
+                className="text-secondary-typo relative block h-full w-full rounded-xl"
+            >
+                <div className="relative">
+                    <Image
+                        width={184}
+                        height={184}
+                        src={course.thumbnail}
+                        alt={course.department[0]?.name}
+                        className="aspect-square w-full rounded-xl object-cover"
+                    />
+                    {course.is_best_seller && (
+                        <div className="absolute top-2 right-2 rounded bg-gradient-to-r from-yellow-500 to-orange-500 px-2 py-1 text-[10.125px] font-bold text-white shadow-md">
+                            Bán chạy
+                        </div>
+                    )}
+                </div>
+                <h3 className="mt-4 w-full font-medium lg:line-clamp-2">{course.name}</h3>
+                <div className="my-1 flex items-center gap-1 text-xs font-medium">
+                    <User style={{ fill: "currentColor" }} />
+                    <span className="line-clamp-2">{course.department[0]?.name}</span>
+                </div>
+                <div className="flex items-center gap-1 text-xs">
+                    <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
+                    <Rating style={{ maxWidth: 60 }} value={course.rating.average_rating} readOnly />
+                    <span className="text-slate-400">({course.rating.total_reviews})</span>
+                </div>
+                {course.is_enrolled ? (
+                    <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                        Bạn đã mua khóa học này
+                    </span>
+                ) : (
+                    <>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-black">
+                                {course.final_price === 0
+                                    ? "Miễn phí"
+                                    : formatter.number(course.final_price ?? 0) + "đ"}
+                            </span>
+                            {course.price > 0 && course.final_price < course.price && (
+                                <span className="text-xs font-semibold text-slate-600 line-through">
+                                    {formatter.number(course.price) + "đ"}
+                                </span>
+                            )}
+                        </div>
+                        {course.final_price < course.price && (
+                            <span className="mt-1 block text-xs font-semibold text-green-600">
+                                Đã giảm {formatter.number(course.price - course.final_price)}đ
                             </span>
                         )}
-                    </div>
-                    {finalPrice < price && (
-                        <span className="mt-1 block text-xs font-semibold text-green-600">
-                            Đã giảm {formatter.number(price - finalPrice)}đ
-                        </span>
-                    )}
-                </>
-            )}
-        </Link>
+                    </>
+                )}
+            </Link>
+
+            {/* Tooltip */}
+            <AnimatePresence>
+                {showInfo && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.09 }}
+                        transition={{ duration: 0.1 }}
+                        className={`absolute top-0 z-50 w-[320px] ${
+                            position === "right" ? `left-[${tooltipOffset}px]` : `right-[${tooltipOffset}px]`
+                        }`}
+                        style={{
+                            left: position === "right" ? `${tooltipOffset}px` : "auto",
+                            right: position === "left" ? `${tooltipOffset}px` : "auto",
+                        }}
+                        onMouseEnter={() => setShowInfo(true)}
+                        onMouseLeave={() => setShowInfo(false)}
+                    >
+                        <div className={`absolute top-5 ${position === "left" ? "right-[0]" : "left-[-18px]"}`}>
+                            {position === "right" ? (
+                                <>
+                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-gray-800" />
+                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-white" />
+                                </>
+                            ) : (
+                                <>
+                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-gray-800" />
+                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-white" />
+                                </>
+                            )}
+                        </div>
+
+                        <div className="border-muted rounded-lg border bg-white px-4 py-6 shadow-lg">
+                            <h3 className="text-primary text-base font-bold">
+                                <Link href={`/courses/${course.slug}`}>{course.name}</Link>
+                            </h3>
+                            <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
+                            <p className="mt-2 text-gray-600">{course.description}</p>
+
+                            <ButtonActionCourse courseInit={course} />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 };
 
