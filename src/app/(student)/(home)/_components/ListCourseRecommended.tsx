@@ -3,7 +3,7 @@ import DisplayCourse from "../../_components/Courses/DisplayCourse";
 import HeaderSection from "./HeaderSection";
 import { useQuery } from "@tanstack/react-query";
 import CourseSkeleton from "../../courses/_components/CourseSkeleton";
-import courseApi from "~/apiRequest/course.schema";
+import courseApi from "~/apiRequest/course";
 import { useAuth } from "~/hooks/useAuth";
 
 const ListCourseRecommended = () => {
@@ -25,21 +25,7 @@ const ListCourseRecommended = () => {
                     {isLoading && [...Array(8).keys()].map((index) => <CourseSkeleton key={index} />)}
                     {courses?.map((course) => {
                         if (course.is_enrolled) return null; // Bỏ qua nếu mua rồi
-                        return (
-                            <DisplayCourse
-                                is_enrolled={course.is_enrolled}
-                                slug={course.slug}
-                                price={course.price}
-                                finalPrice={course.final_price}
-                                key={course.id}
-                                thumbnail={course.thumbnail}
-                                title={course.name}
-                                teacher={course.department[0]?.name}
-                                rating={course.rating.average_rating}
-                                totalReviews={course.rating.total_reviews}
-                                is_best_seller={course.is_best_seller}
-                            />
-                        );
+                        return <DisplayCourse key={course.id} course={course} />;
                     })}
                 </div>
             </div>

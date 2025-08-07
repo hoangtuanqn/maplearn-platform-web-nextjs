@@ -39,21 +39,7 @@ const Courses = () => {
                         <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
                             {level.courses?.map((course) => {
                                 if (course.is_enrolled) return null; // Bỏ qua nếu mua rồi
-                                return (
-                                    <DisplayCourse
-                                        is_enrolled={course.is_enrolled}
-                                        slug={course.slug}
-                                        price={course.price}
-                                        finalPrice={course.final_price}
-                                        key={course.id}
-                                        thumbnail={course.thumbnail}
-                                        title={course.name}
-                                        teacher={course.department[0]?.name}
-                                        rating={course.rating.average_rating}
-                                        totalReviews={course.rating.total_reviews}
-                                        is_best_seller={course.is_best_seller}
-                                    />
-                                );
+                                return <DisplayCourse key={course.id} course={course} />;
                             })}
                         </div>
                     </div>

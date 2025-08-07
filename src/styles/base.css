@@ -66,3 +66,30 @@
         height: 20px;
     }
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #action-to-print,
+    #action-to-print * {
+        visibility: visible;
+    }
+
+    #action-to-print {
+        position: absolute;
+        font-size: 10px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    /* Ẩn nút in khi in */
+    #action-to-print button {
+        display: none;
+    }
+}

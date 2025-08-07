@@ -3,7 +3,7 @@ import "react-circular-progressbar/dist/styles.css";
 import IntroCourse from "./IntroCourse";
 import ListLessonCourse from "./_components/ListLessonCourse";
 import ContentLesson from "./_components/ContentLesson";
-import courseApi from "~/apiRequest/course.schema";
+import courseApi from "~/apiRequest/course";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -59,11 +59,11 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                 </div>
                 {/* Layout Bên phải */}
                 <div className="h-fit w-full flex-3/12 rounded-xl bg-white p-8 shadow-sm max-lg:order-1 lg:sticky lg:top-[70px]">
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2.5">
                         <div className="flex justify-center">
                             <IntroCourse thumbnail={course.thumbnail} video={course.intro_video} />
                         </div>
-                        <div className="flex flex-col gap-2 text-center text-base">
+                        <div className="mt-2 flex flex-col gap-2 text-center text-base">
                             <h2 className="t1-gradient-text font-bold">Giáo viên: Tổ toán học MapLearn</h2>
                             <div className="mt-1">
                                 {/* Giá tiền cũ, dạng bị gạch bỏ */}
@@ -71,7 +71,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                                     {course.final_price < course.price && formatter.number(course.price) + "đ"}
                                 </span>
                                 <span className="block font-bold text-black">
-                                    Học phí: {formatter.number(course.price) + "đ"}
+                                    Học phí: {formatter.number(course.final_price) + "đ"}
                                 </span>
                             </div>
                         </div>

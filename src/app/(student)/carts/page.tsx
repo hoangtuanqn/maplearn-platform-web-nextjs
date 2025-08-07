@@ -13,6 +13,7 @@ import { Input } from "~/components/ui/input";
 import CartsSummary from "./_components/CartsSummary";
 import ListCarts from "./_components/ListCarts";
 import OrderSummary from "./_components/OrderSummary";
+import { formatter } from "~/libs/format";
 const CartPage = () => {
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [carts, setCarts] = useState<CartsResponse["data"] | null>(null);
@@ -51,7 +52,22 @@ const CartPage = () => {
             );
         }
     }, [data, isLoading]);
-
+    const discoutMoney =
+        carts?.items
+            .filter((item) => selectedItems.includes(item.id)) // chỉ lấy khóa học đang được chọn
+            .reduce(
+                // thực hiện tính tổng đã giảm bao nhiêu của các khóa học đã chọn
+                (acc, item) => acc + item.course.price - item.price_snapshot,
+                0,
+            ) || 0;
+    const totalMoney =
+        carts?.items
+            .filter((item) => selectedItems.includes(item.id)) // chỉ lấy khóa học đang được chọn
+            .reduce(
+                // thực hiện tính tổng đã giảm bao nhiêu của các khóa học đã chọn
+                (acc, item) => acc + item.course.price,
+                0,
+            ) || 0;
     return (
         <>
             {removeCartMutation.isPending && <Loading />}
@@ -67,10 +83,18 @@ const CartPage = () => {
                         </div>
                         <div className="flex flex-col justify-center">
                             <h1 className="text-primary text-3xl font-bold max-lg:text-xl">Giỏ hàng của bạn</h1>
+
                             <div className="mt-1 flex max-lg:text-sm">
                                 <span>
-                                    Đã chọn <span className="font-bold">{selectedItems.length ?? 0} khóa học </span>-
-                                    Tiết kiệm được <span className="font-bold text-green-500">900.000đ</span>
+                                    Đã chọn <span className="font-bold">{selectedItems.length ?? 0} khóa học </span>
+                                    {discoutMoney > 0 && (
+                                        <span>
+                                            - Tiết kiệm được{" "}
+                                            <span className="font-bold text-green-500">
+                                                {formatter.number(discoutMoney)}đ đ
+                                            </span>
+                                        </span>
+                                    )}
                                 </span>
                             </div>
                         </div>
@@ -88,9 +112,9 @@ const CartPage = () => {
                             }}
                         />
 
-                        <div>
+                        <div className="flex-3/12 shrink-0">
                             {/* Tóm tắt đơn hàng */}
-                            <div className="mb-3 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                            {/* <div className="mb-3 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                                 <h2 className="text-primary mb-4 font-bold">Mã giảm giá</h2>
                                 <form>
                                     <div className="mt-3 flex items-center gap-1">
@@ -104,10 +128,10 @@ const CartPage = () => {
                                         </Button>
                                     </div>
                                 </form>
-                            </div>
+                            </div> */}
 
                             {/* Order summary */}
-                            <OrderSummary />
+                            <OrderSummary payload={{ discoutMoney, totalMoney, carts }} />
                         </div>
                     </div>
                 </div>

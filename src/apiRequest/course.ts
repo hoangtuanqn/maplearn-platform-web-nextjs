@@ -1,3 +1,4 @@
+import privateApi from "~/libs/apis/privateApi";
 import publicApi from "~/libs/apis/publicApi";
 import { ChapterLessonList } from "~/schemaValidate/chapterLessonCourse.schema";
 import {
@@ -46,12 +47,12 @@ const courseApi = {
 
     actionCourseToFavorite: (courseId: number, action: "add" | "check" | "remove") => {
         if (action === "check") {
-            return publicApi.get(`/courses/${courseId}/favorite`);
+            return privateApi.get(`/courses/${courseId}/favorite`);
         }
         if (action === "remove") {
-            return publicApi.delete(`/courses/${courseId}/favorite`);
+            return privateApi.delete(`/courses/${courseId}/favorite`);
         }
-        return publicApi.post(`/courses/${courseId}/favorite`, { action });
+        return privateApi.post(`/courses/${courseId}/favorite`, { action });
     },
 
     getCourseFavorite: (page: number = 1, limit: number = COURSE_PER_PAGE) => {

@@ -38,6 +38,7 @@ const CategoryShortSchema = CategoryCourseSchema.pick({
 export const courseSchema = z.object({
     id: z.number(),
     name: z.string(),
+    description: z.string(),
     slug: z.string(),
     thumbnail: z.string().url(),
     price: z.number().default(0),
@@ -63,6 +64,7 @@ export const courseSchema = z.object({
     lesson_count: z.number().default(0),
     is_cart: z.boolean().default(false),
 });
+export type CourseType = z.infer<typeof courseSchema>;
 export const CourseListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),
@@ -79,7 +81,6 @@ export type CourseListRecommendedResponse = z.infer<typeof CourseListRecommended
 // * Course Detail
 
 export const CourseDetailSchema = courseSchema.extend({
-    description: z.string(),
     intro_video: z.string().url(),
     enrollments_count: z.number().default(0),
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DisplayCourse from "../../_components/Courses/DisplayCourse";
 import CourseSkeleton from "./CourseSkeleton";
-import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course.schema";
+import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
@@ -49,19 +49,7 @@ const CourseList = () => {
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-5">
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
                 {courses?.data?.map((course) => (
-                    <DisplayCourse
-                        is_enrolled={course.is_enrolled}
-                        slug={course.slug}
-                        price={course.price}
-                        finalPrice={course.final_price}
-                        key={course.id}
-                        thumbnail={course.thumbnail}
-                        title={course.name}
-                        teacher={course.department[0].name}
-                        rating={course.rating.average_rating}
-                        totalReviews={course.rating.total_reviews}
-                        is_best_seller={course.is_best_seller}
-                    />
+                    <DisplayCourse key={course.id} course={course} />
                 ))}
             </div>
             {!isLoading && Number(courses?.data?.length) == 0 && <DisplayNoData title="Không tìm thấy khóa học nào!" />}

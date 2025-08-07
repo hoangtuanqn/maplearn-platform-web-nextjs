@@ -81,7 +81,7 @@ const ListCarts = ({
         setSelectedItems((prev) => prev.filter((item) => !ids.includes(item)));
     };
     return (
-        <div className="mb-6 h-fit flex-9/12 shrink-0 rounded-lg border border-slate-200 max-lg:mb-2">
+        <div className="mb-6 h-fit flex-9/12 rounded-lg border border-slate-200 max-lg:mb-2">
             <header className="flex items-center justify-between rounded-t-lg bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-4 shadow-sm max-lg:p-2">
                 <div className="text-primary flex items-center gap-2">
                     <ShoppingCart className="size-6 max-lg:size-5" />
@@ -159,11 +159,12 @@ const ListCarts = ({
                                 </div>
                                 <div className="mt-3 flex gap-6 text-xs font-bold text-slate-500 max-lg:mt-1 max-lg:gap-2">
                                     <span className="flex items-center gap-1">
-                                        <Clock className="h-4 w-4 max-lg:h-3 max-lg:w-3" />{" "}
+                                        <Clock className="h-4 w-4 max-lg:h-3 max-lg:w-3" />
                                         {formatter.durationToHours(course.course.duration)}
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <BookOpen className="h-4 w-4 max-lg:h-3 max-lg:w-3" /> 8 bài học
+                                        <BookOpen className="h-4 w-4 max-lg:h-3 max-lg:w-3" />
+                                        {course.course.lesson_count} bài học
                                     </span>
                                     <span className="flex items-center gap-1 text-green-600">
                                         <Earth className="h-4 w-4 max-lg:h-3 max-lg:w-3" /> Truy cập trọn đời
@@ -172,24 +173,29 @@ const ListCarts = ({
                                 {/* Điểm nổi bật */}
                                 <div className="mt-4 flex flex-wrap gap-2 max-lg:mt-2 max-lg:gap-1">
                                     <span className="flex items-center gap-1 rounded bg-yellow-100 px-2 py-1 text-xs font-semibold text-yellow-700 shadow-sm max-lg:px-1 max-lg:py-0.5">
-                                        <StarHalf className="h-4 w-4 text-yellow-500 max-lg:h-3 max-lg:w-3" />{" "}
+                                        <StarHalf className="h-4 w-4 text-yellow-500 max-lg:h-3 max-lg:w-3" />
                                         {course.course.rating.average_rating}/5
                                     </span>
-                                    <span className="flex items-center gap-1 rounded bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-700 shadow-sm max-lg:px-1 max-lg:py-0.5">
-                                        <TrendingUp className="h-4 w-4 text-blue-500 max-lg:h-3 max-lg:w-3" /> Bán chạy
-                                    </span>
+                                    {course.course.is_best_seller && (
+                                        <span className="flex items-center gap-1 rounded bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-700 shadow-sm max-lg:px-1 max-lg:py-0.5">
+                                            <TrendingUp className="h-4 w-4 text-blue-500 max-lg:h-3 max-lg:w-3" /> Bán
+                                            chạy
+                                        </span>
+                                    )}
                                     <span className="flex items-center gap-1 rounded bg-green-100 px-2 py-1 text-xs font-semibold text-green-700 shadow-sm max-lg:px-1 max-lg:py-0.5">
                                         <Gift className="h-4 w-4 text-green-500 max-lg:h-3 max-lg:w-3" /> Tặng kèm tài
                                         liệu, đề thi
                                     </span>
                                 </div>
-                                <div className="mt-4 flex items-center gap-3 max-lg:mt-2 max-lg:gap-2">
+                                <div className="mt-4 flex items-center gap-2 max-lg:mt-2 max-lg:gap-2">
                                     <p className="t1-gradient-text text-xl font-bold max-lg:text-base">
                                         {formatter.number(course.price_snapshot)}đ
                                     </p>
-                                    <span className="text-xs text-slate-400 line-through max-lg:text-xs">
-                                        1.000.000đ
-                                    </span>
+                                    {course.price_snapshot < course.course.price && (
+                                        <span className="text-sm font-semibold text-slate-500 line-through max-lg:text-xs">
+                                            {formatter.number(course.course.price)}đ
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>

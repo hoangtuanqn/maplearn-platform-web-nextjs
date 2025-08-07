@@ -17,6 +17,7 @@ export const formatter = {
     },
     // Chuyển đổi giây sang số giờ
     durationToHours: (seconds: number): string => {
+        if (seconds == 0) return "0";
         const hours = Math.floor(seconds / 3600);
         if (hours === 0) return "Dưới 1 giờ";
         if (hours === 1) return "1 giờ";
