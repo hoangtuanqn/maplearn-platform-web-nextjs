@@ -31,9 +31,7 @@ const FormVerifyOtp = () => {
             dispatch(setUser(res.data.data));
             toast.success("Đăng nhập tài khoản thành công!");
         },
-        onError: (error) => {
-            notificationErrorApi(error);
-        },
+        onError: notificationErrorApi,
     });
 
     const FormSchema = z.object({

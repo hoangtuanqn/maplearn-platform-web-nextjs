@@ -8,7 +8,7 @@ import { ShowCartSonner } from "../../ShowCartSonner";
 import { toast } from "sonner";
 import courseApi from "~/apiRequest/course";
 import { useMutation } from "@tanstack/react-query";
-import { handleApiError } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
 import Loading from "../../Loading";
 
@@ -30,16 +30,14 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                     url: "/profile/saved-courses",
                     message: "Đã thêm danh sách yêu thích!",
                 });
+                courseInit.is_favorite = true;
             }
             setCourse((prev) => ({
                 ...prev!,
                 is_favorite: !course?.is_favorite,
             }));
         },
-        onError: (error) => {
-            handleApiError(error);
-            console.error("Action failed:", error);
-        },
+        onError: notificationErrorApi,
     });
     const cartMutation = useMutation({
         mutationKey: ["course", "action"],
@@ -59,10 +57,7 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                 is_cart: true,
             }));
         },
-        onError: (error) => {
-            handleApiError(error);
-            console.error("Action failed:", error);
-        },
+        onError: notificationErrorApi,
     });
 
     return (

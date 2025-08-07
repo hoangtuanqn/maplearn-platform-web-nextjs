@@ -22,6 +22,7 @@ const ButtonAction = () => {
     useEffect(() => {
         setCourse(data || null);
     }, [isLoading, data]);
+
     return (
         <>
             {isLoading ? (

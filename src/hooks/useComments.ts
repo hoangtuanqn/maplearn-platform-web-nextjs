@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import publicApi from "~/libs/apis/publicApi";
 import { commentApiHelper } from "~/apiRequest/comment";
-import { handleApiError2 } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 import { CommentListResponse, CommentType } from "~/schemaValidate/comment.schema";
 
 export interface ApiResponse {
@@ -103,7 +103,7 @@ export const useComments = ({ type, identifier, apiEndpoints }: UseCommentsProps
             setComment("");
             setReplyToCommentId(0);
         },
-        onError: handleApiError2,
+        onError: notificationErrorApi,
     });
 
     // Update comment mutation
@@ -121,7 +121,7 @@ export const useComments = ({ type, identifier, apiEndpoints }: UseCommentsProps
             setEditCommentId(0);
             setComment("");
         },
-        onError: handleApiError2,
+        onError: notificationErrorApi,
     });
 
     // Delete comment mutation
@@ -137,7 +137,7 @@ export const useComments = ({ type, identifier, apiEndpoints }: UseCommentsProps
             toast.success(res.data.message || "Đã xóa bình luận thành công!");
             queryClient.invalidateQueries({ queryKey });
         },
-        onError: handleApiError2,
+        onError: notificationErrorApi,
     });
 
     // Handlers

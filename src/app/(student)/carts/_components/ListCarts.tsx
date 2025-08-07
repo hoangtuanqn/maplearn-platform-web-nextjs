@@ -20,7 +20,7 @@ import { formatter } from "~/libs/format";
 import DisplayNoData from "../../_components/Courses/DisplayNoData";
 import { Button } from "~/components/ui/button";
 import CartSkeleton from "./CartSkeleton";
-import { handleApiError } from "~/libs/apis/http";
+import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import cartApi from "~/apiRequest/cart";
@@ -42,15 +42,13 @@ const ListCarts = ({
     const toggleAllMutation = useMutation({
         mutationFn: (is_active: boolean) => cartApi.toggleCartAll(is_active),
 
-        onError: (error) => {
-            handleApiError(error);
-        },
+        onError: notificationErrorApi,
     });
     const toggleItemMutation = useMutation({
         mutationFn: ({ id, is_active }: { id: number; is_active: boolean }) => cartApi.toggleCartItem(id, is_active),
 
         onError: (error) => {
-            handleApiError(error);
+            notificationErrorApi(error);
         },
     });
     const toggleAll = (is_active: boolean) => {

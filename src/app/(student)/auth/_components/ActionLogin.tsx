@@ -1,7 +1,8 @@
 import React from "react";
 import LoginGoogle from "../../_components/Button/LoginGoogle";
 import LoginFacebook from "../../_components/Button/LoginFacebook";
-import LoginTwitter from "../../_components/Button/LoginTwitter";
+import LoginGithub from "../../_components/Button/LoginGithub";
+import LoginDiscord from "../../_components/Button/LoginDiscord";
 
 const ActionLogin = () => {
     return (
@@ -13,7 +14,8 @@ const ActionLogin = () => {
             <div className="mt-4 flex justify-center gap-4 text-[12px] sm:flex-row sm:text-sm">
                 <LoginGoogle />
                 <LoginFacebook />
-                <LoginTwitter />
+                <LoginDiscord />
+                <LoginGithub />
             </div>
         </div>
     );

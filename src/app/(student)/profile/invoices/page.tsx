@@ -6,6 +6,7 @@ import { Badge } from "~/components/ui/badge";
 import { PaginationNav } from "../../_components/Pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import TableSkeleton from "../_components/TableSkeleton";
+import DisplayNoData from "../../_components/Courses/DisplayNoData";
 const InvoiceProfile = () => {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
@@ -62,6 +63,17 @@ const InvoiceProfile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {!isLoading && (invoices?.data?.length ?? 0) == 0 && (
+                                            <tr className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100">
+                                                <td
+                                                    className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
+                                                    colSpan={7}
+                                                >
+                                                    <DisplayNoData title="Bạn hiện không có hóa đơn nào" />
+                                                </td>
+                                            </tr>
+                                        )}
+
                                         {isLoading &&
                                             [...Array(INVOICE_PER_PAGE)].map((_, index) => (
                                                 <TableSkeleton key={index} />

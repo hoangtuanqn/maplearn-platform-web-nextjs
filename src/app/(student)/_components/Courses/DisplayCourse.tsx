@@ -3,13 +3,13 @@
 import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import { formatter } from "~/libs/format";
 import { motion, AnimatePresence } from "framer-motion";
 import { CourseType } from "~/schemaValidate/course.schema";
 import ButtonActionCourse from "./_components/ButtonActionCourse";
-
+const tooltipOffset = 210;
 const DisplayCourse = ({ course }: { course: CourseType }) => {
     const [showInfo, setShowInfo] = useState(false);
     const [position, setPosition] = useState<"left" | "right">("right");
@@ -30,8 +30,6 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
             }
         }
     }, [showInfo]);
-
-    const tooltipOffset = 210;
 
     return (
         <div
@@ -149,4 +147,4 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
     );
 };
 
-export default DisplayCourse;
+export default memo(DisplayCourse);

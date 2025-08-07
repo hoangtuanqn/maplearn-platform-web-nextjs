@@ -45,9 +45,7 @@ const FormLogin = () => {
             }
         },
 
-        onError: (error) => {
-            notificationErrorApi(error);
-        },
+        onError: notificationErrorApi,
     });
 
     const onSubmit: SubmitHandler<FormLoginType> = async (data) => {
