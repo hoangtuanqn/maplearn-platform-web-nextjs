@@ -33,7 +33,7 @@ export function PaymentMethodsDialog() {
             switch (data.data.payment_method) {
                 case "transfer":
                     toast.success("Tạo hóa đơn thành công! Vui lòng thanh toán.");
-                    router.push(`/carts/invoice/${data.data.id}`);
+                    router.push(`/invoices/${data.data.transaction_code}`);
                     break;
                 case "vnpay":
                     router.push(data.data.url_vnpay || "");
@@ -56,7 +56,7 @@ export function PaymentMethodsDialog() {
                         {mutation.isPending && <Loading />}
                         <DialogHeader>
                             <DialogTitle>Chọn phương thức thanh toán</DialogTitle>
-                            <DialogDescription>Vui long chọn phương thức thanh toán phù hợp với bạn.</DialogDescription>
+                            <DialogDescription>Vui lòng chọn phương thức thanh toán phù hợp với bạn.</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4">
                             <div className="grid gap-3">
@@ -67,7 +67,6 @@ export function PaymentMethodsDialog() {
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectItem value="transfer">Chuyển khoản ngân hàng</SelectItem>
-                                            <SelectItem value="momo">Ví MOMO</SelectItem>
                                             <SelectItem value="vnpay">Ví VNPAY</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>

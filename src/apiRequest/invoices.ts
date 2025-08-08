@@ -1,5 +1,9 @@
 import privateApi from "~/libs/apis/privateApi";
-import { InvoiceDetailResponse, InvoiceListResponse } from "~/schemaValidate/invoice.schema";
+import {
+    CreateInvoiceVNPayResponse,
+    InvoiceDetailResponse,
+    InvoiceListResponse,
+} from "~/schemaValidate/invoice.schema";
 export const INVOICE_PER_PAGE = 10;
 const invoiceApi = {
     getInvoices: async (
@@ -24,5 +28,9 @@ const invoiceApi = {
 
     getInvoiceDetail: (code: string, headers: { [key: string]: string }) =>
         privateApi.get<InvoiceDetailResponse>(`/invoices/${code}`, { headers }),
+    createInvoiceVNPay: async (transaction_code: string) => {
+        return privateApi.get<CreateInvoiceVNPayResponse>(`/payment/vnpay/create/${transaction_code}`);
+    },
+    cancelInvoice: async (code: string) => privateApi.post<InvoiceDetailResponse>(`/invoices/${code}/cancel`),
 };
 export default invoiceApi;

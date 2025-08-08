@@ -12,7 +12,10 @@ export const invoiceSchema = z.object({
     course_count: z.number(),
     created_at: z.string(),
     updated_at: z.string(),
+    due_date: z.string(),
+    note: z.string().nullable(),
 });
+export type Invoice = z.infer<typeof invoiceSchema>;
 
 export const InvoiceListResponseSchema = z.object({
     success: z.boolean(),
@@ -29,3 +32,12 @@ const _invoiceDetailSchema = z.object({
     }),
 });
 export type InvoiceDetailResponse = z.infer<typeof _invoiceDetailSchema>;
+
+const _createInvoiceVNPaySchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.object({
+        url_vnpay: z.string(),
+    }),
+});
+export type CreateInvoiceVNPayResponse = z.infer<typeof _createInvoiceVNPaySchema>;

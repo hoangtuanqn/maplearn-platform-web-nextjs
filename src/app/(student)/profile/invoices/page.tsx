@@ -1,24 +1,38 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import invoiceApi, { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
-import { Badge } from "~/components/ui/badge";
 import { PaginationNav } from "../../_components/Pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import TableSkeleton from "../_components/TableSkeleton";
 import DisplayNoData from "../../_components/Courses/DisplayNoData";
+import { getStatusBadge } from "~/libs/statusBadge";
+import { formatter } from "~/libs/format";
+import { Checkbox } from "~/components/ui/checkbox";
+
+import ActionPayment from "./_components/ActionPayment";
+
 const InvoiceProfile = () => {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
-    const { data: invoices, isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["user", "invoices", page],
         queryFn: async () => {
             const res = await invoiceApi.getInvoices(page, INVOICE_PER_PAGE);
             return res.data.data;
         },
     });
-    const totalPages = Math.ceil((invoices?.total ?? 0) / INVOICE_PER_PAGE);
+
+    const totalPages = Math.ceil((data?.total ?? 0) / INVOICE_PER_PAGE);
     const router = useRouter();
+    const [invoices, setInvoices] = useState(data?.data || []);
+
+    useEffect(() => {
+        if (data?.data) {
+            setInvoices(data.data);
+        }
+    }, [data]);
+    const [selected, setSelected] = useState<number[]>([]);
     return (
         <>
             <h3 className="block-heading mb-6">Hóa đơn của bạn</h3>
@@ -30,6 +44,11 @@ const InvoiceProfile = () => {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead>
                                         <tr>
+                                            <th scope="col" className="px-4 py-3 pe-0">
+                                                <div className="flex h-5 items-center">
+                                                    <Checkbox disabled />
+                                                </div>
+                                            </th>
                                             <th
                                                 scope="col"
                                                 className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
@@ -40,13 +59,13 @@ const InvoiceProfile = () => {
                                                 scope="col"
                                                 className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                             >
-                                                Ngày tạo hóa đơn
+                                                Ngày tạo
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                             >
-                                                Ngày hết hạn
+                                                Hạn thanh toán
                                             </th>
                                             <th
                                                 scope="col"
@@ -63,54 +82,92 @@ const InvoiceProfile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {!isLoading && (invoices?.data?.length ?? 0) == 0 && (
+                                        {!isLoading && (invoices?.length ?? 0) == 0 && (
                                             <tr className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100">
                                                 <td
                                                     className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
-                                                    colSpan={7}
+                                                    colSpan={8}
                                                 >
                                                     <DisplayNoData title="Bạn hiện không có hóa đơn nào" />
                                                 </td>
                                             </tr>
                                         )}
 
-                                        {isLoading &&
+                                        {isLoading ? (
                                             [...Array(INVOICE_PER_PAGE)].map((_, index) => (
-                                                <TableSkeleton key={index} />
-                                            ))}
-                                        {invoices?.data.map((invoice) => (
-                                            <tr
-                                                onClick={() => router.push(`/invoices/${invoice.transaction_code}`)}
-                                                key={invoice.id}
-                                                className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100"
-                                            >
-                                                <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800">
-                                                    #{invoice.transaction_code}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                    {invoice.created_at}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                    Chưa có
-                                                </td>
-                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                    200.000 VNĐ
-                                                </td>
-                                                <td className="px-6 py-4 text-end text-sm font-medium whitespace-nowrap">
-                                                    <Badge variant={"warning"}>Chưa thanh toán </Badge>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                <TableSkeleton key={index} col={6} />
+                                            ))
+                                        ) : (
+                                            <>
+                                                {invoices.map((invoice) => (
+                                                    <tr
+                                                        onClick={() =>
+                                                            router.push(`/invoices/${invoice.transaction_code}`)
+                                                        }
+                                                        key={invoice.id}
+                                                        className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100"
+                                                    >
+                                                        <td className="py-3 ps-4" onClick={(e) => e.stopPropagation()}>
+                                                            {/* Pending mới hiển thị */}
+                                                            {invoice.status === "pending" && (
+                                                                <div className="flex h-5 items-center">
+                                                                    <Checkbox
+                                                                        onCheckedChange={(checked) => {
+                                                                            if (checked)
+                                                                                setSelected((prev) => [
+                                                                                    ...prev,
+                                                                                    invoice.id,
+                                                                                ]);
+                                                                            else
+                                                                                setSelected((prev) =>
+                                                                                    prev.filter(
+                                                                                        (id) => id !== invoice.id,
+                                                                                    ),
+                                                                                );
+                                                                        }}
+                                                                        // checked={selected.includes(invoice.id)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor="hs-table-search-checkbox-1"
+                                                                        className="sr-only"
+                                                                    >
+                                                                        Checkbox
+                                                                    </label>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800">
+                                                            #{invoice.transaction_code}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
+                                                            {formatter.date(invoice.created_at)}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
+                                                            {formatter.date(invoice.due_date)}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
+                                                            {formatter.number(invoice.total_price)} VNĐ
+                                                        </td>
+                                                        <td className="px-6 py-4 text-end text-sm font-medium whitespace-nowrap">
+                                                            {getStatusBadge("invoice", invoice.status)}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="ml-auto">
-                    {!isLoading && (invoices?.data?.length ?? 0) > 0 && (
-                        <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
-                    )}
+                <div className="lg:flex-co flex items-end justify-between">
+                    <ActionPayment invoices={invoices} selected={selected} />
+                    <div className="ml-auto">
+                        {!isLoading && (invoices?.length ?? 0) > 0 && (
+                            <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
+                        )}
+                    </div>
                 </div>
             </div>
         </>

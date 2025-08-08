@@ -20,8 +20,8 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
         mutationFn: async (action: "add" | "check" | "remove") => {
             return courseApi.actionCourseToFavorite(course?.id ?? 0, action);
         },
-        onSuccess: () => {
-            if (course?.is_favorite) {
+        onSuccess: (_, action) => {
+            if (action === "remove") {
                 toast.success("Đã xóa khỏi danh sách yêu thích!");
             } else {
                 ShowCartSonner({
@@ -30,11 +30,10 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                     url: "/profile/saved-courses",
                     message: "Đã thêm danh sách yêu thích!",
                 });
-                courseInit.is_favorite = true;
             }
             setCourse((prev) => ({
                 ...prev!,
-                is_favorite: !course?.is_favorite,
+                is_favorite: action === "add",
             }));
         },
         onError: notificationErrorApi,
