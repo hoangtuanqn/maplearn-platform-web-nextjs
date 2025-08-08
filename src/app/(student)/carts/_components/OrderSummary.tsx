@@ -1,14 +1,12 @@
 import React from "react";
-import { ConfirmDialog } from "~/components/ConfirmDialog";
-import { Button } from "~/components/ui/button";
+
 import { formatter } from "~/libs/format";
-import { CartsResponse } from "~/schemaValidate/cart.schema";
 import { PaymentMethodsDialog } from "./PaymentMethodsDialog";
 
 const OrderSummary = ({
-    payload: { discoutMoney, totalMoney, carts },
+    payload: { discoutMoney, totalMoney },
 }: {
-    payload: { discoutMoney: number; totalMoney: number; carts: CartsResponse["data"] | null };
+    payload: { discoutMoney: number; totalMoney: number };
 }) => {
     return (
         <div className="sticky top-[70px] h-fit flex-3/12 max-lg:static max-lg:mt-0 max-lg:w-full max-lg:p-3">

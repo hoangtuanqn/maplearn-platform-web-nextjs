@@ -1,19 +1,16 @@
 import React from "react";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Badge } from "~/components/ui/badge";
 
 import invoiceApiServer from "~/apiRequest/server/invoice";
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import Image from "next/image";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import ActionPrint from "./_components/ActionPrint";
 
-import Pusher from "pusher-js";
 import PusherNotification from "../../_components/PusherNotification";
 import InfoUser from "./_components/InfoUser";
-import { Info } from "lucide-react";
+import { getStatusBadge } from "~/libs/statusBadge";
+import SummaryInvoice from "./_components/SummaryInvoice";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
     const { code } = await params;
@@ -44,17 +41,12 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                 <PusherNotification />
                 <div className="mb-8">
                     <div className="flex items-center justify-between border-b-2 border-blue-100 pb-5">
-                        <div className="flex items-center gap-3">
-                            <h1 className="text-3xl font-extrabold">Hóa đơn #{code}</h1>
-                            {invoice.status === "paid" ? (
-                                <Badge variant={"success"}>Đã thanh toán</Badge>
-                            ) : invoice.status === "failed" ? (
-                                <Badge variant={"danger"}>Đã hủy hóa đơn</Badge>
-                            ) : invoice.status === "expired" ? (
-                                <Badge variant={"danger"}>Đã hết hạn</Badge>
-                            ) : (
-                                <Badge variant={"warning"}>Chưa thanh toán</Badge>
-                            )}
+                        <div>
+                            <div className="flex items-center gap-3">
+                                <h1 className="text-3xl font-extrabold">Hóa đơn #{code}</h1>
+                                {getStatusBadge("invoice", invoice.status)}
+                            </div>
+                            {invoice.note && <p className="text-red-400">{invoice.note}</p>}
                         </div>
                         <div className="mb-2 space-y-1 text-right">
                             <p className="text-sm text-slate-500">
@@ -153,66 +145,7 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                     </div>
                 </div>
             </div>
-            <div className="h-fit flex-3/12 shrink-0">
-                <div className="h-fit flex-3/12 shrink-0 rounded-xl border border-slate-100 bg-white p-8 shadow-xs">
-                    <div>
-                        <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền phải thanh toán</h2>
-                        <p className="text-primary mt-2 text-4xl font-extrabold tracking-wide drop-shadow-sm">
-                            {invoice.status == "pending" ? formatter.number(invoice.total_price) : 0} đ
-                        </p>
-                        {invoice.status == "pending" && (
-                            <>
-                                <Select>
-                                    <SelectTrigger className="focus:ring-primary/30 my-5 w-full rounded-lg border-slate-200 shadow-sm focus:ring-2">
-                                        <SelectValue placeholder="Hình thức thanh toán" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="transfer">Chuyển khoản ngân hàng</SelectItem>
-                                            <SelectItem value="vnpay">VNPay</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                                <div className="mt-4 flex flex-col items-center gap-4">
-                                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                                        <Image
-                                            src={`https://qr.sepay.vn/img?bank=MBBank&acc=259876543210&template=qronly&amount=${invoice.total_price}&des=${code}`}
-                                            width={220}
-                                            height={220}
-                                            alt="QR Code"
-                                            className="rounded-lg"
-                                        />
-                                    </div>
-
-                                    <div className="flex w-full flex-col gap-1 rounded-lg border border-slate-100 bg-slate-50 p-4 text-base">
-                                        <span className="font-medium text-slate-600">
-                                            Ngân hàng: <span className="font-semibold text-slate-800">MBBank</span>
-                                        </span>
-                                        <span className="font-medium text-slate-600">
-                                            Số tài khoản:{" "}
-                                            <span className="font-semibold text-slate-800">259876543210</span>
-                                        </span>
-                                        <span className="font-medium text-slate-600">
-                                            Chủ tài khoản:{" "}
-                                            <span className="font-semibold text-slate-800">Phạm Hoàng Tuấn</span>
-                                        </span>
-                                        <span className="font-medium text-slate-600">
-                                            Chi nhánh: <span className="font-semibold text-slate-800">Quảng Ngãi</span>
-                                        </span>
-                                    </div>
-                                    <div className="mt-2 flex w-full items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-2">
-                                        <Info className="h-5 w-5 flex-shrink-0 text-amber-400" />
-                                        <span className="text-sm font-medium text-amber-500">
-                                            Hệ thống tự động xác nhận sau khi quý khách thanh toán thành công.
-                                        </span>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-                <ActionPrint />
-            </div>
+            <SummaryInvoice invoice={invoice} />
         </section>
     );
 };

@@ -13,7 +13,7 @@ const cartApi = {
     // Xóa tất cả các item
     removeCartItems: () => privateApi.delete(`/carts`),
     addCartItem: (courseId: number) => privateApi.post(`/carts/${courseId}`),
-
+   
     // Get summary of cart
     getCartSummary: (numberIds: number[]) =>
         privateApi.post<SummaryResponse>(`/cart-items/summary`, { cart_id: numberIds }),

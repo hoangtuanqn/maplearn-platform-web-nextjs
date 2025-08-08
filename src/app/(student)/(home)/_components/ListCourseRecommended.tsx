@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import CourseSkeleton from "../../courses/_components/CourseSkeleton";
 import courseApi from "~/apiRequest/course";
 import { useAuth } from "~/hooks/useAuth";
-import { useState } from "react";
+
 
 const ListCourseRecommended = () => {
     const { data: courses, isLoading } = useQuery({

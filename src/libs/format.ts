@@ -1,5 +1,8 @@
 export const formatter = {
-    date: (date: Date) => date.toLocaleDateString("vi-VN"),
+    date: (date: Date | string) => {
+        const parsedDate = new Date(date);
+        return parsedDate.toLocaleDateString("vi-VN");
+    },
     number: (amount: number) => Intl.NumberFormat("vi-VN").format(amount),
     duration: (seconds: number): string => {
         const d = Math.floor(seconds / (3600 * 24));
