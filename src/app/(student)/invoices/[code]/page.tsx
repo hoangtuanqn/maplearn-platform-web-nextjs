@@ -33,37 +33,40 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
         redirect("/profile/invoices");
     }
     return (
-        <section className="flex min-h-screen gap-6 rounded-2xl bg-gradient-to-br p-8 max-lg:flex-col max-lg:gap-3 max-lg:pt-6">
+        <section className="flex min-h-screen gap-6 rounded-2xl bg-gradient-to-br p-8 max-lg:flex-col max-lg:gap-3 max-lg:pt-6 max-md:gap-2 max-md:rounded-none max-md:p-2">
             <div
-                className="mb-8 h-fit flex-9/12 rounded-2xl bg-white p-12 shadow-sm max-lg:mb-3 max-lg:p-5"
+                className="mb-8 h-fit flex-9/12 rounded-2xl bg-white p-12 shadow-sm max-lg:mb-3 max-lg:p-5 max-md:rounded-lg max-md:p-2"
                 id="action-to-print"
             >
                 <PusherNotification />
                 <div className="mb-8">
-                    <div className="flex items-center justify-between border-b-2 border-blue-100 pb-5">
+                    <div className="flex items-center justify-between border-b-2 border-blue-100 pb-5 max-md:flex-col max-md:items-start max-md:gap-2 max-md:pb-3">
                         <div>
-                            <div className="flex items-center gap-3">
-                                <h1 className="text-3xl font-extrabold">Hóa đơn #{code}</h1>
+                            <div className="flex items-center gap-3 max-md:flex-wrap max-md:gap-2">
+                                <h1 className="text-3xl font-extrabold max-md:text-xl">Hóa đơn #{code}</h1>
                                 {getStatusBadge("invoice", invoice.status)}
                             </div>
-                            {invoice.note && <p className="text-red-400">{invoice.note}</p>}
+                            {invoice.note && <p className="text-red-400 max-md:text-xs">{invoice.note}</p>}
                         </div>
-                        <div className="mb-2 space-y-1 text-right">
-                            <p className="text-sm text-slate-500">
+                        <div className="mb-2 space-y-1 text-right max-md:space-y-0 max-md:text-left">
+                            <p className="text-sm text-slate-500 max-md:text-xs">
                                 Ngày tạo hóa đơn:{" "}
-                                <span className="font-semibold text-slate-700">{formatter.date(new Date())}</span>
+                                <span className="font-semibold text-slate-700">
+                                    {formatter.date(invoice.created_at)}
+                                </span>
                             </p>
-                            <p className="text-sm text-slate-500">
-                                Ngày đến hạn: <span className="font-semibold text-slate-700">16/10/2022</span>
+                            <p className="text-sm text-slate-500 max-md:text-xs">
+                                Ngày đến hạn:{" "}
+                                <span className="font-semibold text-slate-700">{formatter.date(invoice.due_date)}</span>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div className="mb-8 grid grid-cols-2 gap-8 max-lg:grid-cols-1">
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 shadow">
-                        <h3 className="mb-3 text-lg font-semibold text-blue-700">Thanh toán cho:</h3>
-                        <div className="space-y-1 text-sm text-slate-700">
+                <div className="mb-8 grid grid-cols-2 gap-8 max-lg:grid-cols-1 max-md:gap-3">
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 shadow max-md:p-3">
+                        <h3 className="mb-3 text-lg font-semibold text-blue-700 max-md:text-base">Thanh toán cho:</h3>
+                        <div className="space-y-1 text-sm text-slate-700 max-md:text-xs">
                             <p className="font-medium">Công ty cổ phần MapLearn</p>
                             <p>Địa chỉ: Quận Thủ Đức, TP HCM.</p>
                             <p>
@@ -87,38 +90,46 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                         </div>
                     </div>
 
-                    <InfoUser />
+                    <div className="max-md:p-0">
+                        <InfoUser />
+                    </div>
                 </div>
 
                 <div className="mb-8">
-                    <h3 className="mb-5 text-lg font-semibold">Các mục trong hóa đơn</h3>
-                    <div className="overflow-x-auto rounded-xl border-2 border-blue-100 bg-white shadow">
-                        <table className="w-full border-collapse">
+                    <h3 className="mb-5 text-lg font-semibold max-md:text-base">Các mục trong hóa đơn</h3>
+                    <div className="overflow-x-auto rounded-xl border-2 border-blue-100 bg-white shadow max-md:rounded-lg">
+                        <table className="w-full min-w-[350px] border-collapse">
                             <thead>
                                 <tr className="border-b bg-slate-100">
-                                    <th className="p-4 text-left font-bold text-slate-700">Mô tả</th>
-                                    <th className="p-4 text-right font-bold text-slate-700">Số tiền</th>
+                                    <th className="p-4 text-left font-bold text-slate-700 max-md:p-2 max-md:text-xs">
+                                        Mô tả
+                                    </th>
+                                    <th className="p-4 text-right font-bold text-slate-700 max-md:p-2 max-md:text-xs">
+                                        Số tiền
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="text-slate-700">
                                 {invoice.items.map((item) => (
                                     <tr key={item.id} className="border-b transition hover:bg-blue-50">
-                                        <td className="flex items-center gap-2 p-4">
-                                            <Image
-                                                src={item.course.thumbnail}
-                                                alt={item.course.name}
-                                                width={50}
-                                                height={50}
-                                                className="rounded-md"
-                                            />
+                                        <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
+                                            <Link href={`/courses/${item.course.slug}`}>
+                                                <Image
+                                                    src={item.course.thumbnail}
+                                                    alt={item.course.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="rounded-md max-md:h-8 max-md:w-8"
+                                                />
+                                            </Link>
                                             <Link
                                                 href={`/courses/${item.course.slug}`}
-                                                className="text-primary font-bold"
+                                                className="text-primary font-bold max-md:text-xs"
                                             >
                                                 {item.course.name}
                                             </Link>
                                         </td>
-                                        <td className="p-4 text-right font-semibold">
+                                        <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
                                             {formatter.number(item.course.final_price)} đ
                                         </td>
                                     </tr>
@@ -127,17 +138,17 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                         </table>
                     </div>
 
-                    <div className="mt-6 flex justify-end">
-                        <div className="w-72 rounded-xl border border-blue-100 bg-blue-50 p-5 shadow">
-                            <div className="flex justify-between py-2 text-slate-700">
+                    <div className="mt-6 flex justify-end max-md:mt-3 max-md:justify-center">
+                        <div className="w-72 rounded-xl border border-blue-100 bg-blue-50 p-5 shadow max-md:w-full max-md:rounded-lg max-md:p-3">
+                            <div className="flex justify-between py-2 text-slate-700 max-md:py-1 max-md:text-xs">
                                 <span>Tổng phụ</span>
                                 <span className="font-semibold">{formatter.number(invoice.total_price)} đ</span>
                             </div>
-                            <div className="flex justify-between py-2">
+                            <div className="flex justify-between py-2 max-md:py-1 max-md:text-xs">
                                 <span>VAT: </span>
                                 <span className="font-semibold">0 đ</span>
                             </div>
-                            <div className="mt-2 flex justify-between border-t pt-3 text-base font-bold text-blue-800">
+                            <div className="mt-2 flex justify-between border-t pt-3 text-base font-bold text-blue-800 max-md:pt-2 max-md:text-sm">
                                 <span>Tổng cộng</span>
                                 <span>{formatter.number(invoice.total_price)} đ</span>
                             </div>

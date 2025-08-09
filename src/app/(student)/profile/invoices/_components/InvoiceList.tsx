@@ -1,23 +1,32 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import invoiceApi, { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
+import { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
 import { PaginationNav } from "../../../_components/Pagination";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import TableSkeleton from "../../_components/TableSkeleton";
 import DisplayNoData from "../../../_components/Courses/DisplayNoData";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { formatter } from "~/libs/format";
 import { Checkbox } from "~/components/ui/checkbox";
-
 import ActionPayment from "../_components/ActionPayment";
+import { FilterInvoice } from "./FilterInvoice";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import { buildLaravelFilterQuery } from "~/libs/hepler";
+import profileApi from "~/apiRequest/profile";
+
 const InvoiceList = () => {
-    const searchParams = useSearchParams();
-    const page = Number(searchParams.get("page")) || 1;
+    const { page, sort, status, date } = useGetSearchQuery(["page", "sort", "status", "date"] as const);
     const { data, isLoading } = useQuery({
-        queryKey: ["user", "invoices", page],
+        queryKey: ["user", "invoices", { page, sort, status, date }],
         queryFn: async () => {
-            const res = await invoiceApi.getInvoices(page, INVOICE_PER_PAGE);
+            const res = await profileApi.getInvoices(
+                Number(page ?? 1),
+                INVOICE_PER_PAGE,
+                "",
+                sort,
+                buildLaravelFilterQuery({ status, date }),
+            );
             return res.data.data;
         },
     });
@@ -34,7 +43,20 @@ const InvoiceList = () => {
     const [selected, setSelected] = useState<number[]>([]);
     return (
         <div className="flex flex-col gap-4 font-medium">
-            <div className="flex flex-col shadow-sm">
+            <div className="flex flex-col">
+                <div className="mb-5 flex justify-between">
+                    <div className="flex flex-col justify-center">
+                        <p className="text-sm font-medium text-gray-700">Tìm thấy</p>
+                        <ul className="list-inside list-disc text-sm text-gray-600">
+                            <li>8 hóa đơn chưa thanh toán</li>
+                            <li>12 hóa đơn đã thanh toán</li>
+                        </ul>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <ActionPayment invoices={invoices} selected={selected} />
+                        <FilterInvoice />
+                    </div>
+                </div>
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="inline-block min-w-full p-1.5 align-middle">
                         <div className="overflow-hidden">
@@ -154,10 +176,9 @@ const InvoiceList = () => {
                     </div>
                 </div>
             </div>
-            <div className="lg:flex-co flex items-end justify-between">
-                <ActionPayment invoices={invoices} selected={selected} />
+            <div className="flex items-end justify-between lg:flex-col">
                 <div className="ml-auto">
-                    {!isLoading && (invoices?.length ?? 0) > 0 && (
+                    {!isLoading && totalPages > 1 && (invoices?.length ?? 0) > 0 && (
                         <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
                     )}
                 </div>

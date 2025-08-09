@@ -44,7 +44,7 @@ const sidebarMenuLink = [
     {
         url: "/profile/saved-courses",
         matcher: ["/profile/saved-courses"],
-        name: "Khóa học đã lưu",
+        name: "Khóa học yêu thích",
         icon: Bookmark,
     },
     {

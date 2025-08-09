@@ -31,9 +31,9 @@ export function PaymentMethodsDialog() {
             return res.data;
         },
         onSuccess: (data: CheckoutResponse) => {
+            toast.success("Tạo hóa đơn thành công! Vui lòng chờ 1 xíu ....");
             switch (data.data.payment_method) {
                 case "transfer":
-                    toast.success("Tạo hóa đơn thành công! Vui lòng thanh toán.");
                     router.push(`/invoices/${data.data.transaction_code}`);
                     break;
                 case "vnpay":

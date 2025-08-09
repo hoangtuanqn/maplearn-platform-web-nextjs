@@ -26,6 +26,13 @@ export const formatter = {
         if (hours === 1) return "1 giờ";
         return `${hours} giờ`;
     },
+    parseDateDMY: (dateStr: string) => {
+        const parts = dateStr.split("/");
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+    },
 };
 
 export const formatPhoneNumber = (phone: string | number): string => {

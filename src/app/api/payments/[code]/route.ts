@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import invoiceApi from "~/apiRequest/invoices";
+import paymentApi from "~/apiRequest/payment";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ code: string }> }) {
     const cookie = request.headers.get("cookie");
-    // console.log("cookie >>>>", request.headers.get("cookie"));
-
-    // console.log("cookie >>> ", cookie);
 
     const { code } = await params;
 
-    // Gọi backend API với cookie
     try {
-        const res = await invoiceApi.getInvoiceDetail(code, {
+        const res = await paymentApi.getDetailPayment(code, {
             Cookie: cookie || "",
         });
         return NextResponse.json(res.data, { status: res.status });

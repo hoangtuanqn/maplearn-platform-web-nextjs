@@ -1,5 +1,5 @@
 "use client";
-import { SlidersHorizontal } from "lucide-react";
+import { Funnel } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -36,7 +36,7 @@ export function FilterDocuments() {
             <form>
                 <DialogTrigger asChild>
                     <Button variant="outline" className="bg-white">
-                        <SlidersHorizontal />
+                        <Funnel />
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-white sm:max-w-[600px]">

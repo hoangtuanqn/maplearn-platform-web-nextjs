@@ -5,6 +5,7 @@ import { paginationMetaSchemaFn } from "./common.schema";
 export const invoiceSchema = z.object({
     id: z.number(),
     user_id: z.number(),
+    payment_id: z.number().nullable(),
     transaction_code: z.string(),
     payment_method: z.string(),
     total_price: z.number(),

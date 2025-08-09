@@ -81,11 +81,17 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
                         params.delete(key2);
                         continue;
                     }
-                    if (params.has(key2)) {
-                        params.set(key2, value2.join(",") + ",");
-                    } else {
-                        params.append(key2, value2.join(",") + ",");
+                    let value = value2.join(",");
+                    // Nếu chỉ có 1 giá trị thì thêm dấu , phía sau (để nhận biết value này thuộc key số nhiều)
+                    if (value2.length === 1) {
+                        value += ",";
                     }
+                    if (value)
+                        if (params.has(key2)) {
+                            params.set(key2, value);
+                        } else {
+                            params.append(key2, value);
+                        }
                 }
             }
             if (key === "filter") {

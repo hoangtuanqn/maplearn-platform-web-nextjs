@@ -12,22 +12,38 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import Loading from "~/app/(student)/_components/Loading";
 import { Invoice } from "~/schemaValidate/invoice.schema";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import paymentApi from "~/apiRequest/payment";
+import MethodPayment from "~/app/(student)/_components/MethodPayment";
 const ActionPayment = ({ invoices, selected }: { invoices: Invoice[]; selected: number[] }) => {
-    const [paymentMethod, setPaymentMethod] = useState<"transfer" | "vnpay">("transfer");
+    const [paymentMethod, setPaymentMethod] = useState("transfer");
     const router = useRouter();
     const paymentMutation = useMutation({
         mutationFn: async (invoiceIds: number[]) => {
-            return await paymentApi.createPayment(invoiceIds, paymentMethod);
+            const res = await paymentApi.createPayment(invoiceIds, paymentMethod);
+            return res.data.data;
         },
-        onSuccess: () => {
-            toast.success("Thao tác thành công!");
+        onSuccess: (data) => {
+          
+
+            switch (data.payment_method) {
+                case "vnpay":
+                case "momo":
+                case "zalopay":
+                    toast.success("Đã tạo hóa đơn tổng hợp thành công. Vui lòng chờ ....");
+                    router.push(data?.url_payment || `/payments/${data.transaction_code}`);
+                    break;
+                case "transfer":
+                    toast.success("Đã tạo hóa đơn tổng hợp thành công. Vui lòng chờ ....");
+                    router.push(`/payments/${data.transaction_code}`);
+                    break;
+                default:
+                    toast.error("Thao tác củ bạn không hợp lệ.");
+            }
         },
         onError: notificationErrorApi,
     });
@@ -64,20 +80,7 @@ const ActionPayment = ({ invoices, selected }: { invoices: Invoice[]; selected: 
                             </DialogHeader>
                             <div className="grid gap-4">
                                 <div className="grid gap-3">
-                                    <Select
-                                        value={paymentMethod}
-                                        onValueChange={(value) => setPaymentMethod(value as "transfer" | "vnpay")}
-                                    >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Chọn phương thức thanh toán" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem value="transfer">Chuyển khoản ngân hàng</SelectItem>
-                                                <SelectItem value="vnpay">Ví VNPAY</SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <MethodPayment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
                                 </div>
                             </div>
                             <DialogFooter>

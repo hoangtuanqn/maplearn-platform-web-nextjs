@@ -1,5 +1,5 @@
 "use client";
-import { SlidersHorizontal } from "lucide-react";
+import { Funnel } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -58,7 +58,7 @@ export function FilterCourses() {
             <form>
                 <DialogTrigger asChild>
                     <Button variant="outline" className="bg-white">
-                        <SlidersHorizontal />
+                        <Funnel />
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="max-h-[80vh] overflow-y-auto bg-white sm:max-w-[700px]">
