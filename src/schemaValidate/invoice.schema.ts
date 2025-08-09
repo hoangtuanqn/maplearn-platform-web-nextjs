@@ -18,10 +18,17 @@ export const invoiceSchema = z.object({
 });
 export type Invoice = z.infer<typeof invoiceSchema>;
 
+const summaryInvoiceSchma = z.object({
+    total_pending: z.number(),
+    total_price_pending: z.number(),
+});
 export const InvoiceListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),
-    data: paginationMetaSchemaFn(invoiceSchema),
+    data: z.object({
+        invoices: paginationMetaSchemaFn(invoiceSchema),
+        summary: summaryInvoiceSchma
+    }),
 });
 export type InvoiceListResponse = z.infer<typeof InvoiceListResponseSchema>;
 

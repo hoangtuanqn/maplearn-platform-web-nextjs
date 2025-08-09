@@ -38,13 +38,23 @@ export function FilterInvoice() {
     const { date } = useGetSearchQuery(["date"] as const);
     const handleRemoveQuery = () => {
         window.history.replaceState({}, "", pathName);
+        setDateRange({
+            from: undefined,
+            to: undefined,
+        });
     };
     const [dateRange, setDateRange] = useState<DateRange>(() => {
         // Giá trị của date sẽ có dạng 27/7/2025,30/7/2025 - Cần tách ra form, to
-        const [from, to] = (date || "").split(",").map((item) => new Date(formatter.parseDateDMY(item.trim())));
+        if (date) {
+            const [from, to] = (date || "").split(",").map((item) => new Date(formatter.parseDateDMY(item.trim())));
+            return {
+                from: from || undefined,
+                to: to || undefined,
+            };
+        }
         return {
-            from: from || undefined,
-            to: to || undefined,
+            from: undefined,
+            to: undefined,
         };
     });
     useEffect(() => {
@@ -92,13 +102,13 @@ export function FilterInvoice() {
                                 </Select>
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="username-1">Trạng thái</Label>
+                                <Label htmlFor="username-1">Tình trạng</Label>
                                 <Select
                                     value={formValues.filter.status || ""}
                                     onValueChange={(value) => setFieldValue("status", value, "filter")}
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Sắp xếp theo" />
+                                        <SelectValue placeholder="Tình trạng hóa đơn" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>

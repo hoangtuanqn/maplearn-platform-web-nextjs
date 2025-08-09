@@ -1,6 +1,10 @@
 export const formatter = {
-    date: (date: Date | string) => {
+    date: (date: Date | string, time: boolean = false) => {
+        // time = true: Có hiển thị H:i:s luông không
         const parsedDate = new Date(date);
+        if (time) {
+            return parsedDate.toLocaleString("vi-VN");
+        }
         return parsedDate.toLocaleDateString("vi-VN");
     },
     number: (amount: number) => Intl.NumberFormat("vi-VN").format(amount),

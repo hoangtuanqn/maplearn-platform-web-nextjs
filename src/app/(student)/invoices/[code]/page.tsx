@@ -57,7 +57,9 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                             </p>
                             <p className="text-sm text-slate-500 max-md:text-xs">
                                 Ngày đến hạn:{" "}
-                                <span className="font-semibold text-slate-700">{formatter.date(invoice.due_date)}</span>
+                                <span className="font-semibold text-slate-700">
+                                    {formatter.date(invoice.due_date, true)}
+                                </span>
                             </p>
                         </div>
                     </div>

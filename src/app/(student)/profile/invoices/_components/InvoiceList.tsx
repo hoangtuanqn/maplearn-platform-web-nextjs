@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
 import { PaginationNav } from "../../../_components/Pagination";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import { FilterInvoice } from "./FilterInvoice";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
 import profileApi from "~/apiRequest/profile";
+import ExportInvoices from "./ExportInvoices";
 
 const InvoiceList = () => {
     const { page, sort, status, date } = useGetSearchQuery(["page", "sort", "status", "date"] as const);
@@ -29,32 +30,45 @@ const InvoiceList = () => {
             );
             return res.data.data;
         },
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
-    const totalPages = Math.ceil((data?.total ?? 0) / INVOICE_PER_PAGE);
+    const totalPages = Math.ceil((data?.invoices?.total ?? 0) / INVOICE_PER_PAGE);
     const router = useRouter();
-    const [invoices, setInvoices] = useState(data?.data || []);
+    const [invoices, setInvoices] = useState(data?.invoices?.data || []);
 
     useEffect(() => {
-        if (data?.data) {
-            setInvoices(data.data);
+        if (data?.invoices?.data) {
+            setInvoices(data.invoices.data);
         }
     }, [data]);
     const [selected, setSelected] = useState<number[]>([]);
     return (
         <div className="flex flex-col gap-4 font-medium">
             <div className="flex flex-col">
-                <div className="mb-5 flex justify-between">
-                    <div className="flex flex-col justify-center">
-                        <p className="text-sm font-medium text-gray-700">Tìm thấy</p>
-                        <ul className="list-inside list-disc text-sm text-gray-600">
-                            <li>8 hóa đơn chưa thanh toán</li>
-                            <li>12 hóa đơn đã thanh toán</li>
+                <div className="mb-5 flex flex-col gap-4 rounded-lg border border-gray-100 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-col justify-center gap-1">
+                        <p className="text-base font-semibold text-neutral-900">Đã tìm thấy</p>
+                        <ul className="ml-4 list-inside list-disc text-sm text-neutral-700">
+                            <li>
+                                <span className="text-primary-600 font-bold">{data?.invoices?.total ?? 0}</span> kết quả
+                            </li>
+                            <li>
+                                <span className="font-bold text-yellow-600">{data?.summary.total_pending ?? 0}</span>{" "}
+                                hóa đơn chưa thanh toán
+                            </li>
+                            <li>
+                                <span className="font-bold text-yellow-600">
+                                    Tổng {formatter.number(data?.summary.total_price_pending ?? 0)}đ {"  "}
+                                </span>
+                                cần phải thanh toán
+                            </li>
                         </ul>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="mt-3 flex items-center gap-3 md:mt-0">
                         <ActionPayment invoices={invoices} selected={selected} />
                         <FilterInvoice />
+                        <ExportInvoices payload={{ sort, status, date, totalPages }} />
                     </div>
                 </div>
                 <div className="-m-1.5 overflow-x-auto">
@@ -155,10 +169,10 @@ const InvoiceList = () => {
                                                         #{invoice.transaction_code}
                                                     </td>
                                                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                        {formatter.date(invoice.created_at)}
+                                                        {formatter.date(invoice.created_at, true)}
                                                     </td>
                                                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                        {formatter.date(invoice.due_date)}
+                                                        {formatter.date(invoice.due_date, true)}
                                                     </td>
                                                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
                                                         {formatter.number(invoice.total_price)} VNĐ
@@ -187,4 +201,4 @@ const InvoiceList = () => {
     );
 };
 
-export default InvoiceList;
+export default memo(InvoiceList);

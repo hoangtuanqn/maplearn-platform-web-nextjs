@@ -28,8 +28,6 @@ const ActionPayment = ({ invoices, selected }: { invoices: Invoice[]; selected: 
             return res.data.data;
         },
         onSuccess: (data) => {
-          
-
             switch (data.payment_method) {
                 case "vnpay":
                 case "momo":
@@ -66,7 +64,7 @@ const ActionPayment = ({ invoices, selected }: { invoices: Invoice[]; selected: 
                 <Dialog>
                     <form>
                         <DialogTrigger asChild>
-                            <Button className="" variant="outline" disabled={selected.length === 0}>
+                            <Button className="text-xs" variant="outline" disabled={selected.length === 0}>
                                 Thanh toán ({selected.length})
                             </Button>
                         </DialogTrigger>

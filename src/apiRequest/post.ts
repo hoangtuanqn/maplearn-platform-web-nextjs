@@ -7,7 +7,7 @@ const postApi = {
         limit: number = POSTS_PER_PAGE,
         search: string = "",
         sort: string = "",
-        queryOther: string,
+        queryOther: string = "",
     ) => {
         let query = `/posts?page=${page}&limit=${limit}`;
         if (search) {

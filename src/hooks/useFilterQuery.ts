@@ -57,6 +57,10 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
     };
     const handleSubmit = () => {
         const params = new URLSearchParams(searchParams.toString());
+        // Mỗi khi filter cần set về lại = 1
+        if (params.has("page")) {
+            params.set("page", "1");
+        }
         for (const [key, value] of Object.entries(formValues)) {
             if (key === "sort") {
                 let query = "";

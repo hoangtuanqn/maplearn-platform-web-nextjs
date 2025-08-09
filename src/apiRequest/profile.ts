@@ -16,6 +16,7 @@ const profileApi = {
         queryOther: string = "",
     ) => {
         let query = `/profile/invoices?page=${page}&limit=${limit}`;
+
         if (search) {
             query += `&filter[title]=${search}`;
         }
