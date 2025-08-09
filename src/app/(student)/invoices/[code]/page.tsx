@@ -112,6 +112,30 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                                 </tr>
                             </thead>
                             <tbody className="text-slate-700">
+                                {/* {invoice.items.map((item) => (
+                                    <tr key={item.id} className="border-b transition hover:bg-blue-50">
+                                        <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
+                                            <Link href={`/courses/${item.course.slug}`}>
+                                                <Image
+                                                    src={item.course.thumbnail}
+                                                    alt={item.course.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="rounded-md max-md:h-8 max-md:w-8"
+                                                />
+                                            </Link>
+                                            <Link
+                                                href={`/courses/${item.course.slug}`}
+                                                className="text-primary font-bold max-md:text-xs"
+                                            >
+                                                {item.course.name}
+                                            </Link>
+                                        </td>
+                                        <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
+                                            {formatter.number(item.course.final_price)} đ
+                                        </td>
+                                    </tr>
+                                ))} */}
                                 {invoice.items.map((item) => (
                                     <tr key={item.id} className="border-b transition hover:bg-blue-50">
                                         <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">

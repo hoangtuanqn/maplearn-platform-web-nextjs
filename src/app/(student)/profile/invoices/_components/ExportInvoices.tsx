@@ -59,7 +59,7 @@ const ExportInvoices = ({
                 }}
             >
                 <FileDown />
-                <span>Export Data</span>
+                <span>Xuất dữ liệu</span>
             </Button>
         </>
     );

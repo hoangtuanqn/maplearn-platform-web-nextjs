@@ -34,12 +34,12 @@ export function PaginationNav({ totalPages, basePath = "", queryKey = "page", si
 
     return (
         <Pagination className="mt-10">
-            <PaginationContent>
+            <PaginationContent className="flex-wrap gap-1 sm:gap-2">
                 <PaginationItem>
                     <PaginationPrevious
                         href="#"
                         aria-disabled={currentPage === 1}
-                        className={clsx({
+                        className={clsx("px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm", {
                             "cursor-not-allowed text-gray-700/40": currentPage <= 1,
                         })}
                         onClick={(e) => {
@@ -52,14 +52,17 @@ export function PaginationNav({ totalPages, basePath = "", queryKey = "page", si
                 {pageNumbers.map((page, idx) => (
                     <PaginationItem key={idx}>
                         {page === "..." ? (
-                            <PaginationEllipsis />
+                            <PaginationEllipsis className="px-1 text-xs sm:px-2 sm:text-sm" />
                         ) : (
                             <PaginationLink
                                 href="#"
                                 isActive={currentPage === page}
-                                className={clsx("hover:bg-primary hover:text-white", {
-                                    "bg-primary text-white": currentPage === page,
-                                })}
+                                className={clsx(
+                                    "hover:bg-primary min-w-[32px] px-2 py-1 text-xs hover:text-white sm:min-w-[40px] sm:px-3 sm:py-2 sm:text-sm",
+                                    {
+                                        "bg-primary text-white": currentPage === page,
+                                    },
+                                )}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     goToPage(Number(page));
@@ -74,7 +77,7 @@ export function PaginationNav({ totalPages, basePath = "", queryKey = "page", si
                 <PaginationItem>
                     <PaginationNext
                         href="#"
-                        className={clsx({
+                        className={clsx("px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm", {
                             "cursor-not-allowed text-gray-700/40": currentPage >= totalPages,
                         })}
                         aria-disabled={currentPage === totalPages}
