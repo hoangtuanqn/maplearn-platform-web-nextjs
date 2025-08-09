@@ -4,12 +4,10 @@ import { ShoppingCart } from "lucide-react";
 
 import React, { useEffect, useState } from "react";
 import cartApi from "~/apiRequest/cart";
-import { Button } from "~/components/ui/button";
 import { CartsResponse } from "~/schemaValidate/cart.schema";
 import Loading from "../_components/Loading";
 import { toast } from "sonner";
 
-import { Input } from "~/components/ui/input";
 import CartsSummary from "./_components/CartsSummary";
 import ListCarts from "./_components/ListCarts";
 import OrderSummary from "./_components/OrderSummary";
@@ -131,7 +129,7 @@ const CartPage = () => {
                             </div> */}
 
                             {/* Order summary */}
-                            <OrderSummary payload={{ discoutMoney, totalMoney, carts }} />
+                            <OrderSummary payload={{ discoutMoney, totalMoney }} />
                         </div>
                     </div>
                 </div>

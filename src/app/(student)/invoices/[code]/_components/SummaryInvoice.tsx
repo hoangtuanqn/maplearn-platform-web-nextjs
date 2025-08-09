@@ -13,18 +13,19 @@ import { useRouter } from "next/navigation";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
 import { DangerConfirm } from "~/components/DangerConfirm";
+
 const SummaryInvoice = ({ invoice }: { invoice: Invoice }) => {
     const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState(invoice.payment_method);
     const paymentMutation = useMutation({
-        mutationFn: async () => {
-            const res = await invoiceApi.createInvoiceVNPay(invoice.transaction_code);
+        mutationFn: async (method: string) => {
+            const res = await invoiceApi.createInvoice(method, invoice.transaction_code);
             return res.data.data;
             // Handle other payment methods if needed
         },
-        onSuccess: (data) => {
-            toast.success("Đang chuyển hướng đến VNPAY...");
-            router.push(data.url_vnpay);
+        onSuccess: (data, method: string) => {
+            toast.success(`Đang chuyển hướng đến ${method.toUpperCase()}...`);
+            router.push(data.url_payment);
         },
         onError: notificationErrorApi,
     });
@@ -39,8 +40,8 @@ const SummaryInvoice = ({ invoice }: { invoice: Invoice }) => {
         onError: notificationErrorApi,
     });
     const handlePayment = () => {
-        if (paymentMethod === "vnpay") {
-            paymentMutation.mutate();
+        if (["momo", "vnpay", "zalopay"].includes(paymentMethod)) {
+            paymentMutation.mutate(paymentMethod);
         } else {
             toast.error("Chức năng này chưa được hỗ trợ.");
         }
@@ -59,22 +60,28 @@ const SummaryInvoice = ({ invoice }: { invoice: Invoice }) => {
                         {invoice.status == "pending" && (
                             <>
                                 <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                    <SelectTrigger className="focus:ring-primary/30 my-5 w-full rounded-lg border-slate-200 shadow-sm focus:ring-2">
+                                    <SelectTrigger className="focus:ring-primary/30 mt-5 w-full rounded-lg border-slate-200 shadow-sm focus:ring-2">
                                         <SelectValue placeholder="Chọn phương thức thanh toán" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectItem value="transfer">Chuyển khoản ngân hàng</SelectItem>
-                                            <SelectItem value="vnpay">Ví VNPAY</SelectItem>
+                                            <SelectItem value="vnpay">Ví VNPay</SelectItem>
+                                            <SelectItem value="momo">Ví MOMO</SelectItem>
+                                            <SelectItem value="zalopay">Ví ZaloPay</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
+                                <p className="mt-2 text-center text-xs font-semibold text-slate-400">
+                                    Dễ dàng thay đổi phương thức thanh toán
+                                </p>
                                 <div className="mt-4 flex flex-col items-center gap-4">
-                                    {paymentMethod === "vnpay" && (
+                                    {["zalopay", "momo", "vnpay"].includes(paymentMethod) && (
                                         <Button className="text-white" onClick={handlePayment}>
-                                            Đi đến VNPAY
+                                            Đi đến {paymentMethod.toUpperCase()}
                                         </Button>
                                     )}
+
                                     {paymentMethod === "transfer" && (
                                         <>
                                             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">

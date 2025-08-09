@@ -15,11 +15,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+
 import { CheckoutResponse } from "~/schemaValidate/cart.schema";
 import Loading from "../../_components/Loading";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
+import MethodPayment from "../../_components/MethodPayment";
 
 export function PaymentMethodsDialog() {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
@@ -36,8 +37,12 @@ export function PaymentMethodsDialog() {
                     router.push(`/invoices/${data.data.transaction_code}`);
                     break;
                 case "vnpay":
-                    router.push(data.data.url_vnpay || "");
+                case "momo":
+                case "zalopay":
+                    router.push(data.data.url_payment || "");
                     break;
+                default:
+                    router.push(`/profile/invoices`);
             }
         },
         onError: notificationErrorApi,
@@ -58,19 +63,9 @@ export function PaymentMethodsDialog() {
                             <DialogTitle>Chọn phương thức thanh toán</DialogTitle>
                             <DialogDescription>Vui lòng chọn phương thức thanh toán phù hợp với bạn.</DialogDescription>
                         </DialogHeader>
-                        <div className="grid gap-4">
-                            <div className="grid gap-3">
-                                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Chọn phương thức thanh toán" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="transfer">Chuyển khoản ngân hàng</SelectItem>
-                                            <SelectItem value="vnpay">Ví VNPAY</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                        <div className="mt-2 grid gap-4">
+                            <div className="grid gap-4">
+                                <MethodPayment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
                             </div>
                         </div>
                         <DialogFooter>

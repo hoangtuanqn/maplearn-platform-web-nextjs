@@ -33,11 +33,11 @@ const _invoiceDetailSchema = z.object({
 });
 export type InvoiceDetailResponse = z.infer<typeof _invoiceDetailSchema>;
 
-const _createInvoiceVNPaySchema = z.object({
+const _createInvoicePartnerSchema = z.object({
     success: z.boolean(),
     message: z.string(),
     data: z.object({
-        url_vnpay: z.string(),
+        url_payment: z.string(),
     }),
 });
-export type CreateInvoiceVNPayResponse = z.infer<typeof _createInvoiceVNPaySchema>;
+export type CreateInvoicePartnerResponse = z.infer<typeof _createInvoicePartnerSchema>;

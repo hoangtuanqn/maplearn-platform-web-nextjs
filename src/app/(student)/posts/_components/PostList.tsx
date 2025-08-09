@@ -7,9 +7,10 @@ import PostIItem from "./PostIItem";
 import PostSkeleton from "../../_components/SidebarRight/PostSkeleton";
 import { PaginationNav } from "../../_components/Pagination";
 import postApi, { POSTS_PER_PAGE } from "~/apiRequest/post";
+import { buildLaravelFilterQuery } from "~/libs/hepler";
 
-async function fetchPosts(page: number, limit: number, search: string, sort: string) {
-    const res = await postApi.getPosts(page, limit, search, sort);
+async function fetchPosts(page: number, limit: number, search: string, sort: string, queryOther: string) {
+    const res = await postApi.getPosts(page, limit, search, sort, queryOther);
     const allPosts = res.data;
     return {
         posts: allPosts.data.data,
@@ -21,10 +22,11 @@ const PostList = () => {
     const page = Number(searchParams.get("page")) || 1;
     const search = searchParams.get("search") || "";
     const sort = searchParams.get("sort") || "";
+    const courses = searchParams.get("courses") || "";
 
     const { data, isLoading } = useQuery({
-        queryKey: ["user", "posts", page, search, sort],
-        queryFn: () => fetchPosts(page, POSTS_PER_PAGE, search, sort),
+        queryKey: ["user", "posts", { page, search, sort, courses }],
+        queryFn: () => fetchPosts(page, POSTS_PER_PAGE, search, sort, buildLaravelFilterQuery({ courses })),
     });
 
     const posts = data?.posts || [];

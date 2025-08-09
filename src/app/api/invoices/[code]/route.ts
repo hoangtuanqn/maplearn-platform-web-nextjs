@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import invoiceApi from "~/apiRequest/invoices";
 
-export async function GET(request: NextRequest, { params }: { params: { code: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ code: string }> }) {
     const cookie = request.headers.get("cookie");
     // console.log("cookie >>>>", request.headers.get("cookie"));
 

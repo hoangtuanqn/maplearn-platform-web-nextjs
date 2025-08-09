@@ -82,9 +82,9 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
                         continue;
                     }
                     if (params.has(key2)) {
-                        params.set(key2, value2.join(","));
+                        params.set(key2, value2.join(",") + ",");
                     } else {
-                        params.append(key2, value2.join(","));
+                        params.append(key2, value2.join(",") + ",");
                     }
                 }
             }

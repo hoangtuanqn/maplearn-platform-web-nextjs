@@ -1,4 +1,4 @@
-import z, { success } from "zod";
+import z from "zod";
 import { courseSchema } from "./course.schema";
 import { invoiceSchema } from "./invoice.schema";
 
@@ -54,7 +54,7 @@ const _checkoutSchema = z.object({
     success: z.boolean(),
     message: z.string(),
     data: invoiceSchema.extend({
-        url_vnpay: z.string().optional(),
+        url_payment: z.string().optional(),
     }),
 });
 
