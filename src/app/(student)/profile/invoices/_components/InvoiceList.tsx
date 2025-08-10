@@ -30,7 +30,6 @@ const InvoiceList = () => {
             );
             return res.data.data;
         },
-        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     const totalPages = Math.ceil((data?.invoices?.total ?? 0) / INVOICE_PER_PAGE);
@@ -54,7 +53,7 @@ const InvoiceList = () => {
                                 <span className="text-primary-600 font-bold">{data?.invoices?.total ?? 0}</span> kết quả
                             </li>
                             <li>
-                                <span className="font-bold text-yellow-600">{data?.summary.total_pending ?? 0}</span>{" "}
+                                Có <span className="font-bold text-yellow-600">{data?.summary.total_pending ?? 0}</span>{" "}
                                 hóa đơn chưa thanh toán
                             </li>
                             <li>

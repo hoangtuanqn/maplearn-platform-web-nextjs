@@ -25,6 +25,7 @@ import MethodPayment from "../../_components/MethodPayment";
 export function PaymentMethodsDialog() {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
     const router = useRouter();
+    const { user, updateProfile } = useAuth();
     const mutation = useMutation({
         mutationFn: async (paymentMethod: string) => {
             const res = await cartApi.checkout({ payment_method: paymentMethod });
@@ -32,6 +33,12 @@ export function PaymentMethodsDialog() {
         },
         onSuccess: (data: CheckoutResponse) => {
             toast.success("Tạo hóa đơn thành công! Vui lòng chờ 1 xíu ....");
+            if (user) {
+                updateProfile({
+                    ...user,
+                    cart_item_count: Math.max(0, user.cart_item_count - data.data.course_count),
+                });
+            }
             switch (data.data.payment_method) {
                 case "transfer":
                     router.push(`/invoices/${data.data.transaction_code}`);
@@ -47,7 +54,7 @@ export function PaymentMethodsDialog() {
         },
         onError: notificationErrorApi,
     });
-    const { user } = useAuth();
+
     return (
         <>
             <Dialog>

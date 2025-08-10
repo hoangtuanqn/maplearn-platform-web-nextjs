@@ -27,7 +27,7 @@ export const InvoiceListResponseSchema = z.object({
     message: z.string(),
     data: z.object({
         invoices: paginationMetaSchemaFn(invoiceSchema),
-        summary: summaryInvoiceSchma
+        summary: summaryInvoiceSchma,
     }),
 });
 export type InvoiceListResponse = z.infer<typeof InvoiceListResponseSchema>;

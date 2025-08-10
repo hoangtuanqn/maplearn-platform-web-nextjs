@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Heart, HeartOff, ShoppingCart, TrendingUp } from "lucide-react";
+import { Heart, HeartOff, ShoppingBasket, ShoppingCart, TrendingUp } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { CourseType } from "~/schemaValidate/course.schema";
@@ -11,10 +11,12 @@ import { useMutation } from "@tanstack/react-query";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
 import Loading from "../../Loading";
+import { useRouter } from "next/navigation";
 
 const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
     const [course, setCourse] = useState<CourseType>(courseInit);
     const { user, updateProfile } = useAuth();
+    const router = useRouter();
     const favoriateMutation = useMutation({
         mutationKey: ["course", "action"],
         mutationFn: async (action: "add" | "check" | "remove") => {
@@ -41,7 +43,7 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
     const cartMutation = useMutation({
         mutationKey: ["course", "action"],
         mutationFn: async () => courseApi.addCourseToCart(course?.id ?? 0),
-        onSuccess: () => {
+        onSuccess: (_, isNotified: boolean = true) => {
             updateProfile({
                 cart_item_count: (user?.cart_item_count ?? 0) + 1,
             });
@@ -55,8 +57,15 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                 ...prev!,
                 is_cart: true,
             }));
+            if (!isNotified) {
+                router.push("/carts");
+            }
         },
-        onError: notificationErrorApi,
+        onError: (_, isNotified: boolean = true) => {
+            if (isNotified) {
+                notificationErrorApi(_);
+            }
+        },
     });
 
     return (
@@ -72,19 +81,16 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                         </Button>
                     </Link>
                 ) : (
-                    <Button className="flex-7/8 text-white" onClick={() => cartMutation.mutate()} variant={"default"}>
+                    <Button
+                        className="flex-7/8 text-white"
+                        onClick={() => cartMutation.mutate(true)}
+                        variant={"default"}
+                    >
                         <ShoppingCart className={course.is_cart ? "text-red-600" : "text-white"} />
                         {course.is_cart ? "Xóa khỏi giỏ hàng" : "Thêm vào giỏ hàng"}
                     </Button>
                 )}
 
-                {/* <Button
-                    onClick={() => favoriateMutation.mutate(course.is_favorite ? "remove" : "add")}
-                    variant={"outline"}
-                    className={`view_tooltip flex-1/8 border-none`}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content={"Thêm vào danh sách yêu thích"}
-                > */}
                 <div
                     className="inline-flex cursor-pointer items-center justify-center rounded-full bg-red-100 p-2 duration-200 ease-in hover:bg-red-200"
                     onClick={() => favoriateMutation.mutate(course.is_favorite ? "remove" : "add")}
@@ -96,6 +102,9 @@ const ButtonActionCourse = ({ courseInit }: { courseInit: CourseType }) => {
                     )}
                 </div>
             </div>
+            <Button className="text-primary mt-2 w-full" onClick={() => cartMutation.mutate(false)} variant={"outline"}>
+                <span>Mua ngay</span>
+            </Button>
         </>
     );
 };

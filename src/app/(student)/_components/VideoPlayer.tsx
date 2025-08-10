@@ -6,9 +6,10 @@ type Props = {
     src: string;
     type?: "video/mp4" | "youtube";
     poster?: string;
+    ratio?: string | undefined;
 };
 
-const VideoPlayer = ({ src, type = "video/mp4", poster }: Props) => {
+const VideoPlayer = ({ src, type = "video/mp4", poster, ratio = undefined }: Props) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
     useEffect(() => {
@@ -21,9 +22,8 @@ const VideoPlayer = ({ src, type = "video/mp4", poster }: Props) => {
 
             if (videoRef.current) {
                 player = new Plyr(videoRef.current, {
-                    settings: ["speed", "quality"],
-                    loop: { active: true },
-                    previewThumbnails: { enabled: true, src: "/maplearn.png" },
+                    ratio,
+                    keyboard: { focused: true, global: true },
                 });
             }
         });
@@ -33,10 +33,10 @@ const VideoPlayer = ({ src, type = "video/mp4", poster }: Props) => {
                 player.destroy(); // cleanup khi unmount
             }
         };
-    }, []);
+    }, [ratio]);
 
     return (
-        <div className="overflow-hidden rounded-xl">
+        <div className="h-full w-full">
             <video ref={videoRef} className="plyr-react plyr" playsInline controls poster={poster}>
                 <source src={src} type={type || "video/mp4"} />
             </video>

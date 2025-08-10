@@ -5,73 +5,82 @@ import { Button } from "~/components/ui/button";
 import { useAuth } from "~/hooks/useAuth";
 import { getCharacterName, getGender } from "~/libs/hepler";
 import Loading from "../../_components/Loading";
-
+import { Active2Fa } from "./Active2Fa";
+import { UnActive2Fa } from "./UnActive2Fa";
 const ShowProfile = () => {
     const { user: profile, resendVerifyEmail } = useAuth();
-    if (!profile) return;
     const handleResendVerifyEmail = () => {
         resendVerifyEmail.mutate();
     };
+
+    if (!profile) return;
     return (
         <>
             {resendVerifyEmail.isPending && <Loading />}
-            <div className="flex w-fit flex-col gap-4 font-medium">
-                <div className="mb-5 flex items-center gap-8">
+            <div className="flex w-fit max-w-full flex-col gap-4 px-2 font-medium sm:px-0">
+                <div className="mb-5 flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
                     <div className="t1-flex-center h-24 w-24 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-3xl leading-12 font-medium text-white">
                         {getCharacterName(profile.full_name || null)}
                     </div>
-                    <div className="flex flex-col gap-3 leading-5 font-normal">
+                    <div className="flex w-full flex-col gap-3 leading-5 font-normal sm:w-auto">
                         <Link href="/profile/edit">
-                            <Button className="px-5 text-white">Chỉnh sửa thông tin</Button>
+                            <Button className="w-full px-5 text-white sm:w-auto">Chỉnh sửa thông tin</Button>
                         </Link>
                         <Link href="/profile/change-password">
-                            <Button variant={"outline"} className="px-5">
+                            <Button variant={"outline"} className="w-full px-5 sm:w-auto">
                                 Thay đổi mật khẩu
                             </Button>
                         </Link>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Họ và tên</div>
-                    <div>{profile.full_name}</div>
+                    <div className="w-full text-gray-400 md:w-48">Họ và tên</div>
+                    <div className="break-words">{profile.full_name}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Tài khoản</div>
-                    <div>{profile.username}</div>
+                    <div className="w-full text-gray-400 md:w-48">Tài khoản</div>
+                    <div className="break-words">{profile.username}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Email</div>
-                    <div className="flex items-center gap-3">
-                        <span className={`${!profile.email_verified_at && "text-slate-300"}`}>{profile.email}</span>
+                    <div className="w-full text-gray-400 md:w-48">Email</div>
+                    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+                        <span className={`${!profile.email_verified_at && "text-slate-300"} break-all`}>
+                            {profile.email}
+                        </span>
                         {!profile.email_verified_at && (
-                            <Button variant="outline" size="sm" onClick={handleResendVerifyEmail} className="text-xs">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleResendVerifyEmail}
+                                className="w-full text-xs sm:w-auto"
+                            >
                                 Gửi lại email xác thực
                             </Button>
                         )}
                     </div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Số điện thoại</div>
-                    <div>{profile.phone_number}</div>
+                    <div className="w-full text-gray-400 md:w-48">Số điện thoại</div>
+                    <div className="break-words">{profile.phone_number}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Giới tính</div>
+                    <div className="w-full text-gray-400 md:w-48">Giới tính</div>
                     <div>{getGender(profile.gender)}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Năm sinh</div>
+                    <div className="w-full text-gray-400 md:w-48">Năm sinh</div>
                     <div>{profile.birth_year}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Tỉnh thành</div>
-                    <div>{profile.city}</div>
+                    <div className="w-full text-gray-400 md:w-48">Tỉnh thành</div>
+                    <div className="break-words">{profile.city}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Trường học</div>
-                    <div>{profile.school}</div>
+                    <div className="w-full text-gray-400 md:w-48">Trường học</div>
+                    <div className="break-words">{profile.school}</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
-                    <div className="w-48 text-gray-400">Link Facebook</div>
+                    <div className="w-full text-gray-400 md:w-48">Link Facebook</div>
                     <Link
                         href={profile.facebook_link ?? ""}
                         target="_blank"
@@ -79,6 +88,13 @@ const ShowProfile = () => {
                     >
                         {profile.facebook_link}
                     </Link>
+                </div>
+                <div className="flex flex-col gap-2 md:flex-row">
+                    <div className="w-full text-gray-400 md:w-48">Xác minh 2 bước</div>
+                    <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
+                        <span>{profile.google2fa_enabled ? "Đã bật" : "Chưa bật"}</span>
+                        {profile.google2fa_enabled ? <UnActive2Fa /> : <Active2Fa />}
+                    </div>
                 </div>
             </div>
         </>

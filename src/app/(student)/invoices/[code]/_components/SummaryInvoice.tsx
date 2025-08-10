@@ -53,7 +53,7 @@ const SummaryInvoice = ({ invoice }: { invoice: Invoice }) => {
             <div className="sticky top-[70px] mx-auto h-fit w-full max-w-md flex-3/12 shrink-0 md:mx-0 md:w-auto md:max-w-none md:flex-3/12 md:shrink-0">
                 <div className="h-fit flex-3/12 shrink-0 rounded-xl border border-slate-100 bg-white p-4 shadow-xs md:p-8">
                     <div>
-                        <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền phải thanh toán</h2>
+                        <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền cần thanh toán</h2>
                         <p className="text-primary mt-2 text-3xl font-extrabold tracking-wide drop-shadow-sm md:text-4xl">
                             {invoice.status == "pending" ? formatter.number(invoice.total_price) : 0} đ
                         </p>

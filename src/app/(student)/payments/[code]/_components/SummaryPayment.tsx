@@ -44,7 +44,7 @@ const SummaryPayment = ({ payments }: { payments: PaymentDetail }) => {
             <div className="h-fit flex-3/12 shrink-0">
                 <div className="h-fit flex-3/12 shrink-0 rounded-xl border border-slate-100 bg-white p-8 shadow-xs">
                     <div>
-                        <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền phải thanh toán</h2>
+                        <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền cần thanh toán</h2>
                         <p className="text-primary mt-2 text-4xl font-extrabold tracking-wide drop-shadow-sm">
                             {payments.status == "pending" ? formatter.number(totalPrice) : 0} đ
                         </p>

@@ -12,9 +12,10 @@ const PusherNotification = () => {
             volume: 1.0,
         });
         // Kết nối đến Pusher
-        const pusher = new Pusher("8610646d0a376d1ac24e", {
-            cluster: "ap1",
+        const pusher = new Pusher(process.env["NEXT_PUBLIC_PUSHER_APP_KEY"] ?? "", {
+            cluster: process.env["NEXT_PUBLIC_PUSHER_APP_CLUSTER"] ?? "",
         });
+
         // Đăng ký kênh và sự kiện
         const channel = pusher.subscribe(user?.email ?? "null");
         // data: { message: string }

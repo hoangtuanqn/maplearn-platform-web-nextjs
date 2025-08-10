@@ -32,7 +32,7 @@ export function useAuth() {
     };
     // Mutation resend verify email
     const resendVerifyEmail = useMutation({
-        mutationFn: () => privateApi.post("/auth/resend-verify-email", {
+        mutationFn: () => privateApi.post("/profile/resend-verify-email", {
             email: user?.email,
         }),
         onSuccess: () => {

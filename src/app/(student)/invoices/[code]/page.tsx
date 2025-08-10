@@ -112,30 +112,6 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                                 </tr>
                             </thead>
                             <tbody className="text-slate-700">
-                                {/* {invoice.items.map((item) => (
-                                    <tr key={item.id} className="border-b transition hover:bg-blue-50">
-                                        <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
-                                            <Link href={`/courses/${item.course.slug}`}>
-                                                <Image
-                                                    src={item.course.thumbnail}
-                                                    alt={item.course.name}
-                                                    width={50}
-                                                    height={50}
-                                                    className="rounded-md max-md:h-8 max-md:w-8"
-                                                />
-                                            </Link>
-                                            <Link
-                                                href={`/courses/${item.course.slug}`}
-                                                className="text-primary font-bold max-md:text-xs"
-                                            >
-                                                {item.course.name}
-                                            </Link>
-                                        </td>
-                                        <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
-                                            {formatter.number(item.course.final_price)} đ
-                                        </td>
-                                    </tr>
-                                ))} */}
                                 {invoice.items.map((item) => (
                                     <tr key={item.id} className="border-b transition hover:bg-blue-50">
                                         <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
@@ -150,13 +126,16 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                                             </Link>
                                             <Link
                                                 href={`/courses/${item.course.slug}`}
-                                                className="text-primary font-bold max-md:text-xs"
+                                                className={`${item.course.is_enrolled ? "text-primary/30" : "text-primary"} font-bold max-md:text-xs`}
                                             >
-                                                {item.course.name}
+                                                <span>{item.course.name}</span>
+                                                {item.course.is_enrolled && (
+                                                    <span className="text-xs text-green-500"> (Đã mua)</span>
+                                                )}
                                             </Link>
                                         </td>
                                         <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
-                                            {formatter.number(item.course.final_price)} đ
+                                            {formatter.number(item.price_snapshot)} đ
                                         </td>
                                     </tr>
                                 ))}
@@ -170,6 +149,7 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                                 <span>Tổng phụ</span>
                                 <span className="font-semibold">{formatter.number(invoice.total_price)} đ</span>
                             </div>
+
                             <div className="flex justify-between py-2 max-md:py-1 max-md:text-xs">
                                 <span>VAT: </span>
                                 <span className="font-semibold">0 đ</span>

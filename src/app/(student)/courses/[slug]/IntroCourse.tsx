@@ -6,9 +6,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import VideoPlayer from "../../_components/VideoPlayer";
 import { Play } from "lucide-react";
 
-{
-    /* <VideoPlayer src="/video.mp4" /> */
-}
 const IntroCourse = ({ thumbnail, video }: { thumbnail: string; video: string }) => {
     return (
         <Dialog>

@@ -32,11 +32,17 @@ const ExportInvoices = ({
         },
         onSuccess: (data) => {
             const value = data.data.invoices.data.map((item) => {
+                const statusMap: Record<string, string> = {
+                    pending: "Chưa thanh toán",
+                    paid: "Đã thanh toán",
+                    failed: "Thanh toán thất bại",
+                    expired: "Hóa đơn hết hạn",
+                };
                 return {
                     transaction_code: item.transaction_code,
                     payment_method: item.payment_method,
                     total_price: formatter.number(item.total_price),
-                    status: item.status,
+                    status: statusMap[item.status] || "Không xác định",
                     course_count: formatter.number(item.course_count),
                     created_at: formatter.date(item.created_at, true),
                     updated_at: formatter.date(item.updated_at, true),
@@ -45,7 +51,6 @@ const ExportInvoices = ({
             });
             exportExcel(value, "Danh sách hóa đơn.xlsx", headerMap);
         },
-        onError: notificationErrorApi,
     });
     return (
         <>
