@@ -11,6 +11,7 @@ import PusherNotification from "../../_components/PusherNotification";
 import InfoUser from "./_components/InfoUser";
 import { getStatusBadge } from "~/libs/statusBadge";
 import SummaryInvoice from "./_components/SummaryInvoice";
+import { CardDialog } from "./_components/CardDialog";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
     const { code } = await params;
@@ -34,6 +35,7 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
     }
     return (
         <section className="flex min-h-screen gap-6 rounded-2xl bg-gradient-to-br p-8 max-lg:flex-col max-lg:gap-3 max-lg:pt-6 max-md:gap-2 max-md:rounded-none max-md:p-2">
+            {invoice.payment_method === "card" && <CardDialog code={code} />}
             <div
                 className="mb-8 h-fit flex-9/12 rounded-2xl bg-white p-12 shadow-sm max-lg:mb-3 max-lg:p-5 max-md:rounded-lg max-md:p-2"
                 id="action-to-print"

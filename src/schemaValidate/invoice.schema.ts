@@ -1,5 +1,5 @@
-import { cartSchema } from "./cart.schema";
 import z from "zod";
+import { cartSchema } from "./cart.schema";
 import { paginationMetaSchemaFn } from "./common.schema";
 
 export const invoiceSchema = z.object({
@@ -49,3 +49,14 @@ const _createInvoicePartnerSchema = z.object({
     }),
 });
 export type CreateInvoicePartnerResponse = z.infer<typeof _createInvoicePartnerSchema>;
+
+// const cardSchema = z.object({
+//     telco: z.string().min(1, "Chọn nhà mạng"),
+//     amount: z.string().min(1, "Chọn mệnh giá"),
+//     serial: z.string().min(1, "Nhập số seri"),
+//     code: z.string().min(1, "Nhập mã thẻ"),
+// });
+// export const listCardSchema = z.object({
+//     cards: z.array(cardSchema),
+// });
+// export type ListCardSchemaType = z.infer<typeof listCardSchema>;
