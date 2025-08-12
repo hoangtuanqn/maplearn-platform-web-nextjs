@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "qr.sepay.vn",
             },
+            {
+                protocol: "https",
+                hostname: "*.cloudinary.com",
+            },
         ],
     },
 };
