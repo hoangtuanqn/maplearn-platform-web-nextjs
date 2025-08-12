@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -28,9 +29,12 @@ import { useMutation } from "@tanstack/react-query";
 import invoiceApi from "~/apiRequest/invoices";
 import Loading from "~/app/(student)/_components/Loading";
 import axios from "axios";
-import { notificationErrorApi } from "~/libs/apis/http";
 import { toast } from "sonner";
-
+import { ListCardSchemaResponseAPI } from "~/schemaValidate/invoice.schema";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { formatter } from "~/libs/format";
+import { useState } from "react";
+const amounts = [10_000, 20_000, 50_000, 100_000, 200_000, 500_000];
 const formSchema = z.object({
     cards: z.array(
         z.object({
@@ -38,18 +42,20 @@ const formSchema = z.object({
             amount: z.string().min(1, "Chọn mệnh giá"),
             serial: z.string().min(1, "Nhập số seri"),
             code: z.string().min(1, "Nhập mã thẻ"),
+            isSuccess: z.boolean(),
         }),
     ),
 });
-
 type FormValues = z.infer<typeof formSchema>;
 
-export function CardDialog({ code }: { code: string }) {
+export function CardDialog({ totalPrice, code }: { totalPrice: number; code: string }) {
+    "use no memo";
+    const [total, setTotal] = useState(0);
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             cards: [
-                { telco: "", amount: "", serial: "", code: "" }, // dòng đầu tiên
+                { telco: "", amount: "", serial: "", code: "", isSuccess: false }, // dòng đầu tiên
             ],
         },
         mode: "onBlur",
@@ -64,57 +70,39 @@ export function CardDialog({ code }: { code: string }) {
     const sendCartMuation = useMutation({
         mutationFn: ({ code, values }: { code: string; values: FormValues }) =>
             invoiceApi.sendCardToPartner(code, values),
-        onSuccess: (res) => {
-            toast.success("Thanh toán bằng thẻ cào thành công!");
-
-            // form.reset();
+        onSuccess: (data) => {
+            toast.success(data.data.message);
         },
-        onError: notificationErrorApi,
 
-        // Json return array (
-        //   'success' => true,
-        //   'message' => 'Thanh toán bằng thẻ cào thành công!',
-        //   'data' =>
-        //   array (
-        //     0 =>
-        //     array (
-        //       'trans_id' => NULL,
-        //       'request_id' => 862525641,
-        //       'amount' => NULL,
-        //       'value' => NULL,
-        //       'declared_value' => '10000',
-        //       'telco' => 'VIETTEL',
-        //       'serial' => '1',
-        //       'code' => '2',
-        //       'status' => 3,
-        //       'message' => 'Mã thẻ hoặc seri không đúng định dạng, vui lòng kiểm tra lại!',
-        //     ),
-        //     1 =>
-        //     array (
-        //       'trans_id' => NULL,
-        //       'request_id' => 1641930657,
-        //       'amount' => NULL,
-        //       'value' => NULL,
-        //       'declared_value' => '20000',
-        //       'telco' => 'VINAPHONE',
-        //       'serial' => '3',
-        //       'code' => '4',
-        //       'status' => 3,
-        //       'message' => 'Mã thẻ hoặc seri không đúng định dạng, vui lòng kiểm tra lại!',
-        //     ),
-        //   ),
-        // )
-
-        onSettled: (_, error) => {
-            if (axios.isAxiosError(error) && error.response && Array.isArray(error.response.data.data)) {
+        onSettled: (data, error) => {
+            if (!error) {
+                // Xử lý nếu k lỗi (hoặc chỉ có 1 vài thẻ lỗi)
+                const responseData = data?.data as ListCardSchemaResponseAPI;
+                form.setValue(
+                    "cards",
+                    form.getValues("cards").map((card, index) => {
+                        const cardRes = responseData.data.find((item) => item.serial == card.serial);
+                        if (cardRes) {
+                            if (cardRes["status"] == 1 || cardRes["status"] == 99) {
+                                return {
+                                    ...card,
+                                    isSuccess: true,
+                                };
+                            } else {
+                                form.setError(`cards.${index}.code`, { type: "manual", message: cardRes.message });
+                            }
+                        }
+                        return card;
+                    }),
+                );
+            } else if (axios.isAxiosError(error) && error.response) {
+                // Xử lý nếu tất cả các thẻ đề lỗi
                 type CardError = {
                     message: string;
                 };
                 const cardErrors = error.response.data.data as CardError[];
                 cardErrors.forEach((item: CardError, idx: number) => {
-                    console.log(item);
-
-                    form.setError(`cards.${idx}.code`, { message: item.message });
+                    form.setError(`cards.${idx}.code`, { type: "manual", message: item.message });
                 });
             }
         },
@@ -122,15 +110,16 @@ export function CardDialog({ code }: { code: string }) {
 
     function onSubmit(values: FormValues) {
         sendCartMuation.mutate({ code, values });
-        // form.setError(`cards.0.code`, { type: "manual", message: "ngon" });
-        console.log("Đã bắn error");
     }
 
     return (
-        <Dialog open={true}>
+        <Dialog defaultOpen={true} onOpenChange={() => {}}>
             {sendCartMuation.isPending && <Loading />}
             <Form {...form}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                    <DialogTrigger asChild>
+                        <Button className="w-full text-white md:w-auto">Nạp thẻ</Button>
+                    </DialogTrigger>
                     <DialogContent className="bg-white lg:max-w-7xl">
                         <DialogHeader>
                             <DialogTitle>Thanh toán bằng thẻ cào</DialogTitle>
@@ -139,8 +128,11 @@ export function CardDialog({ code }: { code: string }) {
 
                         <div className="grid max-h-[70vh] gap-8 overflow-y-auto px-2">
                             {fields.map((field, index) => (
-                                <div key={field.id} className="flex flex-col items-start gap-2 md:flex-row">
-                                    <div className="grid flex-1 grid-cols-1 gap-2 md:grid-cols-4">
+                                // Thêm trạng thái disable ko ko thể nhập ô nào, có overlay
+                                <div key={field.id} className={`flex flex-col items-start gap-2 md:flex-row`}>
+                                    <div
+                                        className={`grid flex-1 grid-cols-1 gap-2 md:grid-cols-4 ${field.isSuccess ? "pointer-events-none opacity-50" : ""}`}
+                                    >
                                         {/* Nhà mạng */}
                                         <FormField
                                             control={control}
@@ -177,19 +169,49 @@ export function CardDialog({ code }: { code: string }) {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>
-                                                        <Select value={field.value} onValueChange={field.onChange}>
+                                                        <Select
+                                                            value={field.value}
+                                                            onValueChange={(value) => {
+                                                                field.onChange(value);
+                                                                setTotal(
+                                                                    form.getValues("cards").reduce((acc, card) => {
+                                                                        return acc + (parseInt(card.amount, 10) || 0);
+                                                                    }, 0),
+                                                                );
+                                                            }}
+                                                        >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Chọn mệnh giá" />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 <SelectGroup>
                                                                     <SelectLabel>Mệnh giá</SelectLabel>
-                                                                    <SelectItem value="10000">10.000đ</SelectItem>
-                                                                    <SelectItem value="20000">20.000đ</SelectItem>
-                                                                    <SelectItem value="50000">50.000đ</SelectItem>
-                                                                    <SelectItem value="100000">100.000đ</SelectItem>
-                                                                    <SelectItem value="200000">200.000đ</SelectItem>
-                                                                    <SelectItem value="500000">500.000đ</SelectItem>
+                                                                    {/* Logic: Chỉ hiển thị các mệnh giá nếu tổng mệnh giá đã chọn < tổng giá trị hóa đơn */}
+                                                                    {amounts.map((amount) => {
+                                                                        const caculate = form
+                                                                            .getValues("cards")
+                                                                            .slice(0, index)
+                                                                            .reduce((acc, card) => {
+                                                                                return (
+                                                                                    acc +
+                                                                                    (parseInt(card.amount, 10) || 0)
+                                                                                );
+                                                                            }, 0);
+
+                                                                        return (
+                                                                            <SelectItem
+                                                                                key={amount}
+                                                                                value={amount + ""}
+                                                                                disabled={
+                                                                                    caculate > totalPrice ||
+                                                                                    caculate + amount > totalPrice ||
+                                                                                    amount > totalPrice
+                                                                                }
+                                                                            >
+                                                                                {formatter.number(amount)}đ
+                                                                            </SelectItem>
+                                                                        );
+                                                                    })}
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>
@@ -226,6 +248,11 @@ export function CardDialog({ code }: { code: string }) {
                                                 </FormItem>
                                             )}
                                         />
+                                        {field.isSuccess && (
+                                            <p className="col-span-4 text-green-500">
+                                                Đã gửi thẻ thành công! Đang chờ xử lý, có thể xóa dòng này!
+                                            </p>
+                                        )}
                                     </div>
 
                                     {/* Nút xóa dòng */}
@@ -245,14 +272,22 @@ export function CardDialog({ code }: { code: string }) {
                                 </div>
                             ))}
                             <div className="border-primary/80 border-b-1 pb-4">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="text-primary w-full md:w-fit"
-                                    onClick={() => append({ telco: "", amount: "", serial: "", code: "" })}
-                                >
-                                    <Plus className="mr-2" /> Thêm dòng mới
-                                </Button>
+                                {total < totalPrice && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="text-primary w-full md:w-fit"
+                                        onClick={() =>
+                                            append({ telco: "", amount: "", serial: "", code: "", isSuccess: false })
+                                        }
+                                    >
+                                        <Plus className="mr-2" /> Thêm dòng mới
+                                    </Button>
+                                )}
+                                <span className="block text-right">
+                                    Số tiền đang chọn:{" "}
+                                    <span className="font-semibold text-green-500">{formatter.number(total)}đ</span>
+                                </span>
                             </div>
                         </div>
 
@@ -260,7 +295,7 @@ export function CardDialog({ code }: { code: string }) {
                             {/* Nút thêm dòng mới */}
                             <DialogClose asChild>
                                 <Button variant="outline" className="w-full md:w-auto">
-                                    Cancel
+                                    Đóng
                                 </Button>
                             </DialogClose>
                             <Button
@@ -269,11 +304,13 @@ export function CardDialog({ code }: { code: string }) {
                                 onClick={async () => {
                                     const isValid = await form.trigger();
                                     if (isValid) {
-                                        onSubmit(form.getValues());
+                                        const values = form.getValues();
+                                        const filteredCards = values.cards.filter((card) => !card.isSuccess);
+                                        onSubmit({ cards: filteredCards });
                                     }
                                 }}
                             >
-                                Nạp thẻ
+                                Kiểm tra
                             </Button>
                         </DialogFooter>
                     </DialogContent>

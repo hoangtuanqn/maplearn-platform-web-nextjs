@@ -41,7 +41,7 @@ const SideBarLaptop = () => {
                             image="/assets/icons/my-courses.svg"
                         />
                         <MenuItemLink
-                            title="Khoá học đã lưu"
+                            title="Khóa học yêu thích"
                             url={"/profile/saved-courses"}
                             image="/assets/icons/saved-courses.svg"
                         />{" "}

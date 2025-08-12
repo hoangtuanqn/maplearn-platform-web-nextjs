@@ -89,7 +89,7 @@
     }
 
     /* Ẩn nút in khi in */
-    #action-to-print button {
+    .no-print {
         display: none;
     }
 }

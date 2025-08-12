@@ -73,6 +73,11 @@ const SummaryPayment = ({ payments }: { payments: PaymentDetail }) => {
                                             Đi đến {paymentMethod.toUpperCase()}
                                         </Button>
                                     )}
+                                    {paymentMethod === "card" && (
+                                        <p className="text-center font-bold text-red-500">
+                                            Rất tiếc, để thanh toán bằng thẻ cào, vui lòng thanh toán từng hóa đơn một
+                                        </p>
+                                    )}
 
                                     {paymentMethod === "transfer" && (
                                         <>

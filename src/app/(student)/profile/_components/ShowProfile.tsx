@@ -7,6 +7,7 @@ import { getCharacterName, getGender } from "~/libs/hepler";
 import Loading from "../../_components/Loading";
 import { Active2Fa } from "./Active2Fa";
 import { UnActive2Fa } from "./UnActive2Fa";
+import { formatter } from "~/libs/format";
 const ShowProfile = () => {
     const { user: profile, resendVerifyEmail } = useAuth();
     const handleResendVerifyEmail = () => {
@@ -62,6 +63,10 @@ const ShowProfile = () => {
                 <div className="flex flex-col gap-2 md:flex-row">
                     <div className="w-full text-gray-400 md:w-48">Số điện thoại</div>
                     <div className="break-words">{profile.phone_number}</div>
+                </div>
+                <div className="flex flex-col gap-2 md:flex-row">
+                    <div className="w-full text-gray-400 md:w-48">Số dư hiện tại</div>
+                    <div className="break-words text-green-500">{formatter.number(profile.money)}đ</div>
                 </div>
                 <div className="flex flex-col gap-2 md:flex-row">
                     <div className="w-full text-gray-400 md:w-48">Giới tính</div>

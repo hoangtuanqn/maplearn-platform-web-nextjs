@@ -4,7 +4,6 @@ import React from "react";
 import profileApi from "~/apiRequest/profile";
 import Loading from "~/app/(student)/_components/Loading";
 import { Button } from "~/components/ui/button";
-import { notificationErrorApi } from "~/libs/apis/http";
 import { exportExcel } from "~/libs/exportExcel";
 import { formatter } from "~/libs/format";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
@@ -21,7 +20,7 @@ const ExportInvoices = ({
         status: "Trạng thái",
         course_count: "Số lượng khóa học",
         created_at: "Ngày tạo",
-        updated_at: "Ngày cập nhật",
+
         due_date: "Ngày đến hạn",
     };
 
@@ -40,7 +39,7 @@ const ExportInvoices = ({
                 };
                 return {
                     transaction_code: item.transaction_code,
-                    payment_method: item.payment_method,
+                    payment_method: item.payment_method.toUpperCase(),
                     total_price: formatter.number(item.total_price),
                     status: statusMap[item.status] || "Không xác định",
                     course_count: formatter.number(item.course_count),

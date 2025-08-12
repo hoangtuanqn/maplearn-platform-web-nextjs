@@ -41,6 +41,7 @@ export function PaymentMethodsDialog() {
             }
             switch (data.data.payment_method) {
                 case "transfer":
+                case "card":
                     router.push(`/invoices/${data.data.transaction_code}`);
                     break;
                 case "vnpay":

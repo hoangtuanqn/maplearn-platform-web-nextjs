@@ -43,9 +43,9 @@ export default function MultiSelectDropdown({
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <button className="border-input bg-background inline-flex overflow-hidden items-center justify-between rounded-md border px-3 py-2 text-sm shadow-sm">
+                <button className="border-input bg-background inline-flex items-center justify-between overflow-hidden rounded-md border px-3 py-2 text-sm shadow-sm">
                     <span className={cn("truncate text-left", selectedValues.length === 0 && "text-muted-foreground")}>
-                        {getLabel()}
+                        {getLabel() || label}
                     </span>
                     <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </button>
@@ -61,18 +61,21 @@ export default function MultiSelectDropdown({
                 <Command className="w-full">
                     <CommandInput placeholder="Tìm..." />
                     <CommandGroup>
-                        {options.map((item) => (
-                            <CommandItem key={item.value} onSelect={() => toggleValue(item.value)}>
-                                <span className="mr-2 w-4">
-                                    {selectedValues.includes(item.value) ? (
-                                        <Check className="h-4 w-4" />
-                                    ) : (
-                                        <div className="h-4 w-4" />
-                                    )}
-                                </span>
-                                {item.label}
-                            </CommandItem>
-                        ))}
+                        {options.map((item) => {
+                            if (!item) return null;
+                            return (
+                                <CommandItem key={item.value} onSelect={() => toggleValue(item.value)}>
+                                    <span className="mr-2 w-4">
+                                        {selectedValues.includes(item.value) ? (
+                                            <Check className="h-4 w-4" />
+                                        ) : (
+                                            <div className="h-4 w-4" />
+                                        )}
+                                    </span>
+                                    {item.label}
+                                </CommandItem>
+                            );
+                        })}
                     </CommandGroup>
                 </Command>
             </PopoverContent>

@@ -50,13 +50,42 @@ const _createInvoicePartnerSchema = z.object({
 });
 export type CreateInvoicePartnerResponse = z.infer<typeof _createInvoicePartnerSchema>;
 
-// const cardSchema = z.object({
-//     telco: z.string().min(1, "Chọn nhà mạng"),
-//     amount: z.string().min(1, "Chọn mệnh giá"),
-//     serial: z.string().min(1, "Nhập số seri"),
-//     code: z.string().min(1, "Nhập mã thẻ"),
-// });
-// export const listCardSchema = z.object({
-//     cards: z.array(cardSchema),
-// });
-// export type ListCardSchemaType = z.infer<typeof listCardSchema>;
+const cardSchema = z.object({
+    id: z.number(),
+    user_id: z.number(),
+    invoice_id: z.number(),
+    network: z.string(),
+    amount: z.number(),
+    serial: z.string(),
+    status: z.string(),
+    response_message: z.string().nullable(),
+    created_at: z.string(),
+    updated_at: z.string(),
+});
+
+const _cardListSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(cardSchema),
+});
+export type CardListResponse = z.infer<typeof _cardListSchema>;
+
+// Response từ API trả về
+const cardSchemaResponseAPI = z.object({
+    trans_id: z.string().nullable(),
+    request_id: z.number(),
+    amount: z.number().nullable(),
+    value: z.number().nullable(),
+    declared_value: z.string(),
+    telco: z.string(),
+    serial: z.string(),
+    code: z.string(),
+    status: z.number(),
+    message: z.string(),
+});
+const _listCardSchemaResponseAPISchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(cardSchemaResponseAPI),
+});
+export type ListCardSchemaResponseAPI = z.infer<typeof _listCardSchemaResponseAPISchema>;

@@ -23,7 +23,7 @@ const ListCourseFavorite = () => {
     return (
         <>
             {!isLoading && (coursesFavorite?.data?.length ?? 0) == 0 && (
-                <DisplayNoData title="Không có khóa học nào được lưu" />
+                <DisplayNoData title="Không có khóa học nào được yêu thích" />
             )}
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}

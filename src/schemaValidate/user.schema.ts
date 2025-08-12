@@ -12,6 +12,7 @@ export const userSchema = z.object({
     facebook_link: z.string(),
     school: z.string().nullable(),
     city: z.string().nullable(),
+    money: z.number().min(0),
     role: z.enum(["student", "teacher", "admin"]),
     banned: z.boolean().default(false),
     google2fa_enabled: z.boolean().default(false),
