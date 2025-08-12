@@ -43,7 +43,7 @@ export default function MultiSelectDropdown({
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <button className="border-input bg-background inline-flex items-center justify-between overflow-hidden rounded-md border px-3 py-2 text-sm shadow-sm">
+                <button className="border-input bg-background inline-flex w-full items-center justify-between overflow-hidden rounded-md border px-3 py-2 text-sm shadow-sm">
                     <span className={cn("truncate text-left", selectedValues.length === 0 && "text-muted-foreground")}>
                         {getLabel() || label}
                     </span>

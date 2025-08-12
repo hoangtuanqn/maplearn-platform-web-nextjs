@@ -31,6 +31,7 @@ export const CreatorSchema = z.object({
     id: z.number(),
     full_name: z.string(),
     role: z.enum(["student", "teacher", "admin"]),
+    avatar: z.string().default("")
 });
 
 // Tag schema

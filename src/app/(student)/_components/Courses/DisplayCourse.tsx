@@ -9,33 +9,39 @@ import { formatter } from "~/libs/format";
 import { motion, AnimatePresence } from "framer-motion";
 import { CourseType } from "~/schemaValidate/course.schema";
 import ButtonActionCourse from "./_components/ButtonActionCourse";
+
 const tooltipOffset = 210;
+
 const DisplayCourse = ({ course }: { course: CourseType }) => {
     const [showInfo, setShowInfo] = useState(false);
     const [position, setPosition] = useState<"left" | "right">("right");
+    const [isDesktop, setIsDesktop] = useState(false);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Xác định thiết bị có chuột (PC, laptop)
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setIsDesktop(window.matchMedia("(pointer: fine)").matches);
+        }
+    }, []);
 
     // Auto adjust tooltip direction
     useEffect(() => {
         if (showInfo && containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
             const spaceRight = window.innerWidth - rect.right;
-            const tooltipWidth = 320; // your tooltip width + margin
+            const tooltipWidth = 320;
 
-            if (spaceRight < tooltipWidth) {
-                setPosition("left");
-            } else {
-                setPosition("right");
-            }
+            setPosition(spaceRight < tooltipWidth ? "left" : "right");
         }
     }, [showInfo]);
 
     return (
         <div
             className="relative inline-block w-full"
-            onMouseEnter={() => setShowInfo(true)}
-            onMouseLeave={() => setShowInfo(false)}
+            onMouseEnter={() => isDesktop && setShowInfo(true)}
+            onMouseLeave={() => isDesktop && setShowInfo(false)}
             ref={containerRef}
         >
             {position === "left" ? (
@@ -99,49 +105,49 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                 )}
             </Link>
 
-            {/* Tooltip */}
-            <AnimatePresence>
-                {showInfo && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.09 }}
-                        transition={{ duration: 0.1 }}
-                        className={`absolute top-0 z-50 w-[320px] ${
-                            position === "right" ? `left-[${tooltipOffset}px]` : `right-[${tooltipOffset}px]`
-                        }`}
-                        style={{
-                            left: position === "right" ? `${tooltipOffset}px` : "auto",
-                            right: position === "left" ? `${tooltipOffset}px` : "auto",
-                        }}
-                        onMouseEnter={() => setShowInfo(true)}
-                        onMouseLeave={() => setShowInfo(false)}
-                    >
-                        <div className={`absolute top-5 ${position === "left" ? "right-[0]" : "left-[-18px]"}`}>
-                            {position === "right" ? (
-                                <>
-                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-gray-800" />
-                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-white" />
-                                </>
-                            ) : (
-                                <>
-                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-gray-800" />
-                                    <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-white" />
-                                </>
-                            )}
-                        </div>
+            {/* Tooltip chỉ hiển thị nếu là PC */}
+            {isDesktop && (
+                <AnimatePresence>
+                    {showInfo && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.09 }}
+                            transition={{ duration: 0.1 }}
+                            className="absolute top-0 z-50 w-[320px]"
+                            style={{
+                                left: position === "right" ? `${tooltipOffset}px` : "auto",
+                                right: position === "left" ? `${tooltipOffset}px` : "auto",
+                            }}
+                            onMouseEnter={() => setShowInfo(true)}
+                            onMouseLeave={() => setShowInfo(false)}
+                        >
+                            <div className={`absolute top-5 ${position === "left" ? "right-[0]" : "left-[-18px]"}`}>
+                                {position === "right" ? (
+                                    <>
+                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-gray-800" />
+                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-white" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-gray-800" />
+                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-white" />
+                                    </>
+                                )}
+                            </div>
 
-                        <div className="border-muted rounded-lg border bg-white px-4 py-6 shadow-lg">
-                            <h3 className="text-primary text-base font-bold">
-                                <Link href={`/courses/${course.slug}`}>{course.name}</Link>
-                            </h3>
-                            <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
-                            <p className="mt-2 text-gray-600">{course.description}</p>
-                            {!course.is_enrolled && <ButtonActionCourse courseInit={course} />}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                            <div className="border-muted rounded-lg border bg-white px-4 py-6 shadow-lg">
+                                <h3 className="text-primary text-base font-bold">
+                                    <Link href={`/courses/${course.slug}`}>{course.name}</Link>
+                                </h3>
+                                <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
+                                <p className="mt-2 text-gray-600">{course.description}</p>
+                                {!course.is_enrolled && <ButtonActionCourse courseInit={course} />}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            )}
         </div>
     );
 };

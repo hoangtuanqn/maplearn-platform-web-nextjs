@@ -6,6 +6,7 @@ import { useAuth } from "~/hooks/useAuth";
 import Link from "next/link";
 import { Info, X } from "lucide-react";
 import FormCommentMath from "~/app/(student)/_components/Comment/MathForm";
+import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 
 export interface EnhancedFormCommentProps {
     comment: string;
@@ -63,9 +64,7 @@ const EnhancedFormComment: React.FC<EnhancedFormCommentProps> = ({
 
     return (
         <div className={`flex gap-3 ${className}`}>
-            <div className="t1-flex-center hidden h-10 w-10 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-xl leading-12 font-medium text-white xl:flex">
-                {getCharacterName(profile.full_name || null)}
-            </div>
+            <DisplayAvatar avatar={profile.avatar} fullName={profile.full_name} ratio="10" />
 
             <div className="flex-1">
                 {showMathSupport ? (

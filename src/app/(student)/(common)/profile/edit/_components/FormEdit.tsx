@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
@@ -19,10 +19,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover
 import { cn } from "~/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
+import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
+import uploadMedia from "~/apiRequest/uploadMedia";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [provinces, setProvinces] = useState<ProvinceType>([]);
+    const [preview, setPreview] = useState<string | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+
     const form = useForm<ProfileType>({
         resolver: zodResolver(profileSchema),
         mode: "onBlur",
@@ -39,7 +45,15 @@ const FormEdit = () => {
     useUnsavedChangesWarning(form.formState.isDirty);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: ProfileType) => profileApi.update(data),
+        mutationFn: async (data: ProfileType) => {
+            if (file) {
+                // Thực hiện upload ảnh
+                const uploadPromise = await uploadMedia.upload(file as File, "avatars");
+                data.avatar = uploadPromise.url; // gán link ảnh đã upload vào data
+                setFile(null);
+            }
+            await profileApi.update(data);
+        },
         onSuccess: (_, data) => {
             updateProfile(data as UserType);
             toast.success("Cập nhật thông tin thành công!");
@@ -49,11 +63,24 @@ const FormEdit = () => {
         },
     });
 
-    const onSubmit = (data: ProfileType) => {
+    const handleClick = () => {
+        fileInputRef.current?.click(); // bấm nút => mở dialog chọn file
+    };
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setFile(file);
+            setPreview(URL.createObjectURL(file)); // tạo link preview
+            // Gửi file lên server hoặc preview
+        }
+    };
+
+    const onSubmit = async (data: ProfileType) => {
         if (isPending) {
             toast.warning("Thao tác quá nhanh!");
             return;
         }
+
         mutate(data);
     };
     useEffect(() => {
@@ -66,6 +93,7 @@ const FormEdit = () => {
             facebook_link: user?.facebook_link ?? "",
             phone_number: user?.phone_number ?? "",
         });
+        setPreview(user?.avatar ?? null);
     }, [user, form]);
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -84,6 +112,30 @@ const FormEdit = () => {
         <>
             {isPending && <Loading />}
             <Form {...form}>
+                <div className="relative mb-8 w-fit">
+                    <DisplayAvatar avatar={preview} fullName={user.full_name} ratio="28" />
+                    {/* Input file ẩn */}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        className="hidden"
+                    />
+                    <button
+                        onClick={handleClick}
+                        className="absolute right-0 bottom-0.5 cursor-pointer rounded-md bg-white pt-[1px] pl-[1px] opacity-90 hover:opacity-100"
+                        type="button"
+                    >
+                        <svg fill="none" viewBox="0 0 24 24" className="h-[30px] w-[30px]">
+                            <path
+                                fill="var(--primary)"
+                                d="M16.185 2h-8.38c-3.64 0-5.81 2.17-5.81 5.81v8.37c0 3.65 2.17 5.82 5.81 5.82h8.37c3.64 0 5.81-2.17 5.81-5.81V7.81c.01-3.64-2.16-5.81-5.8-5.81Zm-5.24 15.51c-.29.29-.84.57-1.24.63l-2.46.35c-.09.01-.18.02-.27.02-.41 0-.79-.14-1.06-.41-.33-.33-.47-.81-.39-1.34l.35-2.46c.06-.41.33-.95.63-1.24l4.46-4.46a7.546 7.546 0 0 0 .6 1.29c.1.17.21.33.3.45.11.17.24.33.32.42.05.07.09.12.11.14.25.3.54.58.79.79.07.07.11.11.13.12.15.12.3.24.43.33.16.12.32.23.49.32.2.12.42.23.64.34.23.1.44.19.65.26l-4.48 4.45Zm6.42-6.42-.92.93a.31.31 0 0 1-.22.09c-.03 0-.07 0-.09-.01a6.202 6.202 0 0 1-4.23-4.23c-.03-.11 0-.23.08-.3l.93-.93c1.52-1.52 2.97-1.49 4.46 0 .76.76 1.13 1.49 1.13 2.25-.01.72-.38 1.44-1.14 2.2Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-md max-w-full space-y-6">
                     <FormField
                         control={form.control}

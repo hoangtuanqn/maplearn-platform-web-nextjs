@@ -82,5 +82,10 @@ export const profileSchema = z.object({
         .regex(/^[0-9+() -]+$/, "Số điện thoại không hợp lệ")
         .optional()
         .or(z.literal("").transform(() => undefined)),
+    avatar: z
+        .string()
+        .url("URL ảnh không hợp lệ")
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
 });
 export type ProfileType = z.infer<typeof profileSchema>;

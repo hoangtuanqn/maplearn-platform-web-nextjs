@@ -27,8 +27,8 @@ const footerLinks = [
     {
         label: "Thi online",
         icon: NewsIcon,
-        href: "/exam-online",
-        macher: ["/exam-online"],
+        href: "/exams",
+        macher: ["/exams"],
     },
     {
         label: "Đăng nhập",

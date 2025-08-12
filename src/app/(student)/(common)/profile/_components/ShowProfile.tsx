@@ -3,11 +3,14 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "~/components/ui/button";
 import { useAuth } from "~/hooks/useAuth";
-import { getCharacterName, getGender } from "~/libs/hepler";
+import { getGender } from "~/libs/hepler";
 import Loading from "~/app/(student)/_components/Loading";
 import { Active2Fa } from "./Active2Fa";
 import { UnActive2Fa } from "./UnActive2Fa";
 import { formatter } from "~/libs/format";
+
+import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
+
 const ShowProfile = () => {
     const { user: profile, resendVerifyEmail } = useAuth();
     const handleResendVerifyEmail = () => {
@@ -20,9 +23,7 @@ const ShowProfile = () => {
             {resendVerifyEmail.isPending && <Loading />}
             <div className="flex w-fit max-w-full flex-col gap-4 px-2 font-medium sm:px-0">
                 <div className="mb-5 flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
-                    <div className="t1-flex-center h-24 w-24 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-3xl leading-12 font-medium text-white">
-                        {getCharacterName(profile.full_name || null)}
-                    </div>
+                    <DisplayAvatar avatar={profile.avatar} fullName={profile.full_name} ratio="24" />
                     <div className="flex w-full flex-col gap-3 leading-5 font-normal sm:w-auto">
                         <Link href="/profile/edit">
                             <Button className="w-full px-5 text-white sm:w-auto">Chỉnh sửa thông tin</Button>

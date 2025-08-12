@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { MenuItemLink } from "../MenuItemLink";
 import SocialLink from "../SocialLink";
-import { getCharacterName } from "~/libs/hepler";
 import { useAuth } from "~/hooks/useAuth";
+import DisplayAvatar from "../../DisplayAvatar";
 
 const SideBarLaptop = () => {
     const { user } = useAuth();
@@ -20,15 +20,7 @@ const SideBarLaptop = () => {
                             className="mb-1 flex cursor-pointer items-center justify-start rounded-lg px-3 py-2 hover:bg-[rgba(26,79,140,0.06)]"
                             href="/profile"
                         >
-                            <div
-                                className="t1-flex-center h-8 w-8 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                                style={{
-                                    fontSize: "14px",
-                                    lineHeight: "14px",
-                                }}
-                            >
-                                {getCharacterName(user?.full_name)}
-                            </div>
+                            <DisplayAvatar avatar={user?.avatar} fullName={user?.full_name} ratio="10" />
                             <div className="ml-4">
                                 <p className="text-primary line-clamp-1 font-medium">{user?.full_name}</p>
                                 <p className="text-cp line-clamp-1 text-gray-500">{user?.username}</p>
@@ -56,7 +48,7 @@ const SideBarLaptop = () => {
                 )}
                 <div className="my-3 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <MenuItemLink title="Khóa học" url="/courses" image="/assets/icons/course.svg" />
-                <MenuItemLink title="Thi online" url={""} image="/assets/icons/online-exam.svg" />
+                <MenuItemLink title="Thi online" url={"/exams"} image="/assets/icons/online-exam.svg" />
                 <MenuItemLink
                     title="Đấu trường lý thuyết"
                     url="/dau-truong-ly-thuyet"

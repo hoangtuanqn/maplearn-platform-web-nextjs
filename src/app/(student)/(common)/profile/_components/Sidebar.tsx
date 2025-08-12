@@ -1,10 +1,11 @@
 "use client";
 import { useAuth } from "~/hooks/useAuth";
-import { getCharacterName, isActiveRoute } from "~/libs/hepler";
+import {  isActiveRoute } from "~/libs/hepler";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Bookmark, ChevronRight, ContactRound, GraduationCap, ReceiptCent } from "lucide-react";
 import { ElementType } from "react";
+import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 type SidebarProfileLinkProps = {
     pathname: string;
     url: string;
@@ -25,7 +26,7 @@ const SidebarProfileLink = ({ pathname, url, matcher, Icon, name }: SidebarProfi
             <div className="grow">{name}</div>
             <ChevronRight />
         </div>
-</Link>
+    </Link>
 );
 
 const sidebarMenuLink = [
@@ -75,9 +76,8 @@ const ProfileSidebar = () => {
             style={{ backgroundColor: "rgb(255, 255, 255)" }}
         >
             <div className="t1-flex-center flex-col gap-5 py-8">
-                <div className="t1-flex-center h-22 w-22 shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-2xl leading-12 font-medium text-white">
-                    {getCharacterName(profile?.full_name)}
-                </div>
+             
+                <DisplayAvatar avatar={profile?.avatar} fullName={profile?.full_name} ratio="24" />
                 <div>
                     <div className="text-center text-xl font-medium">{profile?.full_name}</div>
                     <div className="mt-1 text-center text-gray-500">{profile?.email}</div>

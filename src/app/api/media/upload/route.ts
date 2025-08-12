@@ -19,11 +19,19 @@ export async function POST(req: NextRequest) {
         // Upload lên Cloudinary
         const result: UploadApiResponse = await new Promise((resolve, reject) => {
             cloudinary.uploader
-                .upload_stream({ folder, resource_type: "auto" }, (error, result) => {
-                    if (error) return reject(error);
-                    if (!result) return reject(new Error("Không có phản hồi từ Cloudinary"));
-                    resolve(result);
-                })
+                .upload_stream(
+                    {
+                        folder,
+                        resource_type: "auto",
+                        quality: "auto", // Tự động tối ưu chất lượng ảnh
+                        fetch_format: "auto", // Chuyển sang định dạng WebP/AVIF nếu trình duyệt hỗ trợ
+                    },
+                    (error, result) => {
+                        if (error) return reject(error);
+                        if (!result) return reject(new Error("Không có phản hồi từ Cloudinary"));
+                        resolve(result);
+                    },
+                )
                 .end(buffer);
         });
 

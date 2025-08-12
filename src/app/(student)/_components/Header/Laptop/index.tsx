@@ -13,8 +13,8 @@ import { Button } from "~/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "~/store";
 import { ChevronDown, ShoppingCart } from "lucide-react";
-import { getCharacterName } from "~/libs/hepler";
 import { useAuth } from "~/hooks/useAuth";
+import DisplayAvatar from "../../DisplayAvatar";
 const headerLinks = [
     {
         label: "Trang chủ",
@@ -114,19 +114,11 @@ const HeaderLaptop = () => {
                                         <div className="dropdown" style={{ position: "relative" }} tabIndex={0}>
                                             <div>
                                                 <div className="flex cursor-pointer items-center gap-1">
-                                                    <div className="h-9.5 w-9.5 rounded-full border-2 border-[#b4d1e9] p-0.5">
-                                                        <div
-                                                            className="t1-flex-center shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                                                            style={{
-                                                                width: "100%",
-                                                                height: "100%",
-                                                                fontSize: "0.9rem",
-                                                                lineHeight: "0.9rem",
-                                                            }}
-                                                        >
-                                                            {getCharacterName(user.full_name)}
-                                                        </div>
-                                                    </div>
+                                                    <DisplayAvatar
+                                                        avatar={user.avatar}
+                                                        fullName={user.full_name}
+                                                        ratio="9.5"
+                                                    />
                                                     <ChevronDown />
                                                 </div>
                                             </div>

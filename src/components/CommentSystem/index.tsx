@@ -142,6 +142,7 @@ const CommentSystem: React.FC<CommentSystemProps> = ({
                     <ItemComment
                         role={item.creator?.role || "student"}
                         content={item.description}
+                        avatar={item.creator?.avatar || ""}
                         name={item.creator?.full_name || "Vô danh"}
                         time={item.created_at || "10 năm trước"}
                     />
