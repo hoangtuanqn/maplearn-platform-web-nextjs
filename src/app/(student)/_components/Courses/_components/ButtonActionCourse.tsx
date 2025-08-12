@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Heart, HeartOff, ShoppingBasket, ShoppingCart, TrendingUp } from "lucide-react";
+import { Heart, HeartOff, ShoppingCart, TrendingUp } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { CourseType } from "~/schemaValidate/course.schema";

@@ -1,10 +1,5 @@
-import { ResetPasswordPageProps } from "./../app/(student)/auth/auth.schema";
-import {
-    FormForgotPasswordType,
-    FormLoginType,
-    FormRegisterType,
-    FormResetPasswordType,
-} from "~/app/(student)/auth/auth.schema";
+import { FormForgotPasswordType, FormLoginType, FormRegisterType, FormResetPasswordType, ResetPasswordPageProps } from "~/app/(student)/(common)/auth/auth.schema";
+
 import publicApi from "~/libs/apis/publicApi";
 
 const authApi = {

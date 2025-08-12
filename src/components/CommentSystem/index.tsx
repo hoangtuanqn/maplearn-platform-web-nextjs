@@ -5,7 +5,7 @@ import { useAuth } from "~/hooks/useAuth";
 import { useComments, UseCommentsProps, CommentActions } from "~/hooks/useComments";
 import FormComment from "~/app/(student)/_components/Comment";
 import ItemComment from "~/app/(student)/_components/Comment/DisplayComment/CommentItem";
-import CommentSkeleton from "~/app/(student)/posts/[slug]/_components/CommentSkeleton";
+import CommentSkeleton from "~/app/(student)/(common)/posts/[slug]/_components/CommentSkeleton";
 import Loading from "~/app/(student)/_components/Loading";
 import { DangerConfirm } from "~/components/DangerConfirm";
 import { CommentType } from "~/schemaValidate/comment.schema";

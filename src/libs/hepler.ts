@@ -1,6 +1,6 @@
 import { match } from "path-to-regexp";
 import zxcvbn from "zxcvbn";
-import { PasswordStrengthType } from "~/app/(student)/auth/auth.schema";
+import { PasswordStrengthType } from "~/app/(student)/(common)/auth/auth.schema";
 
 export const getGender = (gender: "male" | "female" | "other") => {
     switch (gender) {

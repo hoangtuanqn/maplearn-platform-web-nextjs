@@ -1,4 +1,5 @@
 import { Bell } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const HeaderVideo = () => {
@@ -39,7 +40,7 @@ const HeaderVideo = () => {
                     </div>
                     <div className="flex items-center justify-end gap-6">
                         <div className="mx-auto flex items-center gap-6">
-                            <a className="cursor-pointer" href="/">
+                            <Link className="cursor-pointer" href="/">
                                 <div className="h-max w-max">
                                     <svg
                                         className="h-6.5 w-6.5 duration-200 hover:scale-110"
@@ -63,7 +64,7 @@ const HeaderVideo = () => {
                                         />
                                     </svg>
                                 </div>
-                            </a>
+                            </Link>
                             <a href="/khoa-hoc">
                                 <div className="h-max w-max">
                                     <svg
