@@ -1,6 +1,7 @@
 "use client";
 import { ChevronDown, CirclePlay, Clock, Disc, GraduationCap, OctagonMinus, PenTool, Play } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -38,11 +39,14 @@ const DetailExamPage = () => {
                             <Disc className="size-5 text-white" />
                             <span className="font-medium text-white">Làm tiếp (65:30)</span>
                         </div> */}
-                        <div className="t1-flex-center col-start-3 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full bg-[#12AD50]">
+                        <Link
+                            className="t1-flex-center col-start-3 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full bg-[#12AD50]"
+                            href="/exams/khao-sat-chat-luong-thang-8---ky-thi-tsa---mon-toan-8s224qe013qt/doing"
+                        >
                             <CirclePlay className="size-5 text-white" />
                             {/* <span className="font-medium text-white">Làm lại từ đầu</span> */}
                             <span className="font-medium text-white">Vào phòng thi</span>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="mb-2.5 w-full rounded-lg bg-sky-300/20 p-6 text-justify shadow-sm">

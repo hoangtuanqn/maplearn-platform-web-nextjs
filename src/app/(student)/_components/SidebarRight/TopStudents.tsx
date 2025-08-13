@@ -1,10 +1,9 @@
 import Image from "next/image";
-import DisplayAvatar from "../DisplayAvatar";
 
 const TopStudents = ({ className = "" }: { className?: string }) => {
     return (
         <div
-            className={`rounded-xl border border-[#90caf9] bg-gradient-to-br from-[#e3f0ff] via-[#f1f8ff] to-[#e0f7fa] py-4 shadow-sm ${className}`}
+            className={`rounded-xl border border-[#90caf9] bg-gradient-to-br from-[#e3f0ff] via-[#f1f8ff] to-[#e0f7fa] pt-4 shadow-sm ${className}`}
         >
             <h2 className="text-primary mb-2 px-4 text-base font-bold">Top 5 học sinh ưu tú</h2>
             <div className="mt-2 [&>div]:py-2 [&>div]:pr-2 [&>div]:pl-5">
@@ -110,6 +109,7 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                         <div className="mb-1 line-clamp-1 font-medium text-[#26292D]">Như phan</div>
                     </div>
                 </div>
+                <div className="text-primary-light mt-3 text-center">Bạn chưa có xếp hạng</div>
             </div>
         </div>
     );

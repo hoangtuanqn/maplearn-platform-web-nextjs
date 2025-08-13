@@ -1,19 +1,20 @@
 "use client";
-import { BadgeCheck } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
-import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
+import DragDrop from "./_components/DragDrop";
 import FullScreen from "./_components/FullScreen";
+
 const DoingExamPage = () => {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
-
+    // Câu hỏi và danh sách đáp án
+    const question = `Sau một năm đi làm, bạn Nam đã tiết kiệm được $50$ triệu đồng. Nam gửi tiết kiệm với lãi suất $6,5$% một năm. Giả sử lãi suất không thay đổi. Hỏi sau bao nhiêu năm bạn Nam có thể mua được một chiếc xe máy với giá <-Drag-> triệu đồng? Và mất bao nhiêu lâu <-Drag->?`;
+    const items = ["1", "2", "3", "4"];
     return (
         <>
-            {/* <FullScreen /> */}
+            <FullScreen />
             <section className="mt-5 min-h-screen px-4 pb-10">
                 <h2 className="text-primary mb-4 text-xl font-bold">
                     KHẢO SÁT CHẤT LƯỢNG THÁNG 8 - KỲ THI TSA - MÔN TOÁN
@@ -23,16 +24,15 @@ const DoingExamPage = () => {
                         <section className="space-y-4 rounded-lg bg-white px-6 py-8 shadow-xs">
                             <h1 className="text-primary text-base font-bold">Câu hỏi:</h1>
                             <div className="flex items-start justify-start gap-4">
-                                <div className="flex-center t1-flex-center size-8.5 rounded-full bg-slate-300 font-bold">
+                                <div className="flex-center t1-flex-center size-8.5 shrink-0 rounded-full bg-slate-300 font-bold">
                                     1
                                 </div>
-                                <div className="flex flex-col gap-4">
+                                <div className="flex flex-col">
                                     {mounted && (
                                         <>
-                                            {" "}
                                             <MathJaxContext config={configSymbolComment}>
                                                 <MathJax dynamic>
-                                                    <div
+                                                    {/* <div
                                                         className="leading-9"
                                                         dangerouslySetInnerHTML={{
                                                             __html: `
@@ -62,41 +62,23 @@ const DoingExamPage = () => {
                                             Hãy chọn khẳng định sai trong các khẳng định trên.
                                         `,
                                                         }}
-                                                    />
+                                                    /> */}
+                                                    {/* <div
+                                                        className="leading-9"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: `Sau một năm đi làm, bạn Nam đã tiết kiệm được $50$ triệu đồng. Nam gửi tiết kiệm với lãi suất $6,5$% một năm. Giả sử lãi suất không thay đổi. Hỏi sau bao nhiêu năm bạn Nam có thể mua được một chiếc xe máy với giá $drop_1$ triệu đồng?`,
+                                                        }}
+                                                    ></div> */}
                                                 </MathJax>
                                             </MathJaxContext>
-                                            <RadioGroup defaultValue="comfortable" className="flex flex-col">
-                                                {[...Array(4)].map((_, index) => (
-                                                    <div key={index} className="relative flex items-center gap-2">
-                                                        <RadioGroupItem
-                                                            value={`option${index + 1}`}
-                                                            id={`r${index + 1}`}
-                                                            className="peer data-[state=checked]:bg-primary data-[state=checked]:text-primary size-7 rounded-full border-0 bg-slate-300"
-                                                        />
-                                                        <Label
-                                                            htmlFor={`r${index + 1}`}
-                                                            className="cursor-pointer leading-8"
-                                                        >
-                                                            <MathJaxContext config={configSymbolComment}>
-                                                                <MathJax dynamic>
-                                                                    Cho $A$ và $B$ là hai biến cố xung khắc. Khẳng định
-                                                                    nào sau đây là sai:
-                                                                </MathJax>
-                                                            </MathJaxContext>
-                                                        </Label>
-                                                        {/* <BadgeCheck /> */}
-                                                        <BadgeCheck className="pointer-events-none absolute inset-0 flex size-7 items-center justify-center text-sm text-white opacity-0 peer-data-[state=checked]:font-bold peer-data-[state=checked]:opacity-100" />
-                                                    </div>
-                                                ))}
-                                            </RadioGroup>
+                                            {mounted && <DragDrop question={question} items={items} />}
+                                            {/* <SingleChoice /> */}
+                                            {/* <MultipleChoice /> */}
+                                            {/* <NumericInput /> */}
                                         </>
                                     )}
                                 </div>
                             </div>
-                        </section>
-                        <section className="mt-5 min-h-40 rounded-xl bg-white p-6 shadow-xs">
-                            <h2 className="text-primary text-base font-bold">Lịch sử làm bài</h2>
-                            <div className="mt-5">Chưa có lịch sử bài làm</div>
                         </section>
                     </section>
                     <div className="sticky top-[70px] h-fit w-96 rounded-xl bg-white px-5 pt-8 pb-10 shadow-xs">
