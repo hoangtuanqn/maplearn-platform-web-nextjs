@@ -1,4 +1,3 @@
-
 import Banner from "./_components/Banner";
 import HomeTab from "./_components/HomeTab";
 import Courses from "./_components/Courses";
@@ -6,8 +5,8 @@ import Teachers from "./_components/Teachers";
 import DashboardStats from "./_components/DashboardStats";
 import ListCourseRecommended from "./_components/ListCourseRecommended";
 import SidebarLeft from "../../_components/SidebarLeft";
-import ExamCountdown from "../../_components/SidebarRight/ExamCountdown";
 import SidebarRight from "../../_components/SidebarRight";
+import TopStudents from "../../_components/SidebarRight/TopStudents";
 
 const StudentHomePage = () => {
     return (
@@ -21,7 +20,7 @@ const StudentHomePage = () => {
                         {/* Banner */}
                         <Banner />
                         {/* <CourseActive className="xl:hidden" /> */}
-                        <ExamCountdown className="max-2xl:mt-4 2xl:hidden" />
+                        <TopStudents className="max-2xl:mt-4 2xl:hidden" />
                     </div>
                     {/* Dashboard Stats */}
 

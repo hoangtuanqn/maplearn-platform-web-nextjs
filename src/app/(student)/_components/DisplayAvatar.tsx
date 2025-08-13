@@ -9,7 +9,7 @@ const DisplayAvatar = ({
     fullName = "Vô Danh",
 }: {
     ratio: string;
-    avatar: string | undefined | null;
+    avatar?: string | undefined | null;
     fullName: string | undefined | null;
 }) => {
     return (
@@ -20,7 +20,7 @@ const DisplayAvatar = ({
                     alt={fullName || "Avatar"}
                     width={96}
                     height={96}
-                    className={`h-${ratio} w-${ratio} border-primary shrink-0 items-center justify-center rounded-full border-2 object-cover`}
+                    className={`size-${ratio} border-primary aspect-square shrink-0 items-center justify-center rounded-full border-2 object-cover`}
                 />
             ) : (
                 <div

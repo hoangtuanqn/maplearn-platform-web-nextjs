@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "~/app/(student)/_components/Footer";
 import Header from "~/app/(student)/_components/Header";
-import LayoutGetInfoMe from "~/components/layout/LayoutGetInfoMe";
+import LayoutGetInfoMe from "~/components/Layout/LayoutGetInfoMe";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
