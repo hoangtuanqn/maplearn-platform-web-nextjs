@@ -9,7 +9,6 @@ const NewsletterForm = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Đang giả lập
-        // console.log(`${value} đã đăng ký nhận bảng tin thành công`);
         if (!value) {
             toast.error("Vui lòng nhập email");
             return;

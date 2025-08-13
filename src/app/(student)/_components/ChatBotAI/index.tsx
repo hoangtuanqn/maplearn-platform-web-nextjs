@@ -149,7 +149,6 @@ const ChatBotAI = () => {
                         style={{ scrollbarWidth: "thin", scrollbarColor: "#a5a5a5 transparent" }}
                     >
                         {chatHistories.map((history, index) => {
-                            console.log(ids, "ids", index + 1, "dataParse?.course_id  :: ", dataParse?.course_id);
                             // nếu ids.includes(index + 1) = true thì truyền dataParse?.course_id ngược thì lại truyền về []
                             return (
                                 <ChatBubble

@@ -36,7 +36,6 @@ const DocumentDetailPage = async ({ params }: { params: Promise<{ slug: string }
         console.error("Error fetching document:", error);
         redirect("/404"); // Redirect to 404 page if document not found
     }
-    console.log("document.category_id >>", document.category_id);
 
     return (
         <section className="min-h-screen pb-10">

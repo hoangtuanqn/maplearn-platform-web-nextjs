@@ -77,7 +77,6 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
                     params.delete("sort");
                 }
 
-                // console.log(queryAll);
             }
             if (key === "filterMultiple") {
                 for (const [key2, value2] of Object.entries(value)) {
@@ -112,7 +111,6 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
                 }
             }
         }
-        // console.log("params.toString() >>", params.toString());
         router.push(`${pathname}?${params.toString()}`);
     };
     return {

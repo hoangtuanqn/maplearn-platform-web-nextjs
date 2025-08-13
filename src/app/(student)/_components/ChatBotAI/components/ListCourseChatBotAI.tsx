@@ -11,6 +11,7 @@ type CourseChatBotAI = {
     slug: string;
     thumbnail: string;
     price: number;
+    final_price: number;
 };
 const ListCourseChatBotAI = ({ course_id }: { course_id: number[] }) => {
     const { data, isLoading } = useQuery({
@@ -60,7 +61,18 @@ const ListCourseChatBotAI = ({ course_id }: { course_id: number[] }) => {
                                 <h2 className="mb-0.5 line-clamp-2 text-sm font-semibold text-gray-800">
                                     {course.name}
                                 </h2>
-                                <span className="text-xs font-bold text-black">{formatter.number(course.price)}đ</span>
+                                <div className="flex flex-col gap-0.5">
+                                    {/* Giá cũ */}
+                                    {course.price > course.final_price && (
+                                        <span className="text-[11.125px] font-semibold text-gray-400 line-through">
+                                            {formatter.number(course.price)}đ
+                                        </span>
+                                    )}
+                                    {/* Giá mới */}
+                                    <span className="text-primary text-sm font-bold">
+                                        {formatter.number(course.final_price)}đ
+                                    </span>
+                                </div>
                             </div>
                         </Link>
                     </div>

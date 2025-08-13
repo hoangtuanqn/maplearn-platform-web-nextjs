@@ -10,7 +10,6 @@ const InvoiceSummary = ({ invoice }: { invoice: InvoiceDetailResponse["data"] })
         queryKey: ["user", "cardTopUpHistory", invoice.transaction_code],
         queryFn: async () => {
             const res = await invoiceApi.getCardTopUpHistory(invoice.transaction_code);
-            console.log("res.data.data.data > >", res.data.data.data);
 
             return res.data.data.data;
         },

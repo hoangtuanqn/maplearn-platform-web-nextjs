@@ -117,7 +117,7 @@ const HeaderLaptop = () => {
                                                     <DisplayAvatar
                                                         avatar={user.avatar}
                                                         fullName={user.full_name}
-                                                        ratio="9.5"
+                                                        ratio="10"
                                                     />
                                                     <ChevronDown />
                                                 </div>

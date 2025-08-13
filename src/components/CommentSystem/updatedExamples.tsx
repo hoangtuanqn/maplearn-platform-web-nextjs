@@ -74,17 +74,17 @@ export const VideoCommentExample = ({ videoId }: { videoId: string }) => {
             showSkeleton={false}
             showReplies={true}
             maxReplyDepth={1}
-            commentActions={{
-                onReply: (commentId, content) => {
-                    console.log(`Replied to video comment ${commentId}: ${content}`);
-                },
-                onEdit: (commentId, content) => {
-                    console.log(`Edited video comment ${commentId}: ${content}`);
-                },
-                onDelete: (commentId) => {
-                    console.log(`Deleted video comment ${commentId}`);
-                },
-            }}
+            // commentActions={{
+            //     onReply: (commentId, content) => {
+            //         console.log(`Replied to video comment ${commentId}: ${content}`);
+            //     },
+            //     onEdit: (commentId, content) => {
+            //         console.log(`Edited video comment ${commentId}: ${content}`);
+            //     },
+            //     onDelete: (commentId) => {
+            //         console.log(`Deleted video comment ${commentId}`);
+            //     },
+            // }}
             className="mx-auto max-w-4xl"
         />
     );
