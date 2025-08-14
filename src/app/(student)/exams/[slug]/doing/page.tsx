@@ -10,11 +10,11 @@ const DoingExamPage = () => {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
     // Câu hỏi và danh sách đáp án
-    const question = `Sau một năm đi làm, bạn Nam đã tiết kiệm được $50$ triệu đồng. Nam gửi tiết kiệm với lãi suất $6,5$% một năm. Giả sử lãi suất không thay đổi. Hỏi sau bao nhiêu năm bạn Nam có thể mua được một chiếc xe máy với giá <-Drag-> triệu đồng? Và mất bao nhiêu lâu <-Drag->?`;
-    const items = ["1", "2", "3", "4"];
+    const question = `Cho $ab = 100$. Giá trị biểu thức $log_{a}$ +  $log_{b}$ là <-Drag->,  $log_{ab}10$ là <-Drag->`;
+    const items = ["2", "4", "1", "0,5"];
     return (
         <>
-            <FullScreen />
+            {/* <FullScreen /> */}
             <section className="mt-5 min-h-screen px-4 pb-10">
                 <h2 className="text-primary mb-4 text-xl font-bold">
                     KHẢO SÁT CHẤT LƯỢNG THÁNG 8 - KỲ THI TSA - MÔN TOÁN

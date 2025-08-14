@@ -10,23 +10,22 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                 <div className="flex items-center gap-2.5 even:bg-[#f5faff]">
                     <div className="t1-flex-center w-7.5 shrink-0">
                         <div className="h-8.5 w-8.5 shrink-0 rounded-full bg-gradient-to-b from-[#FFEDB7] to-[#FF9800] p-0.5 shadow-md">
-                            <div className="t1-flex-center h-full w-full rounded-full bg-gradient-to-b from-[#F32114] to-[#880404] text-[1.25rem] font-medium text-white">
+                            <div className="t1-flex-center h-full w-full rounded-full bg-gradient-to-b from-[#F32114] to-[#880404] text-base text-[1.25rem] font-medium text-white">
                                 1
                             </div>
                         </div>
                     </div>
-                    <div className="relative h-11 w-11 shrink-0 rounded-full bg-gradient-to-b from-[#FFF8E1] to-[#FFD180] p-[3px] shadow-lg">
+                    <div className="relative size-10 shrink-0 rounded-full bg-gradient-to-b from-[#FFF8E1] to-[#FFD180] p-[3px] shadow-lg">
                         <Image
                             alt="Phạm Hoàng Tuấn"
                             className="h-full w-full shrink-0 rounded-full object-cover"
                             width={32.5}
                             height={32.5}
-                            src="https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755031108/avatar/avah1bqwuytxl7zq4bgl.png"
+                            src="https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755032358/avatar/urwizwtbosve0rg7miq2.jpg"
                         />
-                        <div className="t1-flex-center absolute inset-x-0 -top-4"></div>
                     </div>
                     <div className="grow">
-                        <div className="mb-1 line-clamp-1 font-medium text-[#26292D]">Phạm Hoàng Tuấn</div>
+                        <div className="t1-gradient-text mb-1 line-clamp-1 font-bold">Phạm Hoàng Tuấn</div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2.5 even:bg-[#f0f4fa]">
@@ -37,11 +36,8 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="relative h-11 w-11 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
-                        <div
-                            className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                            style={{ fontSize: "1.25rem", lineHeight: "1.25rem" }}
-                        >
+                    <div className="relative size-10 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
+                        <div className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-base font-medium text-white">
                             K
                         </div>
                     </div>
@@ -57,11 +53,8 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="relative h-11 w-11 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
-                        <div
-                            className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                            style={{ fontSize: "1.25rem", lineHeight: "1.25rem" }}
-                        >
+                    <div className="relative size-10 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
+                        <div className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-base font-medium text-white">
                             N
                         </div>
                     </div>
@@ -72,16 +65,13 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                 <div className="flex items-center gap-2.5 even:bg-[#f5faff]">
                     <div className="t1-flex-center w-7.5 shrink-0">
                         <div className="h-6.5 w-6.5 shrink-0 rounded-full bg-gradient-to-b from-[#D2F1D5] to-[#A5D04B] p-0.5">
-                            <div className="t1-flex-center text-md h-full w-full rounded-full bg-gradient-to-b from-[#A3DF7E] to-[#027940] font-medium text-white">
+                            <div className="t1-flex-center text-md h-full w-full rounded-full bg-gradient-to-b from-[#A3DF7E] to-[#027940] text-base font-medium text-white">
                                 4
                             </div>
                         </div>
                     </div>
-                    <div className="relative h-11 w-11 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
-                        <div
-                            className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                            style={{ fontSize: "1.25rem", lineHeight: "1.25rem" }}
-                        >
+                    <div className="relative size-10 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
+                        <div className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-base font-medium text-white">
                             N
                         </div>
                     </div>
@@ -92,16 +82,13 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
                 <div className="flex items-center gap-2.5 even:bg-[#f5faff]">
                     <div className="t1-flex-center w-7.5 shrink-0">
                         <div className="h-6.5 w-6.5 shrink-0 rounded-full bg-gradient-to-b from-[#D2F1D5] to-[#A5D04B] p-0.5">
-                            <div className="t1-flex-center text-md h-full w-full rounded-full bg-gradient-to-b from-[#A3DF7E] to-[#027940] font-medium text-white">
+                            <div className="t1-flex-center text-md h-full w-full rounded-full bg-gradient-to-b from-[#A3DF7E] to-[#027940] text-base font-medium text-white">
                                 5
                             </div>
                         </div>
                     </div>
-                    <div className="relative h-11 w-11 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
-                        <div
-                            className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] font-medium text-white"
-                            style={{ fontSize: "1.25rem", lineHeight: "1.25rem" }}
-                        >
+                    <div className="relative size-10 shrink-0 rounded-full bg-gradient-to-b from-[#f3f7fa] to-[#e0e7ef] p-[3px] shadow">
+                        <div className="t1-flex-center h-full w-full shrink-0 rounded-full bg-gradient-to-b from-[#dadada] to-[#bebebe] text-base font-medium text-white">
                             N
                         </div>
                     </div>

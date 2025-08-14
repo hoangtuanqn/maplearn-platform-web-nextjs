@@ -53,7 +53,7 @@ export const videoApi = {
 };
 
 // Exam Comments API
-export const examApi = {
+export const examApiComment = {
     comment: (data: { examId: string; comment: string; reply_id: string | null }) =>
         publicApi.post("/comments", {
             exam_id: data.examId,
@@ -124,14 +124,14 @@ export const commentApiHelper = {
             case "exam":
                 return {
                     comment: (data: { identifier: string; comment: string; reply_id: string | null }) =>
-                        examApi.comment({
+                        examApiComment.comment({
                             examId: data.identifier,
                             comment: data.comment,
                             reply_id: data.reply_id,
                         }),
-                    deleteComment: examApi.deleteComment,
-                    updateComment: examApi.updateComment,
-                    getComments: examApi.getComments,
+                    deleteComment: examApiComment.deleteComment,
+                    updateComment: examApiComment.updateComment,
+                    getComments: examApiComment.getComments,
                 };
             default:
                 throw new Error(`Unsupported comment type: ${type}`);

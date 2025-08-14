@@ -5,6 +5,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "~/components/ui/popover
 import { Command, CommandInput, CommandItem, CommandGroup } from "~/components/ui/command";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { CommandEmpty, CommandList } from "cmdk";
 
 export default function MultiSelectDropdown({
     label,
@@ -23,10 +24,10 @@ export default function MultiSelectDropdown({
     const toggleValue = (value: string) => {
         setSelectedValues((prev) => {
             const newValues = prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value];
-
             return newValues;
         });
     };
+
     useEffect(() => {
         onChange(selectedValues);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,32 +52,30 @@ export default function MultiSelectDropdown({
                 </button>
             </PopoverTrigger>
 
-            <PopoverContent
-                align="start"
-                sideOffset={4}
-                className="w-(--radix-popover-trigger-width) p-0"
-                // style={{ width: "var(--radix-popover-trigger-width)" }}
-                // className="w-(--radix-popover-trigger-width)"
-            >
-                <Command className="w-full">
-                    <CommandInput placeholder="Tìm..." />
-                    <CommandGroup>
-                        {options.map((item) => {
-                            if (!item) return null;
-                            return (
-                                <CommandItem key={item.value} onSelect={() => toggleValue(item.value)}>
-                                    <span className="mr-2 w-4">
-                                        {selectedValues.includes(item.value) ? (
-                                            <Check className="h-4 w-4" />
-                                        ) : (
-                                            <div className="h-4 w-4" />
-                                        )}
-                                    </span>
-                                    {item.label}
-                                </CommandItem>
-                            );
-                        })}
-                    </CommandGroup>
+            <PopoverContent align="start" sideOffset={4} className="w-(--radix-popover-trigger-width) p-0">
+                <Command>
+                    <CommandInput placeholder="Tìm..." className="h-9" />
+                    <CommandList>
+                        <CommandEmpty className="p-5 text-center text-slate-600">Không tìm thấy dữ liệu.</CommandEmpty>
+
+                        <CommandGroup className="max-h-60 overflow-y-auto">
+                            {options.map((item) => {
+                                if (!item) return null;
+                                return (
+                                    <CommandItem key={item.value} onSelect={() => toggleValue(item.value)}>
+                                        <span className="mr-2 w-4">
+                                            {selectedValues.includes(item.value) ? (
+                                                <Check className="h-4 w-4" />
+                                            ) : (
+                                                <div className="h-4 w-4" />
+                                            )}
+                                        </span>
+                                        {item.label}
+                                    </CommandItem>
+                                );
+                            })}
+                        </CommandGroup>
+                    </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>

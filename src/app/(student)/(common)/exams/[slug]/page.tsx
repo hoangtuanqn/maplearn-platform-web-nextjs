@@ -153,12 +153,13 @@ const DetailExamPage = () => {
                                 className="h-full w-full shrink-0 rounded-full object-cover"
                                 width={32.5}
                                 height={32.5}
-                                src="https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755031108/avatar/avah1bqwuytxl7zq4bgl.png"
+                                src="https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755032358/avatar/urwizwtbosve0rg7miq2.jpg"
                             />
-                            <div className="t1-flex-center absolute inset-x-0 -top-4">
+                            <div className="t1-flex-center absolute inset-x-0 -top-6">
                                 <svg
-                                    width={25}
-                                    height={16}
+                                    // width={25}
+                                    // height={16}
+                                    className="size-8"
                                     viewBox="0 0 20 13"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"

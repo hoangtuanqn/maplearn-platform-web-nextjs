@@ -8,6 +8,7 @@ export const subjectSchema = z.object({
     created_at: z.string(),
     updated_at: z.string(),
 });
+export type Subject = z.infer<typeof subjectSchema>;
 export const SubjectListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),

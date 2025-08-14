@@ -5,26 +5,19 @@ import { useRouter, useSearchParams } from "next/navigation";
 import subjectApi from "~/apiRequest/subject";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
+import { Subject } from "~/schemaValidate/subject.schema";
 
 const SelectCourse = ({ url }: { url: string }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState(searchParams.get("subject") || "all");
-    const { data: subjects, isLoading } = useQuery({
+
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const { data: subjectsRes, isLoading } = useQuery({
         queryKey: ["user", "subjects"],
         queryFn: async () => {
             const response = await subjectApi.getSubjects();
-            return [
-                {
-                    id: 0,
-                    name: "Tất cả",
-                    slug: "all",
-                    status: true,
-                    created_at: "",
-                    updated_at: "",
-                },
-                ...response.data.data,
-            ];
+            return [...response.data.data];
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
@@ -49,6 +42,21 @@ const SelectCourse = ({ url }: { url: string }) => {
         window.addEventListener("popstate", onPopState);
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
+    useEffect(() => {
+        if (subjectsRes) {
+            setSubjects([
+                {
+                    id: 0,
+                    name: "Tất cả",
+                    slug: "all",
+                    status: true,
+                    created_at: "",
+                    updated_at: "",
+                },
+                ...subjectsRes,
+            ]);
+        }
+    }, [subjectsRes]);
 
     return (
         <div
