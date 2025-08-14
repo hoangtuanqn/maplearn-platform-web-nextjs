@@ -6,6 +6,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import ExamSkeleton from "./ExamSkeleton";
+import { Badge } from "~/components/ui/badge";
 
 const ExamList = () => {
     const { data: examList, isLoading } = useQuery({
@@ -58,6 +59,7 @@ const ExamList = () => {
                             <div className="flex h-full grow items-center justify-between text-[15.15px]">
                                 <Link className={`line-clamp-1 w-[70%] pr-6 font-medium`} href={`/exams/${exam.slug}`}>
                                     {`${idx + 1}. ${exam.title}`}
+                                    <Badge className="ml-2 bg-green-600 text-white">Đã làm • Điểm cao nhất: 9.8</Badge>
                                 </Link>
 
                                 {exam.exam_type != "OTHER" && (

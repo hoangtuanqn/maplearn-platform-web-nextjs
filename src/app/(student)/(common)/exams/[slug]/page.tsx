@@ -1,29 +1,52 @@
 "use client";
-import { ChevronDown, CirclePlay, Clock, Disc, GraduationCap, OctagonMinus, PenTool, Play } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import examApi from "~/apiRequest/exam";
+import { AnswerLocalStorage } from "~/app/(student)/exams/[slug]/doing/exam.type";
+import useCountDown from "~/hooks/useCountDown";
+import { formatter } from "~/libs/format";
+import { getLocalStorage } from "~/libs/localStorage";
 const DetailExamPage = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const [infoExam, setInfoExam] = useState<AnswerLocalStorage>();
+    const { timeLeft, setTimeLeft } = useCountDown(0);
+    const { data: exam, isLoading } = useQuery({
+        queryKey: ["exam", "questions", slug],
+        queryFn: async () => {
+            const res = await examApi.getQuestions(slug);
+            return res.data.data;
+        },
+    });
+    // Lấy dữ liệu từ localStorage khi load lần đầu
+    useEffect(() => {
+        const dataStr = getLocalStorage(slug);
+        if (dataStr && exam) {
+            const data: AnswerLocalStorage = JSON.parse(dataStr);
+            setInfoExam(data);
+            if (data.start) {
+                const durationSec = exam.duration_minutes * 60;
+                const passedSec = Math.floor((Date.now() - data.start) / 1000);
+                setTimeLeft(Math.max(durationSec - passedSec, 0));
+            }
+        }
+    }, [exam, setTimeLeft, slug]);
     return (
         <section className="mt-10 flex min-h-screen gap-4 px-4 pb-10">
             <section className="flex-1">
                 <section className="space-y-4 rounded-lg bg-white px-6 py-4 shadow-sm">
-                    <h1 className="text-primary text-xl font-bold">
-                        006 - Đề khảo sát năng lực khóa hè - Nguyễn Khuyến
-                    </h1>
+                    <h1 className="text-primary text-xl font-bold">{exam?.title}</h1>
                     <div className="space-y-3 text-[13.125px]">
                         <div className="flex items-center gap-1">
                             <PenTool className="text-primary" />
-                            <span>Tổng số câu: 28</span>
+                            <span>Tổng số câu: {exam?.questions.length}</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <Clock className="text-primary" />
-                            <span>Thời gian làm bài: 60 phút</span>
+                            <span>Thời gian làm bài: {exam?.duration_minutes} phút</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <Play className="text-primary" />
@@ -35,17 +58,28 @@ const DetailExamPage = () => {
                         </div>
                     </div>
                     <div className="text-md mt-8 grid w-full grid-cols-3 justify-end gap-3">
-                        {/* <div className="t1-flex-center bg-primary col-start-2 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full">
-                            <Disc className="size-5 text-white" />
-                            <span className="font-medium text-white">Làm tiếp (65:30)</span>
-                        </div> */}
+                        {infoExam && (
+                            <Link
+                                href={`/exams/${slug}/doing`}
+                                className="t1-flex-center bg-primary col-start-2 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full"
+                            >
+                                <Disc className="size-5 text-white" />
+                                <span className="font-medium text-white">
+                                    Làm tiếp ({formatter.parseMinutesSeconds(timeLeft)})
+                                </span>
+                            </Link>
+                        )}
+
                         <Link
                             className="t1-flex-center col-start-3 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full bg-[#12AD50]"
-                            href="/exams/khao-sat-chat-luong-thang-8---ky-thi-tsa---mon-toan-8s224qe013qt/doing"
+                            href={`/exams/${slug}/doing`}
                         >
                             <CirclePlay className="size-5 text-white" />
-                            {/* <span className="font-medium text-white">Làm lại từ đầu</span> */}
-                            <span className="font-medium text-white">Vào phòng thi</span>
+                            {infoExam ? (
+                                <span className="font-medium text-white">Làm lại từ đầu</span>
+                            ) : (
+                                <span className="font-medium text-white">Vào phòng thi</span>
+                            )}
                         </Link>
                     </div>
 

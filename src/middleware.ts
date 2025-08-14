@@ -1,7 +1,15 @@
 import { match } from "path-to-regexp";
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/profile", "/profile/:path", "/carts", "/carts/:path", "/invoices", "/invoices/:path"];
+const protectedRoutes = [
+    "/profile",
+    "/profile/:path",
+    "/carts",
+    "/carts/:path",
+    "/invoices",
+    "/invoices/:path",
+    "/exams/:path",
+];
 const authPaths = ["/auth/:path"];
 
 function isPathMatch(pattern: string, pathname: string): boolean {
@@ -32,5 +40,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/invoices/:path*"],
+    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/invoices/:path*", "/exams/:path*"],
 };

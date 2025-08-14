@@ -37,6 +37,11 @@ export const formatter = {
         const year = parseInt(parts[2], 10);
         return new Date(year, month, day);
     },
+    parseMinutesSeconds: (seconds: number): string => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2, "0")}`;
+    },
 };
 
 export const formatPhoneNumber = (phone: string | number): string => {

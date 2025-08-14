@@ -10,6 +10,11 @@ declare global {
     }
 }
 
+interface ValueType {
+    id: number;
+    content: string;
+}
+
 interface DraggableItemProps {
     id: string;
     children: React.ReactNode;
@@ -33,15 +38,13 @@ const DraggableItem = ({ id, children }: DraggableItemProps) => {
 
 interface DropZoneProps {
     id: string;
-    onDropItem: (id: string, item: string) => void;
-    onRemoveItem: (id: string, item: string) => void;
-    droppedItem: string | null;
+    onDropItem: (dropId: string, itemId: string) => void;
+    onRemoveItem: (dropId: string, itemId: string) => void;
+    droppedItem: ValueType | null;
 }
 
 const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) => {
-    const onDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-    };
+    const onDragOver = (e: React.DragEvent) => e.preventDefault();
 
     const onDrop = (e: React.DragEvent) => {
         e.preventDefault();
@@ -51,8 +54,8 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) 
 
     const onDragStart = (e: React.DragEvent) => {
         if (droppedItem) {
-            e.dataTransfer.setData("text/plain", droppedItem);
-            onRemoveItem(id, droppedItem);
+            e.dataTransfer.setData("text/plain", `${droppedItem.id}`);
+            onRemoveItem(id, `${droppedItem.id}`);
         }
     };
 
@@ -66,66 +69,80 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) 
                 droppedItem ? "bg-primary cursor-grab text-white" : "bg-white"
             }`}
         >
-            {droppedItem || "?"}
+            {droppedItem ? droppedItem.content : "?"}
         </span>
     );
 };
 
 interface DragDropProps {
     question: string;
-    items: string[];
+    items: ValueType[];
+    // Câu hỏi đã chọn
+    idQuestion: number;
+    activeAnswers: string[];
+    handleChoiceAnswer: (questionId: number, answer: string, idx: number) => void;
 }
 
-const DragDrop = ({ question, items: initialItems }: DragDropProps) => {
-    const [items, setItems] = useState<string[]>(initialItems);
-    const [droppedItems, setDroppedItems] = useState<Record<string, string | null>>({});
+const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, handleChoiceAnswer }: DragDropProps) => {
+    const [items, setItems] = useState<ValueType[]>(
+        initialItems.filter((item) => !activeAnswers.includes(item.content)),
+    );
 
-    // Hàm phân tích câu hỏi và thay thế placeholder
+    const [droppedItems, setDroppedItems] = useState<Record<string, ValueType | null>>(() => {
+        const initial: Record<string, ValueType | null> = {};
+        activeAnswers.forEach((val, index) => {
+            if (val) {
+                const dropId = `drop${index + 1}`; // drop1, drop2, ...
+                initial[dropId] = { id: index + 1, content: val };
+            }
+        });
+        return initial;
+    });
+
+    // Phân tích câu hỏi, thay placeholder bằng DropZone
     const parseQuestion = (text: string) => {
         const placeholderRegex = /<-Drag->/g;
         const parts: (string | { id: string })[] = [];
         let lastIndex = 0;
         let match;
-        let dropCount = 1; // Bắt đầu đánh số từ 1
+        let dropCount = 1;
 
         while ((match = placeholderRegex.exec(text)) !== null) {
-            const placeholder = match[0]; // <-Drag->
-            const id = `drop${dropCount++}`; // drop1, drop2, ...
-            if (match.index > lastIndex) {
-                parts.push(text.slice(lastIndex, match.index));
-            }
+            const id = `drop${dropCount++}`;
+            if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
             parts.push({ id });
-            lastIndex = match.index + placeholder.length;
+            lastIndex = match.index + match[0].length;
         }
-        if (lastIndex < text.length) {
-            parts.push(text.slice(lastIndex));
-        }
+        if (lastIndex < text.length) parts.push(text.slice(lastIndex));
 
         return parts;
     };
 
     const handleDropItem = (dropId: string, itemId: string) => {
-        setDroppedItems((prev) => {
-            const prevItem = prev[dropId]; // Lấy item hiện tại trong DropZone
-            const newDroppedItems = { ...prev, [dropId]: itemId };
-            return newDroppedItems;
+        // console.log("droppedItems ?? ", droppedItems);
+
+        const droppedItemObj = initialItems.find((i) => `${i.id}` === itemId);
+        if (!droppedItemObj) return;
+
+        setDroppedItems((prevDropped) => {
+            const prevItem = prevDropped[dropId]; // item cũ trong DropZone
+
+            // trả item cũ về danh sách
+            if (prevItem) setItems((prevItems) => [...prevItems.filter((i) => i.id !== prevItem.id), prevItem]);
+
+            return { ...prevDropped, [dropId]: droppedItemObj };
         });
-        setItems((prev) => {
-            const newItems = prev.filter((item) => item !== itemId); // Xóa item mới khỏi danh sách
-            if (droppedItems[dropId]) {
-                // Trả item cũ về danh sách nếu có
-                return [...newItems, droppedItems[dropId]!].sort();
-            }
-            return newItems;
-        });
+
+        setItems((prevItems) => prevItems.filter((i) => `${i.id}` !== itemId));
     };
 
     const handleRemoveItem = (dropId: string, itemId: string) => {
         setDroppedItems((prev) => ({ ...prev, [dropId]: null }));
-        setItems((prev) => [...prev, itemId].sort()); // Thêm item trở lại và sắp xếp
+        const removedItem = initialItems.find((i) => `${i.id}` === itemId);
+        if (removedItem) setItems((prev) => [...prev, removedItem]);
     };
 
-    // Render MathJax khi nội dung thay đổi
+    // Rerender MathJax khi droppedItems thay đổi
     useEffect(() => {
         if (typeof window !== "undefined" && window.MathJax) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -133,15 +150,24 @@ const DragDrop = ({ question, items: initialItems }: DragDropProps) => {
         }
     }, [droppedItems]);
 
+    useEffect(() => {
+        // console.log("droppedItems >> ", JSON.stringify(Object.entries(droppedItems)));
+        Object.entries(droppedItems).forEach(([a, b]) => {
+            handleChoiceAnswer(idQuestion, b?.content || "", Number(a.split("drop")[1]));
+        });
+
+        // handleChoiceAnswer(idQuestion, )
+    }, [droppedItems, handleChoiceAnswer, idQuestion]);
+
     const questionParts = parseQuestion(question);
 
     return (
         <MathJaxContext config={configSymbolComment}>
             <div>
-                <div className="border-primary/30 mb-4 flex gap-3 rounded border-2 p-2">
+                <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
                     {items.map((item) => (
-                        <DraggableItem key={item} id={item}>
-                            {item}
+                        <DraggableItem key={item.id} id={`${item.id}`}>
+                            {item.content}
                         </DraggableItem>
                     ))}
                 </div>
