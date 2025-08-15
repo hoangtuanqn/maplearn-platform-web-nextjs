@@ -1,24 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
-import { Button } from "~/components/ui/button";
-import SingleChoice from "./_components/SingleChoice";
+
 import { useQuery } from "@tanstack/react-query";
 import examApi from "~/apiRequest/exam";
 import { getLocalStorage, setLocalStorage } from "~/libs/localStorage";
 import { Question } from "~/schemaValidate/exam.schema";
-import clsx from "clsx";
 import FullScreen from "./_components/FullScreen";
-import { ChevronFirst, ChevronLast } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import QuestionSkeleton from "./_components/QuestionSkeleton";
 import { AnswerLocalStorage } from "./exam.type";
 import useCountDown from "~/hooks/useCountDown";
 import { formatter } from "~/libs/format";
-import Image from "next/image";
-import MultipleChoice from "./_components/MultipleChoice";
-import DragDrop from "./_components/DragDrop";
+
+import Sidebar from "./_components/Sidebar";
+import Footer from "./_components/Footer";
+import Questions from "./_components/Questions";
 
 const slug = "de-minh-hoa-thi-tot-nghiep-thpt-2025-mon-toan-xwj9asdvfxuq";
 
@@ -30,6 +25,7 @@ const DoingExamPage = () => {
     const [answers, setAnswers] = useState<Record<number, string[]>>({});
     const [violationCount, setViolationCount] = useState(1); // tính số lần vi phạm
     const { timeLeft, setTimeLeft } = useCountDown(0);
+    const { timeLeft: countdownSubmit, setTimeLeft: setCountdownSubmit } = useCountDown(0);
 
     const { data: questionsRes, isLoading } = useQuery({
         queryKey: ["exam", "questions", slug],
@@ -90,13 +86,15 @@ const DoingExamPage = () => {
             setInfoExam(data);
             setAnswers(data.answers || {});
             setQuestionActive(data.questionActive || 0);
+            setCountdownSubmit(5 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
         } else {
             const startTime = Date.now();
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };
             setInfoExam(newData);
             setLocalStorage(slug, JSON.stringify(newData));
+            setCountdownSubmit(5 * 60);
         }
-    }, []);
+    }, [setCountdownSubmit]);
 
     // Khi có dữ liệu câu hỏi
     useEffect(() => {
@@ -125,36 +123,15 @@ const DoingExamPage = () => {
         }
     }, [answers, infoExam, questionActive]);
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "ArrowRight") {
-                // sang câu tiếp
-                setQuestionActive((prev) => Math.min(prev + 1, questions.length - 1));
-            }
-            if (e.key === "ArrowLeft") {
-                // quay lại câu trước
-                setQuestionActive((prev) => Math.max(prev - 1, 0));
-            }
-            // Chỉ nhận khi đã chọn đáp án
-            if (e.key === "Enter" && answers[questions[questionActive]?.id]) {
-                // enter cũng sang câu tiếp
-                setQuestionActive((prev) => Math.min(prev + 1, questions.length - 1));
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [questionActive, answers, questions]);
     // đã hoàn thành %
-    const progress = (Object.keys(answers).length / questions.length) * 100;
-    // console.log("answers[questions[questionActive].id] ?>? ", questions[questionActive].answers);
 
     return (
         <>
             {questionsRes?.anti_cheat_enabled && (
                 <FullScreen violationCount={violationCount} setViolationCount={setViolationCount} />
             )}
-            <section className="mt-5 min-h-screen px-4 pb-10">
+
+            <section className="mt-5 h-screen pl-4 max-xl:pr-4">
                 {isLoading ? (
                     <Skeleton className="mb-4 h-7 !w-[30%]" />
                 ) : (
@@ -173,177 +150,42 @@ const DoingExamPage = () => {
                         </span>
                     </div>
                 )}
-
-                <div className="flex gap-4">
-                    {/* Nội dung câu hỏi */}
-                    <section className="flex-1">
-                        <section className="space-y-4 rounded-lg bg-white px-6 py-8 shadow-xs">
-                            <h1 className="text-primary text-base font-bold">Câu hỏi:</h1>
-                            <div className="flex items-start gap-4">
-                                <div className="t1-flex-center size-8.5 shrink-0 rounded-full bg-slate-300 font-bold">
-                                    {questionActive + 1}
-                                </div>
-                                <div className="flex w-full flex-col">
-                                    {isLoading || !questions[questionActive] || !mounted ? (
-                                        <QuestionSkeleton />
-                                    ) : (
-                                        <>
-                                            {questions[questionActive].type === "drag_drop" ? (
-                                                <DragDrop
-                                                    question={questions[questionActive].content || ""}
-                                                    items={questions[questionActive].answers || []}
-                                                    activeAnswers={answers[questions[questionActive].id] ?? []}
-                                                    idQuestion={questions[questionActive].id}
-                                                    handleChoiceAnswer={handleChoiceAnswer}
-                                                />
-                                            ) : (
-                                                <>
-                                                    <MathJaxContext config={configSymbolComment}>
-                                                        <MathJax dynamic>
-                                                            <div
-                                                                className="leading-7"
-                                                                dangerouslySetInnerHTML={{
-                                                                    __html: questions[questionActive].content || "",
-                                                                }}
-                                                            ></div>
-                                                        </MathJax>
-                                                    </MathJaxContext>
-                                                    {questions[questionActive].images &&
-                                                        questions[questionActive].images.map((item) => (
-                                                            <div className="mt-2" key={item}>
-                                                                <Image
-                                                                    src={item}
-                                                                    width={250}
-                                                                    height={210}
-                                                                    alt={`Question Image ${item}`}
-                                                                    className="aspect-auto rounded-md"
-                                                                />
-                                                            </div>
-                                                        ))}
-                                                    <div className="mt-2">
-                                                        {questions[questionActive].type === "single_choice" && (
-                                                            <SingleChoice
-                                                                activeAnswer={
-                                                                    answers[questions[questionActive].id] || []
-                                                                }
-                                                                handleChoiceAnswer={handleChoiceAnswer}
-                                                                idQuestion={questions[questionActive].id}
-                                                                answers={questions[questionActive].answers || []}
-                                                            />
-                                                        )}
-                                                        {questions[questionActive].type === "multiple_choice" && (
-                                                            <MultipleChoice
-                                                                activeAnswers={
-                                                                    answers[questions[questionActive].id] ?? []
-                                                                }
-                                                                handleChoiceAnswer={handleChoiceAnswer}
-                                                                idQuestion={questions[questionActive].id}
-                                                                answers={questions[questionActive].answers || []}
-                                                            />
-                                                        )}
-                                                    </div>
-                                                </>
-                                            )}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        </section>
-                    </section>
-
-                    {/* Sidebar */}
-                    <div className="sticky top-[70px] h-fit w-96 rounded-xl bg-white px-5 pt-8 pb-10 shadow-xs">
-                        <div className="flex flex-col gap-3">
-                            <div className="text-base font-medium">Thông tin thí sinh</div>
-                            <div className="flex justify-between">
-                                <span>Họ tên</span>
-                                <span>Phạm Hoàng Tuấn</span>
-                            </div>
-                            <div className="flex items-center gap-2 rounded-md border border-slate-400 p-2">
-                                <div className="flex-1">Thời gian còn lại:</div>
-                                <div className="text-base font-bold">{formatter.parseMinutesSeconds(timeLeft)}</div>
-                                <Button className="bg-red-500 text-white hover:bg-red-500/90">Nộp bài</Button>
-                            </div>
-
-                            {/* Chỉ thị màu */}
-                            <div className="my-4">
-                                <div className="mb-2 font-bold">Chỉ thị màu sắc</div>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-3">
-                                        <div className="size-6 rounded-full bg-slate-300" />
-                                        <span className="text-sm">Chưa chọn đáp án</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="border-primary bg-primary size-6 rounded-full border" />
-                                        <span className="text-sm">Đang làm câu này</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="size-6 rounded-full border border-green-600 bg-green-500" />
-                                        <span className="text-sm">Đã chọn đáp án</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Danh sách câu hỏi */}
-                            <div className="flex flex-wrap gap-3">
-                                {questions.map((q, index) => (
-                                    <button
-                                        key={q.id}
-                                        onClick={() => setQuestionActive(index)}
-                                        className={clsx("t1-flex-center size-9 cursor-pointer rounded-full", {
-                                            "bg-primary font-bold text-white": index === questionActive,
-                                            "bg-green-500 font-bold text-white": !!answers[q.id],
-                                            "bg-slate-300 text-black": index !== questionActive && !answers[q.id],
-                                        })}
-                                    >
-                                        {index + 1}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="fixed right-0 bottom-0 left-0 flex h-20 items-center justify-between bg-white px-15 py-2 shadow-lg">
-                    <div className="flex items-center gap-4">
-                        <Button
-                            className="bg-primary cursor-pointer rounded-lg px-3 py-6 text-white shadow-xs"
-                            onClick={() => setQuestionActive((prev) => Math.min(prev + 1, questions.length - 1))}
-                            disabled={questionActive === 0}
-                        >
-                            <ChevronFirst className="size-6" />
-                        </Button>
-                        <Button
-                            className="t1-flex-center bg-primary cursor-pointer gap-2 rounded-lg px-3 py-6 text-white shadow-xs"
-                            disabled={questionActive === questions.length - 1}
-                            onClick={() => setQuestionActive((prev) => Math.min(prev + 1, questions.length - 1))}
-                        >
-                            <span>Câu tiếp</span> <ChevronLast className="size-6" />
-                        </Button>
-                        <span className="t1-flex-center gap-1">
-                            <span>Thời gian làm câu hiện tại:</span> <span className="text-2xl font-bold">5:50</span>
+                {/* Hiển thị cảnh báo khi còn 3p là hết giờ làm bài */}
+                {!isLoading && timeLeft <= 180 && (
+                    <div className="mb-4 flex items-center gap-3 rounded-lg bg-red-100 px-4 py-2">
+                        <span className="font-semibold text-red-700">Cảnh báo:</span>
+                        <span className="font-bold text-red-600">
+                            Thời gian làm bài còn lại: {formatter.parseMinutesSeconds(timeLeft)}
                         </span>
                     </div>
-                    <div className="w-96">
-                        <div className="mb-3 flex items-end justify-between">
-                            <span>Bạn đã hoàn thành</span>{" "}
-                            <span>
-                                <span className="mr-1 ml-auto text-base font-bold">
-                                    {Object.keys(answers).length}/{questions.length}
-                                </span>
-                                <span>câu</span>
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between gap-2">
-                            <div className="h-2 w-full rounded-full bg-gray-200">
-                                <div
-                                    className="h-2 rounded-full bg-green-500 transition-all duration-300"
-                                    style={{ width: `${progress}%` }}
-                                />
-                            </div>
-                            <span className="text-xs">{Math.round(progress)}%</span>
-                        </div>
-                    </div>
+                )}
+
+                <div className="flex flex-col gap-4 xl:flex-row">
+                    {/* Nội dung câu hỏi */}
+                    <Questions
+                        payload={{
+                            questions,
+                            isLoading,
+                            questionActive,
+                            answers,
+                            handleChoiceAnswer,
+                            mounted,
+                            setQuestionActive,
+                        }}
+                    />
+
+                    <Sidebar
+                        payload={{
+                            setQuestionActive,
+                            questions,
+                            countdownSubmit,
+                            timeLeft,
+                            questionActive,
+                            answers,
+                        }}
+                    />
                 </div>
+                <Footer payload={{ setQuestionActive, questionActive, countQuestion: questions.length, answers }} />
             </section>
         </>
     );
