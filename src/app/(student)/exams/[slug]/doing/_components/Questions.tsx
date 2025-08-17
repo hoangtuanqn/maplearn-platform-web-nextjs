@@ -7,6 +7,8 @@ import MultipleChoice from "./MultipleChoice";
 import { Question } from "~/schemaValidate/exam.schema";
 import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
 import Image from "next/image";
+import NumericInput from "./NumericInput";
+import TrueFalseAnswer from "./TrueFalseAnswer";
 
 const Questions = ({
     payload: { questions, isLoading, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
@@ -101,6 +103,21 @@ const Questions = ({
                                                     handleChoiceAnswer={handleChoiceAnswer}
                                                     idQuestion={questions[questionActive].id}
                                                     answers={questions[questionActive].answers || []}
+                                                />
+                                            )}
+                                            {questions[questionActive].type === "numeric_input" && (
+                                                <NumericInput
+                                                    handleChoiceAnswer={handleChoiceAnswer}
+                                                    idQuestion={questions[questionActive].id}
+                                                    activeAnswer={answers[questions[questionActive].id] || []}
+                                                />
+                                            )}
+                                            {questions[questionActive].type === "true_false" && (
+                                                <TrueFalseAnswer
+                                                    idQuestion={questions[questionActive].id}
+                                                    answers={questions[questionActive].answers || []}
+                                                    activeAnswer={answers[questions[questionActive].id] || []}
+                                                    handleChoiceAnswer={handleChoiceAnswer}
                                                 />
                                             )}
                                         </div>

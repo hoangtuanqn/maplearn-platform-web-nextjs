@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { getCharacterName } from "~/libs/hepler";
 import { useAuth } from "~/hooks/useAuth";
 import Link from "next/link";
 import { Info, X } from "lucide-react";

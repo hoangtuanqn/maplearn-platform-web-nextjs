@@ -1,6 +1,5 @@
 import z from "zod";
 import { paginationMetaSchemaFn } from "./common.schema";
-import { id } from "date-fns/locale";
 
 const examCategorySchema = z.object({
     id: z.number(),
@@ -77,7 +76,7 @@ export type Answers = z.infer<typeof answersSchema>;
 const questionSchema = z.object({
     id: z.number(),
     exam_paper_id: z.number(),
-    type: z.enum(["single_choice", "multiple_choice", "drag_drop", "true_false"]),
+    type: z.enum(["single_choice", "multiple_choice", "drag_drop", "true_false", "numeric_input"]),
     content: z.string(),
     explanation: z.string().nullable(),
     images: z.array(z.string()).nullable(),

@@ -17,10 +17,10 @@ const helloMessageModel = (name: string = "khách") => ({
         },
     ],
 });
-type MessageTye = {
-    message: string;
-    course_id: number[];
-};
+// type MessageTye = {
+//     message: string;
+//     course_id: number[];
+// };
 function extractJSON(input: string) {
     const match = input.match(/{[\s\S]*}/); // tìm đoạn bắt đầu bằng { và kết thúc bằng }
     if (match) {
@@ -44,10 +44,10 @@ const ChatBotAI = () => {
     const [chatHistories, setChatHistories] = useState<ChatHistoriesType[]>([]);
     const [ids, setIds] = useState<{ id: number; course_id: number[] }[]>([]);
     const { playSound } = useNotificationSound();
-    const [dataParse, setDataParse] = useState<MessageTye>({
-        message: "",
-        course_id: [],
-    });
+    // const [dataParse, setDataParse] = useState<MessageTye>({
+    //     message: "",
+    //     course_id: [],
+    // });
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,7 +65,7 @@ const ChatBotAI = () => {
 
             if (data.data?.candidates[0].content.parts[0].text) {
                 const parse = extractJSON(data.data?.candidates[0].content.parts[0].text);
-                setDataParse(parse);
+                // setDataParse(parse);
                 modelReply =
                     parse?.message ||
                     data.data?.candidates[0].content.parts[0].text ||
@@ -76,10 +76,10 @@ const ChatBotAI = () => {
             }
             notificate(modelReply);
         } catch (error) {
-            setDataParse({
-                message: "Xin lỗi, mình không hiểu câu hỏi của bạn. 2",
-                course_id: [],
-            } as MessageTye);
+            // setDataParse({
+            //     message: "Xin lỗi, mình không hiểu câu hỏi của bạn. 2",
+            //     course_id: [],
+            // } as MessageTye);
             console.error("Lỗi gọi API AI >> ", error);
         } finally {
             playSound();
@@ -154,7 +154,8 @@ const ChatBotAI = () => {
                                 <ChatBubble
                                     key={index}
                                     course_id={
-                                        ids.filter((item) => item.id === index + 1).flatMap((item) => item.course_id) || []
+                                        ids.filter((item) => item.id === index + 1).flatMap((item) => item.course_id) ||
+                                        []
                                     }
                                     role={history.role}
                                     text={history.parts[0].text}

@@ -38,10 +38,6 @@ const Sidebar = ({
                             <ChevronLast className="size-4" />
                         </Button>
                     </div>
-                    <span className="gap-1 text-sm">
-                        <span>Thời gian làm câu hiện tại: </span>
-                        <span className="text-xl font-bold md:text-2xl">5:50</span>
-                    </span>
                 </div>
                 <div className="w-full">
                     <div className="mb-1 flex justify-between">

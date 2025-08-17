@@ -14,6 +14,7 @@ import { formatter } from "~/libs/format";
 import Sidebar from "./_components/Sidebar";
 import Footer from "./_components/Footer";
 import Questions from "./_components/Questions";
+import { toast } from "sonner";
 
 const slug = "de-minh-hoa-thi-tot-nghiep-thpt-2025-mon-toan-xwj9asdvfxuq";
 
@@ -39,40 +40,37 @@ const DoingExamPage = () => {
     // idx: chỉ dành cho cái drag_drop thôi nhé
     const handleChoiceAnswer = (questionId: number, answer: string, idx?: number) => {
         const question = questions.find((ques) => ques.id === questionId);
-
-        if (question?.type === "single_choice") {
-            console.log("single_choice");
-
-            setAnswers((prev) => ({ ...prev, [questionId]: [answer] }));
-        } else if (question?.type === "multiple_choice") {
-            setAnswers((prev) => {
-                const currentAnswers = prev[questionId] || [];
-
-                if (currentAnswers.includes(answer)) {
-                    // Nếu đã chọn rồi thì bỏ chọn
-                    return { ...prev, [questionId]: currentAnswers.filter((ans) => ans !== answer) };
-                } else {
-                    // Nếu chưa chọn thì thêm vào
-                    return { ...prev, [questionId]: [...currentAnswers, answer] };
-                }
-            });
-        } else if (question?.type === "drag_drop") {
-            // idx: là ô số idx. VD: idx = 4, các ô từ 1 đến 4 chưa có giá trị thì để trống, ô nào có rồi thì để yên, nếu idx = 4 đã có giá trị thì thay thế giá trị mới
-            if (idx) {
+        switch (question?.type) {
+            case "single_choice":
+            case "numeric_input":
+            case "true_false":
+                setAnswers((prev) => ({ ...prev, [questionId]: [answer] }));
+                break;
+            case "multiple_choice":
                 setAnswers((prev) => {
-                    // console.log("prev >>", prev);
+                    const currentAnswers = prev[questionId] || [];
 
-                    const countAnswer = question.answers.length ?? 0;
-                    const newAnswers = Array.from({ length: countAnswer }, (_, i) => prev?.[questionId]?.[i] || "");
-                    newAnswers[idx - 1] = answer; // idx - 1 vì mảng bắt đầu từ 0
-
-                    return { ...prev, [questionId]: newAnswers };
+                    if (currentAnswers.includes(answer)) {
+                        // Nếu đã chọn rồi thì bỏ chọn
+                        return { ...prev, [questionId]: currentAnswers.filter((ans) => ans !== answer) };
+                    } else {
+                        // Nếu chưa chọn thì thêm vào
+                        return { ...prev, [questionId]: [...currentAnswers, answer] };
+                    }
                 });
-            }
+                break;
+            case "drag_drop":
+                if (idx) {
+                    setAnswers((prev) => {
+                        const countAnswer = question.answers.length ?? 0;
+                        const newAnswers = Array.from({ length: countAnswer }, (_, i) => prev?.[questionId]?.[i] || "");
+                        newAnswers[idx - 1] = answer; // idx - 1 vì mảng bắt đầu từ 0
+                        return { ...prev, [questionId]: newAnswers };
+                    });
+                }
+            default:
+                toast.error("Loại câu hỏi không hợp lệ!");
         }
-        // else if (questions[questionId].type === "drag_drop") {
-        //     setAnswers((prev) => ({ ...prev, [questionId]: [answer] }));
-        // }
     };
 
     // Mount

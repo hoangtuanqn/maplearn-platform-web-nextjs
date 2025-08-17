@@ -30,9 +30,6 @@ const Footer = ({
                 >
                     <span>Câu tiếp</span> <ChevronLast className="size-6" />
                 </Button>
-                <span className="t1-flex-center gap-1">
-                    <span>Thời gian làm câu hiện tại:</span> <span className="text-2xl font-bold">5:50</span>
-                </span>
             </div>
             <div className="w-96">
                 <div className="mb-3 flex items-end justify-between">
