@@ -1,14 +1,16 @@
 import clsx from "clsx";
 import { ChevronFirst, ChevronLast } from "lucide-react";
 import React from "react";
+import { ConfirmDialog } from "~/components/ConfirmDialog";
 import { Button } from "~/components/ui/button";
 import { formatter } from "~/libs/format";
 import { Question } from "~/schemaValidate/exam.schema";
 
 const Sidebar = ({
-    payload: { questionActive, setQuestionActive, questions, countdownSubmit, timeLeft, answers },
+    payload: { questionActive, setQuestionActive, questions, countdownSubmit, timeLeft, answers, handleSubmitExam },
 }: {
     payload: {
+        handleSubmitExam: () => void;
         questionActive: number;
         setQuestionActive: React.Dispatch<React.SetStateAction<number>>;
         questions: Question[];
@@ -18,8 +20,10 @@ const Sidebar = ({
     };
 }) => {
     const progress = (Object.keys(answers).length / questions.length) * 100;
+    // Số câu còn lại
+    const remainingQuestions = questions.length - Object.keys(answers).length;
     return (
-        <div className="relative z-100 h-full rounded-xl bg-white px-5 pt-8 pb-10 shadow-xs xl:w-96">
+        <div className="relative z-5 h-full rounded-xl bg-white px-5 pt-8 pb-10 shadow-xs xl:w-96">
             <div className="mb-5 flex h-auto flex-col items-center gap-4 md:h-20 md:gap-0 xl:hidden">
                 <div className="flex w-full flex-col gap-2 md:flex-row md:gap-4">
                     <div className="flex items-center gap-2">
@@ -70,13 +74,19 @@ const Sidebar = ({
                 <div className="flex items-center gap-2 rounded-md border border-slate-400 p-2">
                     <div className="flex-1">Thời gian còn lại:</div>
                     <div className="text-base font-bold">{formatter.parseMinutesSeconds(timeLeft)}</div>
-                    <Button
-                        className="view_tooltip bg-red-500 text-white hover:bg-red-500/90"
-                        disabled={countdownSubmit > 0}
-                        data-tooltip-content={"Bạn chỉ có thể nộp bài sau khi làm tối thiểu 5 phút!"}
+                    <ConfirmDialog
+                        action={() => handleSubmitExam()}
+                        message={`Bạn có chắc chắn muốn nộp bài không? Bạn vẫn còn ${formatter.parseMinutesSeconds(timeLeft)} phút ${remainingQuestions > 0 ? `và ${remainingQuestions} câu chưa làm` : ""}.`}
                     >
-                        Nộp bài {countdownSubmit > 0 && <span>({formatter.parseMinutesSeconds(countdownSubmit)})</span>}
-                    </Button>
+                        <Button
+                            className="view_tooltip bg-red-500 text-white hover:bg-red-500/90"
+                            disabled={countdownSubmit > 0}
+                            data-tooltip-content={"Bạn chỉ có thể nộp bài sau khi làm tối thiểu 5 phút!"}
+                        >
+                            Nộp bài
+                            {countdownSubmit > 0 && <span>({formatter.parseMinutesSeconds(countdownSubmit)})</span>}
+                        </Button>
+                    </ConfirmDialog>
                 </div>
 
                 {/* Chỉ thị màu */}

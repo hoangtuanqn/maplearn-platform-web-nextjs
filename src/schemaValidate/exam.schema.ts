@@ -24,7 +24,7 @@ const examSchema = z.object({
     slug: z.string(),
     province: z.string(),
     difficulty: z.enum(["easy", "normal", "hard", "very_hard"]),
-    exam_type: z.enum(["HSA", "V-ACT", "TSA", "OTHER"]),
+    exam_type: z.enum(["HSA", "V-ACT", "TSA", "THPT", "OTHER"]),
     max_score: z.number(),
     duration_minutes: z.number(),
     anti_cheat_enabled: z.boolean(),

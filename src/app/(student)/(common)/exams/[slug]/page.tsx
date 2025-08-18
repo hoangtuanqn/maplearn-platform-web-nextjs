@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import examApi from "~/apiRequest/exam";
 import Loading from "~/app/(student)/_components/Loading";
 import { AnswerLocalStorage } from "~/app/(student)/exams/[slug]/doing/exam.type";
+import { Button } from "~/components/ui/button";
 import useCountDown from "~/hooks/useCountDown";
 import { formatter } from "~/libs/format";
 import { getLocalStorage } from "~/libs/localStorage";
@@ -171,8 +172,57 @@ const DetailExamPage = () => {
                         </div>
                     </section>
                     <section className="mt-5 min-h-40 rounded-xl bg-white p-6 shadow-sm">
-                        <h2 className="text-primary text-base font-bold">Lịch sử làm bài</h2>
-                        <div className="mt-5">Chưa có lịch sử bài làm</div>
+                        <h2 className="text-primary mb-4 text-base font-bold">Lịch sử làm bài</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200 overflow-hidden rounded-lg border">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            className="px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase"
+                                        >
+                                            Ngày làm bài
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="hidden px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase sm:table-cell"
+                                        >
+                                            Thời gian làm bài
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="hidden px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase md:table-cell"
+                                        >
+                                            Kết quả
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-4 py-3 text-end text-xs font-semibold text-gray-600 uppercase"
+                                        >
+                                            Chi tiết
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100 bg-white">
+                                    <tr className="transition hover:bg-gray-50">
+                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
+                                            19/8/2025
+                                        </td>
+                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
+                                            20 phút
+                                        </td>
+                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 md:table-cell">
+                                            10 điểm
+                                        </td>
+                                        <td className="px-4 py-4 text-end whitespace-nowrap">
+                                            <Button className="" variant={"outline"}>
+                                                Xem chi tiết
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </section>
                 </section>
                 <div className="sticky top-[70px] h-fit w-96 rounded-xl bg-white py-4 shadow-sm">

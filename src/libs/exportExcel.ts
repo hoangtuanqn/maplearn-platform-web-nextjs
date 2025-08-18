@@ -1,7 +1,6 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type JsonData = Record<string, any>[];
 
 /**
@@ -21,7 +20,6 @@ export function exportExcel(data: JsonData, fileName = "data.xlsx", headerMap?: 
     // Nếu có headerMap thì lọc và đổi key
     if (headerMap) {
         processedData = data.map((row) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const newRow: Record<string, any> = {};
             for (const key in headerMap) {
                 if (row.hasOwnProperty(key)) {

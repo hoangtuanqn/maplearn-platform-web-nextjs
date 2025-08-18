@@ -4,7 +4,6 @@ import { MathJax, MathJaxContext } from "better-react-mathjax";
 import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
 import { Label } from "~/components/ui/label";
 import { Answers } from "~/schemaValidate/exam.schema";
-import { useEffect } from "react";
 
 const SingleChoice = ({
     idQuestion,
@@ -17,31 +16,6 @@ const SingleChoice = ({
     activeAnswer: string[] | [];
     handleChoiceAnswer: (questionId: number, answer: string) => void;
 }) => {
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                e.preventDefault(); // chặn scroll
-                e.stopPropagation(); // ngăn sự kiện lan rộng
-            }
-            if (e.key === "ArrowUp") {
-                handleChoiceAnswer(
-                    idQuestion,
-                    Number(activeAnswer) - 1 == 0 ? `${answers.length}` : `${Number(activeAnswer) - 1}`,
-                );
-            }
-            if (e.key === "ArrowDown") {
-                // Đáp án A chuyển sang B (ABCD):
-                handleChoiceAnswer(
-                    idQuestion,
-                    Number(activeAnswer) + 1 <= answers.length ? `${Number(activeAnswer) + 1}` : "1",
-                );
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [activeAnswer, answers.length, idQuestion, handleChoiceAnswer]);
-
     return (
         <RadioGroup
             value={activeAnswer[0] || ""} // controlled component
@@ -55,6 +29,22 @@ const SingleChoice = ({
                             value={answer.content}
                             id={answer.content}
                             className="peer data-[state=checked]:bg-primary size-7 rounded-full border-0 bg-slate-300"
+                            onKeyDown={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
+                            onPointerDown={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
+                            onFocus={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
                         />
                         <Label htmlFor={answer.content} className="cursor-pointer leading-8">
                             <MathJaxContext config={configSymbolComment}>

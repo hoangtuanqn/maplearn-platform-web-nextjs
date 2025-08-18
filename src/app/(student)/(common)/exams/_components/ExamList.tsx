@@ -3,14 +3,18 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import examApi, { EXAM_PER_PAGE } from "~/apiRequest/exam";
 import Link from "next/link";
-import clsx from "clsx";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import ExamSkeleton from "./ExamSkeleton";
-import { Badge } from "~/components/ui/badge";
+import { BookMinus, Calendar } from "lucide-react";
+import clsx from "clsx";
+import { useSearchParams } from "next/navigation";
+import { formatter } from "~/libs/format";
 
 const ExamList = () => {
+    const searchParams = useSearchParams();
+    const page = Number(searchParams.get("page")) || 1;
     const { data: examList, isLoading } = useQuery({
-        queryKey: ["exam", "list"],
+        queryKey: ["exam", "list", { page }],
         queryFn: async () => {
             const res = await examApi.getExams();
             return res.data.data;
@@ -20,7 +24,7 @@ const ExamList = () => {
     const totalPages = Math.ceil((examList?.total ?? 0) / EXAM_PER_PAGE);
 
     return (
-        <section className="flex-1 space-y-4 rounded-xl">
+        <section className="grid flex-1 grid-cols-2 gap-4 rounded-xl">
             {isLoading ? (
                 <>
                     {[...Array(EXAM_PER_PAGE)].map((_, index) => (
@@ -29,62 +33,48 @@ const ExamList = () => {
                 </>
             ) : (
                 <>
-                    {examList?.data.map((exam, idx) => (
-                        <div
+                    {examList?.data.map((exam) => (
+                        <Link
                             key={exam.id}
-                            className={clsx(
-                                "relative flex h-[72px] w-full items-center justify-between gap-4 overflow-hidden rounded-lg bg-white px-6 shadow-sm",
-                                {
-                                    "border border-red-700": exam.exam_type == "TSA",
-                                    "border border-[#0F80CC]": exam.exam_type == "V-ACT",
-                                    "border border-[#128B3D]": exam.exam_type == "HSA",
-                                },
-                            )}
+                            href={`/exams/${exam.slug}`}
+                            className="rounded-[8px] bg-white px-4.5 py-3.5"
+                            style={{ boxShadow: "0px 1px 4px 0px #0000000D" }}
                         >
-                            {exam.exam_type != "OTHER" && (
+                            <div className="flex gap-3.5">
                                 <div
                                     className={clsx(
-                                        "t1-flex-center bg-${colorExamType[exam.exam_type]} absolute -top-[1px] -left-[1px] h-[24px] rounded-br-[5px] px-[8px] text-[13px] font-medium text-white",
+                                        "t1-flex-center h-[28px] rounded-[8px] px-3.5 font-medium text-white",
                                         {
-                                            "bg-red-700": exam.exam_type == "TSA",
-                                            "bg-[#0F80CC]": exam.exam_type == "V-ACT",
-                                            "bg-[#128B3D]": exam.exam_type == "HSA",
+                                            "bg-[#128b3d]": exam.exam_type === "HSA",
+                                            "bg-[#0F80CC]": exam.exam_type === "V-ACT",
+                                            "bg-[#C41D17]": exam.exam_type === "TSA",
+                                            "bg-[#FF8A00]": exam.exam_type === "THPT",
+                                            "bg-[#515051]": exam.exam_type === "OTHER",
                                         },
                                     )}
                                 >
-                                    {exam.exam_type}
+                                    {exam.exam_type != "OTHER" ? exam.exam_type : "Khác"}
                                 </div>
-                            )}
-
-                            <div className="flex h-full grow items-center justify-between text-[15.15px]">
-                                <Link className={`line-clamp-1 w-[70%] pr-6 font-medium`} href={`/exams/${exam.slug}`}>
-                                    {`${idx + 1}. ${exam.title}`}
-                                    <Badge className="ml-2 bg-green-600 text-white">Đã làm • Điểm cao nhất: 9.8</Badge>
-                                </Link>
-
-                                {exam.exam_type != "OTHER" && (
-                                    <div
-                                        className={clsx("text-primary-typo w-[25%] font-medium", {
-                                            "text-[#0F80CC]": exam.exam_type == "V-ACT",
-                                            "text-[#128B3D]": exam.exam_type == "HSA",
-                                            "text-red-700": exam.exam_type == "TSA",
-                                        })}
-                                    >
-                                        {exam.exam_type == "V-ACT"
-                                            ? "ĐGNL V-ACT"
-                                            : exam.exam_type == "HSA"
-                                              ? "ĐGNL HSA"
-                                              : "ĐGTD TSA"}
-                                    </div>
-                                )}
+                                <div className="t1-flex-center text-primary h-[28px] rounded-[8px] bg-[#F0F3F7] px-3.5 font-medium">
+                                    {exam.duration_minutes} phút
+                                </div>
                             </div>
-                        </div>
+                            <div className="mt-3.5 line-clamp-2 min-h-[48px] text-[16px] font-medium text-[#444444]">
+                                {exam.title}
+                            </div>
+                            <div className="text-primary mt-3.5 flex items-center gap-[4px] text-[13px]">
+                                <BookMinus />
+                                <div className="flex-1 text-[13px]">Ghi nhận 60 lượt thi</div>
+                                <Calendar />
+                                <div>{formatter.date(exam.created_at)}</div>
+                            </div>
+                        </Link>
                     ))}
                 </>
             )}
             <div className="ml-auto">
                 {!isLoading && totalPages > 1 && (examList?.data.length ?? 0) > 0 && (
-                    <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
+                    <PaginationNav totalPages={totalPages} basePath="/exams" />
                 )}
             </div>
         </section>

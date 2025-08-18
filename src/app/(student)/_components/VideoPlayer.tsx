@@ -13,7 +13,6 @@ const VideoPlayer = ({ src, type = "video/mp4", poster, ratio = undefined }: Pro
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let player: any;
 
         // ❗ Chỉ import Plyr phía client

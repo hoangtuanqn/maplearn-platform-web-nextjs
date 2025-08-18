@@ -33,7 +33,7 @@ const ListCarts = ({
         selectedItems: number[];
         setSelectedItems: React.Dispatch<React.SetStateAction<number[]>>;
         carts: CartsResponse["data"] | null;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         removeCartMutation: UseMutationResult<AxiosResponse<any, any>, Error, number[], unknown>;
         isLoading: boolean;
     };

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import examApi from "~/apiRequest/exam";
 import { getLocalStorage, setLocalStorage } from "~/libs/localStorage";
 import { Question } from "~/schemaValidate/exam.schema";
@@ -15,6 +15,8 @@ import Sidebar from "./_components/Sidebar";
 import Footer from "./_components/Footer";
 import Questions from "./_components/Questions";
 import { toast } from "sonner";
+import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
+import Loading from "~/app/(student)/_components/Loading";
 
 const slug = "de-minh-hoa-thi-tot-nghiep-thpt-2025-mon-toan-xwj9asdvfxuq";
 
@@ -35,6 +37,8 @@ const DoingExamPage = () => {
             return res.data.data;
         },
     });
+    // Còn thời gian làm bài mà reload sẽ có cảnh báo
+    useUnsavedChangesWarning(timeLeft > 0);
 
     // Chọn đáp án
     // idx: chỉ dành cho cái drag_drop thôi nhé
@@ -63,7 +67,11 @@ const DoingExamPage = () => {
                 if (idx) {
                     setAnswers((prev) => {
                         const countAnswer = question.answers.length ?? 0;
-                        const newAnswers = Array.from({ length: countAnswer }, (_, i) => prev?.[questionId]?.[i] || "");
+                        // Loại bỏ phần tử rỗng k có giá trị
+                        const newAnswers = Array.from(
+                            { length: countAnswer },
+                            (_, i) => prev?.[questionId]?.[i],
+                        ).filter((ans) => ans);
                         newAnswers[idx - 1] = answer; // idx - 1 vì mảng bắt đầu từ 0
                         return { ...prev, [questionId]: newAnswers };
                     });
@@ -71,6 +79,23 @@ const DoingExamPage = () => {
             default:
                 toast.error("Loại câu hỏi không hợp lệ!");
         }
+    };
+    const submitAnswerMutation = useMutation({
+        mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
+        onSuccess: (data) => {
+            console.log(data);
+
+            toast.success("Đã nộp bài làm thành công");
+        },
+        onError: () => {
+            toast.error("Đã có lỗi xảy ra khi nộp bài");
+        },
+    });
+
+    const handleSubmitExam = () => {
+        // console.log("Đã submit bài làm thành công", slug, answers);
+        const answers = JSON.parse(getLocalStorage(slug) ?? "") as AnswerLocalStorage;
+        submitAnswerMutation.mutate(answers);
     };
 
     // Mount
@@ -125,6 +150,7 @@ const DoingExamPage = () => {
 
     return (
         <>
+            {submitAnswerMutation.isPending && <Loading />}
             {questionsRes?.anti_cheat_enabled && (
                 <FullScreen violationCount={violationCount} setViolationCount={setViolationCount} />
             )}
@@ -174,6 +200,7 @@ const DoingExamPage = () => {
 
                     <Sidebar
                         payload={{
+                            handleSubmitExam,
                             setQuestionActive,
                             questions,
                             countdownSubmit,

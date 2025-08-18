@@ -5,7 +5,6 @@ import { configSymbolComment } from "~/app/(student)/_components/Comment/config"
 
 declare global {
     interface Window {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         MathJax?: any;
     }
 }
@@ -145,7 +144,6 @@ const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, ha
     // Rerender MathJax khi droppedItems thay đổi
     useEffect(() => {
         if (typeof window !== "undefined" && window.MathJax) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             window.MathJax.typesetPromise?.().catch((err: any) => console.error(err));
         }
     }, [droppedItems]);
@@ -153,7 +151,11 @@ const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, ha
     useEffect(() => {
         // console.log("droppedItems >> ", JSON.stringify(Object.entries(droppedItems)));
         Object.entries(droppedItems).forEach(([a, b]) => {
-            handleChoiceAnswer(idQuestion, b?.content || "", Number(a.split("drop")[1]));
+            console.log("b>>", b?.content);
+
+            if (b?.content && b.content.length > 0) {
+                handleChoiceAnswer(idQuestion, b.content, Number(a.split("drop")[1]));
+            }
         });
 
         // handleChoiceAnswer(idQuestion, )

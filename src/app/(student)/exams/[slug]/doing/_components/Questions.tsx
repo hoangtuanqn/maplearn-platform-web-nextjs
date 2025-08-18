@@ -10,6 +10,7 @@ import Image from "next/image";
 import NumericInput from "./NumericInput";
 import TrueFalseAnswer from "./TrueFalseAnswer";
 
+
 const Questions = ({
     payload: { questions, isLoading, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
 }: {
