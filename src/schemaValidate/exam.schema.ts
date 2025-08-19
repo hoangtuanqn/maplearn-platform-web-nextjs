@@ -29,10 +29,17 @@ const examSchema = z.object({
     duration_minutes: z.number(),
     anti_cheat_enabled: z.boolean(),
     max_violation_attempts: z.number(),
+    max_attempts: z.number().nullable(),
+    pass_score: z.number(),
+    question_count: z.number(),
+    is_in_progress: z.boolean(),
     status: z.boolean(),
+    start_time: z.string(),
+    end_time: z.string(),
     created_at: z.string(),
     updated_at: z.string(),
 });
+
 const _examListResponseSchema = z.object({
     success: z.boolean(),
     message: z.string(),
@@ -40,34 +47,14 @@ const _examListResponseSchema = z.object({
 });
 export type ExamListResponse = z.infer<typeof _examListResponseSchema>;
 
-// "questions": [
-// {
-// "id": 1,
-// "exam_paper_id": 39,
-// "type": "single_choice",
-// "content": "An và Bình không quen biết nhau và học ở hai nơi khác nhau. Xác suất để An và Bình đạt điểm giỏi về môn Toán trong kì thi cuối năm tương ứng là 0,92 và 0,88. Tính xác suất để cả An và Bình đều đạt điểm giỏi.",
-// "explanation": null,
-// "images": null,
-// "marks": 1,
-// "answers": [
-// {
-// "id": 1,
-// "content": "0,3597"
-// },
-// {
-// "id": 2,
-// "content": "0,8096"
-// },
-// {
-// "id": 3,
-// "content": "0,0096"
-// },
-// {
-// "id": 4,
-// "content": "0,3649"
-// }
-// ]
-// },
+// Get detail
+const _examDetailResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: examSchema,
+});
+export type ExamDetailResponse = z.infer<typeof _examDetailResponseSchema>;
+
 const answersSchema = z.object({
     id: z.number(),
     content: z.string(),
@@ -94,3 +81,28 @@ const _questionsExamSchema = z.object({
 });
 
 export type QuestionsExamResponse = z.infer<typeof _questionsExamSchema>;
+
+
+const attemptExamSchema = z.object({
+    id: z.number(),
+    exam_paper_id: z.number(),
+    user_id: z.number(),
+    score: z.number(),
+    violation_count: z.number(),
+    time_spent: z.number(),
+    details: z.string(),
+    started_at: z.string(),
+    submitted_at: z.string().nullable(),
+    note: z.string().nullable(),
+    status: z.enum(["in_progress", "submitted", "detected", "canceled"]),
+    created_at: z.string(),
+    updated_at: z.string(),
+});
+export type AttemptExam = z.infer<typeof attemptExamSchema>;
+
+const _attemptExamResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: attemptExamSchema,
+});
+export type AttemptExamResponse = z.infer<typeof _attemptExamResponseSchema>;

@@ -7,34 +7,11 @@ import { Label } from "~/components/ui/label";
 import otherApi from "~/apiRequest/others";
 import { ProvinceType } from "~/schemaValidate/other.schama";
 import { useQuery } from "@tanstack/react-query";
-import examApi from "~/apiRequest/exam";
+import examApi, { difficulties } from "~/apiRequest/exam";
 import subjectApi from "~/apiRequest/subject";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
 import FilterSkeleton from "./FilterSkeleton";
-// "easy", "normal", "hard", "very_hard"
-const difficulties = [
-    {
-        id: 1,
-        name: "Dễ",
-        slug: "easy",
-    },
-    {
-        id: 2,
-        name: "Trung bình",
-        slug: "normal",
-    },
-    {
-        id: 3,
-        name: "Khó",
-        slug: "hard",
-    },
-    {
-        id: 4,
-        name: "Rất khó",
-        slug: "very_hard",
-    },
-];
 const FilterExam = () => {
     const [provinces, setProvinces] = useState<ProvinceType>([]);
     const handleOnChangeTeacher = () => {};

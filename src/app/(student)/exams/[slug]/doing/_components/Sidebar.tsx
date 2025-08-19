@@ -3,6 +3,7 @@ import { ChevronFirst, ChevronLast } from "lucide-react";
 import React from "react";
 import { ConfirmDialog } from "~/components/ConfirmDialog";
 import { Button } from "~/components/ui/button";
+import { useAuth } from "~/hooks/useAuth";
 import { formatter } from "~/libs/format";
 import { Question } from "~/schemaValidate/exam.schema";
 
@@ -19,6 +20,7 @@ const Sidebar = ({
         answers: Record<number, string[]>;
     };
 }) => {
+    const { user } = useAuth();
     const progress = (Object.keys(answers).length / questions.length) * 100;
     // Số câu còn lại
     const remainingQuestions = questions.length - Object.keys(answers).length;
@@ -68,8 +70,8 @@ const Sidebar = ({
             <div className="flex flex-col gap-3">
                 <div className="text-base font-medium">Thông tin thí sinh</div>
                 <div className="flex justify-between">
-                    <span>Họ tên</span>
-                    <span>Phạm Hoàng Tuấn</span>
+                    <span>Thí sinh</span>
+                    <span className="text-primary font-bold">{user?.full_name}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-md border border-slate-400 p-2">
                     <div className="flex-1">Thời gian còn lại:</div>

@@ -1,175 +1,146 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play } from "lucide-react";
+import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play, Video } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import examApi from "~/apiRequest/exam";
-import Loading from "~/app/(student)/_components/Loading";
-import { AnswerLocalStorage } from "~/app/(student)/exams/[slug]/doing/exam.type";
+import { redirect } from "next/navigation";
+
+import React, { cache } from "react";
+import examApiServer from "~/apiRequest/server/exam";
 import { Button } from "~/components/ui/button";
-import useCountDown from "~/hooks/useCountDown";
 import { formatter } from "~/libs/format";
-import { getLocalStorage } from "~/libs/localStorage";
-const DetailExamPage = () => {
-    const { slug } = useParams<{ slug: string }>();
-    const [infoExam, setInfoExam] = useState<AnswerLocalStorage>();
-    const { timeLeft, setTimeLeft } = useCountDown(0);
-    const { data: exam, isLoading } = useQuery({
-        queryKey: ["exam", "questions", slug],
-        queryFn: async () => {
-            const res = await examApi.getQuestions(slug);
-            return res.data.data;
-        },
-    });
-    // Lấy dữ liệu từ localStorage khi load lần đầu
-    useEffect(() => {
-        const dataStr = getLocalStorage(slug);
-        if (dataStr && exam) {
-            const data: AnswerLocalStorage = JSON.parse(dataStr);
-            setInfoExam(data);
-            if (data.start) {
-                const durationSec = exam.duration_minutes * 60;
-                const passedSec = Math.floor((Date.now() - data.start) / 1000);
-                setTimeLeft(Math.max(durationSec - passedSec, 0));
-            }
-        }
-    }, [exam, setTimeLeft, slug]);
+const getExam = cache(async (slug: string) => {
+    const {
+        data: { data: post },
+    } = await examApiServer.getExamDetail(slug);
+    return post;
+});
+
+// ✅ Tạo metadata động từ dữ liệu bài viết
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const exam = await getExam(slug);
+    return {
+        title: exam.title,
+        description: exam.title || "Chi tiết bài thi",
+    };
+}
+
+const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params;
+    let exam;
+    try {
+        exam = await getExam(slug); // Dùng lại, không gọi API thêm
+    } catch (error) {
+        console.error("Error fetching exam details:", error);
+        redirect("/exams");
+    }
+    // if (exam.is_in_progress) {
+    //     return redirect(`/exams/${slug}/doing`);
+    // }
+
     return (
         <>
-            {isLoading && <Loading />}
+            {/* {isLoading && <Loading />} */}
             <section className="mt-10 flex min-h-screen gap-4 px-4 pb-10">
                 <section className="flex-1">
                     <section className="space-y-4 rounded-lg bg-white px-6 py-4 shadow-sm">
-                        <h1 className="text-primary text-xl font-bold">{exam?.title}</h1>
+                        <h1 className="text-primary text-xl font-bold">{exam.title}</h1>
                         <div className="space-y-3 text-[13.125px]">
                             <div className="flex items-center gap-1">
                                 <PenTool className="text-primary" />
-                                <span>Tổng số câu: {exam?.questions.length}</span>
+                                <span>Tổng số câu: {exam.question_count}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <Clock className="text-primary" />
-                                <span>Thời gian làm bài: {exam?.duration_minutes} phút</span>
+                                <span>Thời gian làm bài: {exam.duration_minutes} phút</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <Play className="text-primary" />
-                                <span>Đề thi bắt đầu vào thúc: 11:10 - 30/7/2025</span>
+                                <span>Đề thi bắt đầu vào thúc: {formatter.date(exam.start_time)}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <OctagonMinus className="text-primary" />
-                                <span>Đề thi kết thúc vào thúc: 11:10 - 30/10/2025</span>
+                                <span>
+                                    Đề thi kết thúc vào thúc:{" "}
+                                    {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
+                                </span>
                             </div>
                         </div>
-                        <div className="text-md mt-8 grid w-full grid-cols-3 justify-end gap-3">
-                            {infoExam && (
+                        <div className="text-md mt-8 flex justify-end gap-3">
+                            {exam.is_in_progress && (
                                 <Link
+                                    className="t1-flex-center bg-primary col-start-3 h-[3.25rem] cursor-pointer gap-2 rounded-full px-10"
                                     href={`/exams/${slug}/doing`}
-                                    className="t1-flex-center bg-primary col-start-2 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full"
                                 >
                                     <Disc className="size-5 text-white" />
-                                    <span className="font-medium text-white">
-                                        Làm tiếp ({formatter.parseMinutesSeconds(timeLeft)})
-                                    </span>
+                                    <span className="font-medium text-white">Tiếp tục làm bài</span>
                                 </Link>
                             )}
-
-                            <Link
-                                className="t1-flex-center col-start-3 h-[3.25rem] w-full cursor-pointer gap-2 rounded-full bg-[#12AD50]"
-                                href={`/exams/${slug}/doing`}
-                            >
-                                <CirclePlay className="size-5 text-white" />
-                                {infoExam ? (
-                                    <span className="font-medium text-white">Làm lại từ đầu</span>
-                                ) : (
+                            {!exam.is_in_progress && (
+                                <Link
+                                    className="t1-flex-center col-start-3 h-[3.25rem] cursor-pointer gap-2 rounded-full bg-[#12AD50] px-10"
+                                    href={`/exams/${slug}/start`}
+                                >
+                                    <CirclePlay className="size-5 text-white" />
                                     <span className="font-medium text-white">Vào phòng thi</span>
-                                )}
-                            </Link>
+                                </Link>
+                            )}
                         </div>
+                    </section>
+                    <section className="mt-5 rounded-xl bg-white p-6 shadow-sm">
+                        <h2 className="text-primary mb-4 text-base font-bold">Video giải đề thi chi tiết</h2>
+                        <ul className="mt-2 divide-y divide-gray-100">
+                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
+                                <div className="flex items-center gap-3">
+                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
+                                        <Video className="size-5" />
+                                    </div>
+                                    <div>
+                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
+                                            Live chữa - Câu 1 → 20
+                                        </p>
+                                        <p className="text-xs text-gray-500">Phần 1</p>
+                                    </div>
+                                </div>
+                                <Button size="sm" variant="outline" className="text-primary">
+                                    Xem
+                                </Button>
+                            </li>
 
-                        <div className="mb-2.5 w-full rounded-lg bg-sky-300/20 p-6 text-justify shadow-sm">
-                            <div className="mb-1 text-base font-bold text-blue-500">Hướng dẫn làm bài:</div>
-                            <div className="flex flex-col gap-1">
-                                <div>
-                                    * Bài thi TSA gồm năm dạng câu hỏi trắc nghiệm, thí sinh sử dụng chuột, bàn phím để
-                                    trả lời các câu hỏi khác nhau.
-                                </div>
-                                <div>
-                                    * Đối với ba dạng câu hỏi: <b>câu hỏi chọn một trong nhiều đáp án</b>,{" "}
-                                    <b>câu hỏi dạng nhiều đáp án đúng</b> , <b>câu hỏi đúng sai</b> thí sinh dùng chuột
-                                    để chọn đáp án đúng.
-                                </div>
-                                <div>
-                                    * Đối với dạng câu hỏi kéo thả thí sinh dùng chuột để chọn và đưa đáp án vào ô trả
-                                    lời
-                                </div>
-                                <div>
-                                    * Đối với các câu hỏi điền đáp án, thí sinh nhập đáp án vào ô trống dạng số thập
-                                    phân, nguyên dương, nguyên âm, cụm từ (Ví dụ: -1, 1, 1,2, -1,2) và{" "}
-                                    <strong>không nhập đơn vị vào đáp án</strong>.
-                                    <div className="pl-4">
-                                        • Ví dụ số âm: <strong className="text-sm text-red-600">-1; -1,23</strong>
+                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
+                                <div className="flex items-center gap-3">
+                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
+                                        <Video className="size-5" />
                                     </div>
-                                    <div className="pl-4">
-                                        • Ví dụ số thập phân:{" "}
-                                        <strong className="text-sm text-red-600">1,2; -1,234</strong>
+                                    <div>
+                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
+                                            Live chữa - Câu 21 → 30
+                                        </p>
+                                        <p className="text-xs text-gray-500">Phần 2</p>
                                     </div>
                                 </div>
-                                <div>
-                                    * Đối với các câu hỏi có nhiều ý, ví dụ như những câu hỏi có nhiều đáp án đúng, thí
-                                    sinh phải trả lời <strong>đúng tất cả các ý thì mới được tính điểm</strong> cho câu
-                                    hỏi đó. Hãy thận trọng trước khi lựa chọn đáp án của mình.
+                                <Button size="sm" variant="outline" className="text-primary">
+                                    Xem
+                                </Button>
+                            </li>
+
+                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
+                                <div className="flex items-center gap-3">
+                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
+                                        <Video className="size-5" />
+                                    </div>
+                                    <div>
+                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
+                                            Live chữa - Câu 31 → 40
+                                        </p>
+                                        <p className="text-xs text-gray-500">Phần 3</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mt-2 mb-2 text-base font-bold text-blue-500 not-italic">
-                                Tiến trình làm bài thi trên máy tính:
-                            </div>
-                            <div>
-                                Khi <strong>BẮT ĐẦU</strong> làm bài, màn hình máy tính sẽ hiển thị phần thi thứ nhất:
-                            </div>
-                            <div className="mt-3 italic">
-                                <strong>Phần 1: </strong>Tư duy toán học (40 câu hỏi - 60 phút)
-                            </div>
-                            <div>
-                                Thí sinh làm lần lượt các câu hỏi. Nếu bạn kết thúc phần 1 trước thời gian quy định. Bạn
-                                có thể nhấn nộp bài chuyển sang phần thi thứ hai. Khi hết thời gian phần 1, máy tính sẽ
-                                tự động chuyển sang phần thi thứ hai.
-                            </div>
-                            <div className="mt-3 italic">
-                                <strong>Phần 2: </strong>Tư duy đọc hiểu (20 câu hỏi - 1 phút)
-                            </div>
-                            <div>
-                                Các câu hỏi sẽ được chia theo từng nhóm chủ đề. Nếu bạn kết thúc phần 2 trước thời gian
-                                quy định, bạn có thể nhấn nộp bài chuyển sang phần thi thứ ba. Khi hết thời gian quy
-                                định, máy tính sẽ tự động chuyển sang phần thi thứ ba.
-                            </div>
-                            <div className="mt-3 italic">
-                                <strong>Phần 3: </strong>Khoa học/ giải quyết vấn đề (40 câu hỏi - 5 phút)
-                            </div>
-                            <div>
-                                Các câu hỏi sẽ được chia theo từng nhóm chủ đề. Nếu bạn kết thúc phần 3 trước thời gian
-                                quy định, bạn có thể bấm NỘP BÀI để hoàn thành bài thi sớm. Khi hết thời gian theo quy
-                                định, máy tính sẽ tự động NỘP BÀI.
-                            </div>
-                            <div>
-                                Khi <span className="font-black text-red-500">KẾT THÚC</span> bài thi, màn hình máy tính
-                                sẽ hiển thị kết quả thi của bạn.
-                            </div>
-                        </div>
-                        <div className="mb-2.5 w-full rounded-lg p-4 text-justify text-sm text-red-500 italic">
-                            <strong className="block pb-2 text-base">Lưu ý làm bài thi:</strong>
-                            <div>* Chỉ phiên làm bài đầu tiên mới được tính xếp hạng.</div>
-                            <div>
-                                * Một bài thi được coi là hợp lệ để tính xếp hạng khi không có gian lận (Không làm bài
-                                cùng 1 lúc trên nhiều trình duyệt, không di chuyển sang các tab khác nhiều lần khi đang
-                                làm bài ...).
-                            </div>
-                            <div>
-                                * Khi đang trong 1 phiên làm bài thi được tính xếp hạng và bị out ra, hãy vào lại đề thi
-                                và chọn tiếp tục làm bài, chọn <b>Làm lại từ đầu</b> sẽ huỷ kết quả và không được tính
-                                xếp hạng.
-                            </div>
-                        </div>
+                                <Button size="sm" variant="outline" className="text-primary">
+                                    Xem
+                                </Button>
+                            </li>
+                        </ul>
                     </section>
                     <section className="mt-5 min-h-40 rounded-xl bg-white p-6 shadow-sm">
                         <h2 className="text-primary mb-4 text-base font-bold">Lịch sử làm bài</h2>

@@ -1,16 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import { useNotificationSound } from "~/hooks/useNotificationSound";
 
-const FullScreen = ({
-    violationCount,
-    setViolationCount,
-}: {
-    violationCount: number;
-    setViolationCount: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+const FullScreen = ({ violationCount, onDetected }: { violationCount: number; onDetected: () => void }) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showWarning, setShowWarning] = useState(false);
     const [tabWarning, setTabWarning] = useState(false);
@@ -49,7 +42,7 @@ const FullScreen = ({
 
         if (prevFullScreen.current === true && isFs === false) {
             if (firstEnter) {
-                setViolationCount((count) => count + 1);
+                onDetected();
                 playSound();
                 setShowWarning(true);
             }
@@ -66,7 +59,8 @@ const FullScreen = ({
         if (document.hidden) {
             // Rời tab
             if (firstEnter) {
-                setViolationCount((count) => count + 1);
+                onDetected();
+
                 playSound();
             }
             leftTabRef.current = true;
@@ -116,7 +110,7 @@ const FullScreen = ({
     // Cảnh báo thoát fullscreen
     if (showWarning || tabWarning) {
         return (
-            <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-2 bg-yellow-400 text-center text-base font-bold text-white">
+            <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-2 bg-yellow-400/95 text-center text-base font-bold text-white">
                 <Image src="/assets/icons/warning.webp" alt="Warning" width={200} height={200} className="mb-5" />
                 {showWarning ? (
                     <>
@@ -133,7 +127,7 @@ const FullScreen = ({
                     </>
                 ) : (
                     <>
-                        <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-2 bg-yellow-400 text-center text-base font-bold text-white">
+                        <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-2 bg-yellow-400/95 text-center text-base font-bold text-white">
                             <Image
                                 src="/assets/icons/warning.webp"
                                 alt="Warning"

@@ -1,5 +1,5 @@
 // import { ListCardSchemaType } from './../schemaValidate/invoice.schema';
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import privateApi from "~/libs/apis/privateApi";
 import { CardListResponse, CreateInvoicePartnerResponse, InvoiceDetailResponse } from "~/schemaValidate/invoice.schema";
 export const INVOICE_PER_PAGE = 10;
