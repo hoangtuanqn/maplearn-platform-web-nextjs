@@ -26,9 +26,8 @@ const DoingExamPage = async ({ params }: { params: Promise<{ slug: string }> }) 
         questionsRes = await getQuestions(slug); // Dùng lại, không gọi API thêm
     } catch (error) {
         console.error("Error fetching exam details:", error);
-        redirect("/exams");
+        redirect(`/exams/${slug}`);
     }
-    console.log("questionsRes >> ", questionsRes);
 
     return <ExamPage slug={slug} questionsRes={questionsRes} />;
 };

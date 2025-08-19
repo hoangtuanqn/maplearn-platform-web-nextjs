@@ -32,11 +32,9 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
         exam = await getExam(slug); // Dùng lại, không gọi API thêm
     } catch (error) {
         console.error("Error fetching exam details:", error);
-        redirect("/exams");
+        redirect(`/exams`);
     }
-    // if (exam.is_in_progress) {
-    //     return redirect(`/exams/${slug}/doing`);
-    // }
+ 
 
     return (
         <>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
 import examApi from "~/apiRequest/exam";
-import { getLocalStorage, setLocalStorage } from "~/libs/localStorage";
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from "~/libs/localStorage";
 import { Question, QuestionsExamResponse } from "~/schemaValidate/exam.schema";
 import FullScreen from "../_components/FullScreen";
 import { AnswerLocalStorage } from "../exam.type";
@@ -74,13 +74,14 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     };
     const submitAnswerMutation = useMutation({
         mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
-        onSuccess: (data) => {
-            console.log(data);
-
+        onSuccess: () => {
             toast.success("Đã nộp bài làm thành công");
+            removeLocalStorage(slug); // Xóa dữ liệu localStorage sau khi nộp bài
+            router.push(`/exams/${slug}/results`);
         },
         onError: () => {
             toast.error("Đã có lỗi xảy ra khi nộp bài");
+            router.push(`/exams/${slug}`);
         },
     });
 
@@ -100,11 +101,9 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                 router.push(`/exams/${slug}`);
             }
             setViolationCount(data.violation_count ?? 0);
-            console.log("data >>", data);
+            // console.log("data >>", data);
         },
-        onError: (data) => {
-            console.log("data >>", data);
-
+        onError: () => {
             router.push(`/exams/${slug}`);
         },
     });

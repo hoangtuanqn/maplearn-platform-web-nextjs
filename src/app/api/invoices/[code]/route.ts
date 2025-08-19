@@ -3,9 +3,7 @@ import invoiceApi from "~/apiRequest/invoices";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ code: string }> }) {
     const cookie = request.headers.get("cookie");
-    // console.log("cookie >>>>", request.headers.get("cookie"));
 
-    // console.log("cookie >>> ", cookie);
 
     const { code } = await params;
 

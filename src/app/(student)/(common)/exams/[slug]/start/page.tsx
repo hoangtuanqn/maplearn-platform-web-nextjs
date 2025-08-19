@@ -46,10 +46,8 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
     }
 
     if (exam.is_in_progress) {
-        return redirect(`/exams/${slug}/doing`);
+        return redirect(`/exams/${slug}`);
     }
-
-    console.log("exam >>  ", exam);
 
     return (
         <>

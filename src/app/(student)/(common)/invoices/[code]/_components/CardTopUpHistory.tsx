@@ -11,12 +11,10 @@ const CardTopUpHistory = ({ code }: { code: string }) => {
         queryKey: ["user", "cardTopUpHistory", code],
         queryFn: async () => {
             const res = await invoiceApi.getCardTopUpHistory(code);
-            // console.log(res);
 
             return res.data.data.data;
         },
     });
-    // console.log("cardTopUpHistory >> ", cardTopUpHistory);
     if (cardTopUpHistory?.length == 0) return null;
     return (
         <section className="no-print mt-5 p-2">

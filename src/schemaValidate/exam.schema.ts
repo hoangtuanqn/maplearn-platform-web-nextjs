@@ -82,7 +82,6 @@ const _questionsExamSchema = z.object({
 
 export type QuestionsExamResponse = z.infer<typeof _questionsExamSchema>;
 
-
 const attemptExamSchema = z.object({
     id: z.number(),
     exam_paper_id: z.number(),
@@ -106,3 +105,38 @@ const _attemptExamResponseSchema = z.object({
     data: attemptExamSchema,
 });
 export type AttemptExamResponse = z.infer<typeof _attemptExamResponseSchema>;
+
+const detailAnswerSchema = z.object({
+    start: z.number(),
+    answers: z.record(
+        z.string(),
+        z.object({
+            value: z.string(),
+            is_correct: z.boolean(),
+        }),
+    ),
+});
+const resultExamSchema = z.object({
+    id: z.number(),
+    exam_paper_id: z.number(),
+    user_id: z.number(),
+    score: z.number(),
+    violation_count: z.number(),
+    time_spent: z.number(),
+    details: detailAnswerSchema,
+    started_at: z.string(),
+    submitted_at: z.string().nullable(),
+    note: z.string().nullable(),
+    status: z.enum(["in_progress", "submitted", "detected", "canceled"]),
+    created_at: z.string(),
+    updated_at: z.string(),
+});
+export type ResultExam = z.infer<typeof resultExamSchema>;
+const _resultExamResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: examSchema.extend({
+        results: resultExamSchema,
+    }),
+});
+export type ResultExamResponse = z.infer<typeof _resultExamResponseSchema>;

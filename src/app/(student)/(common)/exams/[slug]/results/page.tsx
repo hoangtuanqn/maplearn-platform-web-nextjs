@@ -1,4 +1,4 @@
-import React from "react";
+import React, { cache } from "react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import {
@@ -14,19 +14,45 @@ import {
     XCircle,
 } from "lucide-react";
 import { Progress } from "~/components/ui/progress";
+import { Metadata } from "next";
+import examApiServer from "~/apiRequest/server/exam";
+import { redirect } from "next/navigation";
+import { formatter } from "~/libs/format";
 
-const ResultExamPage = () => {
+export const metadata: Metadata = {
+    title: "Kết quả bài thi",
+};
+const getResults = cache(async (slug: string) => {
+    const {
+        data: { data: result },
+    } = await examApiServer.getExamResults(slug);
+    return result;
+});
+
+const ResultExamPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params;
+    let result;
+    try {
+        result = await getResults(slug); // Dùng lại, không gọi API thêm
+    } catch (error) {
+        console.error("Error fetching exam details:", error);
+        redirect(`/exams/${slug}`);
+    }
     // UI-only demo data; wire real data later
-    const examTitle = "TH-7091-Sem 2 - Java Programming II";
-    const totalQuestions = 40;
-    const durationMinutes = 60;
-    const spentMinutes = 29;
-    const score10 = 2; // thang điểm 10
-    const correct = 36;
-    const wrong = 3;
-    const skipped = 1;
-    const accuracy = Math.round((correct / totalQuestions) * 100);
-    const passed = score10 >= 5; // demo logic
+    const examTitle = result.title;
+    const totalQuestions = result.question_count;
+    const durationMinutes = result.duration_minutes;
+    const spentMinutes = result.results.time_spent; // Giả sử time_spent là tính bằng giây
+    // số câu đã làm
+    const answered = Object.entries(result.results.details.answers);
+    const score10 = result.results.score; // điểm số
+    const correct = answered.filter(([_, v]) => v.is_correct).length; // giả sử kết quả trả về có trường is_correct
+    const wrong = answered.length - correct;
+    const skipped = totalQuestions - answered.length;
+    const accuracy = Math.ceil((correct / totalQuestions) * 100);
+    const passed = score10 >= result.pass_score; // demo logic
+    const passScore = result.pass_score;
+    const maxScore = result.max_score;
 
     return (
         <section className="mt-10 min-h-screen px-4 pb-10">
@@ -50,12 +76,14 @@ const ResultExamPage = () => {
                                 <div className="flex items-center gap-2 text-gray-700">
                                     <CalendarDays className="text-primary size-4" />
                                     <span>Nộp bài: </span>
-                                    <span className="font-medium">19/08/2025 11:10</span>
+                                    <span className="font-medium">
+                                        {formatter.date(result.results.submitted_at ?? "", true)}
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-gray-700">
                                     <Timer className="text-primary size-4" />
                                     <span>Thời gian làm: </span>
-                                    <span className="font-medium">{spentMinutes} phút</span>
+                                    <span className="font-medium">{formatter.duration(spentMinutes)}</span>
                                 </div>
                             </div>
                         </div>
@@ -80,8 +108,13 @@ const ResultExamPage = () => {
                                 <span className="text-sm text-gray-500">Điểm số</span>
                                 <Trophy className="size-4 text-yellow-500" />
                             </div>
-                            <div className="mt-3 text-3xl font-bold">{score10.toFixed(1)}</div>
-                            <div className="mt-1 text-xs text-gray-500">Điểm tối đa: 10</div>
+                            <div
+                                className={`mt-3 text-3xl font-bold ${score10 < passScore ? "text-red-500" : "text-green-400"}`}
+                            >
+                                {score10}
+                            </div>
+
+                            <div className="mt-1 text-xs text-gray-500">Điểm tối đa: {result.max_score}</div>
                         </div>
                         <div className="rounded-lg border bg-white p-4">
                             <div className="flex items-center justify-between">
@@ -89,7 +122,7 @@ const ResultExamPage = () => {
                                 <Award className="text-primary size-4" />
                             </div>
                             <div className="mt-3">
-                                <Progress className="h-2" value={accuracy} />
+                                <Progress value={accuracy} />
                                 <div className="mt-2 text-3xl font-bold">{accuracy}%</div>
                                 <div className="mt-1 text-xs text-gray-500">
                                     Đúng {correct}/{totalQuestions}
@@ -113,7 +146,7 @@ const ResultExamPage = () => {
                             <div className="mt-1 text-xs text-gray-500">Chưa trả lời</div>
                         </div>
                     </div>
-                    {!passed && (
+                    {result.results.status == "detected" && (
                         <div className="mt-6 rounded-lg bg-red-100 p-4 text-center font-semibold text-red-700">
                             Bài thi không được tính điểm do phát hiện gian lận.
                         </div>
@@ -148,7 +181,9 @@ const ResultExamPage = () => {
                                     <Timer className="size-5 shrink-0 text-amber-600" />
                                     <div>
                                         <div className="text-sm text-gray-600">Thời gian làm bài</div>
-                                        <div className="text-lg font-semibold text-gray-900">{spentMinutes} phút</div>
+                                        <div className="text-lg font-semibold text-gray-900">
+                                            {formatter.duration(spentMinutes)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +191,7 @@ const ResultExamPage = () => {
                         <div className="rounded-lg border bg-white p-4">
                             <h3 className="mb-4 text-base font-semibold text-gray-900">Hành động</h3>
                             <div className="flex flex-col gap-3">
-                                <Link href=".." className="w-full">
+                                <Link href={`/exams/${slug}`} className="w-full">
                                     <Button variant="outline" className="w-full justify-start gap-2">
                                         <CalendarDays className="size-4" />
                                         Về trang đề thi
@@ -197,7 +232,12 @@ const ResultExamPage = () => {
                     <div className="mt-6 rounded-lg border p-4">
                         <div className="flex items-center justify-between text-sm text-gray-600">
                             <span>Điểm</span>
-                            <span className="font-semibold text-gray-900">{score10.toFixed(1)} / 10</span>
+                            <span className="font-semibold text-gray-900">
+                                <span className={`${score10 < passScore ? "text-red-500" : "text-green-500"}`}>
+                                    {score10}{" "}
+                                </span>
+                                / {maxScore}
+                            </span>
                         </div>
                         <div className="mt-3 text-sm text-gray-600">Độ chính xác</div>
                         <Progress className="mt-2 h-2" value={accuracy} />

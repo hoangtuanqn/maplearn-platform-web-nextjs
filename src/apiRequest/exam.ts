@@ -53,5 +53,9 @@ const examApi = {
 
     // Deteced Cheat
     detectCheating: (slug: string) => publicApi.post<AttemptExamResponse>(`/exams/${slug}/detect-cheat`),
+
+    // Lấy kết quả thi
+    getExamResults: (slug: string, headers?: { [key: string]: string }) =>
+        publicApi.get(`/exams/${slug}/results`, headers ? { headers } : undefined),
 };
 export default examApi;

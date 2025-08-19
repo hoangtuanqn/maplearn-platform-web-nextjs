@@ -20,6 +20,7 @@ const Sidebar = ({
         answers: Record<number, string[]>;
     };
 }) => {
+    countdownSubmit = 0;
     const { user } = useAuth();
     const progress = (Object.keys(answers).length / questions.length) * 100;
     // Số câu còn lại
