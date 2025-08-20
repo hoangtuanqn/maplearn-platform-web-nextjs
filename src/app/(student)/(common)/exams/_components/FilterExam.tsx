@@ -12,6 +12,7 @@ import subjectApi from "~/apiRequest/subject";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
 import FilterSkeleton from "./FilterSkeleton";
+import Link from "next/link";
 const FilterExam = () => {
     const [provinces, setProvinces] = useState<ProvinceType>([]);
     const handleOnChangeTeacher = () => {};
@@ -172,12 +173,14 @@ const FilterExam = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-5 flex gap-4 border-t border-gray-200 pt-4">
-                <Button className="flex-1 py-5" variant={"outline"}>
-                    Đặt lại
-                </Button>
+            <div className="mt-5 flex gap-2 border-t border-gray-200 pt-4">
+                <Link href="/exams">
+                    <Button className="flex-1 py-4" variant={"outline"}>
+                        Đặt lại
+                    </Button>
+                </Link>
 
-                <Button className="bg-primary flex-1 py-5 text-white">Xác nhận lọc</Button>
+                <Button className="bg-primary flex-1 py-4 text-white">Xác nhận lọc</Button>
             </div>
         </div>
     );

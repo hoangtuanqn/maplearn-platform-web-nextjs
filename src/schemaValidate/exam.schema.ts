@@ -31,6 +31,7 @@ const examSchema = z.object({
     max_violation_attempts: z.number(),
     max_attempts: z.number().nullable(),
     pass_score: z.number(),
+    attempt_count: z.number(), // số lượt thi của người dùng đang gửi request
     question_count: z.number(),
     is_in_progress: z.boolean(),
     status: z.boolean(),
@@ -92,6 +93,7 @@ const attemptExamSchema = z.object({
     details: z.string(),
     started_at: z.string(),
     submitted_at: z.string().nullable(),
+
     note: z.string().nullable(),
     status: z.enum(["in_progress", "submitted", "detected", "canceled"]),
     created_at: z.string(),

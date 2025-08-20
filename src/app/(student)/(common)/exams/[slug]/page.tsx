@@ -1,4 +1,4 @@
-import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play, Video } from "lucide-react";
+import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play, User } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 
 import React, { cache } from "react";
 import examApiServer from "~/apiRequest/server/exam";
-import { Button } from "~/components/ui/button";
 import { formatter } from "~/libs/format";
 import HistoryAttempts from "./_components/HistoryAttempts";
 const getExam = cache(async (slug: string) => {
@@ -35,7 +34,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
         console.error("Error fetching exam details:", error);
         redirect(`/exams`);
     }
-
+    const isMaxAttempt: boolean = exam.max_attempts ? exam.attempt_count >= exam.max_attempts : false;
     return (
         <>
             {/* {isLoading && <Loading />} */}
@@ -43,24 +42,34 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                 <section className="flex-1">
                     <section className="space-y-4 rounded-lg bg-white px-6 py-4 shadow-sm">
                         <h1 className="text-primary text-xl font-bold">{exam.title}</h1>
-                        <div className="space-y-3 text-[13.125px]">
-                            <div className="flex items-center gap-1">
-                                <PenTool className="text-primary" />
-                                <span>Tổng số câu: {exam.question_count}</span>
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-[13px] sm:grid-cols-2 md:text-[14px] lg:grid-cols-2">
+                            <div className="flex items-center gap-2">
+                                <PenTool className="text-primary size-4" />
+                                <span className="font-medium text-[#333]">Tổng số câu:</span>
+                                <span className="ml-1 text-[#555]">{exam.question_count}</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <Clock className="text-primary" />
-                                <span>Thời gian làm bài: {exam.duration_minutes} phút</span>
+                            <div className="flex items-center gap-2">
+                                <Clock className="text-primary size-4" />
+                                <span className="font-medium text-[#333]">Thời gian làm bài:</span>
+                                <span className="ml-1 text-[#555]">{exam.duration_minutes} phút</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <Play className="text-primary" />
-                                <span>Thời gian bắt đầu: {formatter.date(exam.start_time, true)}</span>
+                            <div className="flex items-center gap-2">
+                                <Play className="text-primary size-4" />
+                                <span className="font-medium text-[#333]">Thời gian mở đề:</span>
+                                <span className="ml-1 text-[#555]">{formatter.date(exam.start_time, true)}</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <OctagonMinus className="text-primary" />
-                                <span>
-                                    Thời gian kết thúc:{" "}
+                            <div className="flex items-center gap-2">
+                                <OctagonMinus className="text-primary size-4" />
+                                <span className="font-medium text-[#333]">Thời gian kết thúc:</span>
+                                <span className="ml-1 text-[#555]">
                                     {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
+                                </span>
+                            </div>
+                            <div className="col-span-1 flex items-center gap-2 sm:col-span-2">
+                                <User className="text-primary size-4" />
+                                <span className="font-medium text-[#333]">Lượt làm tối đa:</span>
+                                <span className="ml-1 text-[#555]">
+                                    {exam.max_attempts ? exam.max_attempts : "Không giới hạn"}
                                 </span>
                             </div>
                         </div>
@@ -76,16 +85,20 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                             )}
                             {!exam.is_in_progress && (
                                 <Link
-                                    className="t1-flex-center col-start-3 h-[3.25rem] cursor-pointer gap-2 rounded-full bg-[#12AD50] px-10"
-                                    href={`/exams/${slug}/start`}
+                                    className={`t1-flex-center col-start-3 h-[3.25rem] gap-2 rounded-full bg-[#12AD50] px-10 ${isMaxAttempt ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                                    href={`${isMaxAttempt ? "#" : `/exams/${slug}/start`}`}
+                                    aria-disabled={isMaxAttempt ? "true" : "false"}
                                 >
                                     <CirclePlay className="size-5 text-white" />
                                     <span className="font-medium text-white">Vào phòng thi</span>
                                 </Link>
                             )}
                         </div>
+                        {isMaxAttempt && (
+                            <p className="text-right font-bold text-red-500">Bạn đã đạt giới hạn số lần thi</p>
+                        )}
                     </section>
-                    <section className="mt-5 rounded-xl bg-white p-6 shadow-sm">
+                    {/* <section className="mt-5 rounded-xl bg-white p-6 shadow-sm">
                         <h2 className="text-primary mb-4 text-base font-bold">Video giải đề thi chi tiết</h2>
                         <ul className="mt-2 divide-y divide-gray-100">
                             <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
@@ -139,7 +152,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                                 </Button>
                             </li>
                         </ul>
-                    </section>
+                    </section> */}
                     <HistoryAttempts slug={slug} pass_score={exam.pass_score} />
                 </section>
                 <div className="sticky top-[70px] h-fit shrink-0 rounded-xl bg-white py-4 shadow-sm lg:w-96">

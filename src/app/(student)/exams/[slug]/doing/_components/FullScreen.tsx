@@ -127,25 +127,16 @@ const FullScreen = ({ violationCount, onDetected }: { violationCount: number; on
                     </>
                 ) : (
                     <>
-                        <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-2 bg-yellow-400/95 text-center text-base font-bold text-white">
-                            <Image
-                                src="/assets/icons/warning.webp"
-                                alt="Warning"
-                                width={200}
-                                height={200}
-                                className="mb-5"
-                            />
-                            <div className="text-xl text-red-500">
-                                Bạn vừa di chuyển sang tab khác! Hành vi này được cho là gian lận trong kỳ thi! (Tổng vi
-                                phạm: {violationCount})
-                            </div>
-                            <button
-                                onClick={() => setTabWarning(false)}
-                                className="mt-7 cursor-pointer rounded-md bg-white px-6 py-2 text-black hover:bg-slate-200"
-                            >
-                                ĐÓNG CẢNH BÁO
-                            </button>
+                        <div className="text-xl text-red-500">
+                            Bạn vừa di chuyển sang tab khác! Hành vi này được cho là gian lận trong kỳ thi! (Tổng vi
+                            phạm: {violationCount})
                         </div>
+                        <button
+                            onClick={() => setTabWarning(false)}
+                            className="mt-7 cursor-pointer rounded-md bg-white px-6 py-2 text-black hover:bg-slate-200"
+                        >
+                            ĐÓNG CẢNH BÁO
+                        </button>
                     </>
                 )}
             </div>

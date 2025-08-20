@@ -45,7 +45,8 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
         redirect("/exams");
     }
 
-    if (exam.is_in_progress) {
+    const isMaxAttempt: boolean = exam.max_attempts ? exam.attempt_count >= exam.max_attempts : false;
+    if (exam.is_in_progress || isMaxAttempt) {
         return redirect(`/exams/${slug}`);
     }
 

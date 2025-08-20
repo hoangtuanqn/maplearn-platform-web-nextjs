@@ -18,7 +18,7 @@ const HistoryAttempts = ({ slug, pass_score }: { slug: string; pass_score: numbe
     });
     return (
         <section className="mt-5 min-h-40 rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="text-primary mb-4 text-base font-bold">Lịch sử làm bài</h2>
+            <h2 className="text-primary mb-4 text-base font-bold">Lịch sử làm bài ({histories?.length || 0})</h2>
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 overflow-hidden rounded-lg border">
                     <thead className="bg-gray-50">
