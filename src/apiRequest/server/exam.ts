@@ -24,10 +24,14 @@ const examApiServer = {
         });
     },
 
-    getExamResults: async (slug: string) => {
+    getExamResults: async (id: string | null, slug: string) => {
         const cookie = await cookies();
+        let query = `/api/exam/${slug}/results`;
+        if (id) {
+            query += `/${id}`;
+        }
 
-        return serverApi.get<ResultExamResponse>(`/api/exam/${slug}/results`, {
+        return serverApi.get<ResultExamResponse>(query, {
             headers: {
                 cookie: cookie.toString(), // 👈 gắn thủ công cookie
             },

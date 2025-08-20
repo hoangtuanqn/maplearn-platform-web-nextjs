@@ -1,5 +1,6 @@
 import publicApi from "~/libs/apis/publicApi";
 import {
+    AttemptExamHistoryResponse,
     AttemptExamResponse,
     ExamCategoriesResponse,
     ExamDetailResponse,
@@ -55,7 +56,18 @@ const examApi = {
     detectCheating: (slug: string) => publicApi.post<AttemptExamResponse>(`/exams/${slug}/detect-cheat`),
 
     // Lấy kết quả thi
-    getExamResults: (slug: string, headers?: { [key: string]: string }) =>
-        publicApi.get(`/exams/${slug}/results`, headers ? { headers } : undefined),
+    getExamResults: (id: string | null, slug: string, headers?: { [key: string]: string }) => {
+        let query;
+        if (id) {
+            query = `/exams/${slug}/${id}/results`;
+        } else {
+            query = `/exams/${slug}/results`;
+        }
+
+        return publicApi.get(query, headers ? { headers } : undefined);
+    },
+
+    // Lịch sử làm bài
+    getAttempts: (slug: string) => publicApi.get<AttemptExamHistoryResponse>(`/exams/${slug}/attempts`),
 };
 export default examApi;

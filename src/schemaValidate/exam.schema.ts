@@ -106,6 +106,14 @@ const _attemptExamResponseSchema = z.object({
 });
 export type AttemptExamResponse = z.infer<typeof _attemptExamResponseSchema>;
 
+// Lịch sử làm bài thi
+const _attemptExamHistoryResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(attemptExamSchema),
+});
+export type AttemptExamHistoryResponse = z.infer<typeof _attemptExamHistoryResponseSchema>;
+
 const detailAnswerSchema = z.object({
     start: z.number(),
     answers: z.record(

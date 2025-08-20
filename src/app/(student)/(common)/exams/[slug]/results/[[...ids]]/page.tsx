@@ -22,18 +22,21 @@ import { formatter } from "~/libs/format";
 export const metadata: Metadata = {
     title: "Kết quả bài thi",
 };
-const getResults = cache(async (slug: string) => {
+const getResults = cache(async (id: string | null, slug: string) => {
     const {
         data: { data: result },
-    } = await examApiServer.getExamResults(slug);
+    } = await examApiServer.getExamResults(id, slug);
     return result;
 });
 
-const ResultExamPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
-    const { slug } = await params;
+const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; ids: string[] }> }) => {
+    const { ids, slug } = await params;
+    const id = ids?.[0] ?? null; // Chỉ lấy cái đầu tiên
+    console.log("id >>", id);
+
     let result;
     try {
-        result = await getResults(slug); // Dùng lại, không gọi API thêm
+        result = await getResults(id, slug); // Dùng lại, không gọi API thêm
     } catch (error) {
         console.error("Error fetching exam details:", error);
         redirect(`/exams/${slug}`);

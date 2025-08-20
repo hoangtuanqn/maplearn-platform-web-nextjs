@@ -89,3 +89,19 @@ export const getFullName = (gender: string, fullName: string) => {
         return `Cô ${fullName}`;
     }
 };
+export const exitFullscreen = () => {
+    if (typeof document === "undefined") {
+        return;
+    }
+    if (document.fullscreenElement) {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+            (document as any).webkitExitFullscreen(); // Safari
+        } else if ((document as any).mozCancelFullScreen) {
+            (document as any).mozCancelFullScreen(); // Firefox cũ
+        } else if ((document as any).msExitFullscreen) {
+            (document as any).msExitFullscreen(); // IE/Edge cũ
+        }
+    }
+};

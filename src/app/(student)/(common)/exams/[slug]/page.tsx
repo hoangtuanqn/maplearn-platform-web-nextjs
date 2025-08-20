@@ -8,6 +8,7 @@ import React, { cache } from "react";
 import examApiServer from "~/apiRequest/server/exam";
 import { Button } from "~/components/ui/button";
 import { formatter } from "~/libs/format";
+import HistoryAttempts from "./_components/HistoryAttempts";
 const getExam = cache(async (slug: string) => {
     const {
         data: { data: post },
@@ -34,12 +35,11 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
         console.error("Error fetching exam details:", error);
         redirect(`/exams`);
     }
- 
 
     return (
         <>
             {/* {isLoading && <Loading />} */}
-            <section className="mt-10 flex min-h-screen gap-4 px-4 pb-10">
+            <section className="mt-10 flex min-h-screen flex-col gap-4 px-4 pb-10 lg:flex-row">
                 <section className="flex-1">
                     <section className="space-y-4 rounded-lg bg-white px-6 py-4 shadow-sm">
                         <h1 className="text-primary text-xl font-bold">{exam.title}</h1>
@@ -54,12 +54,12 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                             </div>
                             <div className="flex items-center gap-1">
                                 <Play className="text-primary" />
-                                <span>Đề thi bắt đầu vào thúc: {formatter.date(exam.start_time)}</span>
+                                <span>Thời gian bắt đầu: {formatter.date(exam.start_time, true)}</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 <OctagonMinus className="text-primary" />
                                 <span>
-                                    Đề thi kết thúc vào thúc:{" "}
+                                    Thời gian kết thúc:{" "}
                                     {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
                                 </span>
                             </div>
@@ -140,61 +140,9 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                             </li>
                         </ul>
                     </section>
-                    <section className="mt-5 min-h-40 rounded-xl bg-white p-6 shadow-sm">
-                        <h2 className="text-primary mb-4 text-base font-bold">Lịch sử làm bài</h2>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200 overflow-hidden rounded-lg border">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase"
-                                        >
-                                            Ngày làm bài
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="hidden px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase sm:table-cell"
-                                        >
-                                            Thời gian làm bài
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="hidden px-4 py-3 text-start text-xs font-semibold text-gray-600 uppercase md:table-cell"
-                                        >
-                                            Kết quả
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-3 text-end text-xs font-semibold text-gray-600 uppercase"
-                                        >
-                                            Chi tiết
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 bg-white">
-                                    <tr className="transition hover:bg-gray-50">
-                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
-                                            19/8/2025
-                                        </td>
-                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
-                                            20 phút
-                                        </td>
-                                        <td className="hidden px-4 py-4 text-sm whitespace-nowrap text-gray-800 md:table-cell">
-                                            10 điểm
-                                        </td>
-                                        <td className="px-4 py-4 text-end whitespace-nowrap">
-                                            <Button className="" variant={"outline"}>
-                                                Xem chi tiết
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
+                    <HistoryAttempts slug={slug} pass_score={exam.pass_score} />
                 </section>
-                <div className="sticky top-[70px] h-fit w-96 rounded-xl bg-white py-4 shadow-sm">
+                <div className="sticky top-[70px] h-fit shrink-0 rounded-xl bg-white py-4 shadow-sm lg:w-96">
                     <h2 className="text-primary mb-2 px-4 text-base font-bold">Bảng xếp hạng</h2>
                     <div className="mt-2">
                         <div className="flex items-center gap-3.5 py-3 pr-6 pl-5 even:bg-[#F3F7FA]">

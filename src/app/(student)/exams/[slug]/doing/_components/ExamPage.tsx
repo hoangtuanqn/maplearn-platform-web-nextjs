@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
+import { exitFullscreen } from "~/libs/hepler";
 
 const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: QuestionsExamResponse["data"] }) => {
     const [mounted, setMounted] = useState(false);
@@ -72,10 +73,13 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                 toast.error("Loại câu hỏi không hợp lệ!");
         }
     };
+
+    // Submit bài thi
     const submitAnswerMutation = useMutation({
         mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
         onSuccess: () => {
             toast.success("Đã nộp bài làm thành công");
+            exitFullscreen();
             removeLocalStorage(slug); // Xóa dữ liệu localStorage sau khi nộp bài
             router.push(`/exams/${slug}/results`);
         },
@@ -90,6 +94,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         submitAnswerMutation.mutate(answers);
     };
 
+    // Detected Cheat Exam
     const detectCheatingMutation = useMutation({
         mutationFn: async () => {
             const res = await examApi.detectCheating(slug);
@@ -98,6 +103,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         onSuccess: (data) => {
             if (data.status !== "in_progress") {
                 alert(data.note || "Bài thi đã bị hủy do vi phạm quy chế thi.");
+                exitFullscreen();
                 router.push(`/exams/${slug}/results`);
             }
             setViolationCount(data.violation_count ?? 0);
@@ -163,7 +169,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     return (
         <>
             {submitAnswerMutation.isPending && <Loading />}
-            {questionsRes.anti_cheat_enabled && (
+            {questionsRes.anti_cheat_enabled && !submitAnswerMutation.isPending && (
                 <FullScreen violationCount={violationCount} onDetected={handleCheatingDetected} />
             )}
 
