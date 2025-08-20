@@ -37,6 +37,8 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     // idx: chỉ dành cho cái drag_drop thôi nhé
     const handleChoiceAnswer = (questionId: number, answer: string, idx?: number) => {
         const question = questions.find((ques) => ques.id === questionId);
+        console.log("question", question);
+
         switch (question?.type) {
             case "single_choice":
             case "numeric_input":
@@ -69,6 +71,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                         return { ...prev, [questionId]: newAnswers };
                     });
                 }
+                break;
             default:
                 toast.error("Loại câu hỏi không hợp lệ!");
         }
@@ -103,6 +106,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         },
         onSuccess: (data) => {
             if (data.status !== "in_progress") {
+                removeLocalStorage(slug);
                 alert(data.note || "Bài thi đã bị hủy do vi phạm quy chế thi.");
                 exitFullscreen();
                 router.push(`/exams/${slug}/results`);
@@ -138,7 +142,8 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };
             setInfoExam(newData);
             setLocalStorage(slug, JSON.stringify(newData));
-            setCountdownSubmit(5 * 60);
+            // setCountdownSubmit(5 * 60);
+            setCountdownSubmit(1 * 60); // test thì 1p thôi
         }
     }, [setCountdownSubmit, slug]);
 
@@ -196,7 +201,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                     </div>
                 )}
                 {/* Hiển thị cảnh báo khi còn 3p là hết giờ làm bài */}
-                {timeLeft <= 180 && (
+                {timeLeft > 1 && timeLeft <= 180 && (
                     <div className="mb-4 flex items-center gap-3 rounded-lg bg-red-100 px-4 py-2">
                         <span className="font-semibold text-red-700">Cảnh báo:</span>
                         <span className="font-bold text-red-600">
