@@ -7,11 +7,13 @@ export const metadata: Metadata = {
 };
 const ExamPage = () => {
     return (
-        <section className="mt-10 flex min-h-screen gap-4 px-4 pb-10">
-            <Suspense>
-                <FilterExam />
-                <ExamList />
-            </Suspense>
+        <section className="mt-10 min-h-screen">
+            <div className="flex flex-col gap-4 px-4 pb-10 lg:flex-row">
+                <Suspense>
+                    <FilterExam />
+                    <ExamList />
+                </Suspense>
+            </div>
         </section>
     );
 };

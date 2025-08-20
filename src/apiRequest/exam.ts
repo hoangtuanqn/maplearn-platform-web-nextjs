@@ -34,8 +34,24 @@ export const EXAM_PER_PAGE = 20;
 
 const examApi = {
     getExamCategories: () => publicApi.get<ExamCategoriesResponse>("/exam-categories"),
-    getExams: () => {
-        return publicApi.get<ExamListResponse>("/exams");
+    getExams: (
+        page: number = 1,
+        limit: number = EXAM_PER_PAGE,
+        search: string = "",
+        querySortOther: string = "",
+        queryOther: string = "",
+    ) => {
+        let query = `/exams?page=${page}&limit=${limit}`;
+        if (search) {
+            query += `&filter[title]=${search}`;
+        }
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
+        }
+        if (queryOther) {
+            query += `&${queryOther}`; // Các value khác nếu cần
+        }
+        return publicApi.get<ExamListResponse>(query);
     },
     getDetailExam: (slug: string, headers?: { [key: string]: string }) => {
         return publicApi.get<ExamDetailResponse>(`exams/${slug}`, headers ? { headers } : undefined);

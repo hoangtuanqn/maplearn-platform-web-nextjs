@@ -15,7 +15,7 @@ import FilterSkeleton from "./FilterSkeleton";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { useRouter } from "next/navigation";
 
-const fields = ["province", "search", "subject", "category", "difficulty"] as const;
+const fields = ["provinces", "search", "subject", "categories", "difficulties"] as const;
 const FilterExam = () => {
     const router = useRouter();
     const [provinces, setProvinces] = useState<ProvinceType>([]);
@@ -53,7 +53,7 @@ const FilterExam = () => {
     const [resetKey, setResetKey] = useState(0);
 
     return (
-        <div className="sticky top-[70px] h-fit w-96 rounded-xl bg-white px-6 py-4 shadow-sm">
+        <div className="top-[70px] h-fit rounded-xl bg-white px-6 py-4 shadow-sm lg:sticky lg:w-96">
             <div className="mb-6">
                 <h2 className="text-primary mb-2 text-base font-bold">Tìm kiếm</h2>
                 <Input
@@ -149,13 +149,13 @@ const FilterExam = () => {
                                                 const current = formValues.filterMultiple.category || [];
                                                 if (checked) {
                                                     setFieldValue(
-                                                        "category",
+                                                        "categories",
                                                         [...current.filter((s) => s !== ""), category.name],
                                                         "filterMultiple",
                                                     );
                                                 } else {
                                                     setFieldValue(
-                                                        "category",
+                                                        "categories",
                                                         current.filter((s) => s !== category.name && s !== ""),
                                                         "filterMultiple",
                                                     );
@@ -190,17 +190,17 @@ const FilterExam = () => {
                                 <Checkbox
                                     id={difficulty.slug}
                                     onCheckedChange={(checked) => {
-                                        const current = formValues.filterMultiple.difficulty || [];
+                                        const current = formValues.filterMultiple.difficulties || [];
                                         if (checked) {
                                             setFieldValue(
-                                                "difficulty",
-                                                [...current.filter((s) => s !== ""), difficulty.name],
+                                                "difficulties",
+                                                [...current.filter((s) => s !== ""), difficulty.slug],
                                                 "filterMultiple",
                                             );
                                         } else {
                                             setFieldValue(
-                                                "difficulty",
-                                                current.filter((s) => s !== difficulty.name && s !== ""),
+                                                "difficulties",
+                                                current.filter((s) => s !== difficulty.slug && s !== ""),
                                                 "filterMultiple",
                                             );
                                         }
@@ -229,7 +229,7 @@ const FilterExam = () => {
                     </div>
                     <div className="mt-4 w-full space-y-3">
                         <MultiSelectDropdown
-                            onChange={(value) => setFieldValue("province", value, "filter")}
+                            onChange={(value) => setFieldValue("provinces", value, "filter")}
                             label="Tỉnh / Thành phố ra đề"
                             // Chuyển value từ dạng 1,2,3 sang mảng
                             values={formValues.filterMultiple.province || []}

@@ -136,7 +136,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setInfoExam(data);
             setAnswers(data.answers || {});
             setQuestionActive(data.questionActive || 0);
-            setCountdownSubmit(5 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
+            setCountdownSubmit(1 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
         } else {
             const startTime = Date.now();
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };

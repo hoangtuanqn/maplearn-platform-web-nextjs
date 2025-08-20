@@ -15,11 +15,11 @@ const Footer = ({
     const progress = (Object.keys(answers).length / countQuestion) * 100;
     return (
         <div className="fixed right-0 bottom-0 left-0 z-10 hidden h-20 items-center justify-between bg-white px-15 py-2 shadow-lg xl:flex">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
                 <Button
-                    className="bg-primary cursor-pointer rounded-lg px-3 py-6 text-white shadow-xs"
-                    onClick={() => setQuestionActive((prev) => Math.min(prev + 1, countQuestion - 1))}
+                    className="t1-flex-center bg-primary cursor-pointer gap-2 rounded-lg px-3 py-6 text-white shadow-xs"
                     disabled={questionActive === 0}
+                    onClick={() => setQuestionActive((prev) => Math.max(prev - 1, 0))}
                 >
                     <ChevronFirst className="size-6" />
                 </Button>
