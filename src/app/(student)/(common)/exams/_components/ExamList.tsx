@@ -66,7 +66,10 @@ const ExamList = () => {
                                 <BookMinus />
                                 <div className="flex-1 text-[13px]">Ghi nhận 60 lượt thi</div>
                                 <Calendar />
-                                <div>{formatter.date(exam.created_at)}</div>
+                                <div>
+                                    <span>Hạn cuối: </span>
+                                    {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
+                                </div>
                             </div>
                         </Link>
                     ))}

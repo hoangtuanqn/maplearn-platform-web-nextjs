@@ -5,10 +5,10 @@ import { useMutation } from "@tanstack/react-query";
 import examApi from "~/apiRequest/exam";
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from "~/libs/localStorage";
 import { Question, QuestionsExamResponse } from "~/schemaValidate/exam.schema";
-import FullScreen from "../_components/FullScreen";
-import { AnswerLocalStorage } from "../exam.type";
 import useCountDown from "~/hooks/useCountDown";
 import { formatter } from "~/libs/format";
+import FullScreen from "../_components/FullScreen";
+import { AnswerLocalStorage } from "../exam.type";
 
 import Sidebar from "../_components/Sidebar";
 import Footer from "../_components/Footer";
@@ -98,13 +98,12 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         onSuccess: (data) => {
             if (data.status !== "in_progress") {
                 alert(data.note || "Bài thi đã bị hủy do vi phạm quy chế thi.");
-                router.push(`/exams/${slug}`);
+                router.push(`/exams/${slug}/results`);
             }
             setViolationCount(data.violation_count ?? 0);
-            // console.log("data >>", data);
         },
         onError: () => {
-            router.push(`/exams/${slug}`);
+            // router.push(`/exams/${slug}`);
         },
     });
     // Function sẽ được gọi nếu phát hiện gian lận
