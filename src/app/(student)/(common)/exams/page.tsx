@@ -11,7 +11,9 @@ const ExamPage = () => {
             <div className="flex flex-col gap-4 px-4 pb-10 lg:flex-row">
                 <Suspense>
                     <FilterExam />
-                    <ExamList />
+                    <div className="flex-1">
+                        <ExamList />
+                    </div>
                 </Suspense>
             </div>
         </section>

@@ -43,69 +43,74 @@ const ExamList = () => {
                     <DisplayNoData title="Không có đề thi nào" />
                 </div>
             ) : (
-                <section className="grid h-fit flex-1 grid-cols-1 gap-4 rounded-xl lg:grid-cols-2">
-                    {isLoading ? (
-                        <>
-                            {[...Array(EXAM_PER_PAGE)].map((_, index) => (
-                                <ExamSkeleton key={index} />
-                            ))}
-                        </>
-                    ) : (
-                        <>
-                            {examList?.data.map((exam) => (
-                                <Link
-                                    key={exam.id}
-                                    href={`/exams/${exam.slug}`}
-                                    className="rounded-[8px] bg-white px-4.5 py-3.5"
-                                    style={{ boxShadow: "0px 1px 4px 0px #0000000D" }}
-                                >
-                                    <div className="flex gap-3.5">
-                                        <div
-                                            className={clsx(
-                                                "t1-flex-center h-[28px] rounded-[8px] px-3.5 font-medium text-white",
-                                                {
-                                                    "bg-[#128b3d]": exam.exam_type === "HSA",
-                                                    "bg-[#0F80CC]": exam.exam_type === "V-ACT",
-                                                    "bg-[#C41D17]": exam.exam_type === "TSA",
-                                                    "bg-[#FF8A00]": exam.exam_type === "THPT",
-                                                    "bg-[#515051]": exam.exam_type === "OTHER",
-                                                },
-                                            )}
-                                        >
-                                            {exam.exam_type != "OTHER" ? exam.exam_type : "Khác"}
+                <>
+                    <h3 className="text-primary mb-5 font-bold">Đã tìm thấy {examList?.total ?? 0} kết quả</h3>
+                    <section className="grid h-fit flex-1 grid-cols-1 gap-4 rounded-xl lg:grid-cols-2">
+                        {isLoading ? (
+                            <>
+                                {[...Array(EXAM_PER_PAGE)].map((_, index) => (
+                                    <ExamSkeleton key={index} />
+                                ))}
+                            </>
+                        ) : (
+                            <>
+                                {examList?.data.map((exam) => (
+                                    <Link
+                                        key={exam.id}
+                                        href={`/exams/${exam.slug}`}
+                                        className="rounded-[8px] bg-white px-4.5 py-3.5"
+                                        style={{ boxShadow: "0px 1px 4px 0px #0000000D" }}
+                                    >
+                                        <div className="flex gap-3.5">
+                                            <div
+                                                className={clsx(
+                                                    "t1-flex-center h-[28px] rounded-[8px] px-3.5 font-medium text-white",
+                                                    {
+                                                        "bg-[#128b3d]": exam.exam_type === "HSA",
+                                                        "bg-[#0F80CC]": exam.exam_type === "V-ACT",
+                                                        "bg-[#C41D17]": exam.exam_type === "TSA",
+                                                        "bg-[#FF8A00]": exam.exam_type === "THPT",
+                                                        "bg-[#515051]": exam.exam_type === "OTHER",
+                                                    },
+                                                )}
+                                            >
+                                                {exam.exam_type != "OTHER" ? exam.exam_type : "Khác"}
+                                            </div>
+                                            <div className="t1-flex-center text-primary h-[28px] rounded-[8px] bg-[#F0F3F7] px-3.5 font-medium">
+                                                {exam.duration_minutes} phút
+                                            </div>
                                         </div>
-                                        <div className="t1-flex-center text-primary h-[28px] rounded-[8px] bg-[#F0F3F7] px-3.5 font-medium">
-                                            {exam.duration_minutes} phút
+                                        <div className="mt-3.5 line-clamp-2 min-h-[48px] text-[16px] font-medium text-[#444444]">
+                                            {exam.title}
                                         </div>
-                                    </div>
-                                    <div className="mt-3.5 line-clamp-2 min-h-[48px] text-[16px] font-medium text-[#444444]">
-                                        {exam.title}
-                                    </div>
-                                    <div className="text-primary mt-3.5 flex items-center gap-[4px] text-[13px]">
-                                        <BookMinus />
-                                        <div className="flex-1 text-[13px]">
-                                            {exam.total_attempt_count > 0 ? (
-                                                <span>Đã có {formatter.number(exam.total_attempt_count)} lượt thi</span>
-                                            ) : (
-                                                <span>Chưa có lượt thi nào</span>
-                                            )}
+                                        <div className="text-primary mt-3.5 flex items-center gap-[4px] text-[13px]">
+                                            <BookMinus />
+                                            <div className="flex-1 text-[13px]">
+                                                {exam.total_attempt_count > 0 ? (
+                                                    <span>
+                                                        Đã có {formatter.number(exam.total_attempt_count)} lượt thi
+                                                    </span>
+                                                ) : (
+                                                    <span>Chưa có lượt thi nào</span>
+                                                )}
+                                            </div>
+                                            <Calendar />
+                                            <div>
+                                                <span>Đóng đề: </span>
+                                                {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
+                                            </div>
                                         </div>
-                                        <Calendar />
-                                        <div>
-                                            <span>Đóng đề: </span>
-                                            {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </>
-                    )}
-                    <div className="ml-auto">
-                        {!isLoading && totalPages > 1 && (examList?.data.length ?? 0) > 0 && (
-                            <PaginationNav totalPages={totalPages} basePath="/exams" />
+                                    </Link>
+                                ))}
+                            </>
                         )}
-                    </div>
-                </section>
+                        <div className="ml-auto">
+                            {!isLoading && totalPages > 1 && (examList?.data.length ?? 0) > 0 && (
+                                <PaginationNav totalPages={totalPages} basePath="/exams" />
+                            )}
+                        </div>
+                    </section>
+                </>
             )}
         </>
     );

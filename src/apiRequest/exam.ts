@@ -6,6 +6,7 @@ import {
     ExamDetailResponse,
     ExamListResponse,
     QuestionsExamResponse,
+    RankingPaper,
 } from "~/schemaValidate/exam.schema";
 // "easy", "normal", "hard", "very_hard"
 export const difficulties = [
@@ -85,5 +86,10 @@ const examApi = {
 
     // Lịch sử làm bài
     getAttempts: (slug: string) => publicApi.get<AttemptExamHistoryResponse>(`/exams/${slug}/attempts`),
+
+    // Get Ranking của bài thi
+    getRanking: (slug: string) => publicApi.get<RankingPaper>(`/exams/${slug}/ranking`),
+    // Get Ranking của tôi
+    getRankingMe: (slug: string) => publicApi.get<{ data: { rank: number } }>(`/exams/${slug}/check-ranking`),
 };
 export default examApi;
