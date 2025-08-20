@@ -32,6 +32,7 @@ const examSchema = z.object({
     max_attempts: z.number().nullable(),
     pass_score: z.number(),
     attempt_count: z.number(), // số lượt thi của người dùng đang gửi request
+    total_attempt_count: z.number(), // tổng số lượt thi của đề thi
     question_count: z.number(),
     is_in_progress: z.boolean(),
     status: z.boolean(),

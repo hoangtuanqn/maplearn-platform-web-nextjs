@@ -8,16 +8,34 @@ type FilterQueryType = {
     filterMultiple: Record<string, string[]>;
     filter: Record<string, string>;
 };
+const initialValue = {
+    sort: {},
+    filterMultiple: {},
+    filter: {},
+};
 export function useFilterQuery<const Fields extends readonly string[]>(allowedFields: Fields) {
     type FieldKey = Fields[number]; // lấy giá trị từ tuple
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
-    const [formValues, setFormValues] = useState<FilterQueryType>({
-        sort: {},
-        filterMultiple: {},
-        filter: {},
+    const [formValues, setFormValues] = useState<FilterQueryType>(initialValue);
+    const isFiltered = Object.values(formValues).some((value) => {
+        const check = Object.values(value).some((v) => {
+            switch (typeof v) {
+                case "object":
+                    return v.length > 0;
+                case "string":
+                    return v ? true : false;
+            }
+
+            return false;
+        });
+        return check;
     });
+
+    const resetFields = () => {
+        setFormValues(initialValue);
+    };
 
     // Loại bỏ những trường không hợp lệ từ allowedFields
     /**
@@ -76,7 +94,6 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
                 } else {
                     params.delete("sort");
                 }
-
             }
             if (key === "filterMultiple") {
                 for (const [key2, value2] of Object.entries(value)) {
@@ -114,6 +131,8 @@ export function useFilterQuery<const Fields extends readonly string[]>(allowedFi
         router.push(`${pathname}?${params.toString()}`);
     };
     return {
+        resetFields,
+        isFiltered,
         formValues,
         setFieldValue,
         handleSubmit,

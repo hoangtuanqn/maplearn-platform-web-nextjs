@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import ExamList from "./_components/ExamList";
 import FilterExam from "./_components/FilterExam";
 export const metadata: Metadata = {
-    title: "Thi online - Ngân hàng đề thi",
+    title: "Kho đề thi - Ngân hàng đề thi",
 };
 const ExamPage = () => {
     return (

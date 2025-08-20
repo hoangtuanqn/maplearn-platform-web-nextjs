@@ -64,10 +64,16 @@ const ExamList = () => {
                             </div>
                             <div className="text-primary mt-3.5 flex items-center gap-[4px] text-[13px]">
                                 <BookMinus />
-                                <div className="flex-1 text-[13px]">Ghi nhận 60 lượt thi</div>
+                                <div className="flex-1 text-[13px]">
+                                    {exam.total_attempt_count > 0 ? (
+                                        <span>Đã có {formatter.number(exam.total_attempt_count)} lượt thi</span>
+                                    ) : (
+                                        <span>Chưa có lượt thi nào</span>
+                                    )}
+                                </div>
                                 <Calendar />
                                 <div>
-                                    <span>Hạn cuối: </span>
+                                    <span>Đóng đề: </span>
                                     {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
                                 </div>
                             </div>
