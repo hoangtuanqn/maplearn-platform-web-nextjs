@@ -38,7 +38,6 @@ export function getStatusBadge(type: string, status: string) {
                     return <Badge variant="secondary">Không xác định</Badge>;
             }
         case "exam_result":
-            // 'in_progress', 'submitted', 'detected', 'canceled'
             switch (status) {
                 case "pass":
                     return <Badge variant="success">Đạt</Badge>;
