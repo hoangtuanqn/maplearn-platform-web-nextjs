@@ -10,13 +10,11 @@ import Image from "next/image";
 import NumericInput from "./NumericInput";
 import TrueFalseAnswer from "./TrueFalseAnswer";
 
-
 const Questions = ({
-    payload: { questions, isLoading, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
+    payload: { questions, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
 }: {
     payload: {
         questions: Question[];
-        isLoading: boolean;
         questionActive: number;
         answers: Record<number, string[]>;
         handleChoiceAnswer: (questionId: number, answer: string, idx?: number) => void;
@@ -53,7 +51,7 @@ const Questions = ({
                         {questionActive + 1}
                     </div>
                     <div className="flex w-full flex-col">
-                        {isLoading || !questions[questionActive] || !mounted ? (
+                        {!questions[questionActive] || !mounted ? (
                             <QuestionSkeleton />
                         ) : (
                             <>

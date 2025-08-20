@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
 import examApi from "~/apiRequest/exam";
@@ -26,7 +26,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     const [questions, setQuestions] = useState<Question[]>([]);
     const [answers, setAnswers] = useState<Record<number, string[]>>({});
     const [violationCount, setViolationCount] = useState(0); // tính số lần vi phạm
-    const { timeLeft, setTimeLeft } = useCountDown(0);
+    const { timeLeft, setTimeLeft } = useCountDown(1);
     const { timeLeft: countdownSubmit, setTimeLeft: setCountdownSubmit } = useCountDown(0);
     const router = useRouter();
 
@@ -89,10 +89,11 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         },
     });
 
-    const handleSubmitExam = () => {
-        const answers = JSON.parse(getLocalStorage(slug) ?? "") as AnswerLocalStorage;
+    const handleSubmitExam = useCallback(() => {
+        const dataExam = getLocalStorage(slug);
+        const answers = JSON.parse(dataExam ?? "{}") as AnswerLocalStorage;
         submitAnswerMutation.mutate(answers);
-    };
+    }, [slug, submitAnswerMutation]);
 
     // Detected Cheat Exam
     const detectCheatingMutation = useMutation({
@@ -149,6 +150,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             const durationSec = questionsRes.duration_minutes * 60;
             const passedSec = Math.floor((Date.now() - infoExam.start) / 1000);
             setTimeLeft(Math.max(durationSec - passedSec, 0));
+            // setTimeLeft(5);
         }
     }, [questionsRes, infoExam, setTimeLeft]);
 
@@ -165,7 +167,12 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             );
         }
     }, [answers, infoExam, questionActive, slug]);
-    const isLoading = false;
+
+    useEffect(() => {
+        if (timeLeft == 0 && !submitAnswerMutation.isPending && submitAnswerMutation.submittedAt === 0) {
+            handleSubmitExam();
+        }
+    }, [timeLeft, handleSubmitExam, submitAnswerMutation]);
     return (
         <>
             {submitAnswerMutation.isPending && <Loading />}
@@ -195,6 +202,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                         <span className="font-bold text-red-600">
                             Thời gian làm bài còn lại: {formatter.parseMinutesSeconds(timeLeft)}
                         </span>
+                        <span className="ml-4 text-xs text-yellow-600">Hệ thống sẽ tự động nộp bài khi hết giờ.</span>
                     </div>
                 )}
 
@@ -203,7 +211,6 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                     <Questions
                         payload={{
                             questions,
-                            isLoading,
                             questionActive,
                             answers,
                             handleChoiceAnswer,

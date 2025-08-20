@@ -32,7 +32,6 @@ const getResults = cache(async (id: string | null, slug: string) => {
 const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; ids: string[] }> }) => {
     const { ids, slug } = await params;
     const id = ids?.[0] ?? null; // Chỉ lấy cái đầu tiên
-    console.log("id >>", id);
 
     let result;
     try {
@@ -200,7 +199,7 @@ const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; ids:
                                         Về trang đề thi
                                     </Button>
                                 </Link>
-                                <Link href="../doing" className="w-full">
+                                <Link href={`/exams/${slug}/start`} className="w-full">
                                     <Button className="w-full justify-start gap-2 bg-[#12AD50] text-white hover:bg-[#0f9a47]">
                                         <RefreshCcw className="size-4" />
                                         Làm lại từ đầu
