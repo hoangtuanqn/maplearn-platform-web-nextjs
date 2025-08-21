@@ -158,7 +158,7 @@ const DragDrop = ({
                 ))}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 flex items-end">
                 {questionParts.map((part, index) =>
                     typeof part === "string" ? (
                         <RenderLatex key={`question-part-${index}`} content={part} />

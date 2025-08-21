@@ -1,27 +1,30 @@
 "use client";
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
+import remarkBreaks from "remark-breaks";
 
-import { InlineMath } from "react-katex";
-
-type Props = {
-    content: string;
-};
-
-const RenderLatex = ({ content }: Props) => {
-    // Hàm nhỏ để parse chuỗi: tách text thường và công thức
-    const renderContent = (text: string) => {
-        const regex = /(\\\(.*?\\\))/g; // bắt các đoạn \( ... \)
-        const parts = text.split(regex);
-
-        return parts.map((part, i) => {
-            if (part.startsWith("\\(") && part.endsWith("\\)")) {
-                const math = part.slice(2, -2); // bỏ \(...\)
-                return <InlineMath key={i}>{math}</InlineMath>;
-            }
-            return <span key={i}>{part}</span>;
+const RenderLatex = ({ content }: { content: string }) => {
+    const cleanedContent = content.replace(/\\\\/g, "\\");
+    const markdownContent = cleanedContent
+        .replace(/\\\((.*?)\\\)/gs, (_, math) => {
+            const fixedMath = math.replace(/\\\\/g, "\\");
+            return `$${fixedMath}$`;
+        })
+        .replace(/\\\[(.*?)\\\]/gs, (_, math) => {
+            const fixedMath = math.replace(/\\\\/g, "\\");
+            return `$$${fixedMath}$$`;
         });
-    };
 
-    return <span>{renderContent(content)}</span>;
+    // 3️⃣ Nếu muốn xuống dòng theo Markdown, thêm 2 space trước newline
+    const finalContent = markdownContent.replace(/\\n/g, "  \n").replaceAll("\\$\\$", "");
+
+    return (
+        <ReactMarkdown remarkPlugins={[remarkMath, remarkBreaks]} rehypePlugins={[rehypeKatex]}>
+            {finalContent}
+        </ReactMarkdown>
+    );
 };
-
 export default RenderLatex;

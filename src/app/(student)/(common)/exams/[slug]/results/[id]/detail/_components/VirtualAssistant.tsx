@@ -1,10 +1,11 @@
 "use client";
 import { Send } from "lucide-react";
-import React from "react";
+import React, { memo } from "react";
 import ChatBubble from "~/app/(student)/_components/ChatBotAI/components/ChatBubble";
 import { ChatHistoriesType } from "~/app/api/chat/ai/types/ChatBotType.type";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { Textarea } from "~/components/ui/textarea";
 import { useInput } from "~/hooks/useInput";
 type PayloadType = {
     payload: {
@@ -22,31 +23,33 @@ const VirtualAssistant = ({ payload: { handleSubmit, chatHistories, setChatHisto
                     // nếu ids.includes(index + 1) = true thì truyền dataParse?.course_id ngược thì lại truyền về []
                     return (
                         <ChatBubble
+                            version="v2"
                             key={index}
                             role={history.role}
                             text={history.parts[0].text}
-                            name={"Phạm Hoàng Tuấn"}
+                            name={"Bạn"}
                         />
                     );
                 })}
             </div>
-            <div className="mt-4 flex items-center justify-between gap-2">
+            <form
+                className="mt-4 flex items-center justify-between gap-2"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    reset();
+                    handleSubmit(value);
+                }}
+            >
                 <div className="w-full">
-                    <Input className="" value={value} onChange={onChange} />
+                    <Textarea className="" value={value} onChange={onChange} />
                 </div>
-                <Button
-                    className="text-white"
-                    onClick={() => {
-                        reset();
-                        handleSubmit(value);
-                    }}
-                >
+                <Button className="text-white" type="submit">
                     <Send />
                     Gửi
                 </Button>
-            </div>
+            </form>
         </div>
     );
 };
 
-export default VirtualAssistant;
+export default memo(VirtualAssistant);

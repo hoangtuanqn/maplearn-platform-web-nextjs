@@ -2,10 +2,7 @@
 import { Brain } from "lucide-react";
 import React, { memo } from "react";
 import DragDrop from "~/app/(student)/exams/[slug]/doing/_components/DragDrop";
-// import MultipleChoice from "~/app/(student)/exams/[slug]/doing/_components/MultipleChoice";
-// import NumericInput from "~/app/(student)/exams/[slug]/doing/_components/NumericInput";
-// import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleChoice";
-// import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/TrueFalseAnswer";
+
 import { Button } from "~/components/ui/button";
 import { QuestionsExamResponse, ResultDetailExamResponse } from "~/schemaValidate/exam.schema";
 
@@ -18,11 +15,14 @@ import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleC
 const DetailResult = ({
     exam,
     resultRes,
-    payload: { handleSubmit },
+    payload: { handleSubmit, setTab },
 }: {
     exam: QuestionsExamResponse["data"];
     resultRes: ResultDetailExamResponse["data"];
-    payload: { handleSubmit: (message: string) => void };
+    payload: {
+        handleSubmit: (message: string) => void;
+        setTab: React.Dispatch<React.SetStateAction<"detail" | "explain">>;
+    };
 }) => {
     return (
         <div className="rounded-xl bg-white p-6">
@@ -107,11 +107,12 @@ const DetailResult = ({
                                 className="border-primary text-primary hover:bg-primary flex items-center gap-2 rounded-lg border bg-white px-4 py-2 font-semibold shadow-sm transition-colors hover:text-white"
                                 onClick={() => {
                                     handleSubmit(
-                                        `Câu hỏi: ${result.content}\n` +
+                                        `Câu hỏi: ${result.content}` +
                                             `Đáp án chính xác: ${Array.isArray(result.correct_answer) ? result.correct_answer.join(", ") : result.correct_answer}\n` +
-                                            `Giải thích từ giáo viên: ${result.explanation}\n` +
+                                            `Giải thích từ giáo viên: ${result.explanation}` +
                                             `Tôi chưa hiểu lắm, bạn có thể giải thích thêm không?`,
                                     );
+                                    setTab("explain");
                                 }}
                             >
                                 <Brain />
