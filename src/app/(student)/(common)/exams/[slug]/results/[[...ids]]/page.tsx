@@ -205,7 +205,7 @@ const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; ids:
                                         Làm lại từ đầu
                                     </Button>
                                 </Link>
-                                <Link href="../review" className="w-full">
+                                <Link href={`/exams/${slug}/results/${result.results.id}/detail`} className="w-full">
                                     <Button variant="outline" className="w-full justify-start gap-2">
                                         <ListChecks className="size-4" />
                                         Xem đáp án chi tiết

@@ -154,53 +154,6 @@ const _resultExamResponseSchema = z.object({
 export type ResultExamResponse = z.infer<typeof _resultExamResponseSchema>;
 
 // Get ranking đề thi
-
-// {
-//     "success": true,
-//     "message": "Lấy bảng xếp hạng thành công!",
-//     "data": [
-//         {
-//             "id": 1,
-//             "exam_paper_id": 39,
-//             "user_id": 9,
-//             "score": 10,
-//             "violation_count": 0,
-//             "time_spent": 80,
-//             "started_at": "2025-08-20T23:10:04.000000Z",
-//             "submitted_at": "2025-08-20T23:11:24.000000Z",
-//             "note": null,
-//             "status": "submitted",
-//             "created_at": "2025-08-20T23:10:04.000000Z",
-//             "updated_at": "2025-08-20T23:11:24.000000Z",
-//             "user": {
-//                 "id": 9,
-//                 "avatar": "https://mapstudy.sgp1.digitaloceanspaces.com/teacher/64b22b96d0a652b97e5ab246/thay-nguyen-trong-dat-1719904677740.png",
-//                 "full_name": "Vũ Trọng Đạt",
-//                 "cart_item_count": 3
-//             }
-//         },
-//         {
-//             "id": 2,
-//             "exam_paper_id": 39,
-//             "user_id": 8,
-//             "score": 10,
-//             "violation_count": 0,
-//             "time_spent": 81,
-//             "started_at": "2025-08-20T23:12:24.000000Z",
-//             "submitted_at": null,
-//             "note": null,
-//             "status": "submitted",
-//             "created_at": "2025-08-20T23:12:24.000000Z",
-//             "updated_at": "2025-08-20T23:12:24.000000Z",
-//             "user": {
-//                 "id": 8,
-//                 "avatar": "https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755729796/avatars/ccrlg1hkjtc6dyeervsv.jpg",
-//                 "full_name": "Nguyễn Thị Thanh Thủy",
-//                 "cart_item_count": 3
-//             }
-//         }
-//     ]
-// }
 const _rankingPaperSchema = z.object({
     success: z.boolean(),
     message: z.string(),
@@ -211,3 +164,16 @@ const _rankingPaperSchema = z.object({
     ),
 });
 export type RankingPaper = z.infer<typeof _rankingPaperSchema>;
+
+// Get result detail paper exam
+const resultDetailSchema = questionSchema.extend({
+    is_correct: z.boolean(),
+    your_choice: z.array(z.string()),
+    correct_answer: z.array(z.string()),
+});
+const _resultDetailExamResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(resultDetailSchema),
+});
+export type ResultDetailExamResponse = z.infer<typeof _resultDetailExamResponseSchema>;

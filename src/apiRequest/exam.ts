@@ -91,5 +91,8 @@ const examApi = {
     getRanking: (slug: string) => publicApi.get<RankingPaper>(`/exams/${slug}/ranking`),
     // Get Ranking của tôi
     getRankingMe: (slug: string) => publicApi.get<{ data: { rank: number } }>(`/exams/${slug}/check-ranking`),
+
+    getResultDetail: (slug: string, idAttempt: string, headers?: { [key: string]: string }) =>
+        publicApi.get(`/exams/${slug}/${idAttempt}/my-attempts`, headers ? { headers } : undefined),
 };
 export default examApi;

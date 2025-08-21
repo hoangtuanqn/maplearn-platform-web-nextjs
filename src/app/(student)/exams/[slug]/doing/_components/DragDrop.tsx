@@ -17,18 +17,20 @@ interface ValueType {
 interface DraggableItemProps {
     id: string;
     children: React.ReactNode;
+
+    disabled: boolean;
 }
 
-const DraggableItem = ({ id, children }: DraggableItemProps) => {
+const DraggableItem = ({ id, children, disabled }: DraggableItemProps) => {
     const onDragStart = (e: React.DragEvent) => {
         e.dataTransfer.setData("text/plain", id);
     };
 
     return (
         <div
-            draggable
+            draggable={!disabled}
             onDragStart={onDragStart}
-            className="bg-primary flex cursor-grab items-center justify-center rounded px-4 py-1 text-white select-none"
+            className={`bg-primary flex ${disabled ? "cursor-not-allowed" : "cursor-grab"} items-center justify-center rounded px-4 py-1 text-white select-none`}
         >
             {children}
         </div>
@@ -40,9 +42,10 @@ interface DropZoneProps {
     onDropItem: (dropId: string, itemId: string) => void;
     onRemoveItem: (dropId: string, itemId: string) => void;
     droppedItem: ValueType | null;
+    disabled: boolean;
 }
 
-const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) => {
+const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem, disabled }: DropZoneProps) => {
     const onDragOver = (e: React.DragEvent) => e.preventDefault();
 
     const onDrop = (e: React.DragEvent) => {
@@ -52,6 +55,7 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) 
     };
 
     const onDragStart = (e: React.DragEvent) => {
+        if (disabled) return;
         if (droppedItem) {
             e.dataTransfer.setData("text/plain", `${droppedItem.id}`);
             onRemoveItem(id, `${droppedItem.id}`);
@@ -63,7 +67,7 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem }: DropZoneProps) 
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragStart={onDragStart}
-            draggable={!!droppedItem}
+            draggable={!disabled && !!droppedItem}
             className={`text-primary mx-2 line-clamp-1 inline-block min-h-8 w-fit min-w-[120px] rounded-lg border border-dashed border-gray-400 px-3 py-1 text-center align-middle ${
                 droppedItem ? "bg-primary cursor-grab text-white" : "bg-white"
             }`}
@@ -80,9 +84,17 @@ interface DragDropProps {
     idQuestion: number;
     activeAnswers: string[];
     handleChoiceAnswer: (questionId: number, answer: string, idx: number) => void;
+    disabled?: boolean;
 }
 
-const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, handleChoiceAnswer }: DragDropProps) => {
+const DragDrop = ({
+    idQuestion,
+    question,
+    items: initialItems,
+    activeAnswers,
+    handleChoiceAnswer,
+    disabled = false,
+}: DragDropProps) => {
     const [items, setItems] = useState<ValueType[]>(
         initialItems.filter((item) => !activeAnswers.includes(item.content)),
     );
@@ -168,7 +180,7 @@ const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, ha
             <div>
                 <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
                     {items.map((item) => (
-                        <DraggableItem key={item.id} id={`${item.id}`}>
+                        <DraggableItem key={item.id} id={`${item.id}`} disabled={disabled}>
                             {item.content}
                         </DraggableItem>
                     ))}
@@ -183,6 +195,7 @@ const DragDrop = ({ idQuestion, question, items: initialItems, activeAnswers, ha
                                 </span>
                             ) : (
                                 <DropZone
+                                    disabled={disabled}
                                     key={part.id}
                                     id={part.id}
                                     droppedItem={droppedItems[part.id] || null}

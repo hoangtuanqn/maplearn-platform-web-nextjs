@@ -5,7 +5,7 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
         <div
             className={`rounded-xl border border-[#90caf9] bg-gradient-to-br from-[#e3f0ff] via-[#f1f8ff] to-[#e0f7fa] pt-4 shadow-sm ${className}`}
         >
-            <h2 className="text-primary mb-2 px-4 text-base font-bold">Top 5 học sinh ưu tú</h2>
+            <h2 className="text-primary mb-2 px-4 text-base font-bold">Top 5 học sinh xuất sắc</h2>
             <div className="mt-2 [&>div]:py-2 [&>div]:pr-2 [&>div]:pl-5">
                 <div className="flex items-center gap-2.5 even:bg-[#f5faff]">
                     <div className="t1-flex-center w-7.5 shrink-0">
