@@ -1,11 +1,23 @@
+"use client";
 import { Brain } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-const HeaderTab = () => {
+const HeaderTab = ({
+    activeTab,
+    onChange,
+}: {
+    activeTab: "detail" | "explain";
+    onChange: (tab: "detail" | "explain") => void;
+}) => {
     return (
-        <div className="t1-flex-center mx-auto mb-5 h-12 w-xl cursor-pointer justify-between rounded-xl bg-white font-bold shadow-sm max-md:hidden">
-            <div className="t1-flex-center bg-primary h-full flex-1 gap-2 rounded-xl p-2 text-center text-white">
+        <div className="t1-flex-center mx-auto mb-5 h-12 cursor-pointer justify-between rounded-xl bg-white text-xs font-bold shadow-sm lg:w-xl">
+            <div
+                className={`t1-flex-center h-full flex-1 gap-2 rounded-xl p-2 text-center ${
+                    activeTab === "detail" ? "bg-primary text-white" : "bg-white text-[#979797]"
+                }`}
+                onClick={() => onChange("detail")}
+            >
                 <Image
                     src="/assets/icons/logo.svg"
                     width={64}
@@ -15,7 +27,12 @@ const HeaderTab = () => {
                 />
                 <span>Đáp án chi tiết</span>
             </div>
-            <div className="t1-flex-center h-full flex-1 gap-2 rounded-xl bg-white p-2 text-[#979797]">
+            <div
+                className={`t1-flex-center h-full flex-1 gap-2 rounded-xl p-2 ${
+                    activeTab === "explain" ? "bg-primary text-white" : "bg-white text-[#979797]"
+                }`}
+                onClick={() => onChange("explain")}
+            >
                 <Brain />
                 <span>Trợ lý ảo</span>
             </div>

@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
 import examApiServer from "~/apiRequest/server/exam";
-import HeaderTab from "./_components/HeaderTab";
-import DetailResult from "./_components/DetailResult";
+
+import DetailResultPage from "./_components/DetailResultPage";
 export const metadata: Metadata = {
     title: "Chi tiết kết quả bài thi",
 };
@@ -22,8 +22,6 @@ const DetailResultExam = async ({ params }: { params: Promise<{ slug: string; id
 
     const exam = examRes.status === "fulfilled" ? examRes.value.data.data : null;
     const result = resultRes.status === "fulfilled" ? resultRes.value.data.data : null;
-    // console.log("exam >> ", exam);
-    // console.log("result >> ", result);
 
     if (!exam || !result) {
         redirect(`/exams/${slug}`);
@@ -31,8 +29,7 @@ const DetailResultExam = async ({ params }: { params: Promise<{ slug: string; id
 
     return (
         <section className="mt-10 min-h-screen px-4 pb-10">
-            <HeaderTab />
-            <DetailResult exam={exam} resultRes={result} />
+            <DetailResultPage exam={exam} resultRes={result} />
         </section>
     );
 };

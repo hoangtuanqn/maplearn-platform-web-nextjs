@@ -109,7 +109,7 @@ const ChatBotAI = () => {
                     className="fixed right-10 bottom-44 z-2 hidden w-fit cursor-pointer rounded-xl bg-white px-4 py-2 font-semibold text-gray-600 shadow xl:bottom-42 xl:block"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    <span>Hi lô?</span>
+                    <span>Xin chào! Bạn cần hỗ trợ gì không?</span>
                 </div>
             )}
             <button

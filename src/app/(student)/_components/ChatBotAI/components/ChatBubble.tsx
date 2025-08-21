@@ -3,6 +3,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
 import ListCourseChatBotAI from "./ListCourseChatBotAI";
+
 const ChatBubble = ({
     role,
     text,
@@ -23,13 +24,10 @@ const ChatBubble = ({
     return (
         <div className={`${isUser ? `ml-auto` : `mr-auto`} max-w-[90%]`}>
             <div className={`w-fit rounded-lg px-4 py-2 break-words ${bubbleClass}`}>
-                {isUser ? (
-                    <span className="break-words">{text}</span>
-                ) : (
-                    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                        {text}
-                    </ReactMarkdown>
-                )}
+                <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                    {text}
+                </ReactMarkdown>
+                {/* <RenderLatex content={text} /> */}
             </div>
 
             <ListCourseChatBotAI course_id={course_id} />

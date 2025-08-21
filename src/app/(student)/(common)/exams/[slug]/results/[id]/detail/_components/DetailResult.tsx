@@ -1,20 +1,28 @@
 "use client";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import React from "react";
-import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
+import { Brain } from "lucide-react";
+import React, { memo } from "react";
 import DragDrop from "~/app/(student)/exams/[slug]/doing/_components/DragDrop";
-import MultipleChoice from "~/app/(student)/exams/[slug]/doing/_components/MultipleChoice";
-import NumericInput from "~/app/(student)/exams/[slug]/doing/_components/NumericInput";
-import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleChoice";
-import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/TrueFalseAnswer";
+// import MultipleChoice from "~/app/(student)/exams/[slug]/doing/_components/MultipleChoice";
+// import NumericInput from "~/app/(student)/exams/[slug]/doing/_components/NumericInput";
+// import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleChoice";
+// import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/TrueFalseAnswer";
+import { Button } from "~/components/ui/button";
 import { QuestionsExamResponse, ResultDetailExamResponse } from "~/schemaValidate/exam.schema";
+
+import RenderLatex from "~/components/RenderLatex";
+import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/TrueFalseAnswer";
+import NumericInput from "~/app/(student)/exams/[slug]/doing/_components/NumericInput";
+import MultipleChoice from "~/app/(student)/exams/[slug]/doing/_components/MultipleChoice";
+import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleChoice";
 
 const DetailResult = ({
     exam,
     resultRes,
+    payload: { handleSubmit },
 }: {
     exam: QuestionsExamResponse["data"];
     resultRes: ResultDetailExamResponse["data"];
+    payload: { handleSubmit: (message: string) => void };
 }) => {
     return (
         <div className="rounded-xl bg-white p-6">
@@ -42,20 +50,18 @@ const DetailResult = ({
                             />
                         ) : (
                             <>
-                                <MathJaxContext config={configSymbolComment}>
-                                    <MathJax dynamic>
-                                        <div
-                                            className="mb-2 text-base leading-7"
-                                            dangerouslySetInnerHTML={{
-                                                __html: result.content,
-                                            }}
-                                        />
-                                    </MathJax>
-                                </MathJaxContext>
-                                <div className="mt-2">
+                                <div className="text-base">
+                                    <RenderLatex content={result.content} />
+                                </div>
+                                <div className="mt-3">
                                     {result.type === "single_choice" && (
                                         <SingleChoice
-                                            activeAnswer={result.your_choice}
+                                            // Check nếu là string thì đưa vô array, còn array thì truyền thẳng
+                                            activeAnswer={
+                                                Array.isArray(result.your_choice)
+                                                    ? result.your_choice
+                                                    : [result.your_choice]
+                                            }
                                             handleChoiceAnswer={() => {}}
                                             idQuestion={result.id}
                                             answers={result.answers}
@@ -88,17 +94,29 @@ const DetailResult = ({
                             </>
                         )}
                         <div className="mt-4 text-gray-700">
-                            <span className="font-semibold">Giải thích:</span> {result.explanation}
+                            <span className="font-semibold">Giải thích:</span>{" "}
+                            <RenderLatex content={result.explanation ?? ""} />
                         </div>
                         <div className="text-primary mt-2 flex items-center gap-2">
                             <span className="font-bold">Đáp án đúng:</span>
-                            <MathJaxContext config={configSymbolComment}>
-                                <MathJax dynamic>
-                                    {Array.isArray(result.correct_answer)
-                                        ? result.correct_answer.join(", ")
-                                        : result.correct_answer}
-                                </MathJax>
-                            </MathJaxContext>
+                            <RenderLatex content={result.correct_answer.join(", ")} />
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                            <Button
+                                type="button"
+                                className="border-primary text-primary hover:bg-primary flex items-center gap-2 rounded-lg border bg-white px-4 py-2 font-semibold shadow-sm transition-colors hover:text-white"
+                                onClick={() => {
+                                    handleSubmit(
+                                        `Câu hỏi: ${result.content}\n` +
+                                            `Đáp án chính xác: ${Array.isArray(result.correct_answer) ? result.correct_answer.join(", ") : result.correct_answer}\n` +
+                                            `Giải thích từ giáo viên: ${result.explanation}\n` +
+                                            `Tôi chưa hiểu lắm, bạn có thể giải thích thêm không?`,
+                                    );
+                                }}
+                            >
+                                <Brain />
+                                Giải thích thêm
+                            </Button>
                         </div>
                     </div>
                 ))}
@@ -107,4 +125,4 @@ const DetailResult = ({
     );
 };
 
-export default DetailResult;
+export default memo(DetailResult);

@@ -1,13 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
-
-declare global {
-    interface Window {
-        MathJax?: any;
-    }
-}
+import RenderLatex from "~/components/RenderLatex";
 
 interface ValueType {
     id: number;
@@ -17,7 +10,6 @@ interface ValueType {
 interface DraggableItemProps {
     id: string;
     children: React.ReactNode;
-
     disabled: boolean;
 }
 
@@ -72,7 +64,7 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem, disabled }: DropZ
                 droppedItem ? "bg-primary cursor-grab text-white" : "bg-white"
             }`}
         >
-            {droppedItem ? droppedItem.content : "?"}
+            {droppedItem ? <RenderLatex content={droppedItem.content} /> : "?"}
         </span>
     );
 };
@@ -80,7 +72,6 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem, disabled }: DropZ
 interface DragDropProps {
     question: string;
     items: ValueType[];
-    // Câu hỏi đã chọn
     idQuestion: number;
     activeAnswers: string[];
     handleChoiceAnswer: (questionId: number, answer: string, idx: number) => void;
@@ -103,14 +94,13 @@ const DragDrop = ({
         const initial: Record<string, ValueType | null> = {};
         activeAnswers.forEach((val, index) => {
             if (val) {
-                const dropId = `drop${index + 1}`; // drop1, drop2, ...
+                const dropId = `drop${index + 1}`;
                 initial[dropId] = { id: index + 1, content: val };
             }
         });
         return initial;
     });
 
-    // Phân tích câu hỏi, thay placeholder bằng DropZone
     const parseQuestion = (text: string) => {
         const placeholderRegex = /<-Drag->/g;
         const parts: (string | { id: string })[] = [];
@@ -130,17 +120,12 @@ const DragDrop = ({
     };
 
     const handleDropItem = (dropId: string, itemId: string) => {
-        // console.log("droppedItems ?? ", droppedItems);
-
         const droppedItemObj = initialItems.find((i) => `${i.id}` === itemId);
         if (!droppedItemObj) return;
 
         setDroppedItems((prevDropped) => {
-            const prevItem = prevDropped[dropId]; // item cũ trong DropZone
-
-            // trả item cũ về danh sách
+            const prevItem = prevDropped[dropId];
             if (prevItem) setItems((prevItems) => [...prevItems.filter((i) => i.id !== prevItem.id), prevItem]);
-
             return { ...prevDropped, [dropId]: droppedItemObj };
         });
 
@@ -153,61 +138,43 @@ const DragDrop = ({
         if (removedItem) setItems((prev) => [...prev, removedItem]);
     };
 
-    // Rerender MathJax khi droppedItems thay đổi
     useEffect(() => {
-        if (typeof window !== "undefined" && window.MathJax) {
-            window.MathJax.typesetPromise?.().catch((err: any) => console.error(err));
-        }
-    }, [droppedItems]);
-
-    useEffect(() => {
-        // console.log("droppedItems >> ", JSON.stringify(Object.entries(droppedItems)));
         Object.entries(droppedItems).forEach(([a, b]) => {
-            console.log("b>>", b?.content);
-
             if (b?.content && b.content.length > 0) {
                 handleChoiceAnswer(idQuestion, b.content, Number(a.split("drop")[1]));
             }
         });
-
-        // handleChoiceAnswer(idQuestion, )
     }, [droppedItems, handleChoiceAnswer, idQuestion]);
 
     const questionParts = parseQuestion(question);
 
     return (
-        <MathJaxContext config={configSymbolComment}>
-            <div>
-                <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
-                    {items.map((item) => (
-                        <DraggableItem key={item.id} id={`${item.id}`} disabled={disabled}>
-                            {item.content}
-                        </DraggableItem>
-                    ))}
-                </div>
-
-                <div className="mb-4">
-                    <MathJax dynamic>
-                        {questionParts.map((part, index) =>
-                            typeof part === "string" ? (
-                                <span key={index} className="inline">
-                                    {part}
-                                </span>
-                            ) : (
-                                <DropZone
-                                    disabled={disabled}
-                                    key={part.id}
-                                    id={part.id}
-                                    droppedItem={droppedItems[part.id] || null}
-                                    onDropItem={handleDropItem}
-                                    onRemoveItem={handleRemoveItem}
-                                />
-                            ),
-                        )}
-                    </MathJax>
-                </div>
+        <div>
+            <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
+                {items.map((item) => (
+                    <DraggableItem key={item.id} id={`${item.id}`} disabled={disabled}>
+                        <RenderLatex content={item.content} />
+                    </DraggableItem>
+                ))}
             </div>
-        </MathJaxContext>
+
+            <div className="mb-4">
+                {questionParts.map((part, index) =>
+                    typeof part === "string" ? (
+                        <RenderLatex key={`question-part-${index}`} content={part} />
+                    ) : (
+                        <DropZone
+                            disabled={disabled}
+                            key={part.id}
+                            id={part.id}
+                            droppedItem={droppedItems[part.id] || null}
+                            onDropItem={handleDropItem}
+                            onRemoveItem={handleRemoveItem}
+                        />
+                    ),
+                )}
+            </div>
+        </div>
     );
 };
 

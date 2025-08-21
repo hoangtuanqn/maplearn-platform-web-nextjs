@@ -1,7 +1,19 @@
+// export const configSymbolComment = {
+//     loader: { load: ["[tex]/require", "[tex]/ams"] },
+//     tex: {
+//         packages: ["base", "require", "ams"],
+//         inlineMath: [
+//             ["$", "$"],
+//             ["\\(", "\\)"],
+//         ],
+//         displayMath: [["$$", "$$"]],
+//     },
+// };
+
 export const configSymbolComment = {
     loader: { load: ["[tex]/require", "[tex]/ams"] },
     tex: {
-        packages: ["base", "require", "ams"],
+        packages: ["base", "require", "ams", "textmacros"],
         inlineMath: [
             ["$", "$"],
             ["\\(", "\\)"],

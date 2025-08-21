@@ -1,9 +1,8 @@
 import { Check } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
 import { Label } from "~/components/ui/label";
 import { Answers } from "~/schemaValidate/exam.schema";
+import RenderLatex from "~/components/RenderLatex";
 
 const SingleChoice = ({
     idQuestion,
@@ -47,9 +46,8 @@ const SingleChoice = ({
                             }}
                         />
                         <Label htmlFor={answer.content} className="cursor-pointer leading-8">
-                            <MathJaxContext config={configSymbolComment}>
-                                <MathJax dynamic>{answer.content}</MathJax>
-                            </MathJaxContext>
+                     
+                            <RenderLatex content={answer.content} />
                         </Label>
                         <Check className="pointer-events-none absolute top-1.5 left-1 size-5 text-white opacity-0 peer-data-[state=checked]:opacity-100" />
                     </div>

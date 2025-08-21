@@ -3,12 +3,11 @@ import { SendHorizontal } from "lucide-react";
 import React, { useState } from "react";
 
 import Choice from "./Choice";
-import { MathJaxContext, MathJax } from "better-react-mathjax";
 import FormCommentNoMath from "./NormalForm";
 import FxMath from "./SymbolMath/FxMath";
 import HashMath from "./SymbolMath/HashMath";
 import AlphaMath from "./SymbolMath/AlphaMath";
-import { configSymbolComment } from "./config";
+import RenderLatex from "~/components/RenderLatex";
 const FormCommentMath = ({
     comment,
     setComment,
@@ -36,11 +35,12 @@ const FormCommentMath = ({
                             <span className="mb-2 block text-xs">Xem trước:</span>
                             <div className="text-black">
                                 <div className="h-fit">
-                                    <MathJaxContext config={configSymbolComment}>
+                                    {/* <MathJaxContext config={configSymbolComment}>
                                         <MathJax className="text-sm" dynamic inline>
                                             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
                                         </MathJax>
-                                    </MathJaxContext>
+                                    </MathJaxContext> */}
+                                    <RenderLatex content={htmlContent} />
                                 </div>
                             </div>
                         </div>

@@ -1,8 +1,7 @@
 import React from "react";
 
-import { configSymbolComment } from "../config";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
 import DisplayAvatar from "../../DisplayAvatar";
+import RenderLatex from "~/components/RenderLatex";
 
 const ItemComment = ({
     role,
@@ -33,11 +32,12 @@ const ItemComment = ({
                     <span className="text-xs">{time}</span>
                 </div>
                 <div className="mt-1 text-sm">
-                    <MathJaxContext config={configSymbolComment}>
+                    {/* <MathJaxContext config={configSymbolComment}>
                         <MathJax dynamic>
                             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
                         </MathJax>
-                    </MathJaxContext>
+                    </MathJaxContext> */}
+                    <RenderLatex content={htmlContent} />
                 </div>
             </div>
         </div>

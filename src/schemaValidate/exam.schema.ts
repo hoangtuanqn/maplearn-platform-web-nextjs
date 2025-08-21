@@ -168,7 +168,7 @@ export type RankingPaper = z.infer<typeof _rankingPaperSchema>;
 // Get result detail paper exam
 const resultDetailSchema = questionSchema.extend({
     is_correct: z.boolean(),
-    your_choice: z.array(z.string()),
+    your_choice: z.array(z.string()) || z.string(),
     correct_answer: z.array(z.string()),
 });
 const _resultDetailExamResponseSchema = z.object({

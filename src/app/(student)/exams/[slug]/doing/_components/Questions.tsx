@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import QuestionSkeleton from "./QuestionSkeleton";
 import DragDrop from "./DragDrop";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
 import SingleChoice from "./SingleChoice";
 import MultipleChoice from "./MultipleChoice";
 import { Question } from "~/schemaValidate/exam.schema";
-import { configSymbolComment } from "~/app/(student)/_components/Comment/config";
 import Image from "next/image";
 import NumericInput from "./NumericInput";
 import TrueFalseAnswer from "./TrueFalseAnswer";
+import RenderLatex from "~/components/RenderLatex";
 
 const Questions = ({
     payload: { questions, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
@@ -65,16 +64,9 @@ const Questions = ({
                                     />
                                 ) : (
                                     <>
-                                        <MathJaxContext config={configSymbolComment}>
-                                            <MathJax dynamic>
-                                                <div
-                                                    className="leading-7"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: questions[questionActive].content || "",
-                                                    }}
-                                                ></div>
-                                            </MathJax>
-                                        </MathJaxContext>
+                                        <div className="mt-1.5 text-[15.5px]">
+                                            <RenderLatex content={questions[questionActive].content || ""} />
+                                        </div>
                                         {questions[questionActive].images &&
                                             questions[questionActive].images.map((item) => (
                                                 <div className="mt-2" key={item}>
