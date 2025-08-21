@@ -1,42 +1,27 @@
-// libs/apis/invoiceApiServer.ts
+// libs/apis/examApiServer.ts
 import { cookies } from "next/headers";
 import serverApi from "~/libs/apis/serverApi";
 import { QuestionsExamResponse, ResultExamResponse } from "~/schemaValidate/exam.schema";
 
+async function withAuthHeaders<T>(url: string) {
+    const cookie = await cookies();
+    return serverApi.get<T>(url, {
+        headers: { cookie: cookie.toString() },
+    });
+}
+
 const examApiServer = {
-    getExamDetail: async (slug: string) => {
-        const cookie = await cookies();
+    getExamDetail: (slug: string) => withAuthHeaders<QuestionsExamResponse>(`/api/exam/${slug}`),
 
-        return serverApi.get<QuestionsExamResponse>(`/api/exam/${slug}`, {
-            headers: {
-                cookie: cookie.toString(), // 👈 gắn thủ công cookie
-            },
-        });
+    getQuestions: (slug: string) => withAuthHeaders<QuestionsExamResponse>(`/api/exam/${slug}/questions`),
+
+    getExamResults: (id: string | null, slug: string) => {
+        const query = id ? `/api/exam/${slug}/results/${id}` : `/api/exam/${slug}/results`;
+        return withAuthHeaders<ResultExamResponse>(query);
     },
 
-    getQuestions: async (slug: string) => {
-        const cookie = await cookies();
-
-        return serverApi.get<QuestionsExamResponse>(`/api/exam/${slug}/questions`, {
-            headers: {
-                cookie: cookie.toString(), // 👈 gắn thủ công cookie
-            },
-        });
-    },
-
-    getExamResults: async (id: string | null, slug: string) => {
-        const cookie = await cookies();
-        let query = `/api/exam/${slug}/results`;
-        if (id) {
-            query += `/${id}`;
-        }
-
-        return serverApi.get<ResultExamResponse>(query, {
-            headers: {
-                cookie: cookie.toString(), // 👈 gắn thủ công cookie
-            },
-        });
-    },
+    getResultDetail: (slug: string, idAttempt: string) =>
+        withAuthHeaders(`/api/exam/${slug}/results/${idAttempt}/detail`),
 };
 
 export default examApiServer;
