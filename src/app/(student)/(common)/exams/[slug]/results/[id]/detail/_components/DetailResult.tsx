@@ -107,9 +107,9 @@ const DetailResult = ({
                                 className="border-primary text-primary hover:bg-primary flex items-center gap-2 rounded-lg border bg-white px-4 py-2 font-semibold shadow-sm transition-colors hover:text-white"
                                 onClick={() => {
                                     handleSubmit(
-                                        `Câu hỏi: ${result.content}` +
+                                        `Câu hỏi: ${result.content}\n` +
                                             `Đáp án chính xác: ${Array.isArray(result.correct_answer) ? result.correct_answer.join(", ") : result.correct_answer}\n` +
-                                            `Giải thích từ giáo viên: ${result.explanation}` +
+                                            `Giải thích từ giáo viên: ${result.explanation}\n` +
                                             `Tôi chưa hiểu lắm, bạn có thể giải thích thêm không?`,
                                     );
                                     setTab("explain");

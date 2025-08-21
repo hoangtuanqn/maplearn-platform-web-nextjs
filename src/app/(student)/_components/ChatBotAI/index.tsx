@@ -21,7 +21,7 @@ const helloMessageModel = (name: string = "khách") => ({
 //     message: string;
 //     course_id: number[];
 // };
-function extractJSON(input: string) {
+export const extractJSON = (input: string) => {
     const match = input.match(/{[\s\S]*}/); // tìm đoạn bắt đầu bằng { và kết thúc bằng }
     if (match) {
         try {
@@ -32,7 +32,7 @@ function extractJSON(input: string) {
         }
     }
     return null;
-}
+};
 
 const ChatBotAI = () => {
     // const [isClose, setIsClose] = useState(false);

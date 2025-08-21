@@ -26,7 +26,7 @@ const ChatBubble = ({
 
     return (
         <div className={`${isUser ? `ml-auto` : `mr-auto`} ${version === "v2" && "mb-4"} max-w-[90%]`}>
-            <div className={`w-fit rounded-lg px-4 py-2 break-words ${bubbleClass}`}>
+            <div className={`w-fit rounded-lg px-4 py-2 break-words ${bubbleClass} chat_ai`}>
                 {version === "v1" ? (
                     <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                         {text}
