@@ -17,7 +17,7 @@ const MultipleChoice = ({
 }) => {
     return (
         <div className="space-y-2">
-            {answers.map((answer, index) => (
+            {answers?.map((answer, index) => (
                 <div key={index} className="flex items-center gap-3">
                     <Checkbox
                         checked={activeAnswers?.includes(answer.content)}

@@ -43,7 +43,7 @@ const TrueFalseAnswer = ({
 
     return (
         <RadioGroup
-            value={activeAnswer[0] || ""} // controlled component
+            value={activeAnswer?.[0] || ""} // controlled component
             onValueChange={(value) => handleChoiceAnswer(idQuestion, value)}
             className="flex flex-col"
         >

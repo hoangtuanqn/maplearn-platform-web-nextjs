@@ -33,7 +33,9 @@ const DetailResult = ({
                     <div key={result.id} className="border-b pb-6">
                         <div className="mb-2 flex items-center gap-2">
                             <span className="text-primary text-[17px] font-bold">Câu {index + 1}:</span>
-                            {result.is_correct ? (
+                            {result.your_choice.length === 0 ? (
+                                <span className="text-gray-500 italic">Bạn chưa chọn câu này</span>
+                            ) : result.is_correct ? (
                                 <span className="font-semibold text-green-600">Đúng</span>
                             ) : (
                                 <span className="font-semibold text-red-600">Sai</span>
@@ -99,7 +101,7 @@ const DetailResult = ({
                         </div>
                         <div className="text-primary mt-2 flex items-center gap-2">
                             <span className="font-bold">Đáp án đúng:</span>
-                            <RenderLatex content={result.correct_answer.join(", ")} />
+                            <RenderLatex content={result.correct_answer?.join(", ")} />
                         </div>
                         <div className="mt-4 flex justify-end">
                             <Button

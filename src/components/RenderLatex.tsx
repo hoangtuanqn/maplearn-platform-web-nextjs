@@ -7,6 +7,7 @@ import "katex/dist/katex.min.css";
 import remarkBreaks from "remark-breaks";
 
 const RenderLatex = ({ content }: { content: string }) => {
+    if (!content) return null;
     const cleanedContent = content.replace(/\\\\/g, "\\");
     const markdownContent = cleanedContent
         .replace(/\\\((.*?)\\\)/gs, (_, math) => {

@@ -87,12 +87,12 @@ const DragDrop = ({
     disabled = false,
 }: DragDropProps) => {
     const [items, setItems] = useState<ValueType[]>(
-        initialItems.filter((item) => !activeAnswers.includes(item.content)),
+        initialItems.filter((item) => !activeAnswers?.includes(item.content)),
     );
 
     const [droppedItems, setDroppedItems] = useState<Record<string, ValueType | null>>(() => {
         const initial: Record<string, ValueType | null> = {};
-        activeAnswers.forEach((val, index) => {
+        activeAnswers?.forEach((val, index) => {
             if (val) {
                 const dropId = `drop${index + 1}`;
                 initial[dropId] = { id: index + 1, content: val };

@@ -71,12 +71,12 @@ const HistoryAttempts = ({ slug, pass_score }: { slug: string; pass_score: numbe
                                                 : formatter.duration(item.time_spent)}
                                         </td>
                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
-                                            {item.status == "in_progress"
-                                                ? getStatusBadge("exam", "in_progress")
-                                                : getStatusBadge(
+                                            {item.status == "submitted"
+                                                ? getStatusBadge(
                                                       "exam_result",
                                                       item.score < pass_score ? "not_pass" : "pass",
-                                                  )}
+                                                  )
+                                                : getStatusBadge("exam", item.status)}
                                             <p className="mt-2 text-xs break-words text-gray-500">{item.note}</p>
                                         </td>
                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-gray-800 md:table-cell">
@@ -91,15 +91,15 @@ const HistoryAttempts = ({ slug, pass_score }: { slug: string; pass_score: numbe
                                             )}
                                         </td>
                                         <td className="px-4 py-4 text-end whitespace-nowrap">
-                                            {item.status === "in_progress" ? (
-                                                "..."
-                                            ) : (
-                                                <Link target="_blank" href={`/exams/${slug}/results/${item.id}`}>
-                                                    <Button className="" variant={"outline"}>
-                                                        Xem kết quả
-                                                    </Button>
-                                                </Link>
-                                            )}
+                                            {item.status === "in_progress"
+                                                ? "..."
+                                                : item.status !== "canceled" && (
+                                                      <Link target="_blank" href={`/exams/${slug}/results/${item.id}`}>
+                                                          <Button className="" variant={"outline"}>
+                                                              Xem kết quả
+                                                          </Button>
+                                                      </Link>
+                                                  )}
                                         </td>
                                     </tr>
                                 ))}

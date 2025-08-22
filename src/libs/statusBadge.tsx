@@ -33,7 +33,7 @@ export function getStatusBadge(type: string, status: string) {
                 case "detected":
                     return <Badge variant="danger">Vi phạm quy chế</Badge>;
                 case "canceled":
-                    return <Badge variant="secondary">Đã hủy</Badge>;
+                    return <Badge variant="danger">Đã hủy</Badge>;
                 default:
                     return <Badge variant="secondary">Không xác định</Badge>;
             }
