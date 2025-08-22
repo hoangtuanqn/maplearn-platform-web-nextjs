@@ -165,59 +165,80 @@ export function CardDialog({ totalPrice, code }: { totalPrice: number; code: str
                                         <FormField
                                             control={control}
                                             name={`cards.${index}.amount`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Select
-                                                            value={field.value}
-                                                            onValueChange={(value) => {
-                                                                field.onChange(value);
-                                                                setTotal(
-                                                                    form.getValues("cards").reduce((acc, card) => {
-                                                                        return acc + (parseInt(card.amount, 10) || 0);
-                                                                    }, 0),
-                                                                );
-                                                            }}
-                                                        >
-                                                            <SelectTrigger className="w-full">
-                                                                <SelectValue placeholder="Chọn mệnh giá" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectGroup>
-                                                                    <SelectLabel>Mệnh giá</SelectLabel>
-                                                                    {/* Logic: Chỉ hiển thị các mệnh giá nếu tổng mệnh giá đã chọn < tổng giá trị hóa đơn */}
-                                                                    {amounts.map((amount) => {
-                                                                        const caculate = form
-                                                                            .getValues("cards")
-                                                                            .slice(0, index)
-                                                                            .reduce((acc, card) => {
-                                                                                return (
-                                                                                    acc +
-                                                                                    (parseInt(card.amount, 10) || 0)
-                                                                                );
-                                                                            }, 0);
-
-                                                                        return (
-                                                                            <SelectItem
-                                                                                key={amount}
-                                                                                value={amount + ""}
-                                                                                disabled={
-                                                                                    caculate > totalPrice ||
-                                                                                    caculate + amount > totalPrice ||
-                                                                                    amount > totalPrice
-                                                                                }
-                                                                            >
-                                                                                {formatter.number(amount)}đ
-                                                                            </SelectItem>
+                                            render={({ field }) => {
+                                                let isLargeFirst = false;
+                                                let amountEnd = 500000;
+                                                const caculate = form
+                                                    .getValues("cards")
+                                                    .slice(0, index)
+                                                    .reduce((acc, card) => {
+                                                        return acc + (parseInt(card.amount, 10) || 0);
+                                                    }, 0);
+                                                return (
+                                                    <FormItem>
+                                                        <FormControl>
+                                                            <Select
+                                                                value={field.value}
+                                                                onValueChange={(value) => {
+                                                                    if (
+                                                                        isLargeFirst &&
+                                                                        +value > amountEnd &&
+                                                                        caculate + +value > totalPrice
+                                                                    ) {
+                                                                        toast.error(
+                                                                            "Tổng mệnh giá sẽ vượt quá hóa đơn nếu bạn cố tình chọn mệnh giá " +
+                                                                                formatter.number(+value),
                                                                         );
-                                                                    })}
-                                                                </SelectGroup>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
+                                                                        return;
+                                                                    }
+                                                                    field.onChange(value);
+                                                                    setTotal(
+                                                                        form.getValues("cards").reduce((acc, card) => {
+                                                                            return (
+                                                                                acc + (parseInt(card.amount, 10) || 0)
+                                                                            );
+                                                                        }, 0),
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <SelectTrigger className="w-full">
+                                                                    <SelectValue placeholder="Chọn mệnh giá" />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    <SelectGroup>
+                                                                        <SelectLabel>Mệnh giá</SelectLabel>
+                                                                        {/* Logic: Chỉ hiển thị các mệnh giá nếu tổng mệnh giá đã chọn < tổng giá trị hóa đơn */}
+                                                                        {amounts.map((amount) => {
+                                                                            if (
+                                                                                !isLargeFirst &&
+                                                                                caculate + amount > totalPrice
+                                                                            ) {
+                                                                                isLargeFirst = true;
+                                                                                amountEnd = amount;
+                                                                            }
+
+                                                                            return (
+                                                                                <SelectItem
+                                                                                    key={amount}
+                                                                                    value={amount + ""}
+                                                                                    disabled={
+                                                                                        caculate > totalPrice ||
+                                                                                        amount > amountEnd ||
+                                                                                        amount > totalPrice
+                                                                                    }
+                                                                                >
+                                                                                    {formatter.number(amount)}đ
+                                                                                </SelectItem>
+                                                                            );
+                                                                        })}
+                                                                    </SelectGroup>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                );
+                                            }}
                                         />
 
                                         {/* Seri */}
