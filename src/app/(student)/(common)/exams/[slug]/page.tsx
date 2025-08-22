@@ -61,7 +61,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                             </div>
                             <div className="flex items-center gap-2">
                                 <OctagonMinus className="text-primary size-4" />
-                                <span className="font-medium text-[#333]">Thời gian kết thúc:</span>
+                                <span className="font-medium text-[#333]">Thời gian đóng đề:</span>
                                 <span className="ml-1 text-[#555]">
                                     {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
                                 </span>

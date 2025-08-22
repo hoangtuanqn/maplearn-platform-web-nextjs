@@ -50,15 +50,12 @@ const DetailResultPage = ({
         },
     });
 
-    const handleSubmit = useCallback(
-        (message: string) => {
-            const newHistories: ChatHistoriesType[] = [...chatHistories, { role: "user", parts: [{ text: message }] }];
-            setChatHistories(newHistories);
-            // console.log(message);
-            sendQuestionToAI.mutate(message);
-        },
-        [chatHistories, sendQuestionToAI],
-    );
+    const handleSubmit = useCallback((message: string) => {
+        setChatHistories((prev) => [...prev, { role: "user", parts: [{ text: message }] }]);
+        // console.log(message);
+        sendQuestionToAI.mutate(message);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const detailResultEl = useMemo(() => {
         return <DetailResult exam={exam} resultRes={resultRes} payload={{ handleSubmit, setTab }} />;
