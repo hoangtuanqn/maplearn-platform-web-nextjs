@@ -33,17 +33,45 @@ import { ListCardSchemaResponseAPI } from "~/schemaValidate/invoice.schema";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { formatter } from "~/libs/format";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 const amounts = [10_000, 20_000, 50_000, 100_000, 200_000, 500_000];
 const formSchema = z.object({
-    cards: z.array(
-        z.object({
-            telco: z.string().min(1, "Chọn nhà mạng"),
-            amount: z.string().min(1, "Chọn mệnh giá"),
-            serial: z.string().min(1, "Nhập số seri"),
-            code: z.string().min(1, "Nhập mã thẻ"),
-            isSuccess: z.boolean(),
+    cards: z
+        .array(
+            z.object({
+                telco: z.string().min(1, "Chọn nhà mạng"),
+                amount: z.string().min(1, "Chọn mệnh giá"),
+                serial: z.string().min(13, "Seri nhập tối thiểu 13 kí tự"),
+                code: z.string().min(13, "Mã thẻ nhập tối thiểu 13 kí tự"),
+                isSuccess: z.boolean(),
+            }),
+        )
+        .superRefine((cards, ctx) => {
+            const serialMap = new Map<string, number>();
+            const codeMap = new Map<string, number>();
+
+            cards.forEach((card, index) => {
+                if (serialMap.has(card.serial)) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Serial bị trùng nhau",
+                        path: [index, "serial"], // gắn lỗi trực tiếp vào ô serial
+                    });
+                } else {
+                    serialMap.set(card.serial, index);
+                }
+
+                if (codeMap.has(card.code)) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Code bị trùng nhau",
+                        path: [index, "code"], // gắn lỗi trực tiếp vào ô code
+                    });
+                } else {
+                    codeMap.set(card.code, index);
+                }
+            });
         }),
-    ),
 });
 type FormValues = z.infer<typeof formSchema>;
 
@@ -59,6 +87,7 @@ export function CardDialog({ totalPrice, code }: { totalPrice: number; code: str
         },
         mode: "onBlur",
     });
+    const router = useRouter();
 
     const { control, handleSubmit } = form;
 
@@ -91,9 +120,12 @@ export function CardDialog({ totalPrice, code }: { totalPrice: number; code: str
                                 form.setError(`cards.${index}.code`, { type: "manual", message: cardRes.message });
                             }
                         }
+
                         return card;
                     }),
                 );
+
+                router.refresh();
             } else if (axios.isAxiosError(error) && error.response) {
                 // Xử lý nếu tất cả các thẻ đề lỗi
                 type CardError = {
@@ -270,7 +302,8 @@ export function CardDialog({ totalPrice, code }: { totalPrice: number; code: str
                                         />
                                         {field.isSuccess && (
                                             <p className="col-span-4 text-green-500">
-                                                Đã gửi thẻ thành công! Đang chờ xử lý, có thể xóa dòng này!
+                                                Thẻ đã nạp thành công!
+                                                {/* Đã gửi thẻ thành công! Đang chờ xử lý, có thể xóa dòng này! */}
                                             </p>
                                         )}
                                     </div>
