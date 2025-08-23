@@ -7,18 +7,39 @@ import TableSkeleton from "../../_components/TableSkeleton";
 import RenderLatex from "~/components/RenderLatex";
 import { formatter } from "~/libs/format";
 import ShowDetailQuestion from "./ShowDetailQuestion";
+import { QUESTION_PER_PAGE } from "~/apiRequest/exam";
+import { PaginationNav } from "~/app/(student)/_components/Pagination";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import { Button } from "~/components/ui/button";
 
 const ListQuestionsWrong = () => {
+    const { page } = useGetSearchQuery(["page"] as const);
     const { data: questionWrong, isLoading } = useQuery({
-        queryKey: ["user", "questionWrong"],
+        queryKey: ["user", "questionWrong", page],
         queryFn: async () => {
-            const res = await profileApi.getQuestionWrong();
+            const res = await profileApi.getQuestionWrong(Number(page));
             return res.data.data;
         },
     });
+    const total = questionWrong?.total || 0;
+    const totalPages = Math.ceil(total / QUESTION_PER_PAGE);
     return (
         <div className="flex flex-col gap-4 px-2 font-medium sm:px-0">
             <div className="flex flex-col">
+                <div className="mb-5 flex flex-col gap-4 rounded-lg border border-gray-100 bg-white p-2 shadow-sm sm:p-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-col justify-center gap-1">
+                        <p className="text-sm font-semibold text-neutral-900 sm:text-base">Đã tìm thấy</p>
+                        <ul className="ml-4 list-inside list-disc text-xs text-neutral-700 sm:text-sm">
+                            <li>
+                                <span className="text-primary-600 font-bold">{questionWrong?.total ?? 0}</span> câu trả
+                                lời sai cần ôn lại
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="mt-3 flex flex-wrap items-center gap-1 sm:gap-2 md:mt-0">
+                        <Button variant={"outline"}>Tạo đề thi</Button>
+                    </div>
+                </div>
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="inline-block min-w-full p-1.5 align-middle">
                         <div className="overflow-hidden">
@@ -65,7 +86,9 @@ const ListQuestionsWrong = () => {
                                     )}
 
                                     {isLoading ? (
-                                        [...Array(10)].map((_, index) => <TableSkeleton key={index} col={6} />)
+                                        [...Array(QUESTION_PER_PAGE)].map((_, index) => (
+                                            <TableSkeleton key={index} col={4} />
+                                        ))
                                     ) : (
                                         <>
                                             {questionWrong?.data.map((question, index) => (
@@ -101,13 +124,13 @@ const ListQuestionsWrong = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="flex items-end justify-between lg:flex-col">
+            <div className="flex items-end justify-between lg:flex-col">
                 <div className="ml-auto">
-                    {!isLoading && totalPages > 1 && (invoices?.length ?? 0) > 0 && (
-                        <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
+                    {!isLoading && totalPages > 1 && (questionWrong?.data.length ?? 0) > 0 && (
+                        <PaginationNav totalPages={totalPages} basePath="/profile/questions-wrong" />
                     )}
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };

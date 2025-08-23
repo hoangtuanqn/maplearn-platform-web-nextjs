@@ -34,6 +34,7 @@ const profileApi = {
     toggle2FA: (otp: string, type: string) => privateApi.post<Active2FAResponse>("/profile/2fa/toggle", { otp, type }),
 
     // Get các câu hỏi đã làm sai
-    getQuestionWrong: () => privateApi.get<QuestionWrongProfileResponse>("/profile/wrong-questions"),
+    getQuestionWrong: (page: number = 1) =>
+        privateApi.get<QuestionWrongProfileResponse>(`/profile/wrong-questions?page=${page}`),
 };
 export default profileApi;

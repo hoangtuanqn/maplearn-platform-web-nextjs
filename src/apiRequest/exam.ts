@@ -8,6 +8,7 @@ import {
     QuestionsExamResponse,
     RankingPaper,
 } from "~/schemaValidate/exam.schema";
+export const QUESTION_PER_PAGE = 10;
 // "easy", "normal", "hard", "very_hard"
 export const difficulties = [
     {

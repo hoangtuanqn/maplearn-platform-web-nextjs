@@ -136,14 +136,16 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setInfoExam(data);
             setAnswers(data.answers || {});
             setQuestionActive(data.questionActive || 0);
-            setCountdownSubmit(1 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
+            // ! Không xóa: mở lại khi đi bảo vệ
+            // setCountdownSubmit(1 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
         } else {
             const startTime = Date.now();
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };
             setInfoExam(newData);
             setLocalStorage(slug, JSON.stringify(newData));
             // setCountdownSubmit(5 * 60);
-            setCountdownSubmit(1 * 60); // test thì 1p thôi
+            // ! Không xóa: mở lại khi đi bảo vệ
+            // setCountdownSubmit(1 * 60); // test thì 1p thôi
         }
     }, [setCountdownSubmit, slug]);
 

@@ -51,7 +51,12 @@ const VirtualAssistant = ({ payload: { handleSubmit, chatHistories, isPending } 
                 }}
             >
                 <div className="w-full">
-                    <Textarea className="" value={value} onChange={onChange} />
+                    <Textarea
+                        className=""
+                        value={value}
+                        onChange={onChange}
+                        placeholder="Gửi tin nhắn với trợ lý ảo AI"
+                    />
                 </div>
                 <Button
                     className="text-white disabled:bg-gray-600 disabled:opacity-50"
