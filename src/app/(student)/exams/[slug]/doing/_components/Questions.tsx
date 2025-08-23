@@ -54,7 +54,7 @@ const Questions = ({
                             <QuestionSkeleton />
                         ) : (
                             <>
-                                {questions[questionActive].type === "drag_drop" ? (
+                                {questions[questionActive].type === "DRAG_DROP" ? (
                                     <DragDrop
                                         question={questions[questionActive].content || ""}
                                         items={questions[questionActive].answers || []}
@@ -80,7 +80,7 @@ const Questions = ({
                                                 </div>
                                             ))}
                                         <div className="mt-2">
-                                            {questions[questionActive].type === "single_choice" && (
+                                            {questions[questionActive].type === "SINGLE_CHOICE" && (
                                                 <SingleChoice
                                                     activeAnswer={answers[questions[questionActive].id] || []}
                                                     handleChoiceAnswer={handleChoiceAnswer}
@@ -88,7 +88,7 @@ const Questions = ({
                                                     answers={questions[questionActive].answers || []}
                                                 />
                                             )}
-                                            {questions[questionActive].type === "multiple_choice" && (
+                                            {questions[questionActive].type === "MULTIPLE_CHOICE" && (
                                                 <MultipleChoice
                                                     activeAnswers={answers[questions[questionActive].id] ?? []}
                                                     handleChoiceAnswer={handleChoiceAnswer}
@@ -96,14 +96,14 @@ const Questions = ({
                                                     answers={questions[questionActive].answers || []}
                                                 />
                                             )}
-                                            {questions[questionActive].type === "numeric_input" && (
+                                            {questions[questionActive].type === "NUMERIC_INPUT" && (
                                                 <NumericInput
                                                     handleChoiceAnswer={handleChoiceAnswer}
                                                     idQuestion={questions[questionActive].id}
                                                     activeAnswer={answers[questions[questionActive].id] || []}
                                                 />
                                             )}
-                                            {questions[questionActive].type === "true_false" && (
+                                            {questions[questionActive].type === "TRUE_FALSE" && (
                                                 <TrueFalseAnswer
                                                     idQuestion={questions[questionActive].id}
                                                     answers={questions[questionActive].answers || []}

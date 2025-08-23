@@ -66,7 +66,7 @@ export type Answers = z.infer<typeof answersSchema>;
 const questionSchema = z.object({
     id: z.number(),
     exam_paper_id: z.number(),
-    type: z.enum(["single_choice", "multiple_choice", "drag_drop", "true_false", "numeric_input"]),
+    type: z.enum(["SINGLE_CHOICE", "MULTIPLE_CHOICE", "DRAG_DROP", "TRUE_FALSE", "NUMERIC_INPUT"]),
     content: z.string(),
     explanation: z.string().nullable(),
     images: z.array(z.string()).nullable(),
@@ -177,3 +177,38 @@ const _resultDetailExamResponseSchema = z.object({
     data: z.array(resultDetailSchema),
 });
 export type ResultDetailExamResponse = z.infer<typeof _resultDetailExamResponseSchema>;
+
+// Các câu hỏi đã làm sai (Profile)
+const _questionWrongProfileSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(
+        z.object({
+            id: z.number(),
+            user_id: z.number(),
+            exam_question_id: z.number(),
+            wrong_count: z.number(),
+            correct_streak: z.number(),
+            first_wrong_at: z.string(),
+            last_wrong_at: z.string(),
+            last_correct_at: z.string(),
+            status: z.string(),
+            question: questionSchema.extend({
+                exam_paper: examSchema.extend({
+                    subject: z.object({
+                        id: z.number(),
+                        name: z.string(),
+                    }),
+                }),
+                your_choice: z.array(z.string()) || z.string(),
+                answers_correct: z.array(
+                    z.object({
+                        id: z.number(),
+                        content: z.string(),
+                    }),
+                ),
+            }),
+        }),
+    ),
+});
+export type QuestionWrongProfileResponse = z.infer<typeof _questionWrongProfileSchema>;

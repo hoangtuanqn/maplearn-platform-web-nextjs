@@ -40,12 +40,12 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         console.log("question", question);
 
         switch (question?.type) {
-            case "single_choice":
-            case "numeric_input":
-            case "true_false":
+            case "SINGLE_CHOICE":
+            case "NUMERIC_INPUT":
+            case "TRUE_FALSE":
                 setAnswers((prev) => ({ ...prev, [questionId]: [answer] }));
                 break;
-            case "multiple_choice":
+            case "MULTIPLE_CHOICE":
                 setAnswers((prev) => {
                     const currentAnswers = prev[questionId] || [];
 
@@ -58,7 +58,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                     }
                 });
                 break;
-            case "drag_drop":
+            case "DRAG_DROP":
                 if (idx) {
                     setAnswers((prev) => {
                         const countAnswer = question.answers.length ?? 0;

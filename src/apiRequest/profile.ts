@@ -4,6 +4,7 @@ import { InvoiceListResponse } from "~/schemaValidate/invoice.schema";
 import { FormChangePasswordType, ProfileType } from "~/schemaValidate/user.schema";
 import { INVOICE_PER_PAGE } from "./invoices";
 import { Active2FAResponse, Generate2FAType } from "~/schemaValidate/twoFactor";
+import { QuestionWrongProfileResponse } from "~/schemaValidate/exam.schema";
 
 const profileApi = {
     update: (data: ProfileType) => privateApi.post("/profile/update", data),
@@ -31,5 +32,8 @@ const profileApi = {
     },
     generate2FA: () => privateApi.get<Generate2FAType>("/profile/2fa/generate"),
     toggle2FA: (otp: string, type: string) => privateApi.post<Active2FAResponse>("/profile/2fa/toggle", { otp, type }),
+
+    // Get các câu hỏi đã làm sai
+    getQuestionWrong: () => privateApi.get<QuestionWrongProfileResponse>("/profile/wrong-questions"),
 };
 export default profileApi;

@@ -78,9 +78,7 @@ const InvoiceList = () => {
                                 <thead>
                                     <tr>
                                         <th scope="col" className="px-2 py-3 pe-0">
-                                            <div className="flex h-5 items-center">
-                                                <Checkbox disabled />
-                                            </div>
+                                            <div className="flex h-5 items-center">{/* <Checkbox disabled /> */}</div>
                                         </th>
                                         <th
                                             scope="col"
