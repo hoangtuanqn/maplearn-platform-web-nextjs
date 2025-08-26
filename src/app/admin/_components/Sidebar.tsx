@@ -367,12 +367,14 @@ const Sidebar = () => {
     return (
         <nav className="scrollbar fixed top-2 bottom-2 left-2 w-60 overflow-y-auto rounded-md bg-white p-4 shadow-md">
             <div className="from-primary/8 sticky top-2 z-10 flex flex-col items-center rounded-lg bg-gradient-to-r to-white pt-2 pb-4">
-                <h2 className="text-center text-2xl font-extrabold tracking-wide text-slate-800">
-                    <span className="text-primary text-3xl drop-shadow-lg">M</span>
-                    <span className="text-slate-700">
-                        apLearn <span className="text-primary font-bold">Edu</span>
-                    </span>
-                </h2>
+                <Link href="/admin">
+                    <h2 className="text-center text-2xl font-extrabold tracking-wide text-slate-800">
+                        <span className="text-primary text-3xl drop-shadow-lg">M</span>
+                        <span className="text-slate-700">
+                            apLearn <span className="text-primary font-bold">Edu</span>
+                        </span>
+                    </h2>
+                </Link>
                 <span className="bg-primary/10 text-primary mt-1 rounded-full px-3 py-1 text-xs font-semibold shadow">
                     Hệ thống giáo dục
                 </span>

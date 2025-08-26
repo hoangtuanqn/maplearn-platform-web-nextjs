@@ -46,12 +46,14 @@ const HistoryActivities = ({ id }: { id: string }) => {
                     <tbody className="text-xs">
                         {isLoading
                             ? [...Array(USERS_PER_PAGE)].map((_, index) => <TableSkeleton key={index} col={6} />)
-                            : histories?.data.map((history) => (
+                            : histories?.data.map((history, idx) => (
                                   <tr
                                       key={history.id}
                                       className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
                                   >
-                                      <td className="px-4 py-3 text-zinc-500">{history.id}</td>
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          {(Number(page || 1) - 1) * USERS_PER_PAGE + idx + 1}
+                                      </td>
                                       <td className="px-4 py-3 text-zinc-500">
                                           {ActionActivityLabel[history.action as ActionActivity]}
                                       </td>

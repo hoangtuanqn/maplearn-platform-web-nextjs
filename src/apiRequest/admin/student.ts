@@ -1,6 +1,11 @@
 import privateApi from "~/libs/apis/privateApi";
-import { ActivityHistorySchema, UpdateProfileSchema } from "~/schemaValidate/admin/student.schema";
-import { StudentDetailResponseType, StudentListResponseType } from "~/schemaValidate/user.schema";
+import {
+    ActivityHistorySchema,
+    ImportStudentErrorSchema,
+    ImportStudentSuccessSchema,
+    UpdateProfileSchema,
+} from "~/schemaValidate/admin/student.schema";
+import { StudentDetailResponseType, StudentListResponseType, UserType } from "~/schemaValidate/user.schema";
 export const USERS_PER_PAGE = 10;
 const studentApi = {
     getStudents: () => privateApi.get<StudentListResponseType>("/students"),
@@ -14,5 +19,11 @@ const studentApi = {
     // get lịch sử hoạt động
     getActivityHistory: (id: string, page: number = 1, limit: number = USERS_PER_PAGE) =>
         privateApi.get<ActivityHistorySchema>(`/students/${id}/activity-history`, { params: { page, limit } }),
+
+    importStudents: (error_handling: "strict" | "partial", data: Partial<UserType>[]) =>
+        privateApi.post<ImportStudentSuccessSchema | ImportStudentErrorSchema>(`/students/import`, {
+            error_handling,
+            data,
+        }),
 };
 export default studentApi;

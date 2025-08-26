@@ -175,7 +175,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                         )}
                     </div>
                 </div>
-                <div className="flex-4/5 rounded-lg bg-white p-6 pb-8 shadow-sm">
+                <div className="flex-4/5 shrink-0 rounded-lg bg-white p-6 pb-8 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <h3 className="text-xl font-bold">Chỉnh sửa thông tin</h3>
@@ -293,9 +293,9 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                                                             )}
                                                         >
                                                             {field.value
-                                                                ? provinces.find(
+                                                                ? (provinces.find(
                                                                       (province) => province.name === field.value,
-                                                                  )?.name
+                                                                  )?.name ?? "Tỉnh thành của bạn")
                                                                 : "Tỉnh thành của bạn"}
 
                                                             <ChevronsUpDown className="opacity-50" />
@@ -394,10 +394,15 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                             </div>
 
                             <div className="flex gap-3">
-                                <Button type="submit" variant={"black"}>
+                                <Button type="submit" variant={"black"} disabled={!form.formState.isDirty}>
                                     Cập nhật thông tin
                                 </Button>
-                                <Button type="button" variant="outline" onClick={() => form.reset()}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => form.reset()}
+                                    disabled={!form.formState.isDirty}
+                                >
                                     Đặt lại
                                 </Button>
                             </div>

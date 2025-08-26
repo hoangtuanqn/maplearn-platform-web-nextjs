@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import studentApi from "~/apiRequest/admin/student";
 import Loading from "~/app/(student)/_components/Loading";
+import { DangerConfirm } from "~/components/DangerConfirm";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -74,9 +75,14 @@ export function ResetPassword({ id }: { id: string }) {
                             <DialogClose asChild>
                                 <Button variant="outline">Đóng</Button>
                             </DialogClose>
-                            <Button type="submit" variant={"primary"} onClick={() => handleSubmit()}>
-                                Cập nhật
-                            </Button>
+                            <DangerConfirm
+                                message="Bạn có chắc chắn muốn đặt lại mật khẩu? Bạn cần lưu lại mật khẩu trước khi bấm xác nhận!"
+                                action={() => handleSubmit()}
+                            >
+                                <Button type="submit" variant={"primary"}>
+                                    Cập nhật
+                                </Button>
+                            </DangerConfirm>
                         </DialogFooter>
                     </DialogContent>
                 </form>
