@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationMetaSchemaFn } from "./common.schema";
 
 export const userSchema = z.object({
     id: z.number().int().positive(),
@@ -23,6 +24,13 @@ export const userSchema = z.object({
 });
 
 export type UserType = z.infer<typeof userSchema>;
+
+const _studentListResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(userSchema),
+});
+export type StudentListResponseType = z.infer<typeof _studentListResponseSchema>;
 
 export const changePasswordSchema = z
     .object({

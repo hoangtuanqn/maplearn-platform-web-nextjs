@@ -46,6 +46,15 @@ export function getStatusBadge(type: string, status: string) {
                 default:
                     return <Badge variant="secondary">Không xác định</Badge>;
             }
+        case "activity_status":
+            switch (+status) {
+                case 1:
+                    return <Badge variant="success">Hoạt động</Badge>;
+                case 0:
+                    return <Badge variant="warning">Tạm ngưng</Badge>;
+                default:
+                    return <Badge variant="secondary">Không xác định</Badge>;
+            }
         default:
             return <Badge variant="secondary">Không xác định</Badge>;
     }

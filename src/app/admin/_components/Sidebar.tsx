@@ -21,6 +21,7 @@ import {
     LifeBuoy,
     ChevronUp,
 } from "lucide-react";
+import Link from "next/link";
 
 const Sidebar = () => {
     return (
@@ -50,9 +51,14 @@ const Sidebar = () => {
                 <li className="mt-3 mb-1 flex items-center gap-2 rounded-md">
                     <span className="text-xs font-bold">Người dùng</span>
                 </li>
-                <li className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-800 hover:bg-slate-100">
-                    <UserRound className="text-gray-600" strokeWidth={3} />
-                    <span className="text-xs font-medium">Học sinh</span>
+                <li>
+                    <Link
+                        href="/admin/students"
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-slate-800 transition-colors hover:bg-slate-100"
+                    >
+                        <UserRound className="text-gray-600" strokeWidth={3} />
+                        <span className="text-xs font-medium">Học sinh</span>
+                    </Link>
                 </li>
                 <li className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-800 hover:bg-slate-100">
                     <UserCog className="text-gray-600" strokeWidth={3} />
@@ -78,7 +84,7 @@ const Sidebar = () => {
                             <GraduationCap className="text-gray-600" strokeWidth={3} />
                             <span className="text-xs font-medium">Khóa học</span>
                         </div>
-                        <ChevronUp className="chevron" />
+                        <ChevronUp className="chevron text-gray-300" />
                     </button>
                     <ul className="submenu hidden space-y-1 pl-1 text-sm">
                         <li className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-800 hover:bg-slate-100">
@@ -145,7 +151,7 @@ const Sidebar = () => {
                             <FileEdit className="text-gray-600" strokeWidth={3} />
                             <span className="text-xs font-medium">Bài viết</span>
                         </div>
-                        <ChevronUp className="chevron" />
+                        <ChevronUp className="chevron text-gray-300" />
                     </button>
                     <ul className="submenu hidden space-y-1 pl-1 text-sm">
                         <li className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-800 hover:bg-slate-100">
@@ -169,7 +175,7 @@ const Sidebar = () => {
                             <FileArchive className="text-gray-600" strokeWidth={3} />
                             <span className="text-xs font-medium">Tài liệu</span>
                         </div>
-                        <ChevronUp className="chevron" />
+                        <ChevronUp className="chevron text-gray-300" />
                     </button>
                     <ul className="submenu hidden space-y-1 pl-1 text-sm">
                         <li className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-slate-800 hover:bg-slate-100">
