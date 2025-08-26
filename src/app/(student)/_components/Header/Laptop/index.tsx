@@ -31,8 +31,8 @@ const headerLinks = [
     {
         label: "Thi thử",
         icon: DocumentIcon,
-        href: "/exam-online",
-        macher: ["/exam-online"],
+        href: "/exams",
+        macher: ["/exams"],
     },
     {
         label: "Tin tức",
