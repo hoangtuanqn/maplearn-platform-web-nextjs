@@ -1,7 +1,3 @@
-import { match } from "path-to-regexp";
-import zxcvbn from "zxcvbn";
-import { PasswordStrengthType } from "~/app/(student)/(common)/auth/auth.schema";
-
 export const getGender = (gender: "male" | "female" | "other") => {
     switch (gender) {
         case "male":
@@ -17,27 +13,7 @@ export const getCharacterName = (name: string | null | undefined) => {
     const arrName = name.split(" ");
     return arrName[arrName.length - 1].substring(0, 1);
 };
-export const isActiveRoute = (pathname: string, listRoutePath: string[]) => {
-    const cleanPath = pathname.split("?")[0]; // Loại bỏ query string
 
-    return listRoutePath.some((route) => {
-        const matcher = match(route, { decode: decodeURIComponent });
-        return matcher(cleanPath) !== false;
-    });
-};
-
-// Check độ mạnh mật khẩu
-export function getPasswordStrength(password: string): PasswordStrengthType {
-    const result = zxcvbn(password);
-    const labels = ["Rất yếu", "Yếu", "Trung bình", "Khá", "Mạnh"];
-
-    return {
-        score: result.score,
-        strengthPercent: result.score * 25,
-        label: labels[result.score],
-        suggestions: result.feedback.suggestions,
-    };
-}
 // Decode base64 url safe
 export function base64UrlDecode(data: string): string {
     // Bổ sung dấu '=' nếu thiếu

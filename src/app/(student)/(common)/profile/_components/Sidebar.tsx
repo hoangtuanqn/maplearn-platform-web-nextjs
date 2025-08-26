@@ -1,11 +1,12 @@
 "use client";
 import { useAuth } from "~/hooks/useAuth";
-import { isActiveRoute } from "~/libs/hepler";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Bookmark, ChevronRight, CircleQuestionMark, ContactRound, GraduationCap, ReceiptCent } from "lucide-react";
 import { ElementType } from "react";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
+import { isActiveRoute } from "~/libs/routeMatcher";
 type SidebarProfileLinkProps = {
     pathname: string;
     url: string;

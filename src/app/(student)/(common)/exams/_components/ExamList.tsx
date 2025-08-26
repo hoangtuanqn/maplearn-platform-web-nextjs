@@ -61,7 +61,7 @@ const ExamList = () => {
                                         className="rounded-[8px] bg-white px-4.5 py-3.5"
                                         style={{ boxShadow: "0px 1px 4px 0px #0000000D" }}
                                     >
-                                        <div className="flex gap-3.5">
+                                        <div className="flex gap-2">
                                             <div
                                                 className={clsx(
                                                     "t1-flex-center h-[28px] rounded-[8px] px-3.5 font-medium text-white",
@@ -78,6 +78,33 @@ const ExamList = () => {
                                             </div>
                                             <div className="t1-flex-center text-primary h-[28px] rounded-[8px] bg-[#F0F3F7] px-3.5 font-medium">
                                                 {exam.duration_minutes} phút
+                                            </div>
+                                            <div
+                                                className={clsx(
+                                                    "t1-flex-center h-[28px] rounded-[8px] px-3.5 font-medium",
+                                                    {
+                                                        "bg-[#E6F4EA] text-[#128b3d]": exam.difficulty === "easy",
+                                                        "bg-[#FFF7E6] text-[#FF8A00]": exam.difficulty === "normal",
+                                                        "bg-[#FDEDED] text-[#C41D17]": exam.difficulty === "hard",
+                                                        "bg-[#E3E6F6] text-[#3F51B5]": exam.difficulty === "very_hard",
+                                                        "text-primary bg-[#F0F3F7]": ![
+                                                            "easy",
+                                                            "normal",
+                                                            "hard",
+                                                            "very_hard",
+                                                        ].includes(exam.difficulty),
+                                                    },
+                                                )}
+                                            >
+                                                {exam.difficulty === "easy"
+                                                    ? "Dễ"
+                                                    : exam.difficulty === "normal"
+                                                      ? "Trung bình"
+                                                      : exam.difficulty === "hard"
+                                                        ? "Khó"
+                                                        : exam.difficulty === "very_hard"
+                                                          ? "Rất khó"
+                                                          : "Không xác định"}
                                             </div>
                                         </div>
                                         <div className="mt-3.5 line-clamp-2 min-h-[48px] text-[16px] font-medium text-[#444444]">

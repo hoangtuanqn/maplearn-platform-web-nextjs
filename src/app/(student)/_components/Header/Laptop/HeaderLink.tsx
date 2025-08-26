@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ElementType } from "react";
-import { isActiveRoute } from "~/libs/hepler";
+import { isActiveRoute } from "~/libs/routeMatcher";
 export type ItemLinkType = {
     icon: ElementType;
     label: string;

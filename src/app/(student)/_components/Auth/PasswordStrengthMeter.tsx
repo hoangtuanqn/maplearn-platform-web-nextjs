@@ -1,7 +1,7 @@
 "use client";
 
 import { Progress } from "~/components/ui/progress";
-import { getPasswordStrength } from "~/libs/hepler";
+import { getPasswordStrength } from "~/libs/passwordStrength";
 
 type PasswordStrengthMeterProps = {
     password: string;

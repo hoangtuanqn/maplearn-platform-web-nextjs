@@ -58,7 +58,7 @@ const SideBarLaptop = () => {
                 <MenuItemLink title="Tài liệu" url={"/documents"} image="/assets/icons/document.svg" />
                 <div className="my-4 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <div className="py-2 pl-2">
-                    <p className="text-primary text-base font-medium">Liên kết</p>
+                    <p className="text-primary text-base font-medium">Liên kết chính chủ</p>
                 </div>
                 <div className="text-primary px-2 font-medium">
                     <SocialLink
