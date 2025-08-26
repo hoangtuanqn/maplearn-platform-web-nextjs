@@ -12,11 +12,8 @@ const StudentPage = () => {
             <div className="item-center mt-5 flex justify-end">
                 <ImportStudent />
             </div>
-            <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
-                <h3 className="text-xl font-bold">Danh sách học sinh</h3>
-                <p className="text-sm text-slate-500">Danh sách học sinh sẽ được hiển thị ở đây.</p>
-                <StudentList />
-            </div>
+
+            <StudentList />
         </section>
     );
 };
