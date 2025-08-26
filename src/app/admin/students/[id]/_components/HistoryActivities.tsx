@@ -1,45 +1,76 @@
-import React from "react";
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import React, { Suspense } from "react";
+import studentApi, { USERS_PER_PAGE } from "~/apiRequest/admin/student";
+import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
+import { Button } from "~/components/ui/button";
+import { ActionActivity, ActionActivityLabel } from "~/contants/user/actionActivity";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import { formatter } from "~/libs/format";
 
-const HistoryActivities = () => {
+const HistoryActivities = ({ id }: { id: string }) => {
+    const { page } = useGetSearchQuery(["page"] as const);
+    const { data: histories, isLoading } = useQuery({
+        queryKey: ["admin", "students", "history", page],
+        queryFn: async () => {
+            const res = await studentApi.getActivityHistory(id, +page, USERS_PER_PAGE);
+            return res.data.data;
+        },
+        staleTime: 5 * 60 * 1000, // 5 phút
+    });
+    const total = histories?.total ?? 0;
+    const totalPages = Math.ceil(total / USERS_PER_PAGE);
     return (
-        <>
+        <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-xl font-bold">Lịch sử hoạt động</h3>
+                    <p className="text-sm text-slate-500">Lịch sử hoạt động của người dùng này.</p>
+                </div>
+                <Button>Xuất dữ liệu</Button>
+            </div>
             <div className="mt-8 overflow-x-auto">
                 <table className="min-w-full rounded-xl bg-white shadow-sm">
                     <thead>
                         <tr className="border-b border-gray-200">
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">STT</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Tài khoản</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
-                                Thông tin cơ bản
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Email</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số điện thoại</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số dư</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
-                            <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Hành động</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Mô tả</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">IP</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">User Agent</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thời gian</th>
                         </tr>
                     </thead>
                     <tbody className="text-xs">
-                        {[1, 2, 3, 4, 5].map((_, idx) => (
-                            <tr
-                                key={idx}
-                                className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
-                            >
-                                <td className="px-4 py-3 text-zinc-500">Xin chào</td>
-                                <td className="px-4 py-3 text-zinc-500">Xin chào</td>
-                                <td className="px-4 py-3 text-zinc-500">Xin chào</td>
-                                <td className="px-4 py-3 text-zinc-500">Xin chào</td>
-                                <td className="px-4 py-3 text-zinc-500">Xin chào</td>
-                            </tr>
-                        ))}
+                        {isLoading
+                            ? [...Array(USERS_PER_PAGE)].map((_, index) => <TableSkeleton key={index} col={6} />)
+                            : histories?.data.map((history) => (
+                                  <tr
+                                      key={history.id}
+                                      className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
+                                  >
+                                      <td className="px-4 py-3 text-zinc-500">{history.id}</td>
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          {ActionActivityLabel[history.action as ActionActivity]}
+                                      </td>
+                                      <td className="px-4 py-3 text-zinc-500">{history.description}</td>
+                                      <td className="px-4 py-3 text-zinc-500">{history.ip_address}</td>
+                                      <td className="px-4 py-3 text-zinc-500">{history.user_agent}</td>
+                                      <td className="px-4 py-3 text-right text-zinc-500">
+                                          {formatter.date(history.created_at, true)}
+                                      </td>
+                                  </tr>
+                              ))}
                     </tbody>
                 </table>
             </div>
             <div className="ml-auto w-fit">
-                <PaginationNav totalPages={20} basePath="/admin" />
+                <Suspense>
+                    <PaginationNav totalPages={totalPages} basePath={`/admin/students/${id}`} />
+                </Suspense>
             </div>
-        </>
+        </div>
     );
 };
 

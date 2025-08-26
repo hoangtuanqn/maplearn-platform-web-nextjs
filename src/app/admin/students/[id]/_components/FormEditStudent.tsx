@@ -99,9 +99,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
     return (
         <>
             {updateStudentMutation.isPending && <Loading />}
-            <div className="flex items-center justify-end">
-                <ResetPassword id={String(studentData.id)} />
-            </div>
+
             <div className="mt-6 flex gap-5">
                 <div className="flex flex-1/5 flex-col items-center rounded-lg bg-white p-6 pb-8 shadow-sm">
                     <div className="relative mb-4 h-24 w-24 rounded-full border">
@@ -178,8 +176,13 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                     </div>
                 </div>
                 <div className="flex-4/5 rounded-lg bg-white p-6 pb-8 shadow-sm">
-                    <h3 className="text-xl font-bold">Chỉnh sửa thông tin học sinh</h3>
-                    <p className="mb-4 text-sm text-slate-500">Danh sách học sinh sẽ được hiển thị ở đây.</p>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-bold">Chỉnh sửa thông tin</h3>
+                            <p className="mb-4 text-sm text-slate-500">Chỉnh sửa thông tin người dùng tại đây.</p>
+                        </div>
+                        <ResetPassword id={String(studentData.id)} />
+                    </div>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             {/* Row 1: Full name, Email, Phone */}

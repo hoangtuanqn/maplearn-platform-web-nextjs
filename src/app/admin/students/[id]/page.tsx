@@ -25,11 +25,8 @@ const EditStudentPage = async ({ params }: { params: Promise<{ id: string }> }) 
             <div className="mt-8">
                 <FormEditStudent studentData={student} />
             </div>
-            <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
-                <h3 className="text-xl font-bold">Lịch sử hoạt động</h3>
-                <p className="text-sm text-slate-500">Lịch sử hoạt động của học sinh này.</p>
-                <HistoryActivities />
-            </div>
+
+            <HistoryActivities id={id} />
         </section>
     );
 };

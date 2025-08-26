@@ -206,6 +206,7 @@ const Sidebar = () => {
                     <span className="text-xs font-medium">Hỗ trợ</span>
                 </li>
             </ul>
+            <script src="/assets/js/sidebar.js" defer></script>
         </nav>
     );
 };
