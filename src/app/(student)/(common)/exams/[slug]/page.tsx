@@ -1,6 +1,5 @@
 import { CirclePlay, Clock, Disc, OctagonMinus, PenTool, Play, User } from "lucide-react";
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

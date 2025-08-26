@@ -35,7 +35,7 @@ const StudentList = () => {
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số điện thoại</th>
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số dư</th>
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
-                            <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Chi tiết</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody className="text-xs">
@@ -89,7 +89,9 @@ const StudentList = () => {
                                     {getStatusBadge("activity_status", student.banned ? "0" : "1")}
                                 </td>
                                 <td className="px-4 py-3 text-right">
-                                    <Button variant={"outlineBlack"}>Chi tiết</Button>
+                                    <Link href={`/admin/students/${student.id}`}>
+                                        <Button variant={"outlineBlack"}>Chỉnh sửa</Button>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

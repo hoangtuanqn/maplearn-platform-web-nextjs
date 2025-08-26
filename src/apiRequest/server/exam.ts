@@ -1,14 +1,7 @@
 // libs/apis/examApiServer.ts
-import { cookies } from "next/headers";
-import serverApi from "~/libs/apis/serverApi";
-import { QuestionsExamResponse, ResultDetailExamResponse, ResultExamResponse } from "~/schemaValidate/exam.schema";
 
-async function withAuthHeaders<T>(url: string) {
-    const cookie = await cookies();
-    return serverApi.get<T>(url, {
-        headers: { cookie: cookie.toString() },
-    });
-}
+import withAuthHeaders from "~/libs/withAuthHeaders";
+import { QuestionsExamResponse, ResultDetailExamResponse, ResultExamResponse } from "~/schemaValidate/exam.schema";
 
 const examApiServer = {
     getExamDetail: (slug: string) => withAuthHeaders<QuestionsExamResponse>(`/api/exam/${slug}`),

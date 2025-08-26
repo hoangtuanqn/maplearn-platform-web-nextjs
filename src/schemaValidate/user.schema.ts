@@ -9,7 +9,7 @@ export const userSchema = z.object({
     phone_number: z.string().nullable(),
     gender: z.enum(["male", "female", "other"]),
     avatar: z.string(),
-    birth_year: z.number(),
+    birth_year: z.number().optional(),
     facebook_link: z.string(),
     school: z.string().nullable(),
     city: z.string().nullable(),
@@ -24,6 +24,13 @@ export const userSchema = z.object({
 });
 
 export type UserType = z.infer<typeof userSchema>;
+
+const _studentResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: userSchema,
+});
+export type StudentDetailResponseType = z.infer<typeof _studentResponseSchema>;
 
 const _studentListResponseSchema = z.object({
     success: z.boolean(),
@@ -61,7 +68,7 @@ export const profileSchema = z.object({
     birth_year: z
         .number()
         .min(1995, "Yêu cầu năm sinh từ 1995 trở đi")
-        .max(2010, "Yêu cầu năm sinh không quá 2010")
+        .max(2013, "Yêu cầu năm sinh không quá 2013")
         .max(new Date().getFullYear(), "Năm sinh không hợp lệ")
         .optional()
         .nullable(),

@@ -100,6 +100,7 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
         <Slot
             data-slot="form-control"
             id={formItemId}
+            className="w-full"
             aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
             aria-invalid={!!error}
             {...props}

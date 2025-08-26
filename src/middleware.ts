@@ -9,6 +9,8 @@ const protectedRoutes = [
     "/invoices",
     "/invoices/:path",
     "/exams/:path",
+    "/admin",
+    "/admin/:path",
 ];
 const authPaths = ["/auth/:path"];
 
@@ -35,10 +37,14 @@ export function middleware(request: NextRequest) {
     if (protectedRoutes.some((route) => isPathMatch(route, pathname)) && !token) {
         return NextResponse.redirect(new URL("/auth/login", request.url));
     }
+    // // Check nếu vô role admin cần check quyền hạn
+    // if (pathname.startsWith("/admin") && !isAdmin(token)) {
+    //     return NextResponse.redirect(new URL("/auth/login", request.url));
+    // }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/invoices/:path*", "/exams/:path*"],
+    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/invoices/:path*", "/exams/:path*", "/admin/:path*"],
 };
