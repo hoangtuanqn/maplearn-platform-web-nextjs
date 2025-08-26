@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/button";
 import { ActionActivity, ActionActivityLabel } from "~/contants/user/actionActivity";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
+import ExportHistoryActivities from "./ExportHistoryActivities";
 
 const HistoryActivities = ({ id }: { id: string }) => {
     const { page } = useGetSearchQuery(["page"] as const);
@@ -28,7 +29,7 @@ const HistoryActivities = ({ id }: { id: string }) => {
                     <h3 className="text-xl font-bold">Lịch sử hoạt động</h3>
                     <p className="text-sm text-slate-500">Lịch sử hoạt động của người dùng này.</p>
                 </div>
-                <Button>Xuất dữ liệu</Button>
+                <ExportHistoryActivities id={id} />
             </div>
             <div className="mt-8 overflow-x-auto">
                 <table className="min-w-full rounded-xl bg-white shadow-sm">

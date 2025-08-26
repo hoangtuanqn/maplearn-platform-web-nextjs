@@ -1,7 +1,7 @@
 import privateApi from "~/libs/apis/privateApi";
 import { ActivityHistorySchema, UpdateProfileSchema } from "~/schemaValidate/admin/student.schema";
 import { StudentDetailResponseType, StudentListResponseType } from "~/schemaValidate/user.schema";
-export const USERS_PER_PAGE = 1;
+export const USERS_PER_PAGE = 10;
 const studentApi = {
     getStudents: () => privateApi.get<StudentListResponseType>("/students"),
     getDetailStudent: (id: string, headers?: { [key: string]: string }) =>
