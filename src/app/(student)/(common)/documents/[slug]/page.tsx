@@ -2,7 +2,7 @@ import { Clock, DownloadCloud } from "lucide-react";
 import Image from "next/image";
 import React, { cache } from "react";
 import { formatter } from "~/libs/format";
-import { Report } from "./_components/Report";
+// import { Report } from "./_components/Report";
 import { ShareButton } from "../../../_components/Shared/ShareButton";
 import DocumentsByCategory from "./_components/DocumentsByCategory";
 import documentApi from "~/apiRequest/documents";
@@ -67,7 +67,7 @@ const DocumentDetailPage = async ({ params }: { params: Promise<{ slug: string }
 
                         <div className="flex gap-2 max-lg:mt-2">
                             <ShareButton />
-                            <Report id={document.id} />
+                            {/* <Report id={document.id} /> */}
                         </div>
                     </div>
                     <div className="flex justify-center">
