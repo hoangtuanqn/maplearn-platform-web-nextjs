@@ -15,7 +15,6 @@ export const userSchema = z.object({
     city: z.string().nullable(),
     bio: z.string().nullable(),
     degree: z.string().nullable(),
-    money: z.number().min(0),
     role: z.enum(["student", "teacher", "admin"]),
     banned: z.boolean().default(false),
     google2fa_enabled: z.boolean().default(false),

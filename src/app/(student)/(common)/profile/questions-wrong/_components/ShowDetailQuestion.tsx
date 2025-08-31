@@ -72,7 +72,7 @@ const ShowDetailQuestion = ({ question }: { question: QuestionWrongProfileRespon
                             {question.question.type === QuestionType.DRAG_DROP ? (
                                 <DragDrop
                                     question={question.question.content}
-                                    items={question.question.answers || []}
+                                    items={question.question.options || []}
                                     activeAnswers={
                                         Array.isArray(question.question.your_choice)
                                             ? question.question.your_choice
@@ -93,7 +93,7 @@ const ShowDetailQuestion = ({ question }: { question: QuestionWrongProfileRespon
                                             }
                                             handleChoiceAnswer={() => {}}
                                             idQuestion={question.id}
-                                            answers={question.question.answers}
+                                            answers={question.question.options}
                                         />
                                     )}
                                     {question.question.type === QuestionType.MULTIPLE_CHOICE && (
@@ -105,7 +105,7 @@ const ShowDetailQuestion = ({ question }: { question: QuestionWrongProfileRespon
                                             }
                                             handleChoiceAnswer={() => {}}
                                             idQuestion={question.id}
-                                            answers={question.question.answers}
+                                            answers={question.question.options}
                                         />
                                     )}
                                     {question.question.type === QuestionType.NUMERIC_INPUT && (
@@ -122,7 +122,7 @@ const ShowDetailQuestion = ({ question }: { question: QuestionWrongProfileRespon
                                     {question.question.type === QuestionType.TRUE_FALSE && (
                                         <TrueFalseAnswer
                                             idQuestion={question.id}
-                                            answers={question.question.answers || []}
+                                            answers={question.question.options || []}
                                             activeAnswer={
                                                 Array.isArray(question.question.your_choice)
                                                     ? question.question.your_choice
@@ -144,7 +144,7 @@ const ShowDetailQuestion = ({ question }: { question: QuestionWrongProfileRespon
                         <div className="mt-2 flex flex-col gap-2 text-xs sm:flex-row sm:text-sm">
                             Đáp án đúng là:{" "}
                             <span className="flex flex-col gap-1 font-bold text-green-600 sm:flex-row">
-                                {question.question.answers_correct?.map((item) => (
+                                {question.question.options_correct?.map((item) => (
                                     <RenderLatex key={item.id} content={item.content} />
                                 ))}
                             </span>

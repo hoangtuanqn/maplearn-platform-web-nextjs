@@ -49,8 +49,8 @@ const DropZone = ({ id, onDropItem, onRemoveItem, droppedItem, disabled }: DropZ
     const onDragStart = (e: React.DragEvent) => {
         if (disabled) return;
         if (droppedItem) {
-            e.dataTransfer.setData("text/plain", `${droppedItem.id}`);
-            onRemoveItem(id, `${droppedItem.id}`);
+            e.dataTransfer.setData("text/plain", `${droppedItem.content}`);
+            onRemoveItem(id, `${droppedItem.content}`);
         }
     };
 
@@ -89,6 +89,7 @@ const DragDrop = ({
     const [items, setItems] = useState<ValueType[]>(
         initialItems.filter((item) => !activeAnswers?.includes(item.content)),
     );
+    console.log("items >> ", items, "initialItems >> ", initialItems);
 
     const [droppedItems, setDroppedItems] = useState<Record<string, ValueType | null>>(() => {
         const initial: Record<string, ValueType | null> = {};
@@ -120,21 +121,22 @@ const DragDrop = ({
     };
 
     const handleDropItem = (dropId: string, itemId: string) => {
-        const droppedItemObj = initialItems.find((i) => `${i.id}` === itemId);
+        const droppedItemObj = initialItems.find((i) => `${i.content}` === itemId);
         if (!droppedItemObj) return;
 
         setDroppedItems((prevDropped) => {
             const prevItem = prevDropped[dropId];
-            if (prevItem) setItems((prevItems) => [...prevItems.filter((i) => i.id !== prevItem.id), prevItem]);
+            if (prevItem)
+                setItems((prevItems) => [...prevItems.filter((i) => i.content !== prevItem.content), prevItem]);
             return { ...prevDropped, [dropId]: droppedItemObj };
         });
 
-        setItems((prevItems) => prevItems.filter((i) => `${i.id}` !== itemId));
+        setItems((prevItems) => prevItems.filter((i) => `${i.content}` !== itemId));
     };
 
     const handleRemoveItem = (dropId: string, itemId: string) => {
         setDroppedItems((prev) => ({ ...prev, [dropId]: null }));
-        const removedItem = initialItems.find((i) => `${i.id}` === itemId);
+        const removedItem = initialItems.find((i) => `${i.content}` === itemId);
         if (removedItem) setItems((prev) => [...prev, removedItem]);
     };
 
@@ -152,7 +154,7 @@ const DragDrop = ({
         <div>
             <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
                 {items.map((item) => (
-                    <DraggableItem key={item.id} id={`${item.id}`} disabled={disabled}>
+                    <DraggableItem key={item.content} id={`${item.content}`} disabled={disabled}>
                         <RenderLatex content={item.content} />
                     </DraggableItem>
                 ))}

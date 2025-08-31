@@ -71,7 +71,7 @@ const DetailResult = ({
                         {result.type === "DRAG_DROP" ? (
                             <DragDrop
                                 question={result.content || ""}
-                                items={result.answers || []}
+                                items={result.options || []}
                                 activeAnswers={result.your_choice ?? []}
                                 idQuestion={result.id}
                                 handleChoiceAnswer={() => {}}
@@ -93,7 +93,7 @@ const DetailResult = ({
                                             }
                                             handleChoiceAnswer={() => {}}
                                             idQuestion={result.id}
-                                            answers={result.answers}
+                                            answers={result.options}
                                         />
                                     )}
                                     {result.type === "MULTIPLE_CHOICE" && (
@@ -101,7 +101,7 @@ const DetailResult = ({
                                             activeAnswers={result.your_choice}
                                             handleChoiceAnswer={() => {}}
                                             idQuestion={result.id}
-                                            answers={result.answers}
+                                            answers={result.options}
                                         />
                                     )}
                                     {result.type === "NUMERIC_INPUT" && (
@@ -114,7 +114,7 @@ const DetailResult = ({
                                     {result.type === "TRUE_FALSE" && (
                                         <TrueFalseAnswer
                                             idQuestion={result.id}
-                                            answers={result.answers || []}
+                                            answers={result.options || []}
                                             activeAnswer={result.your_choice}
                                             handleChoiceAnswer={() => {}}
                                         />
@@ -159,7 +159,7 @@ const DetailResult = ({
                                 onClick={() => {
                                     handleSubmit(
                                         `Câu hỏi: ${result.content}\n` +
-                                            `Đáp án chính xác: ${Array.isArray(result.correct_answer) ? result.correct_answer.join(", ") : result.correct_answer}\n` +
+                                            `Đáp án chính xác: ${Array.isArray(result.correct) ? result.correct.join(", ") : result.correct}\n` +
                                             `Giải thích từ giáo viên: ${result.explanation}\n` +
                                             `Tôi chưa hiểu lắm, bạn có thể giải thích thêm không?`,
                                     );

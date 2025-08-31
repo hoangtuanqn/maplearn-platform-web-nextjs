@@ -37,7 +37,6 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     // idx: chỉ dành cho cái drag_drop thôi nhé
     const handleChoiceAnswer = (questionId: number, answer: string, idx?: number) => {
         const question = questions.find((ques) => ques.id === questionId);
-        console.log("question", question);
 
         switch (question?.type) {
             case "SINGLE_CHOICE":
@@ -61,7 +60,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             case "DRAG_DROP":
                 if (idx) {
                     setAnswers((prev) => {
-                        const countAnswer = question.answers.length ?? 0;
+                        const countAnswer = question.options.length ?? 0;
                         // Loại bỏ phần tử rỗng k có giá trị
                         const newAnswers = Array.from(
                             { length: countAnswer },

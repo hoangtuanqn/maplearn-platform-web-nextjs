@@ -98,7 +98,6 @@ const StudentList = () => {
                                                   {student.phone_number}
                                               </Link>
                                           </td>
-                                          <td className="px-4 py-3 text-zinc-500">{formatter.number(student.money)}</td>
 
                                           <td className="px-4 py-3">
                                               {getStatusBadge("activity_status", student.banned ? "0" : "1")}

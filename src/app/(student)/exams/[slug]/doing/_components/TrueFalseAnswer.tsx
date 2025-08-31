@@ -50,11 +50,11 @@ const TrueFalseAnswer = ({
             {[
                 {
                     name: "Đúng",
-                    value: "1",
+                    value: "Đúng",
                 },
                 {
                     name: "Sai",
-                    value: "0",
+                    value: "Sai",
                 },
             ]?.map((answer) => {
                 return (

@@ -71,7 +71,7 @@ const questionSchema = z.object({
     explanation: z.string().nullable(),
     images: z.array(z.string()).nullable(),
     marks: z.number(),
-    answers: z.array(answersSchema),
+    options: z.array(answersSchema),
 });
 export type Question = z.infer<typeof questionSchema>;
 
@@ -95,7 +95,6 @@ const attemptExamSchema = z.object({
     details: z.string(),
     started_at: z.string(),
     submitted_at: z.string().nullable(),
-
     note: z.string().nullable(),
     status: z.enum(["in_progress", "submitted", "detected", "canceled"]),
     created_at: z.string(),

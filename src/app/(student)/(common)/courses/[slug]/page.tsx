@@ -63,7 +63,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                             <IntroCourse thumbnail={course.thumbnail} video={course.intro_video} />
                         </div>
                         <div className="mt-2 flex flex-col gap-2 text-center text-base">
-                            <h2 className="t1-gradient-text font-bold">Giáo viên: Tổ toán học MapLearn</h2>
+                            <h2 className="t1-gradient-text font-bold">Giáo viên: {course.teacher.full_name}</h2>
                             <div className="mt-1">
                                 {/* Giá tiền cũ, dạng bị gạch bỏ */}
                                 <span className="text-sm text-slate-500 line-through">

@@ -4,7 +4,6 @@ import React from "react";
 import studentApi from "~/apiRequest/admin/student";
 import Loading from "~/app/(student)/_components/Loading";
 import { Button } from "~/components/ui/button";
-import { ActionActivity, ActionActivityLabel } from "~/contants/user/actionActivity";
 import { exportExcel } from "~/libs/exportExcel";
 import { formatter } from "~/libs/format";
 
@@ -20,7 +19,6 @@ const ExportStudentList = () => {
         facebook_link: "Link Facebook",
         school: "Trường học",
         city: "Thành phố",
-        money: "Số tiền",
         created_at: "Thời gian tạo",
     };
 
@@ -42,7 +40,7 @@ const ExportStudentList = () => {
                     facebook_link: item.facebook_link,
                     school: item.school,
                     city: item.city,
-                    money: item.money,
+
                     created_at: formatter.date(item.created_at, true),
                 };
             });

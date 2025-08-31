@@ -115,9 +115,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                         <p>
                             <span className="font-bold">Tên người dùng:</span> {studentData.username}
                         </p>
-                        <p>
-                            <span className="font-bold">Số dư:</span> {formatter.number(studentData.money)}đ
-                        </p>
+
                         {studentData.full_name && (
                             <p>
                                 <span className="font-bold">Họ tên:</span> {studentData.full_name}
