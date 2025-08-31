@@ -8,7 +8,6 @@ import { CourseDetail } from "~/schemaValidate/course.schema";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { formatter } from "~/libs/format";
-import ReviewCourse from "./_components/Reviews/ReviewCourse";
 import ButtonAction from "./_components/ButtonAction";
 import RelatedCourses from "./_components/RelatedCourses";
 const getCourse = cache(async (slug: string) => {
@@ -53,7 +52,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                 <div className="w-full flex-9/12 max-lg:order-2">
                     <ContentLesson course={course as CourseDetail} />
                     <ListLessonCourse />
-                    <ReviewCourse course={course as CourseDetail} />
+
                     {/* Các khóa học cùng danh mục */}
                     <RelatedCourses idCategory={course.category_id} />
                 </div>
@@ -68,10 +67,10 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                             <div className="mt-1">
                                 {/* Giá tiền cũ, dạng bị gạch bỏ */}
                                 <span className="text-sm text-slate-500 line-through">
-                                    {course.final_price < course.price && formatter.number(course.price) + "đ"}
+                                    {course.price < course.price && formatter.number(course.price) + "đ"}
                                 </span>
                                 <span className="block font-bold text-black">
-                                    Học phí: {formatter.number(course.final_price) + "đ"}
+                                    Học phí: {formatter.number(course.price) + "đ"}
                                 </span>
                             </div>
                         </div>

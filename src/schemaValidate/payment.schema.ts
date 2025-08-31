@@ -6,7 +6,7 @@ const paymentSchema = z.object({
     id: z.number(),
     user_id: z.number().min(1),
     transaction_code: z.string(),
-    payment_method: z.enum(["transfer", "vnpay", "momo", "zalopay", "card"]),
+    payment_method: z.enum(["transfer", "vnpay", "momo", "zalopay"]),
     status: z.enum(["pending", "paid", "failed", "expired"]),
     url_payment: z.string().optional(),
     updated_at: z.string(),

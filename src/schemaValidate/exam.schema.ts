@@ -159,7 +159,7 @@ const _rankingPaperSchema = z.object({
     message: z.string(),
     data: z.array(
         attemptExamSchema.extend({
-            user: z.object(userSchema.pick({ id: true, avatar: true, full_name: true, cart_item_count: true })),
+            user: z.object(userSchema.pick({ id: true, avatar: true, full_name: true })),
         }),
     ),
 });

@@ -1,7 +1,6 @@
 import React from "react";
 import LoginGoogle from "../../../_components/Button/LoginGoogle";
 import LoginFacebook from "../../../_components/Button/LoginFacebook";
-import LoginGithub from "../../../_components/Button/LoginGithub";
 import LoginDiscord from "../../../_components/Button/LoginDiscord";
 
 const ActionLogin = () => {
@@ -15,7 +14,6 @@ const ActionLogin = () => {
                 <LoginGoogle />
                 <LoginFacebook />
                 <LoginDiscord />
-                <LoginGithub />
             </div>
         </div>
     );

@@ -13,16 +13,6 @@ export function getStatusBadge(type: string, status: string) {
                 default:
                     return <Badge variant="warning">Chưa thanh toán</Badge>;
             }
-        case "card":
-            // pending', 'success', 'failed'
-            switch (status) {
-                case "pending":
-                    return <Badge variant="warning">Chờ kiểm tra</Badge>;
-                case "success":
-                    return <Badge variant="success">Chấp nhận</Badge>;
-                case "failed":
-                    return <Badge variant="danger">Từ chối</Badge>;
-            }
         case "exam":
             // 'in_progress', 'submitted', 'detected', 'canceled'
             switch (status) {

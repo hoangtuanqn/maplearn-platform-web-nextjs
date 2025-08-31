@@ -56,7 +56,7 @@ const Teachers = () => {
                         </>
                     ) : (
                         // Khi đã có dữ liệu
-                        teachers.map(({ user: { id, full_name, avatar, gender } }) => (
+                        teachers.map(({ id, full_name, avatar, gender }) => (
                             <SwiperSlide key={full_name}>
                                 <Link
                                     href={`/teachers/${id}`}

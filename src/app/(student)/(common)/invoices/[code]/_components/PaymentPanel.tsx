@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
 import { DangerConfirm } from "~/components/DangerConfirm";
-import { CardDialog } from "./CardDialog";
 
 const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
     const router = useRouter();
@@ -70,7 +69,6 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                                             <SelectItem value="vnpay">Ví VNPay</SelectItem>
                                             <SelectItem value="momo">Ví MOMO</SelectItem>
                                             <SelectItem value="zalopay">Ví ZaloPay</SelectItem>
-                                            <SelectItem value="card">Thanh toán thẻ cào</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
@@ -82,12 +80,6 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                                         <Button className="w-full text-white md:w-auto" onClick={handlePayment}>
                                             Đi đến {paymentMethod.toUpperCase()}
                                         </Button>
-                                    )}
-                                    {paymentMethod === "card" && (
-                                        <CardDialog
-                                            totalPrice={invoice.total_price}
-                                            code={invoice.transaction_code}
-                                        />
                                     )}
 
                                     {paymentMethod === "transfer" && (

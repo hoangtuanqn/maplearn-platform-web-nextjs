@@ -43,24 +43,14 @@ const sidebarMenuLink = [
         name: "Khóa học của tôi",
         icon: GraduationCap,
     },
-    {
-        url: "/profile/saved-courses",
-        matcher: ["/profile/saved-courses"],
-        name: "Khóa học yêu thích",
-        icon: Bookmark,
-    },
+
     {
         url: "/profile/invoices",
         matcher: ["/profile/invoices"],
         name: "Hóa đơn của tôi",
         icon: ReceiptCent,
     },
-    {
-        url: "/profile/questions-wrong",
-        matcher: ["/profile/questions-wrong"],
-        name: "Câu hỏi làm sai",
-        icon: CircleQuestionMark,
-    },
+
     // {
     //     url: "/profile/saved-questions",
     //     matcher: ["/profile/saved-questions"],

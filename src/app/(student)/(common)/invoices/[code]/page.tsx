@@ -11,7 +11,6 @@ import PusherNotification from "../../../_components/PusherNotification";
 import InfoUser from "./_components/InfoUser";
 import { getStatusBadge } from "~/libs/statusBadge";
 import PaymentPanel from "./_components/PaymentPanel";
-import CardTopUpHistory from "./_components/CardTopUpHistory";
 import InvoiceSummary from "./_components/InvoiceSummary";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
@@ -148,7 +147,6 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                         <InvoiceSummary invoice={invoice} />
                     </div>
                 </div>
-                <CardTopUpHistory code={code} />
             </div>
             <PaymentPanel invoice={invoice} />
         </section>

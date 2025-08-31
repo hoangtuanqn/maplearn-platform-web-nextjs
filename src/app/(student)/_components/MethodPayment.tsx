@@ -156,27 +156,35 @@ const MethodPayment = ({
                 </div>
             </div>
             <div
-                className="flex cursor-pointer items-center gap-3 rounded-lg border-2 p-4 transition-colors hover:border-yellow-500 hover:bg-yellow-50 max-lg:py-2"
+                className="relative flex cursor-not-allowed items-center gap-3 rounded-lg border-2 p-4 opacity-60 max-lg:py-2"
                 style={{
-                    borderColor: paymentMethod === "card" ? "#eab308" : "#e5e7eb",
-                    background: paymentMethod === "card" ? "#fefce8" : "#fff",
+                    borderColor: "#e5e7eb",
+                    background: "#f9fafb",
                 }}
-                onClick={() => setPaymentMethod("card")}
             >
-                <RadioGroupItem value="card" id="card" className="border-2 border-yellow-500 focus:ring-yellow-500" />
+                {/* "Đang phát triển" badge */}
+                <span className="absolute -top-3 left-4 z-10 rounded-full bg-orange-500 px-3 py-0.5 text-xs font-semibold text-white shadow">
+                    Đang phát triển
+                </span>
+                <RadioGroupItem
+                    value="card"
+                    id="card"
+                    className="border-2 border-gray-300 focus:ring-gray-300"
+                    disabled
+                />
                 <div className="flex items-center gap-3">
                     <Image
                         src="/assets/icons/scratch-card.png"
                         alt="Thẻ cào"
                         width={40}
                         height={40}
-                        className="rounded max-lg:w-8"
+                        className="rounded opacity-50 max-lg:w-8"
                     />
                     <div>
-                        <Label htmlFor="card" className="text-[15.125px] font-semibold text-yellow-700 max-lg:text-sm">
+                        <Label htmlFor="card" className="text-[15.125px] font-semibold text-gray-500 max-lg:text-sm">
                             Thanh toán bằng thẻ cào
                         </Label>
-                        <div className="text-xs text-gray-500">Thanh toán qua thẻ cào điện thoại</div>
+                        <div className="text-xs text-gray-400">Tính năng đang được phát triển</div>
                     </div>
                 </div>
             </div>

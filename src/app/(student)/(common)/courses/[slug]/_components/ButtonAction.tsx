@@ -6,8 +6,9 @@ import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "~/components/ui/button";
 import courseApi from "~/apiRequest/course";
-import { CourseDetail, CourseType } from "~/schemaValidate/course.schema";
-import ButtonActionCourse from "~/app/(student)/_components/Courses/_components/ButtonActionCourse";
+import { CourseDetail } from "~/schemaValidate/course.schema";
+import { PaymentMethodsDialog } from "./PaymentMethodsDialog";
+
 const ButtonAction = () => {
     const { slug } = useParams<{ slug: string }>();
     const [course, setCourse] = useState<CourseDetail | null>(null);
@@ -43,7 +44,8 @@ const ButtonAction = () => {
                             </Link>
                         </>
                     ) : (
-                        <ButtonActionCourse courseInit={(data as CourseType) ?? []} />
+                        <PaymentMethodsDialog />
+                        // <ButtonActionCourse courseInit={(data as CourseType) ?? []} />
                     )}
                 </>
             )}

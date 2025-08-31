@@ -18,10 +18,12 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                 {/* Đánh giá + học viên */}
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex flex-1 items-end gap-1 text-xs sm:text-sm">
-                        <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
-                        <Rating style={{ maxWidth: 120 }} value={course.rating.average_rating} readOnly />
-                        <span>({course.rating.total_reviews} xếp hạng)</span>
-                        <span className="ml-2 font-bold">{course.enrollments_count} học viên đã tham gia</span>
+                        <span className="font-bold text-[#FFB23F]">{4}</span>
+                        <Rating style={{ maxWidth: 120 }} value={4} readOnly />
+                        <span>20 xếp hạng</span>
+                        {course.enrollments_count > 0 && (
+                            <span className="ml-2 font-bold">{course.enrollments_count} học viên đã tham gia</span>
+                        )}
                     </div>
                     <ShareButton />
                 </div>
@@ -31,30 +33,21 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
                 <div>
                     <h3 className="mb-4 text-base font-semibold text-gray-800 sm:text-lg">Giáo viên giảng dạy</h3>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {course.teachers.length === 0 && (
-                            <h2 className="text-gray-500">Không có giáo viên đang giảng dạy trong khóa này</h2>
-                        )}
-                        {course.teachers.map(({ user: teacher, ...info }, idx) => (
-                            <Link
-                                href={`/teachers/${teacher.id}`}
-                                key={idx}
-                                className="flex items-center gap-3 sm:gap-4"
-                            >
-                                <Image
-                                    width={60}
-                                    height={60}
-                                    src={teacher.avatar}
-                                    alt={teacher.full_name}
-                                    className="h-12 w-12 rounded-full border object-cover sm:h-20 sm:w-20"
-                                />
-                                <div>
-                                    <div className="text-sm font-semibold text-gray-800 sm:text-base">
-                                        {teacher.full_name}
-                                    </div>
-                                    <div className="text-xs text-gray-500 sm:text-sm">{info.bio}</div>
+                        <Link href={`/teachers/${course.teacher.id}`} className="flex items-center gap-3 sm:gap-4">
+                            <Image
+                                width={60}
+                                height={60}
+                                src={course.teacher.avatar}
+                                alt={course.teacher.full_name}
+                                className="h-12 w-12 rounded-full border object-cover sm:h-20 sm:w-20"
+                            />
+                            <div>
+                                <div className="text-sm font-semibold text-gray-800 sm:text-base">
+                                    {course.teacher.full_name}
                                 </div>
-                            </Link>
-                        ))}
+                                <div className="text-xs text-gray-500 sm:text-sm">{course.teacher.bio}</div>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 

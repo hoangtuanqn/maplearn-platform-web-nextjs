@@ -5,8 +5,6 @@ import { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
 import { useRouter } from "next/navigation";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { formatter } from "~/libs/format";
-import { Checkbox } from "~/components/ui/checkbox";
-import ActionPayment from "./ActionPayment";
 import { FilterInvoice } from "./FilterInvoice";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
@@ -41,7 +39,6 @@ const InvoiceList = () => {
             setInvoices(data.invoices.data);
         }
     }, [data]);
-    const [selected, setSelected] = useState<number[]>([]);
     return (
         <div className="flex flex-col gap-4 px-2 font-medium sm:px-0">
             <div className="flex flex-col">
@@ -66,7 +63,6 @@ const InvoiceList = () => {
                         </ul>
                     </div>
                     <div className="mt-3 flex flex-wrap items-center gap-1 sm:gap-2 md:mt-0">
-                        <ActionPayment invoices={invoices} selected={selected} />
                         <ExportInvoices payload={{ sort, status, date, totalPages }} />
                         <FilterInvoice />
                     </div>
@@ -77,9 +73,6 @@ const InvoiceList = () => {
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th scope="col" className="px-2 py-3 pe-0">
-                                            <div className="flex h-5 items-center">{/* <Checkbox disabled /> */}</div>
-                                        </th>
                                         <th
                                             scope="col"
                                             className="px-2 py-3 text-start text-xs font-medium text-gray-500 uppercase sm:px-6"
@@ -136,36 +129,6 @@ const InvoiceList = () => {
                                                     key={invoice.id}
                                                     className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100"
                                                 >
-                                                    <td
-                                                        className="py-3 ps-2 sm:ps-4"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                    >
-                                                        {/* Pending mới hiển thị */}
-                                                        {invoice.status === "pending" && (
-                                                            <div className="flex h-5 justify-center">
-                                                                <Checkbox
-                                                                    onCheckedChange={(checked) => {
-                                                                        if (checked)
-                                                                            setSelected((prev) => [
-                                                                                ...prev,
-                                                                                invoice.id,
-                                                                            ]);
-                                                                        else
-                                                                            setSelected((prev) =>
-                                                                                prev.filter((id) => id !== invoice.id),
-                                                                            );
-                                                                    }}
-                                                                    // checked={selected.includes(invoice.id)}
-                                                                />
-                                                                <label
-                                                                    htmlFor="hs-table-search-checkbox-1"
-                                                                    className="sr-only"
-                                                                >
-                                                                    Checkbox
-                                                                </label>
-                                                            </div>
-                                                        )}
-                                                    </td>
                                                     <td className="px-2 py-4 text-xs font-medium whitespace-nowrap text-gray-800 sm:px-6 sm:text-sm">
                                                         <div className="max-w-[80px] sm:max-w-none">
                                                             #{invoice.transaction_code}

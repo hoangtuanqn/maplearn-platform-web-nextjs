@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import cartApi from "~/apiRequest/cart";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -16,11 +15,10 @@ import {
     DialogTrigger,
 } from "~/components/ui/dialog";
 
-import { CheckoutResponse } from "~/schemaValidate/cart.schema";
 import Loading from "~/app/(student)/_components/Loading";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
-import MethodPayment from "../../../_components/MethodPayment";
+import MethodPayment from "../../../../_components/MethodPayment";
 
 export function PaymentMethodsDialog() {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
@@ -28,20 +26,14 @@ export function PaymentMethodsDialog() {
     const { user, updateProfile } = useAuth();
     const mutation = useMutation({
         mutationFn: async (paymentMethod: string) => {
-            const res = await cartApi.checkout({ payment_method: paymentMethod });
+            // const res = await cartApi.checkout({ payment_method: paymentMethod });
             return res.data;
         },
         onSuccess: (data: CheckoutResponse) => {
             toast.success("Tạo hóa đơn thành công! Vui lòng chờ 1 xíu ....");
-            if (user) {
-                updateProfile({
-                    ...user,
-                    cart_item_count: Math.max(0, user.cart_item_count - data.data.course_count),
-                });
-            }
+
             switch (data.data.payment_method) {
                 case "transfer":
-                case "card":
                     router.push(`/invoices/${data.data.transaction_code}`);
                     break;
                 case "vnpay":
@@ -61,8 +53,8 @@ export function PaymentMethodsDialog() {
             <Dialog>
                 <form>
                     <DialogTrigger asChild>
-                        <Button className="mt-5 w-full text-white max-lg:mt-3" disabled={user?.cart_item_count === 0}>
-                            Thanh toán ngay
+                        <Button className="text-primary mt-2 w-full" variant={"outline"}>
+                            <span>Mua ngay</span>
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="bg-white sm:max-w-[600px]">
@@ -83,7 +75,7 @@ export function PaymentMethodsDialog() {
                             <Button
                                 type="submit"
                                 className="text-white"
-                                disabled={mutation.isPending || user?.cart_item_count === 0}
+                                disabled={mutation.isPending}
                                 onClick={() => mutation.mutate(paymentMethod)}
                             >
                                 Xác nhận

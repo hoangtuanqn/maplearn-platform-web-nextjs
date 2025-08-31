@@ -59,7 +59,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                         width={184}
                         height={184}
                         src={course.thumbnail}
-                        alt={course.department[0]?.name}
+                        alt={course.teacher.full_name}
                         className="aspect-square w-full rounded-xl object-cover"
                     />
                     {course.is_best_seller && (
@@ -71,37 +71,21 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                 <h3 className="mt-4 w-full font-medium lg:line-clamp-2">{course.name}</h3>
                 <div className="my-1 flex items-center gap-1 text-xs font-medium">
                     <User style={{ fill: "currentColor" }} />
-                    <span className="line-clamp-2">{course.department[0]?.name}</span>
+                    <span className="line-clamp-2">{course.teacher?.full_name}</span>
                 </div>
                 <div className="flex items-center gap-1 text-xs">
-                    <span className="font-bold text-[#FFB23F]">{course.rating.average_rating}</span>
-                    <Rating style={{ maxWidth: 60 }} value={course.rating.average_rating} readOnly />
-                    <span className="text-slate-400">({course.rating.total_reviews})</span>
+                    <span className="font-bold text-[#FFB23F]">{4}</span>
+                    <Rating style={{ maxWidth: 60 }} value={4} readOnly />
+                    <span className="text-slate-400">(20)</span>
                 </div>
                 {course.is_enrolled ? (
                     <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
                         Bạn đã mua khóa học này
                     </span>
                 ) : (
-                    <>
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-black">
-                                {course.final_price === 0
-                                    ? "Miễn phí"
-                                    : formatter.number(course.final_price ?? 0) + "đ"}
-                            </span>
-                            {course.price > 0 && course.final_price < course.price && (
-                                <span className="text-xs font-semibold text-slate-600 line-through">
-                                    {formatter.number(course.price) + "đ"}
-                                </span>
-                            )}
-                        </div>
-                        {course.final_price < course.price && (
-                            <span className="mt-1 block text-xs font-semibold text-green-600">
-                                Đã giảm {formatter.number(course.price - course.final_price)}đ
-                            </span>
-                        )}
-                    </>
+                    <span className="text-sm font-bold text-black">
+                        {course.price === 0 ? "Miễn phí" : formatter.number(course.price ?? 0) + "đ"}
+                    </span>
                 )}
             </Link>
 

@@ -12,7 +12,7 @@ import BlurBackdrop from "../BlurBackdrop";
 import { Button } from "~/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "~/store";
-import { ChevronDown, ShoppingCart } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useAuth } from "~/hooks/useAuth";
 import DisplayAvatar from "../../DisplayAvatar";
 const headerLinks = [
@@ -101,16 +101,6 @@ const HeaderLaptop = () => {
                             <div className="flex items-center justify-end gap-2">
                                 {user ? (
                                     <div className="flex items-center gap-4.5">
-                                        <Link className="relative" href="/carts">
-                                            <div className="t1-flex-center text-primary h-9.5 w-9.5 cursor-pointer rounded-full border-2 border-[#b4d1e9] p-0.5">
-                                                <ShoppingCart />
-                                            </div>
-                                            {/* THêm bagde số lượng sản phẩm trong giỏ hàng */}
-                                            <div className="absolute -top-1.5 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-[11.175px] font-bold text-white">
-                                                {user.cart_item_count ?? 0}
-                                            </div>
-                                        </Link>
-
                                         <div className="dropdown" style={{ position: "relative" }} tabIndex={0}>
                                             <div>
                                                 <div className="flex cursor-pointer items-center gap-1">

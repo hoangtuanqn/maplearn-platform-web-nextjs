@@ -13,6 +13,8 @@ export const userSchema = z.object({
     facebook_link: z.string(),
     school: z.string().nullable(),
     city: z.string().nullable(),
+    bio: z.string().nullable(),
+    degree: z.string().nullable(),
     money: z.number().min(0),
     role: z.enum(["student", "teacher", "admin"]),
     banned: z.boolean().default(false),
@@ -20,7 +22,6 @@ export const userSchema = z.object({
     email_verified_at: z.string().nullable(),
     created_at: z.string(),
     updated_at: z.string(),
-    cart_item_count: z.number().default(0),
 });
 
 export type UserType = z.infer<typeof userSchema>;

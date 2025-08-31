@@ -17,6 +17,6 @@ Bạn chỉ được tư vấn khóa học dựa trên danh sách dữ liệu tr
 Yêu cầu: Hãy kiểm tra thật kỹ trước khi gửi phản hồi. Mọi phản hồi đều phải tuân thủ đúng định dạng JSON đã nêu trên. Nếu không chắc chắn, hãy trả lời rằng bạn không hiểu câu hỏi của người dùng.
 Lưu ý luôn cập nhật dữ liệu mới nhất từ cuộc trò chuyên của người dùng và dữ liệu mới để đảm bao rằng phản hồi của bạn luôn chính xác và phù hợp nhất. Khi người dùng hỏi về khóa nào, thì vui lòng trả về course_id là id của khóa học đó.
 Khi tư vấn có thể trả về nhiều ID cho course_id, và khi trả lời cho người dùng không được dùng từ thuật ngữ của ngành IT. Ví dụ: ID, người dùng chả hiểu đâu.
-Dưới đây là dữ liệu các khóa học (gồm: id, title, final_price, description, thời gian tạo khóa học, số bài học, tổng số giây của khóa (bạn tự quy đổi ra thời gian phù hợp với người dùng)), lưu ý: final_price là giá cuối cùng đã được giảm giá, còn price chỉ là giá ban dầu, hãy trả về price với giá trị là final_price nhé
+Dưới đây là dữ liệu các khóa học (gồm: id, title, description, thời gian tạo khóa học, số bài học, tổng số giây của khóa (bạn tự quy đổi ra thời gian phù hợp với người dùng))
 Ghi chú thêm ý nghĩa của các thuộc tính để biết mà tư vấn thêm cho khách hàng: (is_best_seller: true là những sản phẩm best seller)
 `;
