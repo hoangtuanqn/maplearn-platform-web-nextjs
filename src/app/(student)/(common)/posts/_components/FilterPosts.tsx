@@ -24,8 +24,8 @@ import { Label } from "~/components/ui/label";
 import { usePathname } from "next/navigation";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
-import subjectApi from "~/apiRequest/subject";
-import { useQuery } from "@tanstack/react-query";
+
+import { subjects } from "~/mockdata/subject.data";
 const fields = ["created_at", "views", "courses"] as const;
 export function FilterPosts() {
     const pathName = usePathname();
@@ -34,14 +34,7 @@ export function FilterPosts() {
     const handleRemoveQuery = () => {
         window.history.replaceState({}, "", pathName);
     };
-    const { data: subjects = [], isLoading } = useQuery({
-        queryKey: ["user", "subjects"],
-        queryFn: async () => {
-            const res = await subjectApi.getSubjects();
-            return res.data.data;
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
+
     const handleOnChangeCourse = (value: string[]) => {
         setFieldValue("courses", value, "filterMultiple");
     };
@@ -101,22 +94,21 @@ export function FilterPosts() {
                         </div>
                         <div className="grid gap-3">
                             <Label>Môn học liên quan</Label>
-                            {!isLoading && (
-                                <MultiSelectDropdown
-                                    onChange={handleOnChangeCourse}
-                                    label="Môn học liên quan"
-                                    // Chuyển value từ dạng 1,2,3 sang mảng
-                                    values={
-                                        formValues.filterMultiple.courses
-                                            ? String(formValues.filterMultiple.courses).split(",")
-                                            : []
-                                    }
-                                    options={subjects.map((subject) => ({
-                                        label: String(subject.name),
-                                        value: String(subject.slug),
-                                    }))}
-                                />
-                            )}
+
+                            <MultiSelectDropdown
+                                onChange={handleOnChangeCourse}
+                                label="Môn học liên quan"
+                                // Chuyển value từ dạng 1,2,3 sang mảng
+                                values={
+                                    formValues.filterMultiple.courses
+                                        ? String(formValues.filterMultiple.courses).split(",")
+                                        : []
+                                }
+                                options={subjects.map((subject) => ({
+                                    label: String(subject.name),
+                                    value: String(subject.slug),
+                                }))}
+                            />
                         </div>
                     </div>
                     <DialogFooter>

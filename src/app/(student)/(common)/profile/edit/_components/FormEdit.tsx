@@ -10,8 +10,6 @@ import { useAuth } from "~/hooks/useAuth";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import otherApi from "~/apiRequest/others";
-import { ProvinceType } from "~/schemaValidate/other.schama";
 import profileApi from "~/apiRequest/profile";
 import Loading from "~/app/(student)/_components/Loading";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
@@ -21,11 +19,11 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import uploadMedia from "~/apiRequest/uploadMedia";
+import { provinces } from "~/mockdata/other/provinces.data";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [provinces, setProvinces] = useState<ProvinceType>([]);
     const [preview, setPreview] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
 
@@ -95,18 +93,7 @@ const FormEdit = () => {
         });
         setPreview(user?.avatar ?? null);
     }, [user, form]);
-    useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await otherApi.getProvinces(); // gọi API
-                setProvinces(res ?? []);
-            } catch (err) {
-                console.error("Lỗi lấy tỉnh:", err);
-            }
-        };
-
-        fetchProvinces();
-    }, []);
+    
     if (!user) return <Loading />;
     return (
         <>

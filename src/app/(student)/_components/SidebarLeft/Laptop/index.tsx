@@ -45,8 +45,12 @@ const SideBarLaptop = () => {
                 <div className="my-3 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <MenuItemLink title="Khóa học" url="/courses" image="/assets/icons/course.svg" />
                 <MenuItemLink title="Kho đề thi" url={"/exams"} image="/assets/icons/online-exam.svg" />
+<<<<<<< HEAD
               
                 <MenuItemLink title="Sách Map" url="https://www.sachmap.vn/" image="/assets/icons/book-map.svg" />
+=======
+          
+>>>>>>> 4df978457159aa58f1ee4d11c1a75d8ad1bbdbec
                 <MenuItemLink title="Tài liệu" url={"/documents"} image="/assets/icons/document.svg" />
                 <div className="my-4 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <div className="py-2 pl-2">

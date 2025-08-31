@@ -3,16 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import otherApi from "~/apiRequest/others";
 import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { cn } from "~/lib/utils";
 import { getGender } from "~/libs/hepler";
-import { ProvinceType } from "~/schemaValidate/other.schama";
 import { StudentDetailResponseType } from "~/schemaValidate/user.schema";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
@@ -27,6 +25,7 @@ import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import uploadMedia from "~/apiRequest/uploadMedia";
 import { ResetPassword } from "./ResetPassword";
+import { provinces } from "~/mockdata/other/provinces.data";
 
 interface FormEditStudentProps {
     studentData: StudentDetailResponseType["data"];
@@ -36,7 +35,6 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
     const [preview, setPreview] = useState<string>(studentData.avatar);
     const [file, setFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [provinces, setProvinces] = useState<ProvinceType>([]);
     const form = useForm<UpdateProfileSchema>({
         resolver: zodResolver(updateProfileSchema),
         defaultValues: {
@@ -83,18 +81,6 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
             // Gửi file lên server hoặc preview
         }
     };
-    useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await otherApi.getProvinces(); // gọi API
-                setProvinces(res ?? []);
-            } catch (err) {
-                console.error("Lỗi lấy tỉnh:", err);
-            }
-        };
-
-        fetchProvinces();
-    }, []);
 
     return (
         <>

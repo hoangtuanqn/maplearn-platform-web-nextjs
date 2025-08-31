@@ -1,54 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import otherApi from "~/apiRequest/others";
-import { ProvinceType } from "~/schemaValidate/other.schama";
-import { useQuery } from "@tanstack/react-query";
-import examApi, { difficulties } from "~/apiRequest/exam";
-import subjectApi from "~/apiRequest/subject";
+import { difficulties } from "~/apiRequest/exam";
 import { ChevronDown, GraduationCap } from "lucide-react";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
-import FilterSkeleton from "./FilterSkeleton";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { useRouter } from "next/navigation";
+import { subjects } from "~/mockdata/subject.data";
+import { examCategories } from "~/mockdata/exam/examCategories.data";
+import { provinces } from "~/mockdata/other/provinces.data";
 
 const fields = ["provinces", "search", "subject", "categories", "difficulties"] as const;
 const FilterExam = () => {
     const router = useRouter();
-    const [provinces, setProvinces] = useState<ProvinceType>([]);
-
-    const { data: examCategories, isLoading: isLoadingExamCategories } = useQuery({
-        queryKey: ["exam", "categories"],
-        queryFn: async () => {
-            const res = await examApi.getExamCategories();
-            return res.data.data;
-        },
-    });
-    const { data: subjects, isLoading: isLoadingSubjects } = useQuery({
-        queryKey: ["user", "subjects"],
-        queryFn: async () => {
-            const response = await subjectApi.getSubjects();
-            return response.data.data;
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
-
-    useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await otherApi.getProvinces(); // gọi API
-                setProvinces(res ?? []);
-            } catch (err) {
-                console.error("Lỗi lấy tỉnh:", err);
-            }
-        };
-
-        fetchProvinces();
-    }, []);
-
     const { formValues, setFieldValue, handleSubmit, isFiltered, resetFields } = useFilterQuery(fields);
     const [resetKey, setResetKey] = useState(0);
 
@@ -79,43 +46,35 @@ const FilterExam = () => {
                         </button>
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                        {isLoadingSubjects ? (
-                            <>
-                                {[...Array(6)].map((_, index) => (
-                                    <FilterSkeleton key={index} />
-                                ))}
-                            </>
-                        ) : (
-                            <>
-                                {subjects?.map((subject) => (
-                                    <div key={subject.id} className="flex items-center gap-2">
-                                        <Checkbox
-                                            id={subject.name}
-                                            checked={formValues.filterMultiple.subject?.includes(subject.name) || false}
-                                            onCheckedChange={(checked) => {
-                                                const current = formValues.filterMultiple.subject || [];
-                                                if (checked) {
-                                                    setFieldValue(
-                                                        "subject",
-                                                        [...current.filter((s) => s !== ""), subject.name],
-                                                        "filterMultiple",
-                                                    );
-                                                } else {
-                                                    setFieldValue(
-                                                        "subject",
-                                                        current.filter((s) => s !== subject.name && s !== ""),
-                                                        "filterMultiple",
-                                                    );
-                                                }
-                                            }}
-                                        />
-                                        <Label htmlFor={subject.name} className="w-full text-sm text-gray-700">
-                                            {subject.name}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </>
-                        )}
+                        <>
+                            {subjects.map((subject) => (
+                                <div key={subject.slug} className="flex items-center gap-2">
+                                    <Checkbox
+                                        id={subject.name}
+                                        checked={formValues.filterMultiple.subject?.includes(subject.name) || false}
+                                        onCheckedChange={(checked) => {
+                                            const current = formValues.filterMultiple.subject || [];
+                                            if (checked) {
+                                                setFieldValue(
+                                                    "subject",
+                                                    [...current.filter((s) => s !== ""), subject.name],
+                                                    "filterMultiple",
+                                                );
+                                            } else {
+                                                setFieldValue(
+                                                    "subject",
+                                                    current.filter((s) => s !== subject.name && s !== ""),
+                                                    "filterMultiple",
+                                                );
+                                            }
+                                        }}
+                                    />
+                                    <Label htmlFor={subject.name} className="w-full text-sm text-gray-700">
+                                        {subject.name}
+                                    </Label>
+                                </div>
+                            ))}
+                        </>
                     </div>
                 </div>
 
@@ -123,7 +82,7 @@ const FilterExam = () => {
                     <div className="flex items-center justify-between text-[15.725px]">
                         <div className="flex items-center gap-2">
                             <GraduationCap className="size-5" />
-                            <span className="font-semibold text-gray-800">Phân loại học</span>
+                            <span className="font-semibold text-gray-800">Phân loại đề</span>
                         </div>
                         <button
                             type="button"
@@ -133,42 +92,34 @@ const FilterExam = () => {
                         </button>
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                        {isLoadingExamCategories ? (
-                            <>
-                                {[...Array(8)].map((_, index) => (
-                                    <FilterSkeleton key={index} />
-                                ))}
-                            </>
-                        ) : (
-                            <>
-                                {examCategories?.map((category) => (
-                                    <div key={category.id} className="flex items-center gap-2">
-                                        <Checkbox
-                                            id={category.name}
-                                            onCheckedChange={(checked) => {
-                                                const current = formValues.filterMultiple.category || [];
-                                                if (checked) {
-                                                    setFieldValue(
-                                                        "categories",
-                                                        [...current.filter((s) => s !== ""), category.name],
-                                                        "filterMultiple",
-                                                    );
-                                                } else {
-                                                    setFieldValue(
-                                                        "categories",
-                                                        current.filter((s) => s !== category.name && s !== ""),
-                                                        "filterMultiple",
-                                                    );
-                                                }
-                                            }}
-                                        />
-                                        <Label htmlFor={category.name} className="w-full text-sm text-gray-700">
-                                            {category.name}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </>
-                        )}
+                        <>
+                            {examCategories.map((category) => (
+                                <div key={category.slug} className="flex items-center gap-2">
+                                    <Checkbox
+                                        id={category.name}
+                                        onCheckedChange={(checked) => {
+                                            const current = formValues.filterMultiple.category || [];
+                                            if (checked) {
+                                                setFieldValue(
+                                                    "categories",
+                                                    [...current.filter((s) => s !== ""), category.name],
+                                                    "filterMultiple",
+                                                );
+                                            } else {
+                                                setFieldValue(
+                                                    "categories",
+                                                    current.filter((s) => s !== category.name && s !== ""),
+                                                    "filterMultiple",
+                                                );
+                                            }
+                                        }}
+                                    />
+                                    <Label htmlFor={category.name} className="w-full text-sm text-gray-700">
+                                        {category.name}
+                                    </Label>
+                                </div>
+                            ))}
+                        </>
                     </div>
                 </div>
                 <div className="border-t border-gray-200 pt-4">

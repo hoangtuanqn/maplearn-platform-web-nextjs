@@ -3,12 +3,12 @@
 import React from "react";
 import { CalendarRange, Eye } from "lucide-react";
 
-import CommentSystem from "~/components/CommentSystem";
+// import CommentSystem from "~/components/CommentSystem";
 
 import { formatter } from "~/libs/format";
 import { PostType } from "~/schemaValidate/post.schema";
 import { ShareButton } from "~/app/(student)/_components/Shared/ShareButton";
-import { Report } from "./Report";
+// import { Report } from "./Report";
 
 const PostContent = ({ post }: { post: { posts: PostType } }) => {
     return (
@@ -27,7 +27,7 @@ const PostContent = ({ post }: { post: { posts: PostType } }) => {
                     </div>
                     <div className="flex gap-2 max-lg:mt-2">
                         <ShareButton />
-                        <Report id={1} />
+                        {/* <Report id={1} /> */}
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@ const PostContent = ({ post }: { post: { posts: PostType } }) => {
                 </div>
 
                 {/* Comment System */}
-                <CommentSystem
+                {/* <CommentSystem
                     type="post"
                     identifier={post.posts.slug}
                     showSkeleton={true}
@@ -48,7 +48,7 @@ const PostContent = ({ post }: { post: { posts: PostType } }) => {
                     showReplies={true}
                     maxReplyDepth={1}
                     className="mt-8"
-                />
+                /> */}
             </div>
         </>
     );
