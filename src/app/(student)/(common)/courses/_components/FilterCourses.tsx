@@ -166,8 +166,8 @@ export function FilterCourses() {
                                             : []
                                     }
                                     options={teachers.map((teacher) => ({
-                                        label: String(teacher.user.full_name),
-                                        value: String(teacher.user.id),
+                                        label: String(teacher.full_name),
+                                        value: String(teacher.id),
                                     }))}
                                 />
                             )}

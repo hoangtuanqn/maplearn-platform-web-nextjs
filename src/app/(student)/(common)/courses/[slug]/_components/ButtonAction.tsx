@@ -30,7 +30,6 @@ const ButtonAction = () => {
                 <div className="flex items-start gap-3">
                     <div className="flex h-full flex-1 flex-col space-y-3">
                         <Skeleton className="h-10 w-[80%] !rounded-xl" />
-                        <Skeleton className="h-10 w-[80%] !rounded-xl" />
                     </div>
                 </div>
             ) : (
@@ -44,7 +43,7 @@ const ButtonAction = () => {
                             </Link>
                         </>
                     ) : (
-                        <PaymentMethodsDialog />
+                        <PaymentMethodsDialog course={course!} />
                     )}
                 </>
             )}

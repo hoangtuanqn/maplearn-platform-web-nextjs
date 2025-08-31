@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ meth
     try {
         await publicApi.get(`/payment/${method}/return?${searchParams.toString()}`);
         // return NextResponse.json(res.data);
-    } catch () {
+    } catch {
         // return NextResponse.json(error);
     }
 

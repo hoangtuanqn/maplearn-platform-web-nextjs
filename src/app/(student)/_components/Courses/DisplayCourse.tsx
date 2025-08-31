@@ -7,8 +7,8 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import { formatter } from "~/libs/format";
 import { motion, AnimatePresence } from "framer-motion";
-import { CourseType } from "~/schemaValidate/course.schema";
-import ButtonActionCourse from "./_components/ButtonActionCourse";
+import { CourseGetDetailResponse, CourseType } from "~/schemaValidate/course.schema";
+import { PaymentMethodsDialog } from "../../(common)/courses/[slug]/_components/PaymentMethodsDialog";
 
 const tooltipOffset = 210;
 
@@ -126,7 +126,9 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                                 </h3>
                                 <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
                                 <p className="mt-2 text-gray-600">{course.description}</p>
-                                {!course.is_enrolled && <ButtonActionCourse courseInit={course} />}
+                                {!course.is_enrolled && course && (
+                                    <PaymentMethodsDialog course={course as CourseGetDetailResponse["data"]} />
+                                )}
                             </div>
                         </motion.div>
                     )}

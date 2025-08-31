@@ -17,19 +17,19 @@ import {
 
 import Loading from "~/app/(student)/_components/Loading";
 import { notificationErrorApi } from "~/libs/apis/http";
-import { useAuth } from "~/hooks/useAuth";
 import MethodPayment from "../../../../_components/MethodPayment";
 import paymentApi from "~/apiRequest/payment";
+import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
 
-export function PaymentMethodsDialog() {
+export function PaymentMethodsDialog({ course }: { course: CourseGetDetailResponse["data"] }) {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
     const router = useRouter();
-    const { user, updateProfile } = useAuth();
+
     const mutation = useMutation({
         mutationFn: async (paymentMethod: string) => {
             console.log(paymentMethod);
 
-            const res = await paymentApi.createPayment(1, paymentMethod);
+            const res = await paymentApi.createPayment(course.id, paymentMethod);
             return res.data.data;
         },
         onSuccess: (data) => {
@@ -50,7 +50,7 @@ export function PaymentMethodsDialog() {
         },
         onError: notificationErrorApi,
     });
-
+    if (!course) return null;
     return (
         <>
             <Dialog>
@@ -63,7 +63,7 @@ export function PaymentMethodsDialog() {
                     <DialogContent className="bg-white sm:max-w-[600px]">
                         {mutation.isPending && <Loading />}
                         <DialogHeader>
-                            <DialogTitle>Chọn phương thức thanh toán</DialogTitle>
+                            <DialogTitle className="leading-7">{course.name}</DialogTitle>
                             <DialogDescription>Vui lòng chọn phương thức thanh toán phù hợp với bạn.</DialogDescription>
                         </DialogHeader>
                         <div className="mt-2 grid gap-4">
