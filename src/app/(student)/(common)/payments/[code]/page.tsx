@@ -43,7 +43,7 @@ const PaymentPage = async ({ params }: { params: Promise<{ code: string }> }) =>
                             <div>
                                 <div className="flex items-center gap-3 max-md:flex-wrap max-md:gap-2">
                                     <h1 className="text-3xl font-extrabold max-md:text-xl">Hóa đơn #{code}</h1>
-                                    {getStatusBadge("invoice", payment.status)}
+                                    {getStatusBadge("payment", payment.status)}
                                 </div>
                                 {/* {invoice.note && <p className="text-red-400 max-md:text-xs">{invoice.note}</p>} */}
                             </div>

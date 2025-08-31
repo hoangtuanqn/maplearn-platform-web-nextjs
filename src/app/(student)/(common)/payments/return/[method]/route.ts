@@ -13,9 +13,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ meth
         "";
     try {
         await publicApi.get(`/payment/${method}/return?${searchParams.toString()}`);
-    } catch {
+        // return NextResponse.json(res.data);
+    } catch () {
         // return NextResponse.json(error);
     }
+
     if (transaction_code) redirect(`/payments/${transaction_code}`);
     else redirect(`/profile/payments`);
 }

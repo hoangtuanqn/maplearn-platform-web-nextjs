@@ -252,6 +252,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                                             <FormControl>
                                                 <Input
                                                     placeholder="Năm sinh"
+                                                    type="number"
                                                     {...field}
                                                     onChange={(e) => field.onChange(Number(e.target.value))}
                                                     value={form.watch("birth_year") ?? ""}
