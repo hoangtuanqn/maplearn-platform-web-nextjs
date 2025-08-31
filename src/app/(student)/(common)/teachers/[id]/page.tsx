@@ -23,15 +23,15 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
             <div className="flex-5/12 shrink rounded-xl bg-white p-4 shadow-sm">
                 <div className="flex gap-5">
                     <Image
-                        src={teacher.user.avatar ?? ""}
-                        alt={teacher.user.full_name}
+                        src={teacher.avatar ?? ""}
+                        alt={teacher.full_name}
                         width={126}
                         height={126}
                         className="rounded-lg"
                     />
                     <div>
                         <h1 className="text-primary text-base font-bold">
-                            {getFullName(teacher.user.gender, teacher.user.full_name)}
+                            {getFullName(teacher.gender, teacher.full_name)}
                         </h1>
                         <p>Giáo viên THPT</p>
                     </div>
@@ -77,8 +77,8 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
                     <div className="mt-8">
                         <h2 className="mb-2 text-sm font-semibold">Liên kết mạng xã hội</h2>
                         <SocialLink
-                            title={getFullName(teacher.user.gender, teacher.user.full_name)}
-                            url={teacher.user.facebook_link ?? ""}
+                            title={getFullName(teacher.gender, teacher.full_name)}
+                            url={teacher.facebook_link ?? ""}
                             image="/assets/images/social/facebook-circle.png"
                         />
                     </div>
@@ -87,7 +87,7 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
             <div className="flex-7/12 shrink-0 rounded-xl bg-white p-4 shadow-sm">
                 <h2 className="text-primary mb-4 text-base font-semibold">Tất cả khoá học</h2>
                 <div className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2">
-                    {teacher.courses?.map((course) => (
+                    {teacher.courses.map((course) => (
                         <DisplayCourse key={course.id} course={course} />
                     ))}
                 </div>

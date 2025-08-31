@@ -45,7 +45,6 @@ const ButtonAction = () => {
                         </>
                     ) : (
                         <PaymentMethodsDialog />
-                        // <ButtonActionCourse courseInit={(data as CourseType) ?? []} />
                     )}
                 </>
             )}

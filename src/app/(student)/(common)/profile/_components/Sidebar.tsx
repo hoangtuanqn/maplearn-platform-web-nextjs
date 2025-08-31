@@ -1,9 +1,8 @@
 "use client";
 import { useAuth } from "~/hooks/useAuth";
-
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bookmark, ChevronRight, CircleQuestionMark, ContactRound, GraduationCap, ReceiptCent } from "lucide-react";
+import { ChevronRight, ContactRound, GraduationCap, ReceiptCent } from "lucide-react";
 import { ElementType } from "react";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import { isActiveRoute } from "~/libs/routeMatcher";
@@ -50,18 +49,6 @@ const sidebarMenuLink = [
         name: "Hóa đơn của tôi",
         icon: ReceiptCent,
     },
-
-    // {
-    //     url: "/profile/saved-questions",
-    //     matcher: ["/profile/saved-questions"],
-    //     name: "Câu hỏi đã lưu",
-    //     icon: NotebookPen,
-    // },
-    // {
-    //     url: "/inventory",
-    //     matcher: ["/inventory"],
-    //     name: "Kho vật phẩm",
-    // },
 ];
 
 const ProfileSidebar = () => {

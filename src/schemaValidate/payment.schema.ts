@@ -9,8 +9,6 @@ const paymentSchema = z.object({
     payment_method: z.enum(["transfer", "vnpay", "momo", "zalopay"]),
     status: z.enum(["pending", "paid", "failed", "expired"]),
     url_payment: z.string().optional(),
-    updated_at: z.string(),
-    created_at: z.string(),
 });
 const _paymentResponseSchema = z.object({
     success: z.boolean(),

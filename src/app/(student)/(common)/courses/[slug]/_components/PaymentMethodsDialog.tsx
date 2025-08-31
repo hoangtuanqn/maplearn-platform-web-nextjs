@@ -19,6 +19,7 @@ import Loading from "~/app/(student)/_components/Loading";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { useAuth } from "~/hooks/useAuth";
 import MethodPayment from "../../../../_components/MethodPayment";
+import paymentApi from "~/apiRequest/payment";
 
 export function PaymentMethodsDialog() {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
@@ -26,20 +27,22 @@ export function PaymentMethodsDialog() {
     const { user, updateProfile } = useAuth();
     const mutation = useMutation({
         mutationFn: async (paymentMethod: string) => {
-            // const res = await cartApi.checkout({ payment_method: paymentMethod });
-            return res.data;
+            console.log(paymentMethod);
+
+            const res = await paymentApi.createPayment(1, paymentMethod);
+            return res.data.data;
         },
-        onSuccess: (data: CheckoutResponse) => {
+        onSuccess: (data) => {
             toast.success("Tạo hóa đơn thành công! Vui lòng chờ 1 xíu ....");
 
-            switch (data.data.payment_method) {
+            switch (data.payment_method) {
                 case "transfer":
-                    router.push(`/invoices/${data.data.transaction_code}`);
+                    router.push(`/invoices/${data.transaction_code}`);
                     break;
                 case "vnpay":
                 case "momo":
                 case "zalopay":
-                    router.push(data.data.url_payment || "");
+                    router.push(data.url_payment || "");
                     break;
                 default:
                     router.push(`/profile/invoices`);
