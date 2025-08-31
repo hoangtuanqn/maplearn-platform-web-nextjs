@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import InvoiceList from "./_components/InvoiceList";
+import InvoiceList from "./_components/PaymentList";
 import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Hóa đơn của tôi",

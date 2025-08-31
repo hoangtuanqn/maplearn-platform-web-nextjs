@@ -2,7 +2,6 @@ import React from "react";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import invoiceApiServer from "~/apiRequest/server/invoice";
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,7 +10,8 @@ import PusherNotification from "../../../_components/PusherNotification";
 import InfoUser from "./_components/InfoUser";
 import { getStatusBadge } from "~/libs/statusBadge";
 import PaymentPanel from "./_components/PaymentPanel";
-import InvoiceSummary from "./_components/InvoiceSummary";
+import PaymentSummary from "./_components/PaymentSummary";
+import paymentApiServer from "~/apiRequest/server/payment";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
     const { code } = await params;
@@ -19,19 +19,19 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
         title: `Hóa đơn #${code}`,
     };
 }
-const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) => {
+const PaymentPage = async ({ params }: { params: Promise<{ code: string }> }) => {
     const { code } = await params;
 
-    let invoice;
+    let payment;
     try {
-        const res = await invoiceApiServer.getInvoiceDetail(code);
-        invoice = res.data.data;
+        const res = await paymentApiServer.getPaymentDetail(code);
+        payment = res.data.data;
     } catch {
-        redirect("/profile/invoices");
+        redirect("/profile/payments");
     }
 
-    if (!invoice) {
-        redirect("/profile/invoices");
+    if (!payment) {
+        redirect("/profile/payments");
     }
     return (
         <section className="flex min-h-screen gap-6 rounded-2xl bg-gradient-to-br p-8 max-lg:flex-col max-lg:gap-3 max-lg:pt-6 max-md:gap-2 max-md:rounded-none max-md:p-2">
@@ -43,23 +43,23 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                             <div>
                                 <div className="flex items-center gap-3 max-md:flex-wrap max-md:gap-2">
                                     <h1 className="text-3xl font-extrabold max-md:text-xl">Hóa đơn #{code}</h1>
-                                    {getStatusBadge("invoice", invoice.status)}
+                                    {getStatusBadge("invoice", payment.status)}
                                 </div>
-                                {invoice.note && <p className="text-red-400 max-md:text-xs">{invoice.note}</p>}
+                                {/* {invoice.note && <p className="text-red-400 max-md:text-xs">{invoice.note}</p>} */}
                             </div>
                             <div className="mb-2 space-y-1 text-right max-md:space-y-0 max-md:text-left">
-                                <p className="text-sm text-slate-500 max-md:text-xs">
+                                {/* <p className="text-sm text-slate-500 max-md:text-xs">
                                     Ngày tạo hóa đơn:{" "}
                                     <span className="font-semibold text-slate-700">
                                         {formatter.date(invoice.created_at)}
                                     </span>
-                                </p>
-                                <p className="text-sm text-slate-500 max-md:text-xs">
+                                </p> */}
+                                {/* <p className="text-sm text-slate-500 max-md:text-xs">
                                     Ngày đến hạn:{" "}
                                     <span className="font-semibold text-slate-700">
                                         {formatter.date(invoice.due_date, true)}
                                     </span>
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     </div>
@@ -113,43 +113,41 @@ const InvoicePage = async ({ params }: { params: Promise<{ code: string }> }) =>
                                     </tr>
                                 </thead>
                                 <tbody className="text-slate-700">
-                                    {invoice.items.map((item) => (
-                                        <tr key={item.id} className="border-b transition hover:bg-blue-50">
-                                            <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
-                                                <Link href={`/courses/${item.course.slug}`}>
-                                                    <Image
-                                                        src={item.course.thumbnail}
-                                                        alt={item.course.name}
-                                                        width={50}
-                                                        height={50}
-                                                        className="rounded-md max-md:h-8 max-md:w-8"
-                                                    />
-                                                </Link>
-                                                <Link
-                                                    href={`/courses/${item.course.slug}`}
-                                                    className={`${item.course.is_enrolled ? "text-primary/30" : "text-primary"} font-bold max-md:text-xs`}
-                                                >
-                                                    <span>{item.course.name}</span>
-                                                    {item.course.is_enrolled && (
-                                                        <span className="text-xs text-green-500"> (Đã mua)</span>
-                                                    )}
-                                                </Link>
-                                            </td>
-                                            <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
-                                                {formatter.number(item.price_snapshot)} đ
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    <tr className="border-b transition hover:bg-blue-50">
+                                        <td className="flex items-center gap-2 p-4 max-md:gap-1 max-md:p-2">
+                                            <Link href={`/courses/${payment.course.slug}`}>
+                                                <Image
+                                                    src={payment.course.thumbnail}
+                                                    alt={payment.course.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="rounded-md max-md:h-8 max-md:w-8"
+                                                />
+                                            </Link>
+                                            <Link
+                                                href={`/courses/${payment.course.slug}`}
+                                                className={`${payment.course.is_enrolled ? "text-primary/30" : "text-primary"} font-bold max-md:text-xs`}
+                                            >
+                                                <span>{payment.course.name}</span>
+                                                {payment.course.is_enrolled && (
+                                                    <span className="text-xs text-green-500"> (Đã mua)</span>
+                                                )}
+                                            </Link>
+                                        </td>
+                                        <td className="p-4 text-right font-semibold max-md:p-2 max-md:text-xs">
+                                            {formatter.number(payment.course.price)} đ
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <InvoiceSummary invoice={invoice} />
+                        <PaymentSummary payment={payment} />
                     </div>
                 </div>
             </div>
-            <PaymentPanel invoice={invoice} />
+            <PaymentPanel payment={payment} />
         </section>
     );
 };
-export default InvoicePage;
+export default PaymentPage;

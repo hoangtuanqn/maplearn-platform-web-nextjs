@@ -3,39 +3,42 @@ import React, { useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Ban, Info, Printer } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Invoice } from "~/schemaValidate/invoice.schema";
+
 import { formatter } from "~/libs/format";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
-import invoiceApi from "~/apiRequest/invoices";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
 import { DangerConfirm } from "~/components/DangerConfirm";
+import paymentApi from "~/apiRequest/payment";
+import { PaymentDetailResponse } from "~/schemaValidate/payment.schema";
 
-const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
+const PaymentPanel = ({ payment }: { payment: PaymentDetailResponse["data"] }) => {
     const router = useRouter();
-    const [paymentMethod, setPaymentMethod] = useState(invoice.payment_method);
+    const [paymentMethod, setPaymentMethod] = useState(payment.payment_method);
     const paymentMutation = useMutation({
         mutationFn: async (method: string) => {
-            const res = await invoiceApi.createInvoice(method, invoice.transaction_code);
+            const res = await paymentApi.createPayment(payment.course_id, method);
             return res.data.data;
             // Handle other payment methods if needed
         },
         onSuccess: (data, method: string) => {
-            toast.success(`Đang chuyển hướng đến ${method.toUpperCase()}...`);
-            router.push(data.url_payment);
+            if (data.url_payment) {
+                toast.success(`Đang chuyển hướng đến ${method.toUpperCase()}...`);
+                router.push(data.url_payment);
+            }
         },
         onError: notificationErrorApi,
     });
     const cancelMutation = useMutation({
         mutationFn: async () => {
-            await invoiceApi.cancelInvoice(invoice.transaction_code);
+            // await paymentApi.cancelInvoice(payment.transaction_code);
         },
         onSuccess: () => {
             toast.success("Hóa đơn đã được hủy.");
-            router.push("/profile/invoices");
+            router.push("/profile/payments");
         },
         onError: notificationErrorApi,
     });
@@ -55,11 +58,14 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                     <div>
                         <h2 className="mb-2 text-lg font-semibold text-slate-700">Số tiền cần thanh toán</h2>
                         <p className="text-primary mt-2 text-3xl font-extrabold tracking-wide drop-shadow-sm md:text-4xl">
-                            {invoice.status == "pending" ? formatter.number(invoice.total_price) : 0} đ
+                            {payment.status == "pending" ? formatter.number(payment.course.price) : 0} đ
                         </p>
-                        {invoice.status == "pending" && (
+                        {payment.status == "pending" && (
                             <>
-                                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                                <Select
+                                    value={paymentMethod}
+                                    onValueChange={setPaymentMethod as (value: string) => void}
+                                >
                                     <SelectTrigger className="focus:ring-primary/30 mt-5 w-full rounded-lg border-slate-200 shadow-sm focus:ring-2">
                                         <SelectValue placeholder="Chọn phương thức thanh toán" />
                                     </SelectTrigger>
@@ -86,7 +92,7 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                                         <>
                                             <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 md:p-3">
                                                 <Image
-                                                    src={`https://qr.sepay.vn/img?bank=MBBank&acc=259876543210&template=qronly&amount=${invoice.total_price}&des=${invoice.transaction_code}`}
+                                                    src={`https://qr.sepay.vn/img?bank=MBBank&acc=259876543210&template=qronly&amount=${payment.course.price}&des=${payment.transaction_code}`}
                                                     width={180}
                                                     height={180}
                                                     alt="QR Code"
@@ -130,7 +136,7 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                 <div className="mt-6 px-0 md:px-2">
                     <p className="mb-2 text-base font-bold text-slate-700">Thao tác</p>
                     <div className="mt-2 flex gap-2">
-                        {["pending", "paid"].includes(invoice.status) && (
+                        {["pending", "paid"].includes(payment.status) && (
                             <Button
                                 className="text-primary flex-3/4 gap-2"
                                 onClick={() => window?.print()}
@@ -139,7 +145,7 @@ const PaymentPanel = ({ invoice }: { invoice: Invoice }) => {
                                 <Printer className="h-5 w-5" /> <span>In hóa đơn</span>
                             </Button>
                         )}
-                        {invoice.status === "pending" && (
+                        {payment.status === "pending" && (
                             <DangerConfirm
                                 message="Bạn có chắc chắn muốn hủy hóa đơn này không?"
                                 action={() => cancelMutation.mutate()}

@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 import publicApi from "~/libs/apis/publicApi";
 
-// invoices/return/[method]/route.ts
 export async function GET(req: NextRequest, { params }: { params: Promise<{ method: string }> }) {
     const { method } = await params; // vnpay, momo, zalopay
 
@@ -17,6 +16,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ meth
     } catch {
         // return NextResponse.json(error);
     }
-    if (transaction_code) redirect(`/invoices/${transaction_code}`);
-    else redirect(`/profile/invoices`);
+    if (transaction_code) redirect(`/payments/${transaction_code}`);
+    else redirect(`/profile/payments`);
 }

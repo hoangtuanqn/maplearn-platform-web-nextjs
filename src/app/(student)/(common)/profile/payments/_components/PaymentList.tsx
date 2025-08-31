@@ -1,15 +1,13 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { memo, useEffect, useState } from "react";
-import { INVOICE_PER_PAGE } from "~/apiRequest/invoices";
+
 import { useRouter } from "next/navigation";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { formatter } from "~/libs/format";
-import { FilterInvoice } from "./FilterInvoice";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
-import profileApi from "~/apiRequest/profile";
-import ExportInvoices from "./ExportInvoices";
+import profileApi, { PAYMENT_PER_PAGE } from "~/apiRequest/profile";
 import TableSkeleton from "../../_components/TableSkeleton";
 import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
@@ -19,9 +17,9 @@ const InvoiceList = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["user", "invoices", { page, sort, status, date }],
         queryFn: async () => {
-            const res = await profileApi.getInvoices(
+            const res = await profileApi.getPayments(
                 Number(page ?? 1),
-                INVOICE_PER_PAGE,
+                PAYMENT_PER_PAGE,
                 "",
                 sort,
                 buildLaravelFilterQuery({ status, date }),
@@ -30,13 +28,13 @@ const InvoiceList = () => {
         },
     });
 
-    const totalPages = Math.ceil((data?.invoices?.total ?? 0) / INVOICE_PER_PAGE);
+    const totalPages = Math.ceil((data?.payments?.total ?? 0) / PAYMENT_PER_PAGE);
     const router = useRouter();
-    const [invoices, setInvoices] = useState(data?.invoices?.data || []);
+    const [payments, setPayments] = useState(data?.payments?.data || []);
 
     useEffect(() => {
-        if (data?.invoices?.data) {
-            setInvoices(data.invoices.data);
+        if (data?.payments?.data) {
+            setPayments(data.payments.data);
         }
     }, [data]);
     return (
@@ -47,7 +45,7 @@ const InvoiceList = () => {
                         <p className="text-sm font-semibold text-neutral-900 sm:text-base">Đã tìm thấy</p>
                         <ul className="ml-4 list-inside list-disc text-xs text-neutral-700 sm:text-sm">
                             <li>
-                                <span className="text-primary-600 font-bold">{data?.invoices?.total ?? 0}</span> kết quả
+                                <span className="text-primary-600 font-bold">{data?.payments?.total ?? 0}</span> kết quả
                             </li>
                             <li>
                                 Có <span className="font-bold text-yellow-600">{data?.summary.total_pending ?? 0}</span>{" "}
@@ -63,8 +61,8 @@ const InvoiceList = () => {
                         </ul>
                     </div>
                     <div className="mt-3 flex flex-wrap items-center gap-1 sm:gap-2 md:mt-0">
-                        <ExportInvoices payload={{ sort, status, date, totalPages }} />
-                        <FilterInvoice />
+                        {/* <ExportInvoices payload={{ sort, status, date, totalPages }} /> */}
+                        {/* <FilterInvoice /> */}
                     </div>
                 </div>
                 <div className="-m-1.5 overflow-x-auto">
@@ -81,21 +79,9 @@ const InvoiceList = () => {
                                         </th>
                                         <th
                                             scope="col"
-                                            className="hidden px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase sm:table-cell"
-                                        >
-                                            Ngày tạo
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="hidden px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase md:table-cell"
-                                        >
-                                            Hạn thanh toán
-                                        </th>
-                                        <th
-                                            scope="col"
                                             className="px-2 py-3 text-start text-xs font-medium text-gray-500 uppercase sm:px-6"
                                         >
-                                            Tổng cộng
+                                            Số tiền
                                         </th>
                                         <th
                                             scope="col"
@@ -106,7 +92,7 @@ const InvoiceList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {!isLoading && (invoices?.length ?? 0) == 0 && (
+                                    {!isLoading && (payments?.length ?? 0) == 0 && (
                                         <tr className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100">
                                             <td
                                                 className="px-2 py-4 text-xs font-medium whitespace-nowrap text-gray-800 sm:px-6 sm:text-sm"
@@ -118,41 +104,30 @@ const InvoiceList = () => {
                                     )}
 
                                     {isLoading ? (
-                                        [...Array(INVOICE_PER_PAGE)].map((_, index) => (
+                                        [...Array(PAYMENT_PER_PAGE)].map((_, index) => (
                                             <TableSkeleton key={index} col={6} />
                                         ))
                                     ) : (
                                         <>
-                                            {invoices.map((invoice) => (
+                                            {payments.map((payment) => (
                                                 <tr
-                                                    onClick={() => router.push(`/invoices/${invoice.transaction_code}`)}
-                                                    key={invoice.id}
+                                                    onClick={() => router.push(`/payments/${payment.transaction_code}`)}
+                                                    key={payment.id}
                                                     className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100"
                                                 >
                                                     <td className="px-2 py-4 text-xs font-medium whitespace-nowrap text-gray-800 sm:px-6 sm:text-sm">
                                                         <div className="max-w-[80px] sm:max-w-none">
-                                                            #{invoice.transaction_code}
-                                                        </div>
-                                                        <div className="mt-1 text-xs text-gray-500 sm:hidden">
-                                                            {formatter.date(invoice.created_at, true)}
+                                                            #{payment.transaction_code}
                                                         </div>
                                                     </td>
-                                                    <td className="hidden px-6 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">
-                                                        {formatter.date(invoice.created_at, true)}
-                                                    </td>
-                                                    <td className="hidden px-6 py-4 text-sm whitespace-nowrap text-gray-800 md:table-cell">
-                                                        {formatter.date(invoice.due_date, true)}
-                                                    </td>
+
                                                     <td className="px-2 py-4 text-xs whitespace-nowrap text-gray-800 sm:px-6 sm:text-sm">
                                                         <div className="font-medium">
-                                                            {formatter.number(invoice.total_price)} VNĐ
-                                                        </div>
-                                                        <div className="mt-1 text-xs text-gray-500 md:hidden">
-                                                            {formatter.date(invoice.due_date, true)}
+                                                            {formatter.number(payment.amount)} VNĐ
                                                         </div>
                                                     </td>
                                                     <td className="px-2 py-4 text-end text-xs font-medium whitespace-nowrap sm:px-6 sm:text-sm">
-                                                        {getStatusBadge("invoice", invoice.status)}
+                                                        {getStatusBadge("payment", payment.status)}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -166,8 +141,8 @@ const InvoiceList = () => {
             </div>
             <div className="flex items-end justify-between lg:flex-col">
                 <div className="ml-auto">
-                    {!isLoading && totalPages > 1 && (invoices?.length ?? 0) > 0 && (
-                        <PaginationNav totalPages={totalPages} basePath="/profile/invoices" />
+                    {!isLoading && totalPages > 1 && (payments?.length ?? 0) > 0 && (
+                        <PaginationNav totalPages={totalPages} basePath="/profile/payments" />
                     )}
                 </div>
             </div>

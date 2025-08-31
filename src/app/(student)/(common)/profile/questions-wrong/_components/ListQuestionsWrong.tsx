@@ -94,8 +94,7 @@ const ListQuestionsWrong = () => {
                                             {questionWrong?.data.map((question, index) => (
                                                 <tr
                                                     key={index}
-                                                    // onClick={() => router.push(`/invoices/${invoice.transaction_code}`)}
-                                                    // key={invoice.id}
+                                    
                                                     className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-gray-100"
                                                 >
                                                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800 sm:table-cell">

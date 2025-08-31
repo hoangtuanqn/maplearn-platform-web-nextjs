@@ -2,7 +2,7 @@ import { Badge } from "~/components/ui/badge";
 
 export function getStatusBadge(type: string, status: string) {
     switch (type) {
-        case "invoice":
+        case "payment":
             switch (status) {
                 case "paid":
                     return <Badge variant="success">Đã thanh toán</Badge>;

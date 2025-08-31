@@ -3,9 +3,9 @@ import { PaymentDetailResponse, PaymentResponse } from "~/schemaValidate/payment
 
 const paymentApi = {
     // Payment cho phép thanh toán nhiều Invoice 1 lúc
-    createPayment: async (data: number, payment_method: string) => {
+    createPayment: async (course_id: number, payment_method: string) => {
         return privateApi.post<PaymentResponse>(`/payments`, {
-            course_id: data, // danh sách id invoices sẽ dc gộp chung
+            course_id,
             payment_method,
         });
     },

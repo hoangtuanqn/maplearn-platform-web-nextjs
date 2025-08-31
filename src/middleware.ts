@@ -6,8 +6,8 @@ const protectedRoutes = [
     "/profile/:path",
     "/carts",
     "/carts/:path",
-    "/invoices",
-    "/invoices/:path",
+    "/payments",
+    "/payments/:path",
     "/exams/:path",
     "/admin",
     "/admin/:path",
@@ -46,5 +46,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/invoices/:path*", "/exams/:path*", "/admin/:path*"],
+    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/payments/:path*", "/exams/:path*", "/admin/:path*"],
 };

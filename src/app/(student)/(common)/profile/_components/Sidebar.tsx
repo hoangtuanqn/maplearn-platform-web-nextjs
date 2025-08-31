@@ -44,8 +44,8 @@ const sidebarMenuLink = [
     },
 
     {
-        url: "/profile/invoices",
-        matcher: ["/profile/invoices"],
+        url: "/profile/payments",
+        matcher: ["/profile/payments"],
         name: "Hóa đơn của tôi",
         icon: ReceiptCent,
     },

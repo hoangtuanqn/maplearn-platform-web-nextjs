@@ -37,7 +37,7 @@ export function PaymentMethodsDialog() {
 
             switch (data.payment_method) {
                 case "transfer":
-                    router.push(`/invoices/${data.transaction_code}`);
+                    router.push(`/payments/${data.transaction_code}`);
                     break;
                 case "vnpay":
                 case "momo":
@@ -45,7 +45,7 @@ export function PaymentMethodsDialog() {
                     router.push(data.url_payment || "");
                     break;
                 default:
-                    router.push(`/profile/invoices`);
+                    router.push(`/profile/payments`);
             }
         },
         onError: notificationErrorApi,

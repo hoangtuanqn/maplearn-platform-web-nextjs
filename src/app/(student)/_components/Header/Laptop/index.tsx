@@ -138,7 +138,7 @@ const HeaderLaptop = () => {
                                                             Khóa học của tôi
                                                         </button>
                                                     </Link>
-                                                    <Link href="/profile/invoices">
+                                                    <Link href="/profile/payments">
                                                         <button className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-black duration-150 hover:bg-[#ededed]">
                                                             Hóa đơn của tôi
                                                         </button>
