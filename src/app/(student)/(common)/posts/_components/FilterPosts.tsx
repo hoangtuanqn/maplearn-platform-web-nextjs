@@ -25,7 +25,7 @@ import { usePathname } from "next/navigation";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
 
-import { subjects } from "~/mockdata/subject.data";
+import { subjectsMock } from "~/mockdata/subject.data";
 const fields = ["created_at", "views", "courses"] as const;
 export function FilterPosts() {
     const pathName = usePathname();
@@ -104,7 +104,7 @@ export function FilterPosts() {
                                         ? String(formValues.filterMultiple.courses).split(",")
                                         : []
                                 }
-                                options={subjects.map((subject) => ({
+                                options={subjectsMock.map((subject) => ({
                                     label: String(subject.name),
                                     value: String(subject.slug),
                                 }))}

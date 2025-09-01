@@ -16,11 +16,8 @@ export const SubjectListResponseSchema = z.object({
 export type GradeLevelListResponse = z.infer<typeof SubjectListResponseSchema>;
 
 const gradeLevelWithCourseSchema = z.object({
-    id: z.number(),
-    name: z.string(),
     slug: z.string(),
-    created_at: z.string(),
-    updated_at: z.string(),
+
     courses: z.array(courseSchema),
 });
 

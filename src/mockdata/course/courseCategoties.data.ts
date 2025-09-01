@@ -1,4 +1,4 @@
-export const examCategories = [
+export const courseCategoriesMock = [
     {
         name: "2K8 - Xuất phát sớm lớp 12",
         slug: "2k8-xuat-phat-som-lop-12",

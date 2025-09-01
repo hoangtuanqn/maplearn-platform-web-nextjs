@@ -1,4 +1,4 @@
-export const subjects = [
+export const subjectsMock = [
     {
         name: "Toán",
         slug: "toan",

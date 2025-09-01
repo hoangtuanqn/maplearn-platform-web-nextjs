@@ -54,7 +54,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                     <ListLessonCourse />
 
                     {/* Các khóa học cùng danh mục */}
-                    <RelatedCourses idCategory={course.category_id} />
+                    <RelatedCourses category={course.category} />
                 </div>
                 {/* Layout Bên phải */}
                 <div className="h-fit w-full flex-3/12 rounded-xl bg-white p-8 shadow-sm max-lg:order-1 lg:sticky lg:top-[70px]">

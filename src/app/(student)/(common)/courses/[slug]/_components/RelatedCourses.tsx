@@ -7,11 +7,11 @@ import DisplayCourse from "~/app/(student)/_components/Courses/DisplayCourse";
 import CourseSkeleton from "../../_components/CourseSkeleton";
 
 
-const RelatedCourses = ({ idCategory }: { idCategory: number }) => {
+const RelatedCourses = ({ category }: { category: string }) => {
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["courses", "related", idCategory],
+        queryKey: ["courses", "related", category],
         queryFn: async () => {
-            const res = await courseApi.getCourses(1, 5, "", "", "filter[category_id]=" + idCategory);
+            const res = await courseApi.getCourses(1, 5, "", "", "filter[category]=" + category);
             return res.data.data.data;
         },
         staleTime: 1000 * 60 * 5, // 5 minutes

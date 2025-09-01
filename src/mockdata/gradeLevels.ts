@@ -1,4 +1,4 @@
-export const gradeLevels = [
+export const gradeLevelsMock = [
     { name: "DGTD", slug: "dg-td" },
     { name: "DGNL", slug: "dg-nl" },
     { name: "Lớp 12", slug: "lop-12" },

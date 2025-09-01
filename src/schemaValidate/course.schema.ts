@@ -1,6 +1,6 @@
 import z from "zod";
 import { paginationMetaSchemaFn } from "./common.schema";
-import { subjectSchema } from "./subject.schema";
+
 // * Category Course
 const CategoryCourseSchema = z.object({
     id: z.number(),
@@ -25,15 +25,6 @@ export const departmentSchema = z.object({
     id: z.number(),
     name: z.string(),
 });
-const subjectShortSchema = subjectSchema.pick({
-    id: true,
-    name: true,
-});
-const categoryShortSchema = CategoryCourseSchema.pick({
-    id: true,
-    name: true,
-    count_courses: true,
-});
 
 const teacherSchema = z.object({
     id: z.number(),
@@ -50,15 +41,13 @@ export const courseSchema = z.object({
     thumbnail: z.string().url(),
     price: z.number().default(0),
 
-    grade_level_id: z.number(),
-    subject_id: z.number(),
-    category_id: z.number(),
+    grade_level: z.string(),
+    subject: z.string(),
+    category: z.string(),
     start_date: z.string(),
     end_date: z.string(),
     status: z.boolean(),
     is_best_seller: z.boolean().default(false), // sản phẩm bán chạy
-    subject: subjectShortSchema,
-    category: categoryShortSchema,
     teacher: teacherSchema,
     is_enrolled: z.boolean().default(false),
     duration: z.number().default(0),

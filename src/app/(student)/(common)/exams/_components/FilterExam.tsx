@@ -9,7 +9,7 @@ import { ChevronDown, GraduationCap } from "lucide-react";
 import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { useRouter } from "next/navigation";
-import { subjects } from "~/mockdata/subject.data";
+import { subjectsMock } from "~/mockdata/subject.data";
 import { examCategories } from "~/mockdata/exam/examCategories.data";
 import { provinces } from "~/mockdata/other/provinces.data";
 
@@ -47,7 +47,7 @@ const FilterExam = () => {
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-3">
                         <>
-                            {subjects.map((subject) => (
+                            {subjectsMock.map((subject) => (
                                 <div key={subject.slug} className="flex items-center gap-2">
                                     <Checkbox
                                         id={subject.name}
@@ -96,19 +96,20 @@ const FilterExam = () => {
                             {examCategories.map((category) => (
                                 <div key={category.slug} className="flex items-center gap-2">
                                     <Checkbox
-                                        id={category.name}
+                                        id={category.slug}
+                                        checked={formValues.filterMultiple.categories?.includes(category.slug) || false}
                                         onCheckedChange={(checked) => {
-                                            const current = formValues.filterMultiple.category || [];
+                                            const current = formValues.filterMultiple.categories || [];
                                             if (checked) {
                                                 setFieldValue(
                                                     "categories",
-                                                    [...current.filter((s) => s !== ""), category.name],
+                                                    [...current.filter((s) => s !== ""), category.slug],
                                                     "filterMultiple",
                                                 );
                                             } else {
                                                 setFieldValue(
                                                     "categories",
-                                                    current.filter((s) => s !== category.name && s !== ""),
+                                                    current.filter((s) => s !== category.slug && s !== ""),
                                                     "filterMultiple",
                                                 );
                                             }
@@ -140,6 +141,7 @@ const FilterExam = () => {
                             <div key={difficulty.id} className="flex items-center gap-2">
                                 <Checkbox
                                     id={difficulty.slug}
+                                    checked={formValues.filterMultiple.difficulties?.includes(difficulty.slug) || false}
                                     onCheckedChange={(checked) => {
                                         const current = formValues.filterMultiple.difficulties || [];
                                         if (checked) {

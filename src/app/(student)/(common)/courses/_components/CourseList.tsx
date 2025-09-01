@@ -17,7 +17,7 @@ const CourseList = () => {
     const search = searchParams.get("search") || "";
     const [searchQuery, setSearchQuery] = useState<Record<string, string>>({});
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["user", "courses", { page, ...searchQuery, sort }],
+        queryKey: ["user", "courses", { page, ...searchQuery, search, sort }],
         queryFn: async () => {
             const res = await courseApi.getCourses(
                 page,

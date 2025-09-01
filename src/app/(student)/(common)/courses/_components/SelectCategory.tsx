@@ -1,11 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import MapLearnIcon from "../../../_components/Icons/MapLearnIcon";
-import { useQuery } from "@tanstack/react-query";
-import courseApi from "~/apiRequest/course";
-import { formatter } from "~/libs/format";
-import CategoryCourseSkeleton from "./CategoryCourseSkeleton";
+
 import { useRouter, useSearchParams } from "next/navigation";
+import { courseCategoriesMock } from "~/mockdata/course/courseCategoties.data";
 
 const SelectCategory = ({ url }: { url: string }) => {
     const router = useRouter();
@@ -39,31 +37,15 @@ const SelectCategory = ({ url }: { url: string }) => {
         return () => window.removeEventListener("popstate", onPopState);
     }, []);
 
-    const { data: categories, isPending } = useQuery({
-        queryKey: ["user", "CategoriesCourse"],
-        queryFn: async () => {
-            const res = await courseApi.getCategories(1);
-            return res.data.data.data;
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
     return (
         <div className="w-full shrink-0 p-8 lg:w-[350px]">
             <h2 className="text-primary text-base font-semibold">Danh mục</h2>
             <div className="mt-4 flex flex-col gap-3.5">
-                {isPending && (
-                    <div className="flex flex-col gap-3.5">
-                        {[...Array(5)].map((_, index) => (
-                            <CategoryCourseSkeleton key={index} />
-                        ))}
-                    </div>
-                )}
-                {categories?.map((cate) => {
-                    if (cate.count_courses === 0) return null;
+                {courseCategoriesMock?.map((cate) => {
                     return (
                         <div
                             onClick={() => handleChoiceTab(cate.slug)}
-                            key={cate.id}
+                            key={cate.slug}
                             className={`group flex cursor-pointer items-center gap-3.5 rounded-xl bg-[#eaf0f9] p-4 shadow-sm duration-200 ${activeTab === cate.slug ? "text-primary bg-primary" : "hover:bg-primary hover:text-white"}`}
                         >
                             <div
@@ -81,7 +63,7 @@ const SelectCategory = ({ url }: { url: string }) => {
                                 <span
                                     className={`text-sm ${activeTab === cate.slug ? "text-white" : "text-gray-500 group-hover:text-white"}`}
                                 >
-                                    Hiện có {formatter.number(cate.count_courses)} khóa
+                                    Hiện có nhiều khóa học
                                 </span>
                             </div>
                         </div>

@@ -131,12 +131,12 @@ const ExamList = () => {
                                 ))}
                             </>
                         )}
-                        <div className="ml-auto">
-                            {!isLoading && totalPages > 1 && (examList?.data.length ?? 0) > 0 && (
-                                <PaginationNav totalPages={totalPages} basePath="/exams" />
-                            )}
-                        </div>
                     </section>
+                    <div className="ml-auto">
+                        {!isLoading && totalPages > 1 && (examList?.data.length ?? 0) > 0 && (
+                            <PaginationNav totalPages={totalPages} basePath="/exams" />
+                        )}
+                    </div>
                 </>
             )}
         </>
