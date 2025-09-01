@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CreatorSchema, paginationMetaSchemaFn, TagSchema } from "./common.schema";
+import { CreatorSchema, paginationMetaSchemaFn } from "./common.schema";
 
 // Post Schema
 const PostSchema = z.object({
@@ -11,7 +11,6 @@ const PostSchema = z.object({
     views: z.number(),
     status: z.boolean().optional(),
     created_at: z.string(),
-    tags: z.array(TagSchema),
     creator: CreatorSchema,
 });
 export type PostType = z.infer<typeof PostSchema>;

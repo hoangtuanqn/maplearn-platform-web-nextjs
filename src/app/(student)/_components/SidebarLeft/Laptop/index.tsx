@@ -45,29 +45,28 @@ const SideBarLaptop = () => {
                 <div className="my-3 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <MenuItemLink title="Khóa học" url="/courses" image="/assets/icons/course.svg" />
                 <MenuItemLink title="Kho đề thi" url={"/exams"} image="/assets/icons/online-exam.svg" />
-                <MenuItemLink title="Tài liệu" url={"/documents"} image="/assets/icons/document.svg" />
                 <div className="my-4 ml-4 h-[1px] w-[calc(100%-1.5rem)] bg-[rgba(0,0,0,0.1)]"></div>
                 <div className="py-2 pl-2">
-                    <p className="text-primary text-base font-medium">Liên kết chính chủ</p>
+                    <p className="text-primary text-base font-medium">Mạng xã hội</p>
                 </div>
                 <div className="text-primary px-2 font-medium">
                     <SocialLink
-                        title="Facebook Mapstudy"
+                        title="Facebook MapLearn"
                         url="https://www.facebook.com/mapstudy.vn"
                         image="/assets/images/social/facebook-circle.png"
                     />
                     <SocialLink
-                        title="Thầy Vũ Ngọc Anh - Chuyên luyện thi Vật lý"
+                        title="Youtube MapLearn"
                         url="https://www.youtube.com/@thayvnachuyenluyenthivatly"
                         image="/assets/images/social/youtube-circle.png"
                     />
                     <SocialLink
-                        title="Tiktok Mapstudy"
+                        title="Tiktok MapLearn"
                         url="https://www.tiktok.com/@mapstudybook?_t=8mCXhbflE8n&_r=1"
                         image="/assets/images/social/tiktok-circle.png"
                     />
                     <SocialLink
-                        title="Messenger Mapstudy"
+                        title="Messenger MapLearn"
                         url="https://www.facebook.com/messages/t/105592185119255"
                         image="/assets/images/social/messenger-circle.png"
                     />

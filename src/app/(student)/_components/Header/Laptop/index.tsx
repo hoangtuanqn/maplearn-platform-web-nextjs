@@ -4,7 +4,6 @@ import Link from "next/link";
 import HomeIcon from "../../Icons/HomeIcon";
 import GraduationIcon from "../../Icons/GraduationIcon";
 import DocumentIcon from "../../Icons/DocumentIcon";
-import EntertainmentIcon from "../../Icons/EntertainmentIcon";
 import NewsIcon from "../../Icons/NewsIcon";
 import Image from "next/image";
 import HeaderLink from "./HeaderLink";
@@ -39,12 +38,6 @@ const headerLinks = [
         icon: NewsIcon,
         href: "/posts",
         macher: ["/posts", "/posts/:slug"],
-    },
-    {
-        label: "Tài liệu",
-        icon: EntertainmentIcon,
-        href: "/documents",
-        macher: ["/documents"],
     },
 ];
 const HeaderLaptop = () => {

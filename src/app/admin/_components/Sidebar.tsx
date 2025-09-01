@@ -205,35 +205,6 @@ export const menuItems = [
 
     {
         type: "title",
-        label: "Tài liệu",
-        children: [
-            {
-                type: "submenu",
-                label: "Tài liệu",
-                icon: FileArchive,
-                matcher: ["/admin/documents", "/admin/document-categories"],
-                children: [
-                    {
-                        type: "link",
-                        label: "Danh mục",
-                        icon: FolderDot,
-                        href: "/admin/document-categories",
-                        matcher: ["/admin/document-categories"],
-                    },
-                    {
-                        type: "link",
-                        label: "Tài liệu",
-                        icon: FileArchive,
-                        href: "/admin/documents",
-                        matcher: ["/admin/documents"],
-                    },
-                ],
-            },
-        ],
-    },
-
-    {
-        type: "title",
         label: "Profile",
         children: [
             {

@@ -1,7 +1,5 @@
 import React, { Suspense } from "react";
-import SelectObject from "../documents/_components/SelectObject";
-import SelectCourse from "../documents/_components/SelectCourse";
-import SearchDocument from "../documents/_components/SearchDocument";
+
 import Skeleton from "react-loading-skeleton";
 import { Metadata } from "next";
 import SelectCategory from "./_components/SelectCategory";
@@ -20,15 +18,15 @@ const CoursePage = () => {
             <div className="w-full rounded-xl bg-white px-5 py-8">
                 <h1 className="text-primary text-xl font-bold uppercase">Khóa học</h1>
                 <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
-                    <SelectObject url="/courses" />
+                    {/* <SelectObject url="/courses" /> */}
                 </Suspense>
                 <div className="flex w-full flex-col items-end lg:flex-row">
                     <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
-                        <SelectCourse url="/courses" />
+                        {/* <SelectCourse url="/courses" /> */}
                     </Suspense>
                     <div className="flex w-full flex-1 gap-2 max-lg:mt-6 lg:min-w-[400px]">
                         <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
-                            <SearchDocument url="/courses" />
+                            {/* <SearchDocument url="/courses" /> */}
                             <FilterCourses />
                         </Suspense>
                     </div>

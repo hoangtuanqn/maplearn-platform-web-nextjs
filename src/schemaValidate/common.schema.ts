@@ -34,9 +34,3 @@ export const CreatorSchema = z.object({
     avatar: z.string().default("")
 });
 
-// Tag schema
-export const TagSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    created_at: z.string(),
-});
