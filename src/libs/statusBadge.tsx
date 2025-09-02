@@ -6,10 +6,8 @@ export function getStatusBadge(type: string, status: string) {
             switch (status) {
                 case "paid":
                     return <Badge variant="success">Đã thanh toán</Badge>;
-                case "failed":
+                case "canceled":
                     return <Badge variant="danger">Đã hủy hóa đơn</Badge>;
-                case "expired":
-                    return <Badge variant="danger">Đã hết hạn</Badge>;
                 default:
                     return <Badge variant="warning">Chưa thanh toán</Badge>;
             }

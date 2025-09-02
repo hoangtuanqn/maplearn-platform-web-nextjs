@@ -34,7 +34,7 @@ const PaymentPanel = ({ payment }: { payment: PaymentDetailResponse["data"] }) =
     });
     const cancelMutation = useMutation({
         mutationFn: async () => {
-            // await paymentApi.cancelInvoice(payment.transaction_code);
+            await paymentApi.cancelPayment(payment.transaction_code);
         },
         onSuccess: () => {
             toast.success("Hóa đơn đã được hủy.");

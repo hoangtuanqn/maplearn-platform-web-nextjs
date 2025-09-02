@@ -14,5 +14,8 @@ const paymentApi = {
             headers,
         });
     },
+    cancelPayment: async (transaction_code: string) => {
+        return privateApi.post<PaymentDetailResponse>(`/payments/${transaction_code}/cancel`);
+    },
 };
 export default paymentApi;
