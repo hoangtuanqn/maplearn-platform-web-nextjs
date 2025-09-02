@@ -3,7 +3,6 @@
 import React from "react";
 import { CalendarRange, Eye } from "lucide-react";
 
-// import CommentSystem from "~/components/CommentSystem";
 
 import { formatter } from "~/libs/format";
 import { PostType } from "~/schemaValidate/post.schema";
@@ -38,17 +37,6 @@ const PostContent = ({ post }: { post: { posts: PostType } }) => {
                         <div dangerouslySetInnerHTML={{ __html: post.posts?.content ?? "" }}></div>
                     </div>
                 </div>
-
-                {/* Comment System */}
-                {/* <CommentSystem
-                    type="post"
-                    identifier={post.posts.slug}
-                    showSkeleton={true}
-                    skeletonCount={6}
-                    showReplies={true}
-                    maxReplyDepth={1}
-                    className="mt-8"
-                /> */}
             </div>
         </>
     );

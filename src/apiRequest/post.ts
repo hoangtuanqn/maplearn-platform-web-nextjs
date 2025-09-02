@@ -23,18 +23,7 @@ const postApi = {
         return publicApi.get<PostListResponse>(query);
     },
     getDetail: (slug: string) => publicApi.get(`/posts/${slug}`),
-    comment: (data: { slug: string; comment: string; reply_id: string | null }) =>
-        publicApi.post("/comments", {
-            slug: data.slug,
-            description: data.comment, // alias tại đây
-            reply_id: data.reply_id,
-            type: "post",
-        }),
-    deleteComment: (commentId: string) => publicApi.delete(`/comments/${commentId}`),
-    updateComment: (commentId: string, data: { comment: string }) =>
-        publicApi.patch(`/comments/${commentId}`, {
-            description: data.comment, // alias tại đây
-        }),
+
     incrementView: (slug: string) => publicApi.post(`/posts/${slug}/view`),
 };
 export default postApi;
