@@ -7,7 +7,6 @@ import studentApi, { USERS_PER_PAGE } from "~/apiRequest/admin/student";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import { Button } from "~/components/ui/button";
-import { formatter } from "~/libs/format";
 import { getGender } from "~/libs/hepler";
 import { getStatusBadge } from "~/libs/statusBadge";
 import ExportStudentList from "./ExportStudents";

@@ -15,8 +15,6 @@ import {
     History,
     Folder,
     FileEdit,
-    FolderDot,
-    FileArchive,
     BarChart3,
     Settings,
     LifeBuoy,

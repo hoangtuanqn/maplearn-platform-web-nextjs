@@ -5,6 +5,7 @@ import teacherApi from "~/apiRequest/teachers";
 import { redirect } from "next/navigation";
 import DisplayCourse from "../../../_components/Courses/DisplayCourse";
 import { getFullName } from "~/libs/hepler";
+import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 const getTeacher = cache(async (id: number) => {
     const teacher = await teacherApi.getDetailTeacher(id);
     return teacher;
@@ -86,11 +87,15 @@ const DetailTeacherPage = async ({ params }: { params: Promise<{ id: number }> }
             </div>
             <div className="flex-7/12 shrink-0 rounded-xl bg-white p-4 shadow-sm">
                 <h2 className="text-primary mb-4 text-base font-semibold">Tất cả khoá học</h2>
-                <div className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2">
-                    {teacher.courses.map((course) => (
-                        <DisplayCourse key={course.id} course={course} />
-                    ))}
-                </div>
+                {teacher.courses.length == 0 ? (
+                    <DisplayNoData title="Chưa có khoá học nào" />
+                ) : (
+                    <div className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2">
+                        {teacher.courses.map((course) => (
+                            <DisplayCourse key={course.id} course={course} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );

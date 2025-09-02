@@ -1,9 +1,7 @@
 import privateApi from "~/libs/apis/privateApi";
 import { CourseListResponse } from "~/schemaValidate/course.schema";
-// import { InvoiceListResponse } from "~/schemaValidate/invoice.schema";
 import { FormChangePasswordType, ProfileType } from "~/schemaValidate/user.schema";
 import { Active2FAResponse, Generate2FAType } from "~/schemaValidate/twoFactor";
-import { QuestionWrongProfileResponse } from "~/schemaValidate/exam.schema";
 import { PaymentListResponse } from "~/schemaValidate/payment.schema";
 
 export const PAYMENT_PER_PAGE = 20;
@@ -33,9 +31,5 @@ const profileApi = {
     },
     generate2FA: () => privateApi.get<Generate2FAType>("/profile/2fa/generate"),
     toggle2FA: (otp: string, type: string) => privateApi.post<Active2FAResponse>("/profile/2fa/toggle", { otp, type }),
-
-    // Get các câu hỏi đã làm sai
-    getQuestionWrong: (page: number = 1) =>
-        privateApi.get<QuestionWrongProfileResponse>(`/profile/wrong-questions?page=${page}`),
 };
 export default profileApi;

@@ -4,7 +4,6 @@ import React, { Suspense } from "react";
 import studentApi, { USERS_PER_PAGE } from "~/apiRequest/admin/student";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
-import { Button } from "~/components/ui/button";
 import { ActionActivity, ActionActivityLabel } from "~/contants/user/actionActivity";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";

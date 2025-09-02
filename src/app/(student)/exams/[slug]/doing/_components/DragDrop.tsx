@@ -89,7 +89,6 @@ const DragDrop = ({
     const [items, setItems] = useState<ValueType[]>(
         initialItems.filter((item) => !activeAnswers?.includes(item.content)),
     );
-    console.log("items >> ", items, "initialItems >> ", initialItems);
 
     const [droppedItems, setDroppedItems] = useState<Record<string, ValueType | null>>(() => {
         const initial: Record<string, ValueType | null> = {};

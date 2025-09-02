@@ -16,7 +16,7 @@ const ProfilePage = async () => {
         <div className="min-h-screen rounded-xl bg-white p-8">
             <h1 className="text-primary text-base font-bold uppercase">Tất cả giáo viên</h1>
             <div className="mt-6 grid grid-cols-7 gap-5 gap-y-8">
-                {res?.map(({ user: teacher }) => (
+                {res?.map((teacher) => (
                     <Link
                         key={teacher.id}
                         href={`/teachers/${teacher.id}`}
