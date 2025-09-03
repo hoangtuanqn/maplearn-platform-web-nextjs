@@ -11,6 +11,7 @@ const protectedRoutes = [
     "/exams/:path",
     "/admin",
     "/admin/:path",
+    "/learn/:path",
 ];
 const authPaths = ["/auth/:path"];
 
@@ -46,5 +47,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/profile/:path*", "/auth/:path*", "/carts/:path*", "/payments/:path*", "/exams/:path*", "/admin/:path*"],
+    matcher: [
+        "/profile/:path*",
+        "/auth/:path*",
+        "/carts/:path*",
+        "/payments/:path*",
+        "/exams/:path*",
+        "/admin/:path*",
+        "/learn/:path*",
+    ],
 };

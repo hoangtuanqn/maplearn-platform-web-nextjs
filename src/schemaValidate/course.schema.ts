@@ -52,6 +52,7 @@ export const courseSchema = z.object({
     is_enrolled: z.boolean().default(false),
     duration: z.number().default(0),
     lesson_count: z.number().default(0),
+    updated_at: z.string(),
 });
 export type CourseType = z.infer<typeof courseSchema>;
 export const CourseListResponseSchema = z.object({

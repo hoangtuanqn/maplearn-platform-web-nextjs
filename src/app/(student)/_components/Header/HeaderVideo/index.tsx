@@ -36,7 +36,7 @@ const HeaderVideo = () => {
                                 />
                             </svg>
                         </a>
-                        <span className="text-base font-semibold">Chuyên đề 1: Thì của động từ</span>
+                        <span className="text-base font-semibold">Nội dung bài học</span>
                     </div>
                     <div className="flex items-center justify-end gap-6">
                         <div className="mx-auto flex items-center gap-6">
