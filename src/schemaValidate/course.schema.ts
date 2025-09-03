@@ -40,7 +40,6 @@ export const courseSchema = z.object({
     slug: z.string(),
     thumbnail: z.string().url(),
     price: z.number().default(0),
-
     grade_level: z.string(),
     subject: z.string(),
     category: z.string(),
@@ -53,6 +52,19 @@ export const courseSchema = z.object({
     duration: z.number().default(0),
     lesson_count: z.number().default(0),
     updated_at: z.string(),
+    current_lesson: z.object({
+        id: z.number(),
+        chapter_id: z.number(),
+        title: z.string(),
+        slug: z.string(),
+        content: z.string(),
+        video_url: z.string(),
+        position: z.number(),
+        duration: z.number(),
+        is_free: z.boolean(),
+        created_at: z.string(),
+        updated_at: z.string(),
+    }),
 });
 export type CourseType = z.infer<typeof courseSchema>;
 export const CourseListResponseSchema = z.object({

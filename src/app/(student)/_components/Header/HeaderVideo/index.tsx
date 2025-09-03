@@ -2,7 +2,7 @@ import { Bell } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const HeaderVideo = () => {
+const HeaderVideo = ({ title }: { title: string }) => {
     return (
         <header className="relative z-30 w-full">
             <div className="fixed top-0 flex h-[56px] w-full justify-center bg-[#155e94] backdrop-blur-md">
@@ -36,7 +36,7 @@ const HeaderVideo = () => {
                                 />
                             </svg>
                         </a>
-                        <span className="text-base font-semibold">Nội dung bài học</span>
+                        <span className="text-base font-semibold">Chương: {title}</span>
                     </div>
                     <div className="flex items-center justify-end gap-6">
                         <div className="mx-auto flex items-center gap-6">

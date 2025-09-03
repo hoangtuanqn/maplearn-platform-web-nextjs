@@ -10,45 +10,40 @@ import {
     BookOpen,
     Award,
     FileText,
-    Lock,
     PlayCircle,
     CircleCheckBig,
     Brain,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-import { Button } from "~/components/ui/button";
-import { CourseDetailResponse } from "~/schemaValidate/courseDetail.schema";
+import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/courseDetail.schema";
+import { formatter } from "~/libs/format";
+import Link from "next/link";
 // Types
-interface Lesson {
-    id: number;
-    title: string;
-    duration: string;
-    isCompleted: boolean;
-    isWatching: boolean;
-    isFree: boolean;
-    hasQuiz: boolean;
-    hasResources: boolean;
-}
 
-const Sidebar = ({ course }: { course: CourseDetailResponse["data"] }) => {
-    const [openChapter, setOpenChapter] = useState(1);
+const Sidebar = ({
+    course,
+    lesson,
+}: {
+    course: CourseDetailResponse["data"];
+    lesson: LessonDetailResponse["data"];
+}) => {
+    const [openChapter, setOpenChapter] = useState(lesson.chapter_id);
     const [activeTab, setActiveTab] = useState("lessons"); // "lessons" | "comments" | "resources"
 
     const handleChapterToggle = (chapterId: number) => {
         setOpenChapter((prev) => (prev === chapterId ? 0 : chapterId));
     };
 
-    const getLessonIcon = (lesson: Lesson) => {
-        if (lesson.isCompleted) return <CheckCircle className="h-4 w-4 text-green-600" />;
-        if (lesson.isWatching) return <PlayCircle className="h-4 w-4 text-blue-600" />;
+    const getLessonIcon = (status: string) => {
+        if (status === "successed") return <CheckCircle className="h-4 w-4 text-green-600" />;
+        if (status === "watching") return <PlayCircle className="h-4 w-4 text-blue-600" />;
         return <Play className="h-4 w-4 text-gray-400" />;
     };
 
-    const getLessonStatus = (lesson: Lesson) => {
-        if (lesson.isCompleted) return "Đã hoàn thành";
-        if (lesson.isWatching) return "Đang xem";
-        return "";
+    const getLessonStatus = (status: string) => {
+        if (status === "successed") return "Đã hoàn thành";
+        if (status === "watching") return "Đang xem";
+        return "Chưa hoàn thành";
     };
     return (
         <div className="border-l border-gray-200 bg-white max-lg:border-t max-lg:border-l-0 lg:w-[500px]">
@@ -112,7 +107,7 @@ const Sidebar = ({ course }: { course: CourseDetailResponse["data"] }) => {
             </div>
 
             {/* Tab Content */}
-            <div className="h-full">
+            <div className="sticky top-10">
                 {activeTab === "lessons" && (
                     <div className="p-4">
                         {/* Course Overview */}
@@ -121,11 +116,11 @@ const Sidebar = ({ course }: { course: CourseDetailResponse["data"] }) => {
                             <div className="grid grid-cols-2 gap-3 text-sm">
                                 <div className="flex items-center gap-2">
                                     <BookOpen className="h-4 w-4 text-gray-500" />
-                                    <span>{course.lesson_count} bài học</span>
+                                    <span>{formatter.number(course.lesson_count)} bài học</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Clock className="h-4 w-4 text-gray-500" />
-                                    <span>10h 5m</span>
+                                    <span>{formatter.duration(course.duration)}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Award className="h-4 w-4 text-gray-500" />
@@ -158,24 +153,23 @@ const Sidebar = ({ course }: { course: CourseDetailResponse["data"] }) => {
                                                 <div className="flex items-center gap-3 text-xs text-gray-600">
                                                     <span className="flex items-center gap-1">
                                                         <FileText className="h-3 w-3" />
-                                                        {chapter.lessons.length} bài học
+                                                        {formatter.number(chapter.lessons.length)} bài học
                                                     </span>
                                                     <span className="h-1 w-1 rounded-full bg-gray-300" />
                                                     <span className="flex items-center gap-1">
                                                         <Clock className="h-3 w-3" />
-                                                        {/* {chapter.duration} */}
-                                                        200
+                                                        {formatter.duration(chapter.duration)}
                                                     </span>
-                                                    {/* {chapter.completedLessons > 0 && (
+                                                    {chapter.completed_lessons > 0 && (
                                                         <>
                                                             <span className="h-1 w-1 rounded-full bg-gray-300" />
                                                             <span className="flex items-center gap-1 text-green-600">
                                                                 <CircleCheckBig className="h-3 w-3" />
-                                                                {chapter.completedLessons}/{chapter.totalLessons} hoàn
-                                                                thành
+                                                                {chapter.completed_lessons}/{chapter.lessons.length}{" "}
+                                                                hoàn thành
                                                             </span>
                                                         </>
-                                                    )} */}
+                                                    )}
                                                 </div>
                                             </div>
                                             <ChevronDown
@@ -196,93 +190,88 @@ const Sidebar = ({ course }: { course: CourseDetailResponse["data"] }) => {
                                                 transition={{ duration: 0.2 }}
                                                 className="overflow-hidden bg-gray-50"
                                             >
-                                                {chapter.lessons.map((lesson, lessonIndex) => (
+                                                {chapter.lessons.map((less, lessonIndex) => (
                                                     <div
-                                                        key={lesson.id}
-                                                        className={`ml-4 flex cursor-pointer items-center gap-3 border-l-2 p-3 transition-colors hover:bg-white ${
-                                                            // lesson.isWatching
-                                                            true
-                                                                ? "border-l-blue-500 bg-blue-50"
-                                                                : // : lesson.isCompleted
-                                                                  true
-                                                                  ? "border-l-green-400 bg-green-50"
-                                                                  : "border-l-gray-200"
+                                                        key={less.id}
+                                                        className={`ml-4 border-l-2 transition-colors ${
+                                                            lesson.slug === less.slug
+                                                                ? "border-l-blue-600 bg-blue-50"
+                                                                : less.successed
+                                                                  ? "border-l-green-500 bg-green-50"
+                                                                  : "border-l-gray-300 bg-gray-50"
                                                         }`}
                                                     >
-                                                        {/* Lesson Status Icon */}
-                                                        {/* <div className="flex-shrink-0">{getLessonIcon(lesson)}</div> */}
-
-                                                        {/* Lesson Info */}
-                                                        <div className="min-w-0 flex-1">
-                                                            <div className="mb-1 flex items-center gap-2">
-                                                                <span className="text-xs text-gray-500">
-                                                                    {lessonIndex + 1}.
-                                                                </span>
-                                                                <h5
-                                                                    className={`truncate text-sm font-medium ${
-                                                                        // lesson.isWatching
-                                                                        true
-                                                                            ? "text-blue-700"
-                                                                            : lesson.successed
-                                                                              ? "text-green-700"
-                                                                              : "text-gray-900"
-                                                                    }`}
-                                                                >
-                                                                    {lesson.title}
-                                                                </h5>
+                                                        <Link
+                                                            href={`/learn/${course.slug}/lecture/${less.slug}`}
+                                                            className="flex cursor-pointer items-center gap-3 p-3 hover:bg-white"
+                                                        >
+                                                            {/* Lesson Status Icon */}
+                                                            <div className="flex-shrink-0">
+                                                                {getLessonIcon(
+                                                                    less.successed
+                                                                        ? "successed"
+                                                                        : lesson.slug === less.slug
+                                                                          ? "watching"
+                                                                          : "pending",
+                                                                )}
                                                             </div>
 
-                                                            <div className="flex items-center gap-2 text-xs">
-                                                                <span className="flex items-center gap-1 text-gray-600">
-                                                                    <Clock className="h-3 w-3" />
-                                                                    {lesson.duration}
-                                                                </span>
-                                                            </div>
-
-                                                            {/* Lesson Status */}
-                                                            {/* {getLessonStatus(lesson) && (
-                                                                <div className="mt-1">
-                                                                    <span
-                                                                        className={`text-xs font-medium ${
-                                                                            lesson.isCompleted
-                                                                                ? "text-green-600"
-                                                                                : "text-blue-600"
+                                                            {/* Lesson Info */}
+                                                            <div className="min-w-0 flex-1">
+                                                                <div className="mb-1 flex items-center gap-2">
+                                                                    <span className="text-xs text-gray-500">
+                                                                        {lessonIndex + 1}.
+                                                                    </span>
+                                                                    <h5
+                                                                        className={`truncate text-sm font-medium ${
+                                                                            lesson.slug === less.slug
+                                                                                ? "text-blue-700"
+                                                                                : less.successed
+                                                                                  ? "text-green-700"
+                                                                                  : "text-gray-900"
                                                                         }`}
                                                                     >
-                                                                        {getLessonStatus(lesson)}
+                                                                        {less.title}
+                                                                    </h5>
+                                                                </div>
+
+                                                                <div className="flex items-center gap-2 text-xs">
+                                                                    <span className="flex items-center gap-1 text-gray-600">
+                                                                        <Clock className="h-3 w-3" />
+                                                                        {formatter.duration(less.duration)}
+                                                                    </span>
+                                                                    <span
+                                                                        className={`ml-2 text-xs font-medium ${
+                                                                            less.successed
+                                                                                ? "text-green-600"
+                                                                                : lesson.slug === less.slug
+                                                                                  ? "text-blue-600"
+                                                                                  : "text-gray-500"
+                                                                        }`}
+                                                                    >
+                                                                        {getLessonStatus(
+                                                                            less.successed
+                                                                                ? "successed"
+                                                                                : lesson.slug === less.slug
+                                                                                  ? "watching"
+                                                                                  : "pending",
+                                                                        )}
                                                                     </span>
                                                                 </div>
-                                                            )} */}
 
-                                                            {/* Lesson Resources */}
-                                                            <div className="mt-1 flex items-center gap-2">
-                                                                {/* {lesson.hasQuiz && (
+                                                                {/* Lesson Resources */}
+                                                                <div className="mt-2 flex items-center gap-2">
                                                                     <span className="flex items-center gap-1 rounded bg-orange-100 px-1.5 py-0.5 text-xs text-orange-600">
                                                                         <Award className="h-3 w-3" />
                                                                         Quiz
                                                                     </span>
-                                                                )}
-                                                                {lesson.hasResources && (
                                                                     <span className="flex items-center gap-1 rounded bg-purple-100 px-1.5 py-0.5 text-xs text-purple-600">
                                                                         <FileText className="h-3 w-3" />
                                                                         Tài liệu
                                                                     </span>
-                                                                )} */}
-                                                                <span className="flex items-center gap-1 rounded bg-orange-100 px-1.5 py-0.5 text-xs text-orange-600">
-                                                                    <Award className="h-3 w-3" />
-                                                                    Quiz
-                                                                </span>
-                                                                <span className="flex items-center gap-1 rounded bg-purple-100 px-1.5 py-0.5 text-xs text-purple-600">
-                                                                    <FileText className="h-3 w-3" />
-                                                                    Tài liệu
-                                                                </span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-
-                                                        {/* Play Button */}
-                                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-2">
-                                                            <Play className="h-4 w-4" />
-                                                        </Button>
+                                                        </Link>
                                                     </div>
                                                 ))}
                                             </motion.div>

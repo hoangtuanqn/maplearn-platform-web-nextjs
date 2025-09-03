@@ -36,7 +36,9 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
             setPosition(spaceRight < tooltipWidth ? "left" : "right");
         }
     }, [showInfo]);
-
+    const url = course.is_enrolled
+        ? `/learn/${course.slug}/lecture/${course.current_lesson.slug}`
+        : `/courses/${course.slug}`;
     return (
         <div
             className="relative inline-block w-full"
@@ -50,10 +52,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                 <div className="absolute top-0 -right-4 bottom-0 z-10 w-4 bg-transparent"></div>
             )}
 
-            <Link
-                href={`/courses/${course.slug}`}
-                className="text-secondary-typo relative block h-full w-full rounded-xl"
-            >
+            <Link href={url} className="text-secondary-typo relative block h-full w-full rounded-xl">
                 <div className="relative">
                     <Image
                         width={184}
@@ -122,7 +121,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
 
                             <div className="border-muted rounded-lg border bg-white px-4 py-6 shadow-lg">
                                 <h3 className="text-primary text-base font-bold">
-                                    <Link href={`/courses/${course.slug}`}>{course.name}</Link>
+                                    <Link href={url}>{course.name}</Link>
                                 </h3>
                                 <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
                                 <p className="mt-2 text-gray-600">{course.description}</p>

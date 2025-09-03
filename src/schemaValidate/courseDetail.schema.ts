@@ -30,7 +30,13 @@ const _courseDetailSchemaResponse = z.object({
     data: CourseDetailSchema.extend({
         completed_lessons: z.number(),
         percent_completed: z.number(),
-        chapters: z.array(chapterLessonSchema.extend({ lessons: z.array(lessonSchema) })),
+        chapters: z.array(
+            chapterLessonSchema.extend({
+                completed_lessons: z.number(),
+                duration: z.number(),
+                lessons: z.array(lessonSchema),
+            }),
+        ),
     }),
 });
 export type CourseDetailResponse = z.infer<typeof _courseDetailSchemaResponse>;
