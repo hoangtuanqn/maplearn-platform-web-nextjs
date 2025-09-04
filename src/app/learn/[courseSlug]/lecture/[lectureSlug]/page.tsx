@@ -22,7 +22,6 @@ import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import Link from "next/link";
 import HeaderVideo from "~/app/(student)/_components/Header/HeaderVideo";
 
-import VideoPlayer from "../../../../(student)/_components/VideoPlayer";
 import DisplayVideoLearn from "./_components/DisplayVideoLearn";
 const VideoPage = async ({ params }: { params: Promise<{ courseSlug: string; lectureSlug: string }> }) => {
     const { courseSlug, lectureSlug } = await params;
@@ -48,7 +47,7 @@ const VideoPage = async ({ params }: { params: Promise<{ courseSlug: string; lec
                     <div className="flex-12/15">
                         {/* Video Player */}
                         <div className="bg-black">
-                            <DisplayVideoLearn lesson={lesson} />
+                            <DisplayVideoLearn course={course} lesson={lesson} />
 
                             {/* Simple Video Info Overlay */}
                         </div>

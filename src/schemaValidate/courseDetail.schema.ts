@@ -44,6 +44,7 @@ export type CourseDetailResponse = z.infer<typeof _courseDetailSchemaResponse>;
 const lessonDetailSchema = lessonSchema.extend({
     next_video: lessonSchema.nullable(),
     prev_video: lessonSchema.nullable(),
+    current_time: z.number(),
     chapter: chapterLessonSchema,
 });
 const _lessonDetailSchemaResponse = z.object({

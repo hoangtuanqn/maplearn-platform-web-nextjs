@@ -48,9 +48,10 @@ const CourseList = () => {
             <h2 className="mt-5 text-right text-base font-bold text-black">{formatter.number(total)} kết quả</h2>
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-5">
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
-                {courses?.data?.map((course) => (
-                    <DisplayCourse key={course.id} course={course} />
-                ))}
+                {courses?.data?.map((course) => {
+                    if(course.is_enrolled) return null;
+                    return <DisplayCourse key={course.id} course={course} />;
+                })}
             </div>
             {!isLoading && Number(courses?.data?.length) == 0 && <DisplayNoData title="Không tìm thấy khóa học nào!" />}
             {!isLoading && Number(courses?.data?.length) > 0 && (
