@@ -36,10 +36,12 @@ const Courses = () => {
                 if (level.courses.length === 0) return null; // Bỏ qua nếu ko có khóa học nào
                 return (
                     <div key={level.slug} className="mt-3.5 bg-white px-4 py-6 shadow-sm md:rounded-xl xl:mt-6">
-                        <HeaderSection title={"Khóa học " + gradeLevelsMock.find(item => item.slug === level.slug)?.name} url={`/courses?grade_level=${level.slug}`} />
+                        <HeaderSection
+                            title={"Khóa học " + gradeLevelsMock.find((item) => item.slug === level.slug)?.name}
+                            url={`/courses?grade_level=${level.slug}`}
+                        />
                         <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
                             {level.courses?.map((course) => {
-                                if (course.is_enrolled) return null; // Bỏ qua nếu mua rồi
                                 return <DisplayCourse key={course.id} course={course} />;
                             })}
                         </div>

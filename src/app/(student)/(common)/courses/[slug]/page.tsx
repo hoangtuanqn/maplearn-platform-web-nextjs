@@ -77,8 +77,6 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
 
                         <ButtonAction />
 
-                        <p className="text-center text-xs">Đảm bảo hoàn tiền trong 30 ngày</p>
-
                         <div className="rounded-lg bg-gray-50 p-4">
                             <span className="mb-2 block text-sm font-semibold text-gray-700">Khóa này bao gồm</span>
                             <ul className="list-inside list-disc space-y-1 text-sm text-gray-600">

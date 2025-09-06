@@ -25,7 +25,6 @@ const ListCourseRecommended = () => {
                 <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-4">
                     {isLoading && [...Array(8).keys()].map((index) => <CourseSkeleton key={index} />)}
                     {courses?.map((course) => {
-                        if (course.is_enrolled) return null; // Bỏ qua nếu mua rồi
                         return <DisplayCourse key={course.id} course={course} />;
                     })}
                 </div>

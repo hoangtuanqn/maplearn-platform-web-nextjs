@@ -36,9 +36,11 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
             setPosition(spaceRight < tooltipWidth ? "left" : "right");
         }
     }, [showInfo]);
-    const url = course.is_enrolled
-        ? `/learn/${course.slug}/lecture/${course.current_lesson.slug}`
-        : `/courses/${course.slug}`;
+    if (!course) return null;
+    const url =
+        course.is_enrolled && course.current_lesson?.slug
+            ? `/learn/${course.slug}/lecture/${course.current_lesson?.slug}`
+            : `/courses/${course.slug}`;
     return (
         <div
             className="relative inline-block w-full"
@@ -72,15 +74,28 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                     <User style={{ fill: "currentColor" }} />
                     <span className="line-clamp-2">{course.teacher?.full_name}</span>
                 </div>
-                <div className="flex items-center gap-1 text-xs">
-                    <span className="font-bold text-[#FFB23F]">{4}</span>
-                    <Rating style={{ maxWidth: 60 }} value={4} readOnly />
-                    <span className="text-slate-400">(20)</span>
-                </div>
+                {!course.is_enrolled && (
+                    <div className="flex items-center gap-1 text-xs">
+                        <span className="font-bold text-[#FFB23F]">{4}</span>
+                        <Rating style={{ maxWidth: 60 }} value={4} readOnly />
+                        <span className="text-slate-400">(20)</span>
+                    </div>
+                )}
                 {course.is_enrolled ? (
-                    <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
-                        Bạn đã mua khóa học này
-                    </span>
+                    <div className="mt-2">
+                        <div className="mb-1 flex items-center justify-between text-xs text-gray-600">
+                            <span>Tiến độ học tập</span>
+                            <span className="font-medium">
+                                {(course.lesson_successed / course.lesson_count) * 100}%
+                            </span>
+                        </div>
+                        <div className="mb-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                            <div
+                                className="h-2 rounded-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-500 ease-out"
+                                style={{ width: `${(course.lesson_successed / course.lesson_count) * 100}%` }}
+                            ></div>
+                        </div>
+                    </div>
                 ) : (
                     <span className="text-sm font-bold text-black">
                         {course.price === 0 ? "Miễn phí" : formatter.number(course.price ?? 0) + "đ"}

@@ -51,6 +51,7 @@ export const courseSchema = z.object({
     is_enrolled: z.boolean().default(false),
     duration: z.number().default(0),
     lesson_count: z.number().default(0),
+    lesson_successed: z.number().default(0),
     updated_at: z.string(),
     current_lesson: z.object({
         id: z.number(),
@@ -85,6 +86,7 @@ export type CourseListRecommendedResponse = z.infer<typeof CourseListRecommended
 export const CourseDetailSchema = courseSchema.extend({
     intro_video: z.string().url(),
     enrollments_count: z.number().default(0),
+    prerequisite_course: courseSchema.nullable().default(null),
     // teachers: teacherSchema,
 });
 

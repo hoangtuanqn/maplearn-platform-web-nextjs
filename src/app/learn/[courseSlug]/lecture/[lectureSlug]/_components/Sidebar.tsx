@@ -203,7 +203,7 @@ const Sidebar = ({
                                                     >
                                                         <Link
                                                             href={`/learn/${course.slug}/lecture/${less.slug}`}
-                                                            className="flex cursor-pointer items-center gap-3 p-3 hover:bg-white"
+                                                            className="flex cursor-pointer items-center gap-3 p-3"
                                                         >
                                                             {/* Lesson Status Icon */}
                                                             <div className="flex-shrink-0">

@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react";
+import { Bell, MoveLeft } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -8,34 +8,9 @@ const HeaderVideo = ({ title }: { title: string }) => {
             <div className="fixed top-0 flex h-[56px] w-full justify-center bg-[#155e94] backdrop-blur-md">
                 <div className="tab:px-6 lap:px-8 flex w-full flex-1 items-center justify-between px-4 py-2.5">
                     <div className="flex items-center gap-3 text-white">
-                        <a
-                            className="cursor-pointer"
-                            href="/khoa-hoc/khoa-i---ngu-phap-ung-dung-mon-tieng-anh-nam-2026#lay-goc-ngu-phap"
-                        >
-                            <svg
-                                className="-mt-[1.5px] h-6 w-6 rotate-180"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M14.43 5.92999L20.5 12L14.43 18.07"
-                                    stroke="white"
-                                    strokeWidth={3}
-                                    strokeMiterlimit={10}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                                <path
-                                    d="M3.5 12H20.33"
-                                    stroke="white"
-                                    strokeWidth={3}
-                                    strokeMiterlimit={10}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </a>
+                        <Link className="cursor-pointer" href="/profile/my-courses">
+                            <MoveLeft className="size-5!" />
+                        </Link>
                         <span className="text-base font-semibold">Chương: {title}</span>
                     </div>
                     <div className="flex items-center justify-end gap-6">
@@ -65,7 +40,7 @@ const HeaderVideo = ({ title }: { title: string }) => {
                                     </svg>
                                 </div>
                             </Link>
-                            <a href="/khoa-hoc">
+                            <Link href="/profile/my-courses">
                                 <div className="h-max w-max">
                                     <svg
                                         className="h-6.5 w-6.5 duration-200 hover:scale-110"
@@ -83,7 +58,7 @@ const HeaderVideo = ({ title }: { title: string }) => {
                                         />
                                     </svg>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                         <div className="max-tab:hidden h-6 w-[1px] bg-white" />
                         <div className="flex items-center gap-2">

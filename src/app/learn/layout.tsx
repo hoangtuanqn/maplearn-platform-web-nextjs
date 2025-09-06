@@ -1,6 +1,6 @@
 import React from "react";
-import Footer from "~/app/(student)/_components/Footer";
 import LayoutGetInfoMe from "~/components/Layout/LayoutGetInfoMe";
+import Footer from "./_components/Footer";
 
 const VideoLayout = ({ children }: { children: React.ReactNode }) => {
     return (

@@ -11,14 +11,17 @@ import { AppDispatch, RootState } from "~/store";
 import { setUser } from "~/store/userSlice";
 import { UserType } from "~/schemaValidate/user.schema";
 import { notificationErrorApi } from "~/libs/apis/http";
+import { getLocalStorage, setLocalStorage } from "~/libs/localStorage";
 
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const user = useSelector((state: RootState) => state.user.user) ?? null;
+    let user = JSON.parse(getLocalStorage("user") || "null") as UserType | null;
+    user = useSelector((state: RootState) => state.user.user);
 
     // ✅ Hàm login
     const login = (user: UserType) => {
+        setLocalStorage("user", JSON.stringify(user));
         dispatch(setUser(user));
     };
 
@@ -32,9 +35,10 @@ export function useAuth() {
     };
     // Mutation resend verify email
     const resendVerifyEmail = useMutation({
-        mutationFn: () => privateApi.post("/profile/resend-verify-email", {
-            email: user?.email,
-        }),
+        mutationFn: () =>
+            privateApi.post("/profile/resend-verify-email", {
+                email: user?.email,
+            }),
         onSuccess: () => {
             toast.success("Đã gửi lại email xác thực!");
         },

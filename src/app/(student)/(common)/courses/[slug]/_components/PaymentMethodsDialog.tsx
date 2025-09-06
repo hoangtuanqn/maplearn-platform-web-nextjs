@@ -21,7 +21,13 @@ import MethodPayment from "../../../../_components/MethodPayment";
 import paymentApi from "~/apiRequest/payment";
 import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
 
-export function PaymentMethodsDialog({ course }: { course: CourseGetDetailResponse["data"] }) {
+export function PaymentMethodsDialog({
+    course,
+    isCheckPrerequisite = false,
+}: {
+    course: CourseGetDetailResponse["data"];
+    isCheckPrerequisite: boolean;
+}) {
     const [paymentMethod, setPaymentMethod] = useState<string>("transfer");
     const router = useRouter();
 
@@ -56,10 +62,11 @@ export function PaymentMethodsDialog({ course }: { course: CourseGetDetailRespon
             <Dialog>
                 <form>
                     <DialogTrigger asChild>
-                        <Button className="text-primary mt-2 w-full" variant={"outline"}>
-                            <span>Mua ngay</span>
+                        <Button className="text-primary w-full" variant={"outline"}>
+                            <span>{isCheckPrerequisite ? "Vẫn tiếp tục mua" : "Mua ngay"}</span>
                         </Button>
                     </DialogTrigger>
+
                     <DialogContent className="bg-white sm:max-w-[600px]">
                         {mutation.isPending && <Loading />}
                         <DialogHeader>

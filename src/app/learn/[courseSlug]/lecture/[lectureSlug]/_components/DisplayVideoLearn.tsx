@@ -31,7 +31,6 @@ const DisplayVideoLearn = ({
     });
     // Gọi khi video kết thúc
     const onCompleted = useCallback(() => {
-        console.log("Kết thúc video đã gọi rồi nè");
 
         // Cập nhật lại thời gian = thời lượng video
         mutationUpdateTime.mutate({ lesson_id: lesson.id, progress: lesson.duration });
