@@ -6,7 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { difficulties } from "~/apiRequest/exam";
 import { ChevronDown, GraduationCap } from "lucide-react";
-import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
+import MultiSelectDropdown from "../../../_components/MultiSelectDropdown";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { useRouter } from "next/navigation";
 import { subjectsMock } from "~/mockdata/subject.data";

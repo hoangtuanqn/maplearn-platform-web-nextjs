@@ -26,7 +26,7 @@ const EditStudentPage = async ({ params }: { params: Promise<{ id: string }> }) 
                 <FormEditStudent studentData={student} />
             </div>
 
-            <HistoryActivities id={id} />
+            {/* <HistoryActivities id={id} /> */}
         </section>
     );
 };

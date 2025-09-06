@@ -44,7 +44,6 @@ const StudentList = () => {
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
                                     Số điện thoại
                                 </th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số dư</th>
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
                                 <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
                             </tr>

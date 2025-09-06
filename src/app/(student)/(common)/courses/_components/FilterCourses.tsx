@@ -22,7 +22,7 @@ import {
 } from "~/components/ui/select";
 import { Label } from "~/components/ui/label";
 import { usePathname } from "next/navigation";
-import MultiSelectDropdown from "./MultiSelectDropdown";
+import MultiSelectDropdown from "../../../_components/MultiSelectDropdown";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { useQuery } from "@tanstack/react-query";
 import teacherApi from "~/apiRequest/teachers";

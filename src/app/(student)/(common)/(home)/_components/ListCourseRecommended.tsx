@@ -15,6 +15,7 @@ const ListCourseRecommended = () => {
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
+    
 
     const { user } = useAuth();
     if (!user) return null;

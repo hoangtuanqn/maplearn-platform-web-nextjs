@@ -6,7 +6,7 @@ const CategoryCourseSchema = z.object({
     id: z.number(),
     name: z.string(),
     slug: z.string(),
-    status: z.boolean(),
+    status: z.number(),
     created_at: z.string(),
     count_courses: z.number(),
     // creator: z.array(CreatorSchema),

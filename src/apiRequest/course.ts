@@ -65,6 +65,9 @@ const courseApi = {
     },
 
     // Admin
+    createCourse: (data: any) => {
+        return privateApi.post<CourseGetDetailResponse>("/courses", data);
+    },
     deleteCourse: (slug: string) => {
         return privateApi.delete<ResponseSchemaBasic>(`/courses/${slug}`);
     },

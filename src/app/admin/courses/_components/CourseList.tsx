@@ -93,7 +93,7 @@ const CourseList = () => {
                                               </p>
                                               <p>
                                                   <span className="font-bold">Dự kiến kết thúc:</span>{" "}
-                                                  {formatter.date(course.end_date)}
+                                                  {course.end_date ? formatter.date(course.end_date) : "Không kết thúc"}
                                               </p>
                                           </td>
                                           <td className="px-4 py-3 text-zinc-500">{formatter.number(course.price)}đ</td>
@@ -101,7 +101,7 @@ const CourseList = () => {
                                           <td className="px-4 py-3 text-zinc-500">{course.teacher.full_name}</td>
 
                                           <td className="px-4 py-3">
-                                              {getStatusBadge("activity_status", course.status ? "1" : "0")}
+                                              {getStatusBadge("activity_status", String(course.status))}
                                           </td>
                                           <td className="px-4 py-3 text-right">
                                               <Link href={`/admin/courses/${course.slug}`}>

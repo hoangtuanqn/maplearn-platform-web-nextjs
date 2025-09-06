@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import curseDetailApi from "~/apiRequest/courseDetail";
+import courseDetailApi from "~/apiRequest/courseDetail";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ courseSlug: string }> }) {
     const cookie = request.headers.get("cookie");
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // Gọi backend API với cookie
     try {
-        const res = await curseDetailApi.getDetailCourse(courseSlug, {
+        const res = await courseDetailApi.getDetailCourse(courseSlug, {
             Cookie: cookie || "",
         });
         return NextResponse.json(res.data, { status: res.status });

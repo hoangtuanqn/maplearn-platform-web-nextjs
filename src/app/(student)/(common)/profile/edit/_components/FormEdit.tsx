@@ -12,14 +12,11 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import profileApi from "~/apiRequest/profile";
 import Loading from "~/app/(student)/_components/Loading";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { cn } from "~/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import uploadMedia from "~/apiRequest/uploadMedia";
 import { provinces } from "~/mockdata/other/provinces.data";
+import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
@@ -93,7 +90,7 @@ const FormEdit = () => {
         });
         setPreview(user?.avatar ?? null);
     }, [user, form]);
-    
+
     if (!user) return <Loading />;
     return (
         <>
@@ -196,61 +193,26 @@ const FormEdit = () => {
                     <FormField
                         control={form.control}
                         name="city"
-                        render={({ field }) => (
-                            <FormItem className="flex w-full flex-col">
-                                <FormLabel className="text-sm font-normal">Tỉnh thành</FormLabel>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <FormControl>
-                                            <Button
-                                                variant="outline"
-                                                role="combobox"
-                                                className={cn(
-                                                    "justify-between",
-                                                    !field.value && "text-muted-foreground",
-                                                )}
-                                            >
-                                                {field.value
-                                                    ? provinces.find((province) => province.name === field.value)?.name
-                                                    : "Tỉnh thành của bạn"}
-                                                <ChevronsUpDown className="opacity-50" />
-                                            </Button>
-                                        </FormControl>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
-                                        <Command>
-                                            <CommandInput placeholder="Tìm kiếm..." className="h-9" />
-                                            <CommandList>
-                                                <CommandEmpty>Không tìm thấy dữ liệu.</CommandEmpty>
-                                                <CommandGroup>
-                                                    {provinces.map((province) => (
-                                                        <CommandItem
-                                                            value={province.name}
-                                                            key={province.province_code}
-                                                            onSelect={() => {
-                                                                form.setValue("city", province.name);
-                                                            }}
-                                                        >
-                                                            {province.name}
-                                                            <Check
-                                                                className={cn(
-                                                                    "ml-auto",
-                                                                    province.name === field.value
-                                                                        ? "opacity-100"
-                                                                        : "opacity-0",
-                                                                )}
-                                                            />
-                                                        </CommandItem>
-                                                    ))}
-                                                </CommandGroup>
-                                            </CommandList>
-                                        </Command>
-                                    </PopoverContent>
-                                </Popover>
+                        render={({ field }) => {
+                            console.log("field.value >> ", field.value);
 
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                            return (
+                                <FormItem className="flex w-full flex-col">
+                                    <FormLabel className="text-sm font-normal">Tỉnh thành</FormLabel>
+                                    <SingleSelectDropdown
+                                        onChange={field.onChange}
+                                        label="Tỉnh thành của bạn"
+                                        value={field.value}
+                                        options={provinces.map((province) => ({
+                                            label: province.name,
+                                            value: province.name,
+                                        }))}
+                                    />
+
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
                     />
                     <FormField
                         control={form.control}

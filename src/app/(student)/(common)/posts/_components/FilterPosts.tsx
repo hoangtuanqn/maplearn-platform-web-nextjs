@@ -23,7 +23,7 @@ import {
 import { Label } from "~/components/ui/label";
 import { usePathname } from "next/navigation";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
-import MultiSelectDropdown from "../../courses/_components/MultiSelectDropdown";
+import MultiSelectDropdown from "../../../_components/MultiSelectDropdown";
 
 import { subjectsMock } from "~/mockdata/subject.data";
 const fields = ["created_at", "views", "courses"] as const;
