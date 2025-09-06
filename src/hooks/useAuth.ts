@@ -11,17 +11,22 @@ import { AppDispatch, RootState } from "~/store";
 import { setUser } from "~/store/userSlice";
 import { UserType } from "~/schemaValidate/user.schema";
 import { notificationErrorApi } from "~/libs/apis/http";
-import { getLocalStorage, setLocalStorage } from "~/libs/localStorage";
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from "~/libs/localStorage";
 
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    let user = JSON.parse(getLocalStorage("user") || "null") as UserType | null;
+    let user: UserType | null;
+    if (typeof window !== "undefined") {
+        user = JSON.parse(getLocalStorage("user") || "null") as UserType | null;
+    }
     user = useSelector((state: RootState) => state.user.user);
 
     // ✅ Hàm login
     const login = (user: UserType) => {
-        setLocalStorage("user", JSON.stringify(user));
+        if (typeof window !== "undefined") {
+            setLocalStorage("user", JSON.stringify(user));
+        }
         dispatch(setUser(user));
     };
 
@@ -54,6 +59,9 @@ export function useAuth() {
         },
         onSettled: () => {
             dispatch(setUser(null)); // Xoá user khỏi Redux
+            if (typeof window !== "undefined") {
+                removeLocalStorage("user"); // Xoá user khỏi localStorage
+            }
             router.push("/auth/login");
             toast.success("Đăng xuất thành công!");
         },
@@ -61,11 +69,6 @@ export function useAuth() {
             toast.error("Có lỗi khi đăng xuất!");
         },
     });
-    // if (error) {
-    //     toast.error("Đã tự động đăng xuất, yêu cầu đăng nhập lại!");
-    //     router.push("/auth/login");
-    //     logoutUser.mutate();
-    // }
 
     return {
         user,

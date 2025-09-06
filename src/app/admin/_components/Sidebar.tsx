@@ -61,68 +61,17 @@ export const menuItems = [
 
     {
         type: "title",
-        label: "Môn học",
+        label: "Người dùng",
         children: [
             {
                 type: "link",
-                label: "Môn học",
-                icon: BookOpen,
-                href: "/admin/subjects",
-                matcher: ["/admin/subjects"],
-            },
-        ],
-    },
-
-    {
-        type: "title",
-        label: "Khóa học",
-        children: [
-            {
-                type: "submenu",
                 label: "Khóa học",
                 icon: GraduationCap,
-                matcher: ["/admin/courses", "/admin/categories", "/admin/lessons"],
-                children: [
-                    {
-                        type: "link",
-                        label: "Danh mục",
-                        icon: FolderTree,
-                        href: "/admin/categories",
-                        matcher: ["/admin/categories"],
-                    },
-                    {
-                        type: "link",
-                        label: "Khóa học",
-                        icon: GraduationCap,
-                        href: "/admin/courses",
-                        matcher: ["/admin/courses"],
-                    },
-                    {
-                        type: "link",
-                        label: "Chương",
-                        icon: ListOrdered,
-                        href: "/admin/chapters",
-                        matcher: ["/admin/chapters"],
-                    },
-                    {
-                        type: "link",
-                        label: "Bài học",
-                        icon: FileText,
-                        href: "/admin/lessons",
-                        matcher: ["/admin/lessons"],
-                    },
-                    {
-                        type: "link",
-                        label: "Hỏi đáp",
-                        icon: MessageCircle,
-                        href: "/admin/qna",
-                        matcher: ["/admin/qna"],
-                    },
-                ],
+                href: "/admin/courses",
+                matcher: ["/admin/courses", "/admin/courses/:slug"],
             },
         ],
     },
-
     {
         type: "title",
         label: "Đề thi",

@@ -70,13 +70,6 @@ const HeaderLaptop = () => {
                                         />
                                     </Link>
                                 </div>
-                                {/* <div className="block w-[calc(100%-1.25rem)] pr-4 text-base"></div> */}
-                                {/* <button className="flex w-48 cursor-pointer items-center justify-between"> */}
-                                {/* <div className="pr-4 text-base"> */}
-                                {/* <p className="line-clamp-1 w-full text-start text-[#a3b6c6]">Tìm kiếm</p> */}
-                                {/* </div> */}
-                                {/* <Search /> */}
-                                {/* </button> */}
                             </div>
                             <div className="flex shrink-1 justify-center">
                                 <div className="relative flex items-center">
@@ -121,6 +114,16 @@ const HeaderLaptop = () => {
                                                 }}
                                             >
                                                 <div className="w-36 rounded-lg bg-white p-1 shadow-md">
+                                                    {user && user.role === "admin" && (
+                                                        <>
+                                                            <Link href="/admin">
+                                                                <button className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-black duration-150 hover:bg-[#ededed]">
+                                                                    Quản trị viên
+                                                                </button>
+                                                            </Link>
+                                                            <div className="h-[0.5px] bg-black" />
+                                                        </>
+                                                    )}
                                                     <Link href="/profile">
                                                         <button className="w-full cursor-pointer rounded-md px-2 py-1.5 text-left text-black duration-150 hover:bg-[#ededed]">
                                                             Cá nhân

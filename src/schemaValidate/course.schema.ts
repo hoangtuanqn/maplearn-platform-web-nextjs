@@ -45,7 +45,7 @@ export const courseSchema = z.object({
     category: z.string(),
     start_date: z.string(),
     end_date: z.string(),
-    status: z.boolean(),
+    status: z.boolean().default(true), // true: hoạt động, false: tạm ngưng
     is_best_seller: z.boolean().default(false), // sản phẩm bán chạy
     teacher: teacherSchema,
     is_enrolled: z.boolean().default(false),
@@ -66,6 +66,7 @@ export const courseSchema = z.object({
         created_at: z.string(),
         updated_at: z.string(),
     }),
+    enrollments_count: z.number().default(0),
 });
 export type CourseType = z.infer<typeof courseSchema>;
 export const CourseListResponseSchema = z.object({
@@ -85,7 +86,6 @@ export type CourseListRecommendedResponse = z.infer<typeof CourseListRecommended
 
 export const CourseDetailSchema = courseSchema.extend({
     intro_video: z.string().url(),
-    enrollments_count: z.number().default(0),
     prerequisite_course: courseSchema.nullable().default(null),
     // teachers: teacherSchema,
 });
