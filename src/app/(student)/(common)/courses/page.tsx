@@ -23,7 +23,7 @@ const CoursePage = () => {
                 <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
                     <SelectObject url="/courses" />
                 </Suspense>
-                <div className="flex w-full flex-col items-end lg:flex-row">
+                <div className="flex w-full flex-col items-end gap-8 xl:flex-row">
                     <Suspense fallback={<Skeleton height={44} className="!w-full !rounded-xl" />}>
                         <SelectCourse url="/courses" />
                     </Suspense>

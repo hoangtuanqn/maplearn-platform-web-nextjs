@@ -66,6 +66,10 @@ export const courseSchema = z.object({
         created_at: z.string(),
         updated_at: z.string(),
     }),
+    rating: z.object({
+        average_rating: z.number(),
+        total_reviews: z.number(),
+    }),
     enrollments_count: z.number().default(0),
 });
 export type CourseType = z.infer<typeof courseSchema>;

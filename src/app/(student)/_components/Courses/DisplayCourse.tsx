@@ -1,10 +1,9 @@
 "use client";
 
-import { User } from "lucide-react";
+import { Star, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Rating } from "@smastrom/react-rating";
 import { formatter } from "~/libs/format";
 import { motion, AnimatePresence } from "framer-motion";
 import { CourseType } from "~/schemaValidate/course.schema";
@@ -76,9 +75,8 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                 </div>
                 {!course.is_enrolled && (
                     <div className="flex items-center gap-1 text-xs">
-                        <span className="font-bold text-[#FFB23F]">{4}</span>
-                        <Rating style={{ maxWidth: 60 }} value={4} readOnly />
-                        <span className="text-slate-400">(20)</span>
+                        <span className="font-bold text-amber-500">{course.rating.average_rating}</span>
+                        <Star className="h-3 w-3 flex-shrink-0 fill-amber-500 text-amber-500" />
                     </div>
                 )}
                 {course.is_enrolled ? (
@@ -97,7 +95,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                         </div>
                     </div>
                 ) : (
-                    <span className="text-sm font-bold text-black">
+                    <span className="text-primary text-sm font-bold">
                         {course.price === 0 ? "Miễn phí" : formatter.number(course.price ?? 0) + "đ"}
                     </span>
                 )}

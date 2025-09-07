@@ -5,9 +5,12 @@ import Link from "next/link";
 import { initNotifications } from "@mycv/f8-notification";
 import { useEffect } from "react";
 import { isActiveRoute } from "~/libs/routeMatcher";
+import { usePathname } from "next/navigation";
 
 const FooterMobileLink = ({ label, icon: Icon, href, iconColor = "var(--primary-light)", macher }: ItemLinkType) => {
-    const isActive = isActiveRoute(href, macher);
+    const pathname = usePathname();
+
+    const isActive = macher.some((m: string) => isActiveRoute(pathname, [m]));
     useEffect(() => {
         initNotifications({ cooldown: 1000 });
     }, []);

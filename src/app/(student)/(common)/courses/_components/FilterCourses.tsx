@@ -109,13 +109,13 @@ export function FilterCourses() {
                         <div className="grid gap-4 lg:grid-cols-2">
                             {/* Số lượng mua */}
                             <div className="grid gap-3">
-                                <Label>Số lượt mua</Label>
+                                <Label>Số học sinh tham gia</Label>
                                 <Select
                                     value={formValues.sort.enrollment_count || ""}
                                     onValueChange={(value) => setFieldValue("enrollment_count", value, "sort")}
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Sắp xếp theo số lượng mua" />
+                                        <SelectValue placeholder="Sắp xếp theo số học sinh tham gia" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
