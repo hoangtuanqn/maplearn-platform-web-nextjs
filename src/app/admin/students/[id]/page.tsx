@@ -2,7 +2,6 @@ import React from "react";
 
 import { Metadata } from "next";
 import FormEditStudent from "./_components/FormEditStudent";
-import HistoryActivities from "./_components/HistoryActivities";
 import { redirect } from "next/navigation";
 import studentApiServer from "~/apiRequest/server/admin/student";
 export const metadata: Metadata = {

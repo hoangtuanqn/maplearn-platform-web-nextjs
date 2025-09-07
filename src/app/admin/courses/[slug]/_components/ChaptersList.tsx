@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { ChevronDown, ChevronRight, Edit, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Edit } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import courseApi from "~/apiRequest/course";
-import ChapterSekeleton from "./ChapterSekeleton";
 import { formatter } from "~/libs/format";
 import { AddChapterDialog } from "./AddChapterDialog";
 import { AddLessonDialog } from "./AddLessonDialog";
@@ -12,7 +11,7 @@ import DeleteLessonButton from "./DeleteLessonButton";
 import DeleteChapterButton from "./DeleteChapterButton";
 import Loading from "~/app/(student)/_components/Loading";
 const ChaptersList = ({ slug }: { slug: string }) => {
-    const { data: chapters, isLoading } = useQuery({
+    const { data: chapters } = useQuery({
         queryKey: ["course", "chapters", slug],
         queryFn: async () => {
             const res = await courseApi.getChapterLessonList(slug);

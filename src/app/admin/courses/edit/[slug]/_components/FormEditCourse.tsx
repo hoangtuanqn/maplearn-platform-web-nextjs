@@ -17,7 +17,6 @@ import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdo
 import courseApi from "~/apiRequest/course";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 
@@ -79,8 +78,6 @@ interface FormEditCourseProps {
 }
 
 const FormEditCourse = ({ courseData, slug }: FormEditCourseProps) => {
-    const router = useRouter();
-
     const { data: teachers = [] } = useQuery({
         queryKey: ["user", "teachers"],
         queryFn: teacherApi.getTeachers,
@@ -147,7 +144,7 @@ const FormEditCourse = ({ courseData, slug }: FormEditCourseProps) => {
                 endDate: new Date(data.endDate).toISOString(),
             };
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Cập nhật khóa học thành công!");
             // router.push(`/admin/courses/${data.data.data.slug}`);
         },

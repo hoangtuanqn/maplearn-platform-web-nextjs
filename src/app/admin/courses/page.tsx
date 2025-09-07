@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Metadata } from "next";
 import CourseList from "./_components/CourseList";
 import { Button } from "~/components/ui/button";
@@ -14,7 +14,9 @@ const CoursePage = () => {
                     <Button variant="black">Thêm khóa học</Button>
                 </Link>
             </div>
-            <CourseList />
+            <Suspense>
+                <CourseList />
+            </Suspense>
         </section>
     );
 };

@@ -1,6 +1,5 @@
 import React from "react";
 import { Metadata } from "next";
-import FormEditCourse from "./_components/FormEditCourse";
 export const metadata: Metadata = {
     title: "Thêm khóa học mới",
 };
