@@ -24,3 +24,10 @@ const _chapterLessonListSchema = z.object({
     data: z.array(chapterSchema),
 });
 export type ChapterLessonList = z.infer<typeof _chapterLessonListSchema>;
+
+const _chapterLessonSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: chapterSchema,
+});
+export type ChapterLesson = z.infer<typeof _chapterLessonSchema>;

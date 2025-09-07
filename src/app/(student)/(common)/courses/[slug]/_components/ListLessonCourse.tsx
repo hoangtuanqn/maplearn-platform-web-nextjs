@@ -8,12 +8,11 @@ import { useParams } from "next/navigation";
 import { formatter } from "~/libs/format";
 import { Button } from "~/components/ui/button";
 
-
 const ListLessonCourse = () => {
     const params = useParams<{ slug: string }>();
     const [open, setOpen] = useState(1);
     const { data: chapters } = useQuery({
-        queryKey: ["course", "chapters"],
+        queryKey: ["course", "chapters", params.slug],
         queryFn: async () => {
             const res = await courseApi.getChapterLessonList(params.slug);
             return res.data.data;
@@ -124,7 +123,7 @@ const ListLessonCourse = () => {
                                                     </span>
 
                                                     <span className="flex items-center gap-1 rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                                                       <CircleCheckBig className="h-3 w-3" />
+                                                        <CircleCheckBig className="h-3 w-3" />
                                                         Hoàn thành
                                                     </span>
 
