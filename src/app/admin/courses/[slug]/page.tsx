@@ -1,11 +1,10 @@
 import React from "react";
-import { Plus, Edit, BookOpen, Users, Clock, BarChart3 } from "lucide-react";
+import { Edit, BookOpen, Users, Clock, BarChart3 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { redirect } from "next/navigation";
 import { formatter } from "~/libs/format";
 import courseApi from "~/apiRequest/course";
 import ChaptersList from "./_components/ChaptersList";
-import { AddChapterDialog } from "./_components/AddChapterDialog";
 
 const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
@@ -58,9 +57,6 @@ const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) =
             <div className="rounded-lg bg-white p-6 shadow-sm">
                 {/* Chapters List */}
                 <ChaptersList slug={slug} />
-
-          
-                
             </div>
         </div>
     );

@@ -18,6 +18,7 @@ import courseApi from "~/apiRequest/course";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
+import courseAdminApi from "~/apiRequest/admin/course";
 const formSchema = z
     .object({
         name: z.string().min(2, { message: "Tên khóa học phải có ít nhất 2 ký tự." }),
@@ -116,7 +117,7 @@ const FormAddCourse = () => {
         mode: "onBlur",
     });
     const mutationCourse = useMutation({
-        mutationFn: (data: any) => courseApi.createCourse(data),
+        mutationFn: (data: any) => courseAdminApi.createCourse(data),
         onSuccess: (data) => {
             router.push(`/admin/courses/${data.data.data.slug}`);
         },

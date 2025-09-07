@@ -3,6 +3,6 @@ import { LessonHistoryResponse } from "~/schemaValidate/lesson.schema";
 
 const lessonApi = {
     updateTimeVideo: (lesson_id: number, progress: number) =>
-        privateApi.post<LessonHistoryResponse>(`/lessons/`, { lesson_id, progress }),
+        privateApi.post<LessonHistoryResponse>(`/lesson-history/`, { lesson_id, progress }),
 };
 export default lessonApi;

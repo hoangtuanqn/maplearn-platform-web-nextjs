@@ -61,7 +61,7 @@ export const menuItems = [
 
     {
         type: "title",
-        label: "Người dùng",
+        label: "Khóa học",
         children: [
             {
                 type: "link",

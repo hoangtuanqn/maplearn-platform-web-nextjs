@@ -55,7 +55,10 @@ export function AddChapterDialog({
     // Mutation for adding chapter
     const addChapterMutation = useMutation({
         mutationFn: async (data: AddChapterFormData) => {
-            const res = await courseAdminApi.addChapter(courseSlug, data);
+            const res = await courseAdminApi.addChapter({
+                course_slug: courseSlug,
+                ...data,
+            });
             return res.data.data;
         },
         onSuccess: () => {
@@ -89,15 +92,13 @@ export function AddChapterDialog({
                             Thêm chương mới
                         </Button>
                     ) : (
-                        <div className="mt-6 border-t border-gray-200 pt-6">
-                            <Button
-                                variant="outline"
-                                className="flex h-12 w-full items-center justify-center gap-2 border-dashed text-gray-600"
-                            >
-                                <Plus className="h-5 w-5" />
-                                Thêm chương học mới
-                            </Button>
-                        </div>
+                        <Button
+                            variant="outline"
+                            className="flex h-12 w-full items-center justify-center gap-2 border-dashed text-gray-600"
+                        >
+                            <Plus className="h-5 w-5" />
+                            Thêm chương học mới
+                        </Button>
                     )}
                 </DialogTrigger>
                 <DialogContent className="bg-white sm:max-w-[500px]">
@@ -136,8 +137,8 @@ export function AddChapterDialog({
                                                     type="number"
                                                     placeholder="Nhập vị trí chương..."
                                                     {...field}
-                                                    onChange={(e) => field.onChange(Number(e.target.value))}
                                                     value={field.value || ""}
+                                                    onChange={(e) => field.onChange(Number(e.target.value))}
                                                 />
                                             </FormControl>
                                             <FormMessage />

@@ -53,3 +53,10 @@ const _lessonDetailSchemaResponse = z.object({
     data: lessonDetailSchema,
 });
 export type LessonDetailResponse = z.infer<typeof _lessonDetailSchemaResponse>;
+
+const _lessonSchemaResponse = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: lessonSchema,
+});
+export type LessonResponse = z.infer<typeof _lessonSchemaResponse>;

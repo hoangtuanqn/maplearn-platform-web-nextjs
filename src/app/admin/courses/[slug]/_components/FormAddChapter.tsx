@@ -16,7 +16,7 @@ const formSchema = z.object({
         .string()
         .min(2, { message: "Tên chương phải có ít nhất 2 ký tự." })
         .max(255, { message: "Tên chương không được vượt quá 255 ký tự." }),
-    position: z.number().min(1, { message: "Vị trí phải lớn hơn 0." }),
+    position: z.number().min(2, { message: "Vị trí phải lớn hơn 0." }),
 });
 
 interface FormAddChapterProps {

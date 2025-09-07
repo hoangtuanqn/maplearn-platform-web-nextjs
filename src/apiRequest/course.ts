@@ -7,7 +7,7 @@ import {
     CourseListRecommendedResponse,
     CourseListResponse,
 } from "~/schemaValidate/course.schema";
-import { ResponseSchemaBasic } from "~/schemaValidate/response.schema";
+
 export const CATEGORY_COURSE_PER_PAGE = 20;
 export const COURSE_PER_PAGE = 20;
 const courseApi = {
@@ -62,14 +62,6 @@ const courseApi = {
 
     getChapterLessonList: (slugCourse: string) => {
         return publicApi.get<ChapterLessonList>(`/chapters/${slugCourse}`);
-    },
-
-    // Admin
-    createCourse: (data: any) => {
-        return privateApi.post<CourseGetDetailResponse>("/courses", data);
-    },
-    deleteCourse: (slug: string) => {
-        return privateApi.delete<ResponseSchemaBasic>(`/courses/${slug}`);
     },
 };
 export default courseApi;
