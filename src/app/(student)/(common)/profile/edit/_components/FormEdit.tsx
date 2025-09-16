@@ -17,6 +17,7 @@ import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import uploadMedia from "~/apiRequest/uploadMedia";
 import { provinces } from "~/mockdata/other/provinces.data";
 import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
+import { notificationErrorApi } from "~/libs/apis/http";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();
@@ -53,9 +54,7 @@ const FormEdit = () => {
             updateProfile(data as UserType);
             toast.success("Cập nhật thông tin thành công!");
         },
-        onError: () => {
-            toast.error("Cập nhật thông tin thất bại!");
-        },
+        onError: notificationErrorApi,
     });
 
     const handleClick = () => {

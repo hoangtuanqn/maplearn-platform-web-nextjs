@@ -73,7 +73,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                     <User style={{ fill: "currentColor" }} />
                     <span className="line-clamp-2">{course.teacher?.full_name}</span>
                 </div>
-                {!course.is_enrolled && (
+                {!course.is_enrolled && course.rating.average_rating > 0 && (
                     <div className="flex items-center gap-1 text-xs">
                         <span className="font-bold text-amber-500">{course.rating.average_rating}</span>
                         <Star className="h-3 w-3 flex-shrink-0 fill-amber-500 text-amber-500" />

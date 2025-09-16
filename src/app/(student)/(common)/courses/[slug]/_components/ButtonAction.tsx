@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "~/components/ui/button";
 import courseApi from "~/apiRequest/course";
 import { CourseDetail } from "~/schemaValidate/course.schema";
 import { PaymentMethodsDialog } from "./PaymentMethodsDialog";
 import { useAuth } from "~/hooks/useAuth";
 import { PrerequisiteCourseDialog } from "./PrerequisiteCourseDialog";
+import { Button } from "~/components/ui/button";
 
 const ButtonAction = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -26,6 +26,7 @@ const ButtonAction = () => {
     useEffect(() => {
         setCourse(data || null);
     }, [isLoading, data]);
+
     const isCheckPrerequisite =
         (course?.prerequisite_course && course.lesson_successed != course.lesson_count) ?? false;
     return (
@@ -42,7 +43,10 @@ const ButtonAction = () => {
                         <p className="text-center font-bold text-red-500">Vui lòng đăng nhập để mua khóa học này</p>
                     ) : course?.is_enrolled ? (
                         <>
-                            <Link href="/courses">
+                            <Link
+                                href={`/learn/${course.slug}/lecture/${course.current_lesson.slug}`}
+                                className="w-full"
+                            >
                                 <Button variant={"outline"} className="w-full">
                                     Vào học ngay
                                 </Button>
