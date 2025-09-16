@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import FormEditCourse from "./_components/FormEditCourse";
 import { redirect } from "next/navigation";
 import courseApi from "~/apiRequest/course";
+
 export const metadata: Metadata = {
     title: "Chỉnh sửa khóa học",
 };
@@ -25,6 +26,7 @@ const EditCoursePage = async ({ params }: { params: Promise<{ slug: string }> })
                             <p className="mb-4 text-sm text-slate-500">Cập nhật thông tin khóa học tại đây.</p>
                         </div>
                     </div>
+
                     <FormEditCourse course={course} />
                 </div>
             </div>

@@ -101,3 +101,16 @@ export const CourseDetailResponseSchema = z.object({
     data: CourseDetailSchema,
 });
 export type CourseGetDetailResponse = z.infer<typeof CourseDetailResponseSchema>;
+
+const _courseStats = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(
+        z.object({
+            date: z.string(),
+            student_count: z.number(),
+            revenue: z.number(),
+        }),
+    ),
+});
+export type CourseStats = z.infer<typeof _courseStats>;

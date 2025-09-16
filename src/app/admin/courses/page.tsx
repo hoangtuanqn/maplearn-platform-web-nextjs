@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import CourseList from "./_components/CourseList";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
+
 export const metadata: Metadata = {
     title: "Danh sách các khóa học",
 };
@@ -14,6 +15,7 @@ const CoursePage = () => {
                     <Button variant="primary">Thêm khóa học</Button>
                 </Link>
             </div>
+           
             <Suspense>
                 <CourseList />
             </Suspense>

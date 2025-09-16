@@ -6,6 +6,7 @@ import { formatter } from "~/libs/format";
 import courseApi from "~/apiRequest/course";
 import ChaptersList from "./_components/ChaptersList";
 import Link from "next/link";
+import CourseStudentChart from "./_components/CourseStudentChart";
 
 const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
@@ -22,7 +23,7 @@ const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) =
             <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
                 <div className="flex flex-col items-start justify-between gap-2 2xl:flex-row">
                     <div className="flex-1">
-                        <h1 className="mb-2 text-2xl font-bold text-gray-900">{course.name}</h1>
+                        <h1 className="text-primary mb-2 text-2xl font-bold">{course.name}</h1>
                         <p className="mb-4 text-justify text-gray-600">{course.description}</p>
 
                         <div className="flex flex-wrap gap-6 text-sm text-gray-500">
@@ -54,6 +55,9 @@ const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) =
                         </Link>
                     </div>
                 </div>
+            </div>
+            <div className="mb-5">
+                <CourseStudentChart slug={slug} />
             </div>
 
             {/* Course Content */}

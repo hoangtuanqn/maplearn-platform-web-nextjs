@@ -1,7 +1,6 @@
-
 import privateApi from "~/libs/apis/privateApi";
 import { ChapterLesson } from "~/schemaValidate/chapterLessonCourse.schema";
-import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
+import { CourseGetDetailResponse, CourseStats } from "~/schemaValidate/course.schema";
 import { LessonResponse } from "~/schemaValidate/courseDetail.schema";
 import { ResponseSchemaBasic } from "~/schemaValidate/response.schema";
 
@@ -21,5 +20,8 @@ const courseAdminApi = {
     deleteChapter: (chapterId: number) => privateApi.delete<ResponseSchemaBasic>(`/chapters/${chapterId}`),
     deleteLesson: (slug: string) => privateApi.delete<ResponseSchemaBasic>(`/lessons/${slug}`),
     updateCourse: (slug: string, data: any) => privateApi.patch<CourseGetDetailResponse>(`/courses/${slug}`, data),
+
+    // get thống kê học viên đăng ký khóa học trong 7 ngày
+    getCourseStudentStats: (slug: string) => privateApi.get<CourseStats>(`/courses/${slug}/stats-enrollments`),
 };
 export default courseAdminApi;
