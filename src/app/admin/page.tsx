@@ -373,9 +373,20 @@ const AdminPage = () => {
                     {/* Mini chart for payment methods */}
                     <div className="mt-4 h-32">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData.paymentMethodData} layout="horizontal">
-                                <XAxis type="number" hide />
-                                <YAxis dataKey="method" type="category" width={0} />
+                            <BarChart
+                                data={chartData.paymentMethodData}
+                                margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                            >
+                                <XAxis
+                                    dataKey="method"
+                                    tick={{ fontSize: 10, fill: "#64748b" }}
+                                    tickLine={{ stroke: "#e2e8f0" }}
+                                    interval={0}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={50}
+                                />
+                                <YAxis hide />
                                 <Tooltip
                                     formatter={(value: number) => [`${value} giao dịch`, "Số lượng"]}
                                     contentStyle={{
@@ -384,7 +395,7 @@ const AdminPage = () => {
                                         borderRadius: "8px",
                                     }}
                                 />
-                                <Bar dataKey="count" radius={[0, 2, 2, 0]}>
+                                <Bar dataKey="count" radius={[2, 2, 0, 0]} fill="#3b82f6">
                                     {chartData.paymentMethodData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
