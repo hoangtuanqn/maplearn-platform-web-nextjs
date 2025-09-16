@@ -1,3 +1,4 @@
+"use client";
 import { useMutation } from "@tanstack/react-query";
 import { FileDown } from "lucide-react";
 import React from "react";

@@ -15,6 +15,7 @@ import { notificationErrorApi } from "~/libs/apis/http";
 import { formatter } from "~/libs/format";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { subjectsMock } from "~/mockdata/subject.data";
+import DisplayTotalResult from "../../_components/DisplayTotalResult";
 const CourseList = () => {
     const queryClient = useQueryClient();
     const { page } = useGetSearchQuery(["page"] as const);
@@ -41,6 +42,7 @@ const CourseList = () => {
     return (
         <>
             <div className="mt-8 overflow-x-auto">
+                 <DisplayTotalResult total={total} />
                 <table className="min-w-full rounded-xl bg-white shadow-sm">
                     <thead>
                         <tr className="border-b border-gray-200">

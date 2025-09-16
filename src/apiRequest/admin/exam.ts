@@ -23,5 +23,7 @@ const examApi = {
     },
 
     addPaperExam: (data: any) => privateApi.post("/exams-admin", data),
+    deletePaperExam: (slug: string) => privateApi.delete(`/exams-admin/${slug}`),
+    updatePaperExam: (slug: string, data: any) => privateApi.put(`/exams-admin/${slug}`, data),
 };
 export default examApi;
