@@ -106,10 +106,10 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                 <AnimatePresence>
                     {showInfo && (
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.09 }}
-                            transition={{ duration: 0.1 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 5 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 5 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                             className="absolute top-0 z-50 w-[320px]"
                             style={{
                                 left: position === "right" ? `${tooltipOffset}px` : "auto",
@@ -118,26 +118,71 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                             onMouseEnter={() => setShowInfo(true)}
                             onMouseLeave={() => setShowInfo(false)}
                         >
-                            <div className={`absolute top-5 ${position === "left" ? "right-[0]" : "left-[-18px]"}`}>
+                            <div className={`absolute top-6 ${position === "left" ? "right-[-1px]" : "left-[-9px]"}`}>
                                 {position === "right" ? (
                                     <>
-                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-gray-800" />
-                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-r-[18px] border-y-transparent border-r-white" />
+                                        <div className="h-0 w-0 border-y-[9px] border-r-[9px] border-y-transparent border-r-gray-200" />
+                                        <div className="absolute top-[-8px] left-[1px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent border-r-white" />
                                     </>
                                 ) : (
                                     <>
-                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-gray-800" />
-                                        <div className="absolute top-[2px] h-0 w-0 border-y-[13px] border-l-[18px] border-y-transparent border-l-white" />
+                                        <div className="h-0 w-0 border-y-[9px] border-l-[9px] border-y-transparent border-l-gray-200" />
+                                        <div className="absolute top-[-8px] right-[1px] h-0 w-0 border-y-[8px] border-l-[8px] border-y-transparent border-l-white" />
                                     </>
                                 )}
                             </div>
 
-                            <div className="border-muted rounded-lg border bg-white px-4 py-6 shadow-lg">
-                                <h3 className="text-primary text-base font-bold">
-                                    <Link href={url}>{course.name}</Link>
+                            <div className="rounded-xl border border-gray-200 bg-white px-5 py-5 shadow-lg">
+                                <h3 className="text-base leading-snug font-semibold text-gray-900">
+                                    <Link href={url} className="transition-colors duration-200 hover:text-blue-600">
+                                        {course.name}
+                                    </Link>
                                 </h3>
-                                <p className="mt-1 text-xs text-slate-600">Đã cập nhật gần nhất vào tháng 4 năm 2025</p>
-                                <p className="mt-2 text-gray-600">{course.description}</p>
+                                <div className="mt-2 flex items-center gap-2">
+                                    <span className="inline-block rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600">
+                                        Cập nhật 4/2025
+                                    </span>
+                                    <span className="text-xs text-gray-400">•</span>
+                                    <span className="text-xs text-gray-500">{course.lesson_count} bài học</span>
+                                </div>
+                                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">
+                                    {course.description}
+                                </p>
+
+                                <div className="mt-4 space-y-3 border-t border-gray-100 pt-4">
+                                    {course.rating.average_rating > 0 && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs text-gray-500">Đánh giá học viên</span>
+                                            <div className="flex items-center gap-1.5">
+                                                <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                                                <span className="text-sm font-semibold text-gray-700">
+                                                    {course.rating.average_rating}
+                                                </span>
+                                                <span className="text-xs text-gray-400">
+                                                    ({course.rating.total_reviews})
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {!course.is_enrolled && (
+                                        <div className="flex items-center justify-between pt-2">
+                                            <span className="text-xs text-gray-500">Học phí</span>
+                                            <div className="text-right">
+                                                <span className="text-lg font-bold text-blue-600">
+                                                    {course.price === 0
+                                                        ? "Miễn phí"
+                                                        : formatter.number(course.price ?? 0) + "đ"}
+                                                </span>
+                                                {course.price > 0 && (
+                                                    <div className="text-xs text-gray-400 line-through">
+                                                        {formatter.number((course.price ?? 0) * 1.3) + "đ"}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </motion.div>
                     )}

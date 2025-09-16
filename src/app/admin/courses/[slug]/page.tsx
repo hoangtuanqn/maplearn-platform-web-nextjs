@@ -7,6 +7,10 @@ import courseApi from "~/apiRequest/course";
 import ChaptersList from "./_components/ChaptersList";
 import Link from "next/link";
 import CourseStudentChart from "./_components/CourseStudentChart";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: "Chi tiết khóa học",
+};
 
 const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;

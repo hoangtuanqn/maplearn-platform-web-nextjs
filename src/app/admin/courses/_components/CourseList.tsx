@@ -81,9 +81,7 @@ const CourseList = () => {
                                               {Math.max(0, +page - 1) * COURSE_PER_PAGE + idx + 1}
                                           </td>
                                           <td className="px-4 py-3 text-zinc-500">
-                                              <p>
-                                                  <span className="font-bold">Tên khóa:</span> {course.name}
-                                              </p>
+                                              <p className="text-base font-semibold text-gray-900">{course.name}</p>
                                               <p>
                                                   <span className="font-bold">Môn học:</span>{" "}
                                                   {subjectsMock.find((s) => s.slug === course.subject)?.name}
@@ -132,7 +130,7 @@ const CourseList = () => {
                                                       </Button>
                                                   </Link>
                                                   <DangerConfirm
-                                                      message="Bạn có chắc chắn muốn xóa khóa học này? Hành động này không thể hoàn tác."
+                                                      message="Bạn có chắc chắn muốn xóa khóa học này?"
                                                       action={() => mutationDeleteCourse.mutate(course.slug)}
                                                   >
                                                       <Button variant="ghost" size="sm" className="hover:bg-red-50">
