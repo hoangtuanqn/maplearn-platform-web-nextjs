@@ -132,7 +132,7 @@ const FormAddChapter = ({ courseSlug, onSuccess, onCancel, maxPosition = 0 }: Fo
                         </div>
 
                         <div className="flex gap-3 border-t border-gray-200 pt-4">
-                            <Button type="submit" variant="black" disabled={mutationChapter.isPending}>
+                            <Button type="submit" variant="primary" disabled={mutationChapter.isPending}>
                                 Thêm chương
                             </Button>
                             <Button

@@ -379,7 +379,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                             </div>
 
                             <div className="flex gap-3">
-                                <Button type="submit" variant={"black"} disabled={!form.formState.isDirty}>
+                                <Button type="submit" variant={"primary"} disabled={!form.formState.isDirty}>
                                     Cập nhật thông tin
                                 </Button>
                                 <Button

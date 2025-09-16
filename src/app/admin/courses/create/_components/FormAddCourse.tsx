@@ -359,7 +359,7 @@ const FormAddCourse = () => {
                         )}
                     />
 
-                    <Button type="submit" variant={"black"}>
+                    <Button type="submit" variant={"primary"}>
                         Thêm khóa học
                     </Button>
                 </form>

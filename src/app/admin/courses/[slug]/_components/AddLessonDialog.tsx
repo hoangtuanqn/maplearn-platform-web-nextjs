@@ -194,7 +194,7 @@ export function AddLessonDialog({
                                         name="position"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Vị trí *</FormLabel>
+                                                <FormLabel>Vị trí trong chương*</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         type="number"

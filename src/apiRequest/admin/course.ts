@@ -1,3 +1,4 @@
+
 import privateApi from "~/libs/apis/privateApi";
 import { ChapterLesson } from "~/schemaValidate/chapterLessonCourse.schema";
 import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
@@ -19,5 +20,6 @@ const courseAdminApi = {
     deleteCourse: (slug: string) => privateApi.delete<ResponseSchemaBasic>(`/courses/${slug}`),
     deleteChapter: (chapterId: number) => privateApi.delete<ResponseSchemaBasic>(`/chapters/${chapterId}`),
     deleteLesson: (slug: string) => privateApi.delete<ResponseSchemaBasic>(`/lessons/${slug}`),
+    updateCourse: (slug: string, data: any) => privateApi.patch<CourseGetDetailResponse>(`/courses/${slug}`, data),
 };
 export default courseAdminApi;

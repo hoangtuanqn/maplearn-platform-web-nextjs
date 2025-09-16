@@ -19,7 +19,7 @@ const EditStudentPage = async ({ params }: { params: Promise<{ id: string }> }) 
     return (
         <section className="mt-5 bg-[#F5F5F5] p-2">
             {/* <div className="item-center mt-5 flex justify-end">
-                <Button variant={"black"}>Chỉnh sửa thông tin học sinh</Button>
+                <Button variant={"primary"}>Chỉnh sửa thông tin học sinh</Button>
             </div> */}
             <div className="mt-8">
                 <FormEditStudent studentData={student} />

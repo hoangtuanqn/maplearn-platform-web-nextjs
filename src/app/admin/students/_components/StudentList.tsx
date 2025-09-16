@@ -26,7 +26,7 @@ const StudentList = () => {
             <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h3 className="text-xl font-bold">Danh sách học sinh</h3>
+                        <h3 className="text-primary text-xl font-bold">Danh sách học sinh</h3>
                         <p className="text-sm text-slate-500">Danh sách học sinh sẽ được hiển thị ở đây.</p>
                     </div>
                     <ExportStudentList />

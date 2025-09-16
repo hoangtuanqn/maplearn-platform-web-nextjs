@@ -17,73 +17,17 @@ import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdo
 import courseApi from "~/apiRequest/course";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
+import courseAdminApi from "~/apiRequest/admin/course";
+import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
+import formSchema from "../schema/formEditCourse.schema";
 import { toast } from "sonner";
-import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 
-const formSchema = z
-    .object({
-        name: z.string().min(2, { message: "Tên khóa học phải có ít nhất 2 ký tự." }),
-        subject: z.string().min(1, { message: "Vui lòng chọn môn học." }),
-        category: z.string().min(1, { message: "Vui lòng chọn danh mục." }),
-        gradeLevel: z.string().min(1, { message: "Vui lòng chọn cấp bậc." }),
-        instructor: z.string().min(1, { message: "Vui lòng chọn giáo viên giảng dạy." }),
-        price: z.number().min(0, { message: "Giá khóa học phải lớn hơn hoặc bằng 0." }),
-        startDate: z.string().min(1, { message: "Vui lòng chọn ngày bắt đầu." }),
-        endDate: z.string().optional(),
-        prerequisiteCourse: z.string().optional(),
-        coverImage: z.string().url("Vui lòng nhập URL hợp lệ."),
-        introVideo: z.string().url("Vui lòng nhập URL hợp lệ."),
-        description: z.string().min(10, { message: "Mô tả khóa học phải có ít nhất 10 ký tự." }),
-    })
-    .refine(
-        (data) => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const startDate = new Date(data.startDate);
-            return startDate >= today;
-        },
-        {
-            message: "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            const startDate = new Date(data.startDate);
-            return startDate.getFullYear() <= 2027;
-        },
-        {
-            message: "Ngày bắt đầu không được lớn hơn năm 2027.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            if (!data.endDate) return true;
-            const startDate = new Date(data.startDate);
-            const endDate = new Date(data.endDate);
-            const oneDayAfterStart = new Date(startDate);
-            oneDayAfterStart.setDate(startDate.getDate() + 1);
-            return endDate >= oneDayAfterStart;
-        },
-        {
-            message: "Ngày kết thúc phải sau ngày bắt đầu ít nhất 1 ngày.",
-            path: ["endDate"],
-        },
-    );
-
-interface FormEditCourseProps {
-    courseData: any; // Replace with proper type from your schema
-    slug: string;
-}
-
-const FormEditCourse = ({ courseData, slug }: FormEditCourseProps) => {
+const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] }) => {
     const { data: teachers = [] } = useQuery({
         queryKey: ["user", "teachers"],
         queryFn: teacherApi.getTeachers,
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
-
     const { data: courses = [] } = useQuery({
         queryKey: ["user", "courses"],
         queryFn: async () => {
@@ -97,305 +41,180 @@ const FormEditCourse = ({ courseData, slug }: FormEditCourseProps) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            subject: "",
-            category: "",
-            gradeLevel: "",
-            instructor: "",
-            price: 0,
-            startDate: "",
-            endDate: "",
-            coverImage: "",
-            introVideo: "",
-            description: "",
+            name: course.name || "",
+            subject: course.subject || "",
+            category: course.category || "",
+            grade_level: course.grade_level || "",
+            user_id: String(course.teacher.id),
+            price: course.price || 0,
+            prerequisite_course_id: String(course.prerequisite_course?.id ?? ""),
+            thumbnail: course.thumbnail || "",
+            intro_video: course.intro_video || "",
+            description: course.description || "",
         },
         mode: "onBlur",
     });
 
-    // Warning for unsaved changes
-    useUnsavedChangesWarning(form.formState.isDirty);
-
-    // Populate form with existing data
+    // Update form values when course prop changes
     useEffect(() => {
-        if (courseData) {
+        if (course) {
             form.reset({
-                name: courseData.name || "",
-                subject: courseData.subject?.slug || "",
-                category: courseData.category?.slug || "",
-                gradeLevel: courseData.gradeLevel?.slug || "",
-                instructor: String(courseData.instructor?.id) || "",
-                price: courseData.price || 0,
-                startDate: courseData.startDate ? new Date(courseData.startDate).toISOString().split("T")[0] : "",
-                endDate: courseData.endDate ? new Date(courseData.endDate).toISOString().split("T")[0] : "",
-                prerequisiteCourse: courseData.prerequisiteCourse ? String(courseData.prerequisiteCourse.id) : "",
-                coverImage: courseData.coverImage || "",
-                introVideo: courseData.introVideo || "",
-                description: courseData.description || "",
+                name: course.name || "",
+                subject: course.subject || "",
+                category: course.category || "",
+                grade_level: course.grade_level || "",
+                user_id: String(course.teacher.id),
+                price: course.price || 0,
+                prerequisite_course_id: String(course.prerequisite_course?.id ?? ""),
+
+                thumbnail: course.thumbnail || "",
+                intro_video: course.intro_video || "",
+                description: course.description || "",
             });
         }
-    }, [courseData, form]);
+    }, [course, form]);
 
-    const mutationUpdateCourse = useMutation({
-        mutationFn: (data: any) => {
-            // courseApi.updateCourse(slug, data)
-            return {
-                ...data,
-                startDate: new Date(data.startDate).toISOString(),
-                endDate: new Date(data.endDate).toISOString(),
-            };
-        },
+    const mutationCourse = useMutation({
+        mutationFn: (data: any) => courseAdminApi.updateCourse(course.slug, data),
         onSuccess: () => {
-            toast.success("Cập nhật khóa học thành công!");
-            // router.push(`/admin/courses/${data.data.data.slug}`);
+            toast.success("Cập nhật khóa học thành công.");
         },
         onError: notificationErrorApi,
     });
-
     function onSubmit(values: z.infer<typeof formSchema>) {
-        mutationUpdateCourse.mutate(values);
-    }
+        // console.log(values);
 
-    function handleReset() {
-        form.reset();
+        mutationCourse.mutate(values);
     }
 
     return (
         <>
-            {mutationUpdateCourse.isPending && <Loading />}
-            <div className="rounded-lg bg-white p-6 shadow-sm">
-                <div className="mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">Chỉnh sửa khóa học</h2>
-                    <p className="mt-1 text-sm text-gray-500">Cập nhật thông tin khóa học của bạn</p>
-                </div>
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem className="md:col-span-2 lg:col-span-3">
-                                        <FormLabel>Tên khóa học</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Nhập tên khóa học" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="subject"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Môn học</FormLabel>
-                                        <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Chọn môn học" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {subjectsMock.map((subject) => (
-                                                    <SelectItem key={subject.slug} value={subject.slug}>
-                                                        {subject.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="category"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Danh mục</FormLabel>
-                                        <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Chọn danh mục" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {courseCategoriesMock.map((category) => (
-                                                    <SelectItem key={category.slug} value={category.slug}>
-                                                        {category.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="gradeLevel"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Cấp bậc</FormLabel>
-                                        <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Chọn cấp bậc" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {gradeLevelsMock.map((level) => (
-                                                    <SelectItem key={level.slug} value={level.slug}>
-                                                        {level.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="instructor"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Giáo viên giảng dạy</FormLabel>
-                                        <SingleSelectDropdown
-                                            onChange={field.onChange}
-                                            label="Giáo viên"
-                                            value={field.value}
-                                            options={teachers.map((teacher) => ({
-                                                label: String(teacher.full_name),
-                                                value: String(teacher.id),
-                                            }))}
-                                        />
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="price"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Số tiền bán khóa học</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="number"
-                                                placeholder="Nhập giá (VNĐ)"
-                                                {...field}
-                                                onChange={(e) => field.onChange(Number(e.target.value))}
-                                                value={form.watch("price") ?? 0}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="startDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Dự kiến bắt đầu</FormLabel>
-                                        <FormControl>
-                                            <Input type="date" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="endDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Dự kiến kết thúc</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="date"
-                                                {...field}
-                                                disabled={form.watch("startDate") ? false : true}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                        <FormDescription>Để trống: Sẽ không bao giờ kết thúc!</FormDescription>
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="prerequisiteCourse"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Khóa học tiên quyết</FormLabel>
-                                        <SingleSelectDropdown
-                                            onChange={field.onChange}
-                                            label="Chọn khóa học"
-                                            value={field.value}
-                                            options={courses
-                                                .filter((course) => course.slug !== slug) // Exclude current course
-                                                .map((course) => ({
-                                                    label: course.name,
-                                                    value: String(course.id),
-                                                }))}
-                                        />
-                                        <FormMessage />
-                                        <FormDescription>Chọn khóa học tiên quyết nếu có</FormDescription>
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="coverImage"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Ảnh bìa</FormLabel>
-                                        <FormControl>
-                                            <Input type="url" placeholder="Link ảnh bìa" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="introVideo"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Video giới thiệu khóa</FormLabel>
-                                        <FormControl>
-                                            <Input type="url" placeholder="Link video giới thiệu" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+            {mutationCourse.isPending && <Loading />}
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem className="md:col-span-2 lg:col-span-3">
+                                    <FormLabel>Tên khóa học</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Nhập tên khóa học" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
                         <FormField
                             control={form.control}
-                            name="description"
+                            name="subject"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Mô tả khóa học</FormLabel>
+                                    <FormLabel>Môn học</FormLabel>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Chọn môn học" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {subjectsMock.map((subject) => (
+                                                <SelectItem key={subject.slug} value={subject.slug}>
+                                                    {subject.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Danh mục</FormLabel>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Chọn danh mục" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {courseCategoriesMock.map((category) => (
+                                                <SelectItem key={category.slug} value={category.slug}>
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="grade_level"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Cấp bậc</FormLabel>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Chọn cấp bậc" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {gradeLevelsMock.map((level) => (
+                                                <SelectItem key={level.slug} value={level.slug}>
+                                                    {level.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="user_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Giáo viên giảng dạy</FormLabel>
+                                    <SingleSelectDropdown
+                                        onChange={field.onChange}
+                                        label="Giáo viên"
+                                        value={field.value}
+                                        options={teachers.map((teacher) => ({
+                                            label: String(teacher.full_name),
+                                            value: String(teacher.id),
+                                        }))}
+                                    />
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Số tiền bán khóa học</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Nhập mô tả chi tiết về khóa học..."
-                                            rows={4}
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập giá (VNĐ)"
                                             {...field}
+                                            onChange={(e) => field.onChange(Number(e.target.value))}
+                                            value={form.watch("price") ?? 0}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -403,22 +222,77 @@ const FormEditCourse = ({ courseData, slug }: FormEditCourseProps) => {
                             )}
                         />
 
-                        <div className="flex gap-3">
-                            <Button type="submit" variant="black" disabled={!form.formState.isDirty}>
-                                Cập nhật khóa học
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleReset}
-                                disabled={!form.formState.isDirty}
-                            >
-                                Đặt lại
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </div>
+                        <FormField
+                            control={form.control}
+                            name="prerequisite_course_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Khóa học tiên quyết</FormLabel>
+                                    <SingleSelectDropdown
+                                        onChange={field.onChange}
+                                        label="Chọn khóa học"
+                                        value={field.value ?? ""}
+                                        options={[{ id: "", name: "Không có khóa học tiên quyết" }, ...courses].map(
+                                            (course) => ({
+                                                label: course.name,
+                                                value: String(course.id),
+                                            }),
+                                        )}
+                                    />
+                                    <FormMessage />
+                                    <FormDescription>Chọn khóa học tiên quyết nếu có</FormDescription>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="thumbnail"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ảnh bìa</FormLabel>
+                                    <FormControl>
+                                        <Input type="url" placeholder="Link ảnh bìa" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="intro_video"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Video giới thiệu khóa</FormLabel>
+                                    <FormControl>
+                                        <Input type="url" placeholder="Link video giới thiệu" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Mô tả khóa học</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder="Nhập mô tả chi tiết về khóa học..." rows={4} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button type="submit" variant={"primary"}>
+                        Cập nhật khóa học
+                    </Button>
+                </form>
+            </Form>
         </>
     );
 };

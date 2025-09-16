@@ -11,7 +11,7 @@ const CoursePage = () => {
         <section className="mt-5 bg-[#F5F5F5] p-2">
             <div className="item-center mt-5 flex justify-end">
                 <Link href="/admin/courses/create">
-                    <Button variant="black">Thêm khóa học</Button>
+                    <Button variant="primary">Thêm khóa học</Button>
                 </Link>
             </div>
             <Suspense>

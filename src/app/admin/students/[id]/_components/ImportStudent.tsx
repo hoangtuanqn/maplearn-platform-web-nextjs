@@ -146,7 +146,7 @@ export function ImportStudent() {
             <Dialog>
                 <form>
                     <DialogTrigger asChild>
-                        <Button variant="black">Nhập học sinh</Button>
+                        <Button variant="primary">Nhập học sinh</Button>
                     </DialogTrigger>
                     <DialogContent className="max-h-[90vh] overflow-y-auto bg-white sm:max-w-[700px]">
                         <DialogHeader>
@@ -293,7 +293,7 @@ export function ImportStudent() {
                             <DialogClose asChild>
                                 <Button variant="outline">Hủy</Button>
                             </DialogClose>
-                            <Button type="submit" onClick={handleSubmit} disabled={!file} variant={"black"}>
+                            <Button type="submit" onClick={handleSubmit} disabled={!file} variant={"primary"}>
                                 Nhập dữ liệu
                             </Button>
                         </DialogFooter>

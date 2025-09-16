@@ -15,6 +15,7 @@ import { notificationErrorApi } from "~/libs/apis/http";
 import { formatter } from "~/libs/format";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { subjectsMock } from "~/mockdata/subject.data";
+import { FilterCourses } from "./FilterCourse";
 const CourseList = () => {
     const queryClient = useQueryClient();
     const { page } = useGetSearchQuery(["page"] as const);
@@ -42,9 +43,12 @@ const CourseList = () => {
         <>
             <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
                 <div className="flex items-center justify-between">
-                    <div>
-                        <h3 className="text-xl font-bold">Danh sách khóa học</h3>
-                        <p className="text-sm text-slate-500">Danh sách khóa học sẽ được hiển thị ở đây.</p>
+                    <div className="flex w-full items-center justify-between">
+                        <div>
+                            <h3 className="text-primary text-xl font-bold">Danh sách khóa học</h3>
+                            <p className="text-sm text-slate-500">Danh sách khóa học sẽ được hiển thị ở đây.</p>
+                        </div>
+                        <FilterCourses />
                     </div>
                 </div>
                 <div className="mt-8 overflow-x-auto">
@@ -111,7 +115,11 @@ const CourseList = () => {
                                                       : `${course.enrollments_count} học sinh`}
                                               </span>
                                           </td>
-                                          <td className="px-4 py-3 text-zinc-500">{course.teacher.full_name}</td>
+                                          <td className="px-4 py-3 text-zinc-500">
+                                              <Link href={`/admin/students/${course.teacher.id}`}>
+                                                  {course.teacher.full_name}
+                                              </Link>
+                                          </td>
 
                                           <td className="px-4 py-3">
                                               {getStatusBadge("activity_status", String(course.status))}

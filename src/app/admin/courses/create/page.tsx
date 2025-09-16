@@ -11,7 +11,7 @@ const CreateCoursePage = () => {
                 <div className="flex-1 rounded-lg bg-white p-6 pb-8 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-bold">Thêm khóa học</h3>
+                            <h3 className="text-primary text-xl font-bold">Thêm khóa học</h3>
                             <p className="mb-4 text-sm text-slate-500">Thêm thông tin khóa học tại đây.</p>
                         </div>
                     </div>

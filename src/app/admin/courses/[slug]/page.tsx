@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { formatter } from "~/libs/format";
 import courseApi from "~/apiRequest/course";
 import ChaptersList from "./_components/ChaptersList";
+import Link from "next/link";
 
 const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
@@ -45,10 +46,12 @@ const DetailCourse = async ({ params }: { params: Promise<{ slug: string }> }) =
                     </div>
 
                     <div className="flex gap-3">
-                        <Button className="flex items-center gap-2 text-white">
-                            <Edit className="h-4 w-4" />
-                            Chỉnh sửa khóa học
-                        </Button>
+                        <Link href={`/admin/courses/edit/${course.slug}`}>
+                            <Button className="flex items-center gap-2 text-white">
+                                <Edit className="h-4 w-4" />
+                                Chỉnh sửa khóa học
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

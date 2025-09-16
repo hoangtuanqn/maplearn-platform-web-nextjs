@@ -118,49 +118,6 @@ export const menuItems = [
 
     {
         type: "title",
-        label: "Bài viết",
-        children: [
-            {
-                type: "submenu",
-                label: "Bài viết",
-                icon: FileEdit,
-                matcher: ["/admin/posts", "/admin/post-categories"],
-                children: [
-                    {
-                        type: "link",
-                        label: "Danh mục",
-                        icon: Folder,
-                        href: "/admin/post-categories",
-                        matcher: ["/admin/post-categories"],
-                    },
-                    {
-                        type: "link",
-                        label: "Bài viết",
-                        icon: FileEdit,
-                        href: "/admin/posts",
-                        matcher: ["/admin/posts"],
-                    },
-                ],
-            },
-        ],
-    },
-
-    {
-        type: "title",
-        label: "Profile",
-        children: [
-            {
-                type: "link",
-                label: "Hồ sơ cá nhân",
-                icon: UserRound,
-                href: "/profile",
-                matcher: ["/profile", "/profile/edit", "/profile/change-password"],
-            },
-        ],
-    },
-
-    {
-        type: "title",
         label: "Hệ thống",
         children: [
             {
@@ -227,7 +184,7 @@ const renderMenu = (items: any[], pathname: string) => {
                             <Link
                                 href={item.href ?? "#"}
                                 className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
-                                    active ? "bg-black text-white" : "text-slate-800 hover:bg-slate-100"
+                                    active ? "bg-primary text-white" : "text-slate-800 hover:bg-slate-100"
                                 }`}
                             >
                                 <Icon className={active ? "text-white" : "text-gray-600"} strokeWidth={3} />
