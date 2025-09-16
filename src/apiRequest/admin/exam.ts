@@ -21,5 +21,7 @@ const examApi = {
         }
         return privateApi.get<ExamListResponse>(query);
     },
+
+    addPaperExam: (data: any) => privateApi.post("/exams-admin", data),
 };
 export default examApi;

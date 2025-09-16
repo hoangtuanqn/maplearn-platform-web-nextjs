@@ -15,7 +15,6 @@ const getExam = cache(async (slug: string) => {
     return post;
 });
 
-// ✅ Tạo metadata động từ dữ liệu bài viết
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const exam = await getExam(slug);
@@ -98,61 +97,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                             <p className="text-right font-bold text-red-500">Bạn đã đạt giới hạn số lần thi</p>
                         )}
                     </section>
-                    {/* <section className="mt-5 rounded-xl bg-white p-6 shadow-sm">
-                        <h2 className="text-primary mb-4 text-base font-bold">Video giải đề thi chi tiết</h2>
-                        <ul className="mt-2 divide-y divide-gray-100">
-                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
-                                <div className="flex items-center gap-3">
-                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
-                                        <Video className="size-5" />
-                                    </div>
-                                    <div>
-                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
-                                            Live chữa - Câu 1 → 20
-                                        </p>
-                                        <p className="text-xs text-gray-500">Phần 1</p>
-                                    </div>
-                                </div>
-                                <Button size="sm" variant="outline" className="text-primary">
-                                    Xem
-                                </Button>
-                            </li>
 
-                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
-                                <div className="flex items-center gap-3">
-                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
-                                        <Video className="size-5" />
-                                    </div>
-                                    <div>
-                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
-                                            Live chữa - Câu 21 → 30
-                                        </p>
-                                        <p className="text-xs text-gray-500">Phần 2</p>
-                                    </div>
-                                </div>
-                                <Button size="sm" variant="outline" className="text-primary">
-                                    Xem
-                                </Button>
-                            </li>
-
-                            <li className="group flex items-center justify-between gap-3 rounded-lg p-3 transition-colors hover:bg-sky-50">
-                                <div className="flex items-center gap-3">
-                                    <div className="t1-flex-center bg-primary/10 text-primary h-10 w-10 rounded-full">
-                                        <Video className="size-5" />
-                                    </div>
-                                    <div>
-                                        <p className="group-hover:text-primary text-sm font-medium text-[#26292D]">
-                                            Live chữa - Câu 31 → 40
-                                        </p>
-                                        <p className="text-xs text-gray-500">Phần 3</p>
-                                    </div>
-                                </div>
-                                <Button size="sm" variant="outline" className="text-primary">
-                                    Xem
-                                </Button>
-                            </li>
-                        </ul>
-                    </section> */}
                     <HistoryAttempts slug={slug} pass_score={exam.pass_score} />
                 </section>
                 <RankingExam slug={slug} />

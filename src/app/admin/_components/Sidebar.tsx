@@ -76,7 +76,7 @@ export const menuItems = [
                 label: "Đề thi",
                 icon: ClipboardList,
                 href: "/admin/exams",
-                matcher: ["/admin/exams"],
+                matcher: ["/admin/exams", "/admin/exams/:slug"],
             },
         ],
     },
