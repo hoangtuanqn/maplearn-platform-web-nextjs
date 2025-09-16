@@ -8,8 +8,6 @@ import {
     Receipt,
     ShoppingCart,
     History,
-    Folder,
-    FileEdit,
     BarChart3,
     Settings,
     LifeBuoy,
@@ -101,45 +99,10 @@ export const menuItems = [
         children: [
             {
                 type: "link",
-                label: "Mua khóa học",
-                icon: ShoppingCart,
-                href: "/admin/purchases",
-                matcher: ["/admin/purchases"],
-            },
-            {
-                type: "link",
                 label: "Làm bài thi",
                 icon: History,
                 href: "/admin/attempts",
                 matcher: ["/admin/attempts"],
-            },
-        ],
-    },
-
-    {
-        type: "title",
-        label: "Hệ thống",
-        children: [
-            {
-                type: "link",
-                label: "Báo cáo",
-                icon: BarChart3,
-                href: "/admin/reports",
-                matcher: ["/admin/reports"],
-            },
-            {
-                type: "link",
-                label: "Cài đặt",
-                icon: Settings,
-                href: "/admin/settings",
-                matcher: ["/admin/settings"],
-            },
-            {
-                type: "link",
-                label: "Hỗ trợ",
-                icon: LifeBuoy,
-                href: "/admin/support",
-                matcher: ["/admin/support"],
             },
         ],
     },

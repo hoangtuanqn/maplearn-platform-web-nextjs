@@ -1,36 +1,33 @@
 import React, { Suspense } from "react";
 import { Metadata } from "next";
-import { Button } from "~/components/ui/button";
-import Link from "next/link";
-import ExamList from "./_components/ExamList";
-import { FilterExams } from "./_components/FilterExams";
+import PaymentList from "./_components/PaymentList";
 
 export const metadata: Metadata = {
-    title: "Danh sách các bài thi",
+    title: "Danh sách hóa đơn",
 };
 const ExamPage = () => {
     return (
         <section className="mt-5 bg-[#F5F5F5] p-2">
-            <div className="item-center mt-5 flex justify-end">
+            {/* <div className="item-center mt-5 flex justify-end">
                 <Link href="/admin/exams/create">
                     <Button variant="primary">Thêm bài thi</Button>
                 </Link>
-            </div>
+            </div> */}
             <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div className="flex w-full items-center justify-between">
                         <div>
-                            <h3 className="text-primary text-xl font-bold">Danh sách đề thi</h3>
-                            <p className="text-sm text-slate-500">Quản lý và theo dõi các đề thi trong hệ thống.</p>
+                            <h3 className="text-primary text-xl font-bold">Hóa đơn đã thanh toán</h3>
+                            <p className="text-sm text-slate-500">Quản lý và theo dõi các hóa đơn trong hệ thống.</p>
                         </div>
-                        <Suspense>
+                        {/* <Suspense>
                             <FilterExams />
-                        </Suspense>
+                        </Suspense> */}
                     </div>
                 </div>
 
                 <Suspense>
-                    <ExamList />
+                    <PaymentList />
                 </Suspense>
             </div>
         </section>
