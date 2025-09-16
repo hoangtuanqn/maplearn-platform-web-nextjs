@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import CourseList from "./_components/CourseList";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
+import { FilterCourses } from "./_components/FilterCourses";
 
 export const metadata: Metadata = {
     title: "Danh sách các khóa học",
@@ -15,10 +16,20 @@ const CoursePage = () => {
                     <Button variant="primary">Thêm khóa học</Button>
                 </Link>
             </div>
-           
-            <Suspense>
-                <CourseList />
-            </Suspense>
+            <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
+                <div className="flex items-center justify-between">
+                    <div className="flex w-full items-center justify-between">
+                        <div>
+                            <h3 className="text-primary text-xl font-bold">Danh sách khóa học</h3>
+                            <p className="text-sm text-slate-500">Danh sách khóa học sẽ được hiển thị ở đây.</p>
+                        </div>
+                        <FilterCourses />
+                    </div>
+                </div>
+                <Suspense>
+                    <CourseList />
+                </Suspense>
+            </div>
         </section>
     );
 };

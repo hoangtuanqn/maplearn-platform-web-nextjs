@@ -16,6 +16,7 @@ import { getStatusBadge } from "~/libs/statusBadge";
 import { examCategories } from "~/mockdata/exam/examCategories.data";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
 import { subjectsMock } from "~/mockdata/subject.data";
+import { FilterExams } from "./FilterExams";
 
 const allowedFields = ["search", "page", "categories", "provinces", "difficulties", "subject"] as const;
 
@@ -77,171 +78,155 @@ const ExamList = () => {
 
     return (
         <>
-            <div className="mt-3 rounded-lg bg-white p-4 pb-8 shadow-sm">
-                <div className="flex items-center justify-between">
-                    <div className="flex w-full items-center justify-between">
-                        <div>
-                            <h3 className="text-primary text-xl font-bold">Danh sách đề thi</h3>
-                            <p className="text-sm text-slate-500">Quản lý và theo dõi các đề thi trong hệ thống.</p>
-                        </div>
-                        {/* <div className="flex gap-2">
-                            <Link href="/admin/exams/create">
-                                <Button>Tạo đề thi mới</Button>
-                            </Link>
-                        </div> */}
-                    </div>
-                </div>
+            <div className="mt-8 overflow-x-auto">
+                <table className="min-w-full rounded-xl bg-white shadow-sm">
+                    <thead>
+                        <tr className="border-b border-gray-200">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">STT</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
+                                Thông tin đề thi
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Thời gian</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Điểm số</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Thống kê</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
+                            <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-xs">
+                        {isLoading
+                            ? [...Array(10)].map((_, index) => <TableSkeleton key={index} col={8} />)
+                            : exams?.data.map((exam, idx) => (
+                                  <tr
+                                      key={exam.id}
+                                      className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
+                                  >
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          {Math.max(0, +page - 1) * EXAM_PER_PAGE + idx + 1}
+                                      </td>
 
-                <div className="mt-8 overflow-x-auto">
-                    <table className="min-w-full rounded-xl bg-white shadow-sm">
-                        <thead>
-                            <tr className="border-b border-gray-200">
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">STT</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
-                                    Thông tin đề thi
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Thời gian</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Điểm số</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Thống kê</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
-                                <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-xs">
-                            {isLoading
-                                ? [...Array(10)].map((_, index) => <TableSkeleton key={index} col={8} />)
-                                : exams?.data.map((exam, idx) => (
-                                      <tr
-                                          key={exam.id}
-                                          className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
-                                      >
-                                          <td className="px-4 py-3 text-zinc-500">
-                                              {Math.max(0, +page - 1) * EXAM_PER_PAGE + idx + 1}
-                                          </td>
-
-                                          <td className="px-4 py-3 align-top text-zinc-500">
-                                              <div className="space-y-1">
-                                                  <p className="text-base font-semibold text-gray-900">{exam.title}</p>
-                                                  <div className="mt-1 flex flex-wrap items-center gap-2">
-                                                      {getDifficultyBadge(exam.difficulty)}
-                                                      {getExamTypeBadge(exam.exam_type)}
-                                                  </div>
-                                                  <div className="mt-2 flex flex-wrap gap-4">
-                                                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                                                          <span className="font-medium">Lớp:</span>
-                                                          <span>
-                                                              {gradeLevelsMock.find((g) => g.slug === exam.grade_level)
-                                                                  ?.name || exam.grade_level}
-                                                          </span>
-                                                      </div>
-                                                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                                                          <span className="font-medium">Tỉnh ra đề:</span>
-                                                          <span>{exam.province}</span>
-                                                      </div>
-                                                  </div>
-                                                  <div className="mt-1 flex flex-wrap gap-4">
-                                                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                                                          <span className="font-medium">Môn học:</span>
-                                                          <span>
-                                                              {subjectsMock.find((s) => s.slug === exam.subject)
-                                                                  ?.name || exam.subject}
-                                                          </span>
-                                                      </div>
-                                                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                                                          <span className="font-medium">Danh mục:</span>
-                                                          <span>
-                                                              {examCategories.find((c) => c.slug === exam.exam_category)
-                                                                  ?.name || exam.exam_category}
-                                                          </span>
-                                                      </div>
-                                                  </div>
+                                      <td className="px-4 py-3 align-top text-zinc-500">
+                                          <div className="space-y-1">
+                                              <p className="text-base font-semibold text-gray-900">{exam.title}</p>
+                                              <div className="mt-1 flex flex-wrap items-center gap-2">
+                                                  {getDifficultyBadge(exam.difficulty)}
+                                                  {getExamTypeBadge(exam.exam_type)}
                                               </div>
-                                          </td>
-
-                                          <td className="px-4 py-3 text-zinc-500">
-                                              <div className="space-y-1">
-                                                  <div className="flex items-center gap-1">
-                                                      <Clock className="h-3 w-3 text-gray-400" />
-                                                      <span className="font-medium">{exam.duration_minutes} phút</span>
-                                                  </div>
-                                                  <p className="text-xs text-gray-500">
-                                                      Bắt đầu: {formatter.date(exam.start_time, true)}
-                                                  </p>
-                                                  {exam.end_time && (
-                                                      <p className="text-xs text-gray-500">
-                                                          Kết thúc: {formatter.date(exam.end_time, true)}
-                                                      </p>
-                                                  )}
-                                              </div>
-                                          </td>
-
-                                          <td className="px-4 py-3 text-zinc-500">
-                                              <div className="space-y-1">
-                                                  <div className="flex items-center gap-1">
-                                                      <Target className="h-3 w-3 text-green-500" />
-                                                      <span className="font-medium">Tối đa: {exam.max_score}</span>
-                                                  </div>
-                                                  <p className="text-xs text-gray-500">Điểm đậu: {exam.pass_score}</p>
-                                                  {exam.max_attempts && (
-                                                      <p className="text-xs text-gray-500">
-                                                          Số lần thi: {exam.max_attempts}
-                                                      </p>
-                                                  )}
-                                              </div>
-                                          </td>
-
-                                          <td className="px-4 py-3 text-zinc-500">
-                                              <div className="space-y-1">
-                                                  <div className="flex items-center gap-1">
-                                                      <Users className="h-3 w-3 text-blue-500" />
-                                                      <span className="font-medium">{exam.registered_count}</span>
-                                                  </div>
-                                                  <p className="text-xs text-gray-500">
-                                                      {exam.registered_count === 0
-                                                          ? "Chưa có thí sinh"
-                                                          : "thí sinh đăng ký"}
-                                                  </p>
-                                                  {exam.anti_cheat_enabled && (
-                                                      <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                                          Chống gian lận
+                                              <div className="mt-2 flex flex-wrap gap-4">
+                                                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <span className="font-medium">Lớp:</span>
+                                                      <span>
+                                                          {gradeLevelsMock.find((g) => g.slug === exam.grade_level)
+                                                              ?.name || exam.grade_level}
                                                       </span>
-                                                  )}
+                                                  </div>
+                                                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <span className="font-medium">Tỉnh ra đề:</span>
+                                                      <span>{exam.province}</span>
+                                                  </div>
                                               </div>
-                                          </td>
-
-                                          <td className="px-4 py-3">
-                                              {getStatusBadge("active_inactive", exam.status ? "1" : "0")}
-                                          </td>
-
-                                          <td className="px-4 py-3">
-                                              <div className="flex items-center justify-end gap-2">
-                                                  <Link href={`/admin/exams/${exam.slug}`}>
-                                                      <Button variant="outlineBlack">Xem</Button>
-                                                  </Link>
-
-                                                  <DangerConfirm
-                                                      message="Bạn có chắc chắn muốn xóa đề thi này?."
-                                                      action={() => {
-                                                          toast.success("Xóa đề thi thành công!");
-                                                      }}
-                                                  >
-                                                      <Button variant="ghost" size="sm" className="hover:bg-red-50">
-                                                          <Trash2 className="h-4 w-4 text-red-500" />
-                                                      </Button>
-                                                  </DangerConfirm>
+                                              <div className="mt-1 flex flex-wrap gap-4">
+                                                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <span className="font-medium">Môn học:</span>
+                                                      <span>
+                                                          {subjectsMock.find((s) => s.slug === exam.subject)?.name ||
+                                                              exam.subject}
+                                                      </span>
+                                                  </div>
+                                                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <span className="font-medium">Danh mục:</span>
+                                                      <span>
+                                                          {examCategories.find((c) => c.slug === exam.exam_category)
+                                                              ?.name || exam.exam_category}
+                                                      </span>
+                                                  </div>
                                               </div>
-                                          </td>
-                                      </tr>
-                                  ))}
-                        </tbody>
-                    </table>
-                </div>
+                                          </div>
+                                      </td>
 
-                <div className="ml-auto w-fit">
-                    <Suspense>
-                        <PaginationNav totalPages={totalPages} basePath="/admin/exams" />
-                    </Suspense>
-                </div>
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          <div className="space-y-1">
+                                              <div className="flex items-center gap-1">
+                                                  <Clock className="h-3 w-3 text-gray-400" />
+                                                  <span className="font-medium">{exam.duration_minutes} phút</span>
+                                              </div>
+                                              <p className="text-xs text-gray-500">
+                                                  Bắt đầu: {formatter.date(exam.start_time, true)}
+                                              </p>
+                                              {exam.end_time && (
+                                                  <p className="text-xs text-gray-500">
+                                                      Kết thúc: {formatter.date(exam.end_time, true)}
+                                                  </p>
+                                              )}
+                                          </div>
+                                      </td>
+
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          <div className="space-y-1">
+                                              <div className="flex items-center gap-1">
+                                                  <Target className="h-3 w-3 text-green-500" />
+                                                  <span className="font-medium">Tối đa: {exam.max_score}</span>
+                                              </div>
+                                              <p className="text-xs text-gray-500">Điểm đậu: {exam.pass_score}</p>
+                                              {exam.max_attempts && (
+                                                  <p className="text-xs text-gray-500">
+                                                      Số lần thi: {exam.max_attempts}
+                                                  </p>
+                                              )}
+                                          </div>
+                                      </td>
+
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          <div className="space-y-1">
+                                              <div className="flex items-center gap-1">
+                                                  <Users className="h-3 w-3 text-blue-500" />
+                                                  <span className="font-medium">{exam.registered_count}</span>
+                                              </div>
+                                              <p className="text-xs text-gray-500">
+                                                  {exam.registered_count === 0
+                                                      ? "Chưa có thí sinh"
+                                                      : "thí sinh đăng ký"}
+                                              </p>
+                                              {exam.anti_cheat_enabled && (
+                                                  <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                                                      Chống gian lận
+                                                  </span>
+                                              )}
+                                          </div>
+                                      </td>
+
+                                      <td className="px-4 py-3">
+                                          {getStatusBadge("active_inactive", exam.status ? "1" : "0")}
+                                      </td>
+
+                                      <td className="px-4 py-3">
+                                          <div className="flex items-center justify-end gap-2">
+                                              <Link href={`/admin/exams/${exam.slug}`}>
+                                                  <Button variant="outlineBlack">Xem</Button>
+                                              </Link>
+
+                                              <DangerConfirm
+                                                  message="Bạn có chắc chắn muốn xóa đề thi này?."
+                                                  action={() => {
+                                                      toast.success("Xóa đề thi thành công!");
+                                                  }}
+                                              >
+                                                  <Button variant="ghost" size="sm" className="hover:bg-red-50">
+                                                      <Trash2 className="h-4 w-4 text-red-500" />
+                                                  </Button>
+                                              </DangerConfirm>
+                                          </div>
+                                      </td>
+                                  </tr>
+                              ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="ml-auto w-fit">
+                <Suspense>
+                    <PaginationNav totalPages={totalPages} basePath="/admin/exams" />
+                </Suspense>
             </div>
         </>
     );
