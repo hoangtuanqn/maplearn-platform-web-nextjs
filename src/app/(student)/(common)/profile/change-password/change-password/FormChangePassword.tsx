@@ -122,21 +122,12 @@ const FormChangePassword = () => {
                                             Mật khẩu hiện tại *
                                         </FormLabel>
                                         <FormControl>
-                                            <div className="relative">
-                                                <Input
-                                                    placeholder="Nhập mật khẩu hiện tại"
-                                                    type={showPasswords.old ? "text" : "password"}
-                                                    className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
-                                                    {...field}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => togglePasswordVisibility("old")}
-                                                    className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
-                                                >
-                                                    {showPasswords.old ? <EyeOff size={16} /> : <Eye size={16} />}
-                                                </button>
-                                            </div>
+                                            <Input
+                                                placeholder="Nhập mật khẩu hiện tại"
+                                                type={showPasswords.old ? "text" : "password"}
+                                                className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -154,21 +145,12 @@ const FormChangePassword = () => {
                                             Mật khẩu mới *
                                         </FormLabel>
                                         <FormControl>
-                                            <div className="relative">
-                                                <Input
-                                                    placeholder="Nhập mật khẩu mới"
-                                                    type={showPasswords.new ? "text" : "password"}
-                                                    className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
-                                                    {...field}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => togglePasswordVisibility("new")}
-                                                    className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
-                                                >
-                                                    {showPasswords.new ? <EyeOff size={16} /> : <Eye size={16} />}
-                                                </button>
-                                            </div>
+                                            <Input
+                                                placeholder="Nhập mật khẩu mới"
+                                                type={showPasswords.new ? "text" : "password"}
+                                                className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <PasswordStrengthMeter password={form.watch("password_new")} />
                                         <FormMessage />
@@ -187,21 +169,12 @@ const FormChangePassword = () => {
                                             Xác nhận mật khẩu mới *
                                         </FormLabel>
                                         <FormControl>
-                                            <div className="relative">
-                                                <Input
-                                                    placeholder="Nhập lại mật khẩu mới"
-                                                    type={showPasswords.confirm ? "text" : "password"}
-                                                    className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
-                                                    {...field}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => togglePasswordVisibility("confirm")}
-                                                    className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
-                                                >
-                                                    {showPasswords.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                                                </button>
-                                            </div>
+                                            <Input
+                                                placeholder="Nhập lại mật khẩu mới"
+                                                type={showPasswords.confirm ? "text" : "password"}
+                                                className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
