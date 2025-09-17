@@ -9,24 +9,44 @@ import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
+import { buildLaravelFilterQuery } from "~/libs/hepler";
 
-const allowedFields = ["search", "page", "payment_method", "status"] as const;
+const allowedFields = [
+    "search",
+    "page",
+    "payment_method",
+    "status",
+    "sort",
+    "amount_min",
+    "amount_max",
+    "date_from",
+    "date_to",
+] as const;
 
 const PaymentList = () => {
-    const { page, search, payment_method, status } = useGetSearchQuery(allowedFields);
+    const { page, search, payment_method, sort, amount_min, amount_max, date_from, date_to } =
+        useGetSearchQuery(allowedFields);
 
     const { data: payments, isLoading } = useQuery({
-        queryKey: ["payment", "list", { page, search, payment_method, status }],
+        queryKey: [
+            "payment",
+            "list",
+            { page, search, payment_method, sort, amount_min, amount_max, date_from, date_to },
+        ],
         queryFn: async () => {
             const res = await paymentApi.getPayments(
                 +page,
                 PAYMENT_PER_PAGE,
-                // "",
-                // buildLaravelFilterQuery({
-                //     payment_method,
-                //     status,
-                //     search,
-                // }),
+                sort,
+                buildLaravelFilterQuery({
+                    page,
+                    search,
+                    payment_method,
+                    amount_min,
+                    amount_max,
+                    date_from,
+                    date_to,
+                }),
             );
             return res.data.data;
         },
