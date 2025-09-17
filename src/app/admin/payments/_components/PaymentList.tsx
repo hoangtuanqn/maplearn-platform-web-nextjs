@@ -8,7 +8,6 @@ import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSke
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 
 const allowedFields = ["search", "page", "payment_method", "status"] as const;
