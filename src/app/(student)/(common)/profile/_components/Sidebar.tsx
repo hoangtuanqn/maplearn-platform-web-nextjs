@@ -124,9 +124,12 @@ const ProfileSidebar = () => {
                 <div className="text-center">
                     <div className="mb-2 text-sm font-medium text-gray-900">Cần hỗ trợ?</div>
                     <p className="mb-3 text-xs text-gray-600">Liên hệ với chúng tôi để được hỗ trợ nhanh chóng</p>
-                    <button className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50">
+                    <Link
+                        href="mailto:phamhoangtuanqn@gmail.com"
+                        className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
+                    >
                         Liên hệ hỗ trợ
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
