@@ -135,7 +135,7 @@ const chartData = {
 
 const AdminPage = () => {
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
+        <div className="min-h-screen bg-white p-6">
             {/* Header */}
             <div className="mb-8">
                 <h1 className="mb-2 text-3xl font-bold text-gray-900">Dashboard Quản Trị</h1>
@@ -143,7 +143,7 @@ const AdminPage = () => {
             </div>
 
             {/* Thống kê tổng quan - 4 Cards chính */}
-            <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
                 {/* Tổng người dùng */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
@@ -231,7 +231,7 @@ const AdminPage = () => {
             </div>
 
             {/* Biểu đồ chính - Row 1: Doanh thu và Danh mục khóa học */}
-            <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-2">
                 {/* Biểu đồ doanh thu theo tháng */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="mb-4 flex items-center justify-between">
@@ -315,7 +315,7 @@ const AdminPage = () => {
             </div>
 
             {/* Biểu đồ và thống kê - Row 2 */}
-            <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
                 {/* Biểu đồ hoạt động hàng tuần */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
                     <div className="mb-4 flex items-center justify-between">
@@ -407,7 +407,7 @@ const AdminPage = () => {
             </div>
 
             {/* Danh sách hoạt động gần đây */}
-            <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
                 {/* Người dùng mới */}
                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm">
                     <div className="border-b border-gray-100 p-6">
@@ -566,15 +566,15 @@ const AdminPage = () => {
                     </Link>
 
                     <Link
-                        href="/admin/users"
+                        href="/admin/students"
                         className="flex items-center rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
                     >
                         <div className="mr-3 rounded-lg bg-green-50 p-2">
                             <Users className="h-5 w-5 text-green-600" />
                         </div>
                         <div>
-                            <p className="font-medium text-gray-900">Quản Lý User</p>
-                            <p className="text-sm text-gray-500">Xem danh sách user</p>
+                            <p className="font-medium text-gray-900">Quản Lý học sinh</p>
+                            <p className="text-sm text-gray-500">Xem danh sách học sinh</p>
                         </div>
                     </Link>
 
