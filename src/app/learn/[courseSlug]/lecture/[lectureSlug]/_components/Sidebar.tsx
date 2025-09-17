@@ -51,7 +51,7 @@ const Sidebar = ({
             <div className="flex border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
                 <button
                     onClick={() => setActiveTab("lessons")}
-                    className={`relative flex-1 px-4 py-4 text-sm font-semibold ${
+                    className={`relative flex-1 cursor-pointer px-4 py-4 text-sm font-semibold ${
                         activeTab === "lessons"
                             ? "text-primary bg-white"
                             : "text-gray-600 hover:bg-white/60 hover:text-gray-900"
@@ -64,7 +64,7 @@ const Sidebar = ({
                 </button>
                 <button
                     onClick={() => setActiveTab("comments")}
-                    className={`relative flex-1 px-4 py-4 text-sm font-semibold ${
+                    className={`relative flex-1 cursor-pointer px-4 py-4 text-sm font-semibold ${
                         activeTab === "comments"
                             ? "text-primary bg-white"
                             : "text-gray-600 hover:bg-white/60 hover:text-gray-900"
@@ -77,7 +77,7 @@ const Sidebar = ({
                 </button>
                 <button
                     onClick={() => setActiveTab("resources")}
-                    className={`relative flex-1 px-4 py-4 text-sm font-semibold ${
+                    className={`relative flex-1 cursor-pointer px-4 py-4 text-sm font-semibold ${
                         activeTab === "resources"
                             ? "text-primary bg-white"
                             : "text-gray-600 hover:bg-white/60 hover:text-gray-900"

@@ -27,7 +27,7 @@ const VideoLessonTab = () => {
             <div className="flex border-b border-gray-200 bg-gray-50">
                 <button
                     onClick={() => setActiveVideoTab("overview")}
-                    className={`relative px-6 py-4 text-sm font-semibold ${
+                    className={`relative cursor-pointer px-6 py-4 text-sm font-semibold ${
                         activeVideoTab === "overview"
                             ? "text-primary border-primary border-t-2 bg-white shadow-sm"
                             : "text-gray-600 hover:bg-white/50 hover:text-gray-900"
@@ -38,7 +38,7 @@ const VideoLessonTab = () => {
                 </button>
                 <button
                     onClick={() => setActiveVideoTab("discussion")}
-                    className={`relative px-6 py-4 text-sm font-semibold ${
+                    className={`relative cursor-pointer px-6 py-4 text-sm font-semibold ${
                         activeVideoTab === "discussion"
                             ? "text-primary border-primary border-t-2 bg-white shadow-sm"
                             : "text-gray-600 hover:bg-white/50 hover:text-gray-900"
@@ -49,7 +49,7 @@ const VideoLessonTab = () => {
                 </button>
                 <button
                     onClick={() => setActiveVideoTab("notes")}
-                    className={`relative px-6 py-4 text-sm font-semibold ${
+                    className={`relative cursor-pointer px-6 py-4 text-sm font-semibold ${
                         activeVideoTab === "notes"
                             ? "text-primary border-primary border-t-2 bg-white shadow-sm"
                             : "text-gray-600 hover:bg-white/50 hover:text-gray-900"
@@ -60,7 +60,7 @@ const VideoLessonTab = () => {
                 </button>
                 <button
                     onClick={() => setActiveVideoTab("resources")}
-                    className={`relative px-6 py-4 text-sm font-semibold ${
+                    className={`relative cursor-pointer px-6 py-4 text-sm font-semibold ${
                         activeVideoTab === "resources"
                             ? "text-primary border-primary border-t-2 bg-white shadow-sm"
                             : "text-gray-600 hover:bg-white/50 hover:text-gray-900"
@@ -71,7 +71,7 @@ const VideoLessonTab = () => {
                 </button>
                 <button
                     onClick={() => setActiveVideoTab("quiz")}
-                    className={`relative px-6 py-4 text-sm font-semibold ${
+                    className={`relative cursor-pointer px-6 py-4 text-sm font-semibold ${
                         activeVideoTab === "quiz"
                             ? "text-primary border-primary border-t-2 bg-white shadow-sm"
                             : "text-gray-600 hover:bg-white/50 hover:text-gray-900"
