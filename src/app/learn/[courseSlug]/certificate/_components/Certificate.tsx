@@ -322,6 +322,7 @@ const Certificate = ({
                     margin: 10px 0;
                     letter-spacing: 1px;
                 }
+
                 
                 @media (max-width: 1024px) {
                     .certificate-content {
@@ -349,6 +350,22 @@ const Certificate = ({
                     .student-name {
                         font-size: 36px;
                     }
+                }
+                    .seal {
+                    width: 100px;
+                    height: 100px;
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto;
+                    box-shadow: 
+                        0 15px 35px rgba(5, 150, 105, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                    border: 6px solid white;
+                    flex-direction: column;
+                    color: white;
                 }
               
             `,

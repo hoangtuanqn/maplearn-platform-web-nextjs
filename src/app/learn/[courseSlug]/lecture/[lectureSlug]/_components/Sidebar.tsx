@@ -18,7 +18,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/courseDetail.schema";
 import { formatter } from "~/libs/format";
 import Link from "next/link";
-// Types
+import ChatBotAI from "./ChatBotAI";
 
 const Sidebar = ({
     course,
@@ -335,14 +335,7 @@ const Sidebar = ({
                     </div>
                 )}
 
-                {activeTab === "resources" && (
-                    <div className="p-4">
-                        <div className="py-8 text-center">
-                            <FileText className="mx-auto mb-3 h-12 w-12 text-gray-400" />
-                            <p className="text-gray-600">Chức năng tài liệu đang được phát triển</p>
-                        </div>
-                    </div>
-                )}
+                {activeTab === "resources" && <ChatBotAI lesson={lesson} courseName={course.name} />}
             </div>
         </div>
     );
