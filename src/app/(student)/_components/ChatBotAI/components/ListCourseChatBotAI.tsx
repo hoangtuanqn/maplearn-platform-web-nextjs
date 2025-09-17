@@ -27,7 +27,7 @@ const ListCourseChatBotAI = ({ course_id }: { course_id: number[] }) => {
     return (
         <>
             {course_id.length > 0 && (
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 space-y-3 ml-2">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         <BookOpen className="text-primary h-4 w-4" />
                         <span className="font-medium">Khóa học được đề xuất</span>
@@ -72,11 +72,11 @@ const ListCourseChatBotAI = ({ course_id }: { course_id: number[] }) => {
 
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col gap-1">
-                                            {course.price > 0 && (
+                                            {/* {course.price > 0 && (
                                                 <span className="text-xs text-gray-500 line-through">
                                                     {formatter.number(course.price)}đ
                                                 </span>
-                                            )}
+                                            )} */}
                                             <span className="text-primary text-sm font-bold">
                                                 {course.price === 0 ? "Miễn phí" : `${formatter.number(course.price)}đ`}
                                             </span>
