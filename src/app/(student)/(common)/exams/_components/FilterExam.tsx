@@ -20,7 +20,7 @@ const FilterExam = () => {
     const [resetKey, setResetKey] = useState(0);
 
     return (
-        <div className="top-[70px] h-fit rounded-xl bg-white px-6 py-4 shadow-sm lg:sticky lg:w-96">
+        <div className="sticky top-20 h-fit max-h-[85vh] overflow-y-auto rounded-xl bg-white px-6 py-4 lg:w-96">
             <div className="mb-6">
                 <h2 className="text-primary mb-2 text-base font-bold">Tìm kiếm</h2>
                 <Input
