@@ -26,6 +26,7 @@ import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import uploadMedia from "~/apiRequest/uploadMedia";
 import { ResetPassword } from "./ResetPassword";
 import { provinces } from "~/mockdata/other/provinces.data";
+import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
 
 interface FormEditStudentProps {
     studentData: StudentDetailResponseType["data"];
@@ -266,57 +267,15 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                                     render={({ field }) => (
                                         <FormItem className="flex w-full flex-col">
                                             <FormLabel className="text-sm font-normal">Tỉnh thành</FormLabel>
-                                            <Popover>
-                                                <PopoverTrigger asChild>
-                                                    <FormControl>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            className={cn(
-                                                                "justify-between",
-                                                                !field.value && "text-muted-foreground",
-                                                            )}
-                                                        >
-                                                            {field.value
-                                                                ? (provinces.find(
-                                                                      (province) => province.name === field.value,
-                                                                  )?.name ?? "Tỉnh thành của bạn")
-                                                                : "Tỉnh thành của bạn"}
-
-                                                            <ChevronsUpDown className="opacity-50" />
-                                                        </Button>
-                                                    </FormControl>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
-                                                    <Command>
-                                                        <CommandInput placeholder="Tìm kiếm..." className="h-9" />
-                                                        <CommandList>
-                                                            <CommandEmpty>Không tìm thấy dữ liệu.</CommandEmpty>
-                                                            <CommandGroup>
-                                                                {provinces.map((province) => (
-                                                                    <CommandItem
-                                                                        value={province.name}
-                                                                        key={province.province_code}
-                                                                        onSelect={() => {
-                                                                            form.setValue("city", province.name);
-                                                                        }}
-                                                                    >
-                                                                        {province.name}
-                                                                        <Check
-                                                                            className={cn(
-                                                                                "ml-auto",
-                                                                                province.name === field.value
-                                                                                    ? "opacity-100"
-                                                                                    : "opacity-0",
-                                                                            )}
-                                                                        />
-                                                                    </CommandItem>
-                                                                ))}
-                                                            </CommandGroup>
-                                                        </CommandList>
-                                                    </Command>
-                                                </PopoverContent>
-                                            </Popover>
+                                            <SingleSelectDropdown
+                                                onChange={field.onChange}
+                                                label="Chọn tỉnh thành của bạn"
+                                                value={field.value}
+                                                options={provinces.map((province) => ({
+                                                    label: province.name,
+                                                    value: province.name,
+                                                }))}
+                                            />
 
                                             <FormMessage />
                                         </FormItem>

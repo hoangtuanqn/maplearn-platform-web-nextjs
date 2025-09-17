@@ -38,7 +38,7 @@ const difficultyLevels = [
     { value: "hard", label: "Khó" },
     { value: "very_hard", label: "Rất khó" },
 ];
-export function FilterExams() {
+export function FilterPayments() {
     const pathName = usePathname();
     const { formValues, setFieldValue, handleSubmit } = useFilterQuery(fields);
 

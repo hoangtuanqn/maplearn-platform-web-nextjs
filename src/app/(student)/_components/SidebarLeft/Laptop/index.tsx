@@ -4,7 +4,7 @@ import { MenuItemLink } from "../MenuItemLink";
 import SocialLink from "../SocialLink";
 import { useAuth } from "~/hooks/useAuth";
 import DisplayAvatar from "../../DisplayAvatar";
-import { User, GraduationCap, ExternalLink } from "lucide-react";
+import { User, GraduationCap, Globe } from "lucide-react";
 
 const SideBarLaptop = () => {
     const { user } = useAuth();
@@ -76,7 +76,7 @@ const SideBarLaptop = () => {
                 <div className="rounded-xl border border-gray-100 bg-white">
                     <div className="p-4">
                         <div className="mb-3 flex items-center gap-2">
-                            <ExternalLink className="text-primary h-4 w-4" />
+                            <Globe className="text-primary h-4 w-4" />
                             <span className="text-sm font-medium text-gray-700">Mạng xã hội</span>
                         </div>
                         <div className="space-y-2">

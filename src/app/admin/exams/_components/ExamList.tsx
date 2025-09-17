@@ -19,26 +19,55 @@ import { subjectsMock } from "~/mockdata/subject.data";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 import { notificationErrorApi } from "~/libs/apis/http";
 
-const allowedFields = ["search", "page", "categories", "difficulty", "provinces", "difficulties", "subject"] as const;
+const allowedFields = [
+    "search",
+    "page",
+    "categories",
+    "difficulty",
+    "provinces",
+    "difficulties",
+    "subject",
+    "grade_level",
+    "exam_category",
+    "sort",
+] as const;
 
 const ExamList = () => {
     const queryClient = useQueryClient();
-    const { page, search, provinces, categories, difficulties, subject, difficulty } = useGetSearchQuery(allowedFields);
+    const { page, search, provinces, categories, difficulties, subject, difficulty, grade_level, exam_category, sort } =
+        useGetSearchQuery(allowedFields);
 
     const { data: exams, isLoading } = useQuery({
-        queryKey: ["exam", "list", { page, search, provinces, categories, difficulties, subject, difficulty }],
+        queryKey: [
+            "exam",
+            "list",
+            {
+                page,
+                search,
+                provinces,
+                categories,
+                difficulties,
+                subject,
+                difficulty,
+                grade_level,
+                exam_category,
+                sort,
+            },
+        ],
         queryFn: async () => {
             const res = await examApi.getExams(
                 +page,
                 EXAM_PER_PAGE,
                 search,
-                "",
+                sort,
                 buildLaravelFilterQuery({
                     provinces,
                     categories,
                     difficulties,
                     subject,
                     difficulty,
+                    grade_level,
+                    exam_category,
                 }),
             );
             return res.data.data;

@@ -72,13 +72,6 @@ const HistoryExamList = () => {
         }
     };
 
-    // Hàm để format thời gian làm bài (từ giây sang phút:giây)
-    const formatTimeSpent = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-    };
-
     return (
         <>
             <div className="mt-8 overflow-x-auto">
@@ -218,7 +211,9 @@ const HistoryExamList = () => {
                                           <div className="space-y-1">
                                               <div className="flex items-center space-x-1">
                                                   <Clock className="h-3 w-3 text-gray-400" />
-                                                  <span className="text-xs">{formatTimeSpent(attempt.time_spent)}</span>
+                                                  <span className="text-xs">
+                                                      Đã làm: {formatter.duration(attempt.time_spent)}
+                                                  </span>
                                               </div>
                                               <p className="text-xs text-gray-500">
                                                   Bắt đầu: {formatter.date(attempt.started_at, true)}
