@@ -18,18 +18,7 @@ import uploadMedia from "~/apiRequest/uploadMedia";
 import { provinces } from "~/mockdata/other/provinces.data";
 import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
 import { notificationErrorApi } from "~/libs/apis/http";
-import {
-    Camera,
-    User,
-    Phone,
-    Calendar,
-    MapPin,
-    GraduationCap,
-    Facebook,
-    Save,
-    Upload,
-    CheckCircle,
-} from "lucide-react";
+import { User, Phone, Calendar, MapPin, GraduationCap, Facebook, Save, Upload, CheckCircle } from "lucide-react";
 
 const FormEdit = () => {
     const { user, updateProfile } = useAuth();

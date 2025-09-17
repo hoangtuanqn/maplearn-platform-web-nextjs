@@ -30,13 +30,13 @@ const SideBarLaptop = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                    <div className="rounded-xl border border-gray-100 bg-white p-4">
                         <MenuItemLink title="Đăng nhập" url={"/auth/login"} image="/assets/icons/login.svg" />
                     </div>
                 )}
 
                 {/* Navigation Menu */}
-                <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+                <div className="rounded-xl border border-gray-100 bg-white">
                     {/* Profile Section */}
                     {user && (
                         <div className="border-b border-gray-100 p-4">
@@ -73,7 +73,7 @@ const SideBarLaptop = () => {
                 </div>
 
                 {/* Social Media Card */}
-                <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+                <div className="rounded-xl border border-gray-100 bg-white">
                     <div className="p-4">
                         <div className="mb-3 flex items-center gap-2">
                             <ExternalLink className="text-primary h-4 w-4" />

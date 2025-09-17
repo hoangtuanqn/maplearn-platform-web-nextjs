@@ -15,17 +15,11 @@ import { useAuth } from "~/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import zxcvbn from "zxcvbn";
-import { Lock, Shield, Eye, EyeOff, AlertTriangle, Key } from "lucide-react";
-import { useState } from "react";
+import { Lock, Shield, AlertTriangle, Key } from "lucide-react";
 
 const FormChangePassword = () => {
     const { logout } = useAuth();
     const router = useRouter();
-    const [showPasswords, setShowPasswords] = useState({
-        old: false,
-        new: false,
-        confirm: false,
-    });
 
     const form = useForm<FormChangePasswordType>({
         resolver: zodResolver(changePasswordSchema),
@@ -62,13 +56,6 @@ const FormChangePassword = () => {
             return;
         }
         mutate(data);
-    };
-
-    const togglePasswordVisibility = (field: "old" | "new" | "confirm") => {
-        setShowPasswords((prev) => ({
-            ...prev,
-            [field]: !prev[field],
-        }));
     };
 
     return (
@@ -124,7 +111,7 @@ const FormChangePassword = () => {
                                         <FormControl>
                                             <Input
                                                 placeholder="Nhập mật khẩu hiện tại"
-                                                type={showPasswords.old ? "text" : "password"}
+                                                type={"password"}
                                                 className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
                                                 {...field}
                                             />
@@ -147,7 +134,7 @@ const FormChangePassword = () => {
                                         <FormControl>
                                             <Input
                                                 placeholder="Nhập mật khẩu mới"
-                                                type={showPasswords.new ? "text" : "password"}
+                                                type={"password"}
                                                 className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
                                                 {...field}
                                             />
@@ -171,7 +158,7 @@ const FormChangePassword = () => {
                                         <FormControl>
                                             <Input
                                                 placeholder="Nhập lại mật khẩu mới"
-                                                type={showPasswords.confirm ? "text" : "password"}
+                                                type={"password"}
                                                 className="focus:border-primary focus:ring-primary h-11 border-gray-300 pr-12"
                                                 {...field}
                                             />

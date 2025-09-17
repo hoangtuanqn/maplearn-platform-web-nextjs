@@ -12,15 +12,17 @@ const ContentLesson = ({ course }: { course: CourseGetDetailResponse["data"] }) 
             {/* Hero Section */}
             <div className="overflow-hidden rounded-xl border border-gray-100 shadow-sm">
                 <div className="from-primary via-primary/90 to-primary/80 bg-gradient-to-r p-6 text-white sm:p-8">
-                    <h1 className="text-2xl font-bold sm:text-3xl">{course.name}</h1>
-                    <p className="text-primary-50 mt-3 sm:text-base">{course.description}</p>
+                    <h1 className="text-2xl font-bold sm:text-2xl">{course.name}</h1>
+                    <p className="text-primary-50 mt-3">{course.description}</p>
 
                     <div className="mt-6 flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2">
-                                <span className="text-xl font-bold text-yellow-300">{4}</span>
-                                <Rating style={{ maxWidth: 100 }} value={4} readOnly />
-                                <span className="text-primary-100 text-sm">20 đánh giá</span>
+                                <span className="text-xl font-bold text-yellow-300">
+                                    {course.rating.average_rating}
+                                </span>
+                                <Rating style={{ maxWidth: 100 }} value={course.rating.average_rating} readOnly />
+                                <span className="text-primary-100 text-sm">{course.rating.total_reviews} đánh giá</span>
                             </div>
                             {course.enrollments_count > 0 && (
                                 <div className="text-primary-100 flex items-center gap-1 text-sm">
