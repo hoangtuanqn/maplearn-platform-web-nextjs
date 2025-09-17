@@ -21,6 +21,7 @@ const SideBarLaptop = () => {
                         <Link
                             className="hover:bg-primary/5 flex cursor-pointer items-center justify-start rounded-lg p-3 transition-all duration-200"
                             href="/profile"
+                            id="profile"
                         >
                             <DisplayAvatar avatar={user?.avatar} fullName={user?.full_name} ratio="12" />
                             <div className="ml-3 min-w-0 flex-1">
@@ -66,8 +67,18 @@ const SideBarLaptop = () => {
                             <span className="text-sm font-medium text-gray-700">Học tập</span>
                         </div>
                         <div className="space-y-1">
-                            <MenuItemLink title="Khóa học" url="/courses" image="/assets/icons/course.svg" />
-                            <MenuItemLink title="Kho đề thi" url="/exams" image="/assets/icons/online-exam.svg" />
+                            <MenuItemLink
+                                title="Khóa học"
+                                url="/courses"
+                                image="/assets/icons/course.svg"
+                                id="courses"
+                            />
+                            <MenuItemLink
+                                title="Kho đề thi"
+                                url="/exams"
+                                image="/assets/icons/online-exam.svg"
+                                id="exams"
+                            />
                         </div>
                     </div>
                 </div>

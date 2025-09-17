@@ -13,6 +13,8 @@ import {
     PlayCircle,
     CircleCheckBig,
     Brain,
+    Trophy,
+    ExternalLink,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/courseDetail.schema";
@@ -110,6 +112,23 @@ const Sidebar = ({
                     <span>{course.percent_completed}% hoàn thành</span>
                     <span>Còn {course.lesson_count - course.completed_lessons} bài</span>
                 </div>
+
+                {/* Certificate Button - Only show when course is 100% completed */}
+                {course.percent_completed === 100 && (
+                    <div className="mt-4">
+                        <Link
+                            href={`/learn/${course.slug}/certificate`}
+                            className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl"
+                        >
+                            <Trophy className="h-4 w-4" />
+                            <span>Chứng chỉ của bạn</span>
+                            <ExternalLink className="h-3 w-3" />
+                        </Link>
+                        <p className="mt-2 text-center text-xs font-medium text-emerald-600">
+                            🎉 Chúc mừng! Bạn đã hoàn thành khóa học
+                        </p>
+                    </div>
+                )}
             </div>
 
             {/* Tab Content */}

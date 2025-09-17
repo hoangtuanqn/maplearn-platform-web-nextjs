@@ -2,11 +2,12 @@ import Link from "next/link";
 import { SidebarType } from "./entities.type";
 import Image from "next/image";
 
-export const MenuItemLink = ({ title, image, url, className }: SidebarType) => {
+export const MenuItemLink = ({ title, image, url, className, id }: SidebarType) => {
     return (
         <Link
             className="hover:bg-primary/5 hover:text-primary group flex cursor-pointer items-center justify-start rounded-lg px-3 py-2.5 transition-all duration-200"
             href={url}
+            id={id}
         >
             <div className="flex items-center justify-center">
                 <Image

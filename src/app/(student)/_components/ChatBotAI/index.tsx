@@ -118,6 +118,7 @@ const ChatBotAI = () => {
             )}
 
             <button
+                id="ai-chatbot"
                 className="from-primary to-primary/80 fixed right-5 bottom-30 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-gradient-to-r text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl md:bottom-30 md:h-16 md:w-16 xl:bottom-24"
                 onClick={() => setIsOpen(!isOpen)}
             >

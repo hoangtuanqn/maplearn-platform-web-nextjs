@@ -29,7 +29,7 @@ const headerLinks = [
         macher: ["/courses"],
     },
     {
-        label: "Thi thử",
+        label: "Đề thi thử",
         icon: DocumentIcon,
         href: "/exams",
         macher: ["/exams"],

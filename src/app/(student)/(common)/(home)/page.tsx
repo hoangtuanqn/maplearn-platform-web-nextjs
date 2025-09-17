@@ -6,6 +6,7 @@ import ListCourseRecommended from "./_components/ListCourseRecommended";
 import SidebarLeft from "../../_components/SidebarLeft";
 import SidebarRight from "../../_components/SidebarRight";
 import TopStudents from "../../_components/SidebarRight/TopStudents";
+import TutorialButton from "~/components/TutorialButton";
 
 const StudentHomePage = () => {
     return (
@@ -20,8 +21,9 @@ const StudentHomePage = () => {
                         {/* <CourseActive className="xl:hidden" /> */}
                         <TopStudents className="max-2xl:mt-4 2xl:hidden" />
                     </div>
-                    {/* Dashboard Stats */}
 
+                    <TutorialButton />
+                    {/* Dashboard Stats */}
                     <DashboardStats />
                     {/* Giáo viên */}
                     <Teachers />
