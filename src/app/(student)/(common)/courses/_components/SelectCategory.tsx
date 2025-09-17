@@ -53,7 +53,7 @@ const SelectCategory = ({ url }: { url: string }) => {
                 </div>
 
                 {/* Categories List */}
-                <div className="space-y-2">
+                <div className="mt-8 space-y-2">
                     {courseCategoriesMock?.map((cate) => {
                         const isActive = activeTab === cate.slug;
                         return (
@@ -62,17 +62,13 @@ const SelectCategory = ({ url }: { url: string }) => {
                                 key={cate.slug}
                                 className={`group cursor-pointer rounded-xl border p-4 transition-all duration-200 ${
                                     isActive
-                                        ? "border-primary/20 bg-primary/5 shadow-sm"
+                                        ? "border-primary/50 bg-primary/10 shadow-sm"
                                         : "border-gray-200 bg-white hover:border-gray-200 hover:bg-gray-50 hover:shadow-sm"
                                 }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
-                                            isActive
-                                                ? "bg-primary/10 text-primary"
-                                                : "bg-gray-100 text-gray-600 group-hover:bg-gray-200"
-                                        }`}
+                                        className={`bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-lg transition-colors`}
                                     >
                                         <MapLearnIcon />
                                     </div>
