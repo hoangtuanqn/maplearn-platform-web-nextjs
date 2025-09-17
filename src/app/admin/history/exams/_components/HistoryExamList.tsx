@@ -11,16 +11,45 @@ import DisplayTotalResult from "~/app/admin/_components/DisplayTotalResult";
 import { Button } from "~/components/ui/button";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
+import { buildLaravelFilterQuery } from "~/libs/hepler";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
 import { subjectsMock } from "~/mockdata/subject.data";
 const HistoryExamList = () => {
-    const { page } = useGetSearchQuery(["page"] as const);
+    const { page, search, min_score, max_score, status, violation_count, time_spent, full_name, sort } =
+        useGetSearchQuery([
+            "page",
+            "search",
+            "min_score",
+            "max_score",
+            "status",
+            "violation_count",
+            "time_spent",
+            "full_name",
+            "sort",
+        ] as const);
 
     // Gọi API để lấy lịch sử làm bài thi
     const { data: examAttempts, isLoading } = useQuery({
-        queryKey: ["admin", "exam-attempts", page],
+        queryKey: [
+            "admin",
+            "exam-attempts",
+            { page, search, min_score, max_score, status, violation_count, time_spent, full_name, sort },
+        ],
         queryFn: async () => {
-            const res = await examApi.getAllExamAttempts(+page, EXAM_PER_PAGE);
+            const res = await examApi.getAllExamAttempts(
+                +page,
+                EXAM_PER_PAGE,
+                search,
+                sort,
+                buildLaravelFilterQuery({
+                    min_score,
+                    max_score,
+                    status,
+                    violation_count,
+                    time_spent,
+                    full_name,
+                }),
+            );
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
@@ -241,7 +270,7 @@ const HistoryExamList = () => {
                                       {/* Thao tác */}
                                       <td className="px-4 py-3">
                                           <div className="flex items-center justify-end gap-2">
-                                              <Link href={`/admin/history/exams/${attempt.id}`}>
+                                              <Link href={`/exams/${attempt.paper.slug}/results/${attempt.id}`}>
                                                   <Button variant="outlineBlack" size="sm">
                                                       Chi tiết
                                                   </Button>

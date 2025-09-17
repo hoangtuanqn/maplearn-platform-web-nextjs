@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Metadata } from "next";
 
 import HistoryExamList from "./_components/HistoryExamList";
+import { FilterAttemptExams } from "./_components/FilterAttemptExams";
 
 export const metadata: Metadata = {
     title: "Lịch sử làm bài thi",
@@ -23,9 +24,9 @@ const CoursePage = () => {
                                 Danh sách lịch sử làm bài thi sẽ được hiển thị ở đây.
                             </p>
                         </div>
-                        {/* <Suspense>
-                            <FilterCourses />
-                        </Suspense> */}
+                        <Suspense>
+                            <FilterAttemptExams />
+                        </Suspense>
                     </div>
                 </div>
                 <Suspense>

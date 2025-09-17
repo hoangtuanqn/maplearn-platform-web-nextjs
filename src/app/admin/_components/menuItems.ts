@@ -1,4 +1,13 @@
-import { LayoutDashboard, UserRound, UserCog, GraduationCap, ClipboardList, Receipt, History } from "lucide-react";
+import {
+    LayoutDashboard,
+    UserRound,
+    UserCog,
+    GraduationCap,
+    ClipboardList,
+    Receipt,
+    History,
+    Undo2,
+} from "lucide-react";
 const menuItems = [
     {
         type: "title",
@@ -86,6 +95,19 @@ const menuItems = [
                 icon: History,
                 href: "/admin/history/exams",
                 matcher: ["/admin/history/exams"],
+            },
+        ],
+    },
+    {
+        type: "title",
+        label: "Thao tác",
+        children: [
+            {
+                type: "link",
+                label: "Quay lại trang chủ",
+                icon: Undo2,
+                href: "/",
+                matcher: ["/"],
             },
         ],
     },

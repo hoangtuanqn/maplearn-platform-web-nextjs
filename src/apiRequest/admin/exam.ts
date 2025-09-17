@@ -30,11 +30,14 @@ const examApi = {
     getAllExamAttempts: (
         page: number = 1,
         limit: number = EXAM_PER_PAGE,
+        search: string = "",
         querySortOther: string = "",
         queryOther: string = "",
     ) => {
         let query = `/exams-admin/all-history?page=${page}&limit=${limit}`;
-
+        if (search) {
+            query += `&filter[search]=${search}`;
+        }
         if (querySortOther) {
             query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
         }
