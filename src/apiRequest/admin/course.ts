@@ -1,4 +1,5 @@
 import privateApi from "~/libs/apis/privateApi";
+import { StudentCompletedResponse } from "~/schemaValidate/admin/course.schema";
 import { ChapterLesson } from "~/schemaValidate/chapterLessonCourse.schema";
 import { CourseGetDetailResponse, CourseStats } from "~/schemaValidate/course.schema";
 import { LessonResponse } from "~/schemaValidate/courseDetail.schema";
@@ -23,5 +24,9 @@ const courseAdminApi = {
 
     // get thống kê học viên đăng ký khóa học trong 7 ngày
     getCourseStudentStats: (slug: string) => privateApi.get<CourseStats>(`/courses/${slug}/stats-enrollments`),
+
+    // get học sinh đã hoàn thành khóa học
+    getStudentsCompletedCourse: (slug: string) =>
+        privateApi.get<StudentCompletedResponse>(`/courses/${slug}/completions`),
 };
 export default courseAdminApi;

@@ -134,7 +134,9 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
                 <div className="py-8 text-center">
                     <Users className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                     <p className="text-gray-600">Chưa có dữ liệu thống kê</p>
-                    <p className="mt-2 text-xs text-gray-500">Dữ liệu sẽ xuất hiện khi có học sinh đăng ký</p>
+                    <p className="mt-2 text-xs text-gray-500">
+                        Dữ liệu sẽ xuất hiện khi có học sinh đăng ký trong 7 ngày
+                    </p>
                 </div>
             </div>
         );
