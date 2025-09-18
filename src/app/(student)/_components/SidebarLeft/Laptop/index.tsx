@@ -84,7 +84,7 @@ const SideBarLaptop = () => {
                 </div>
 
                 {/* Social Media Card */}
-                <div className="rounded-xl border border-gray-100 bg-white">
+                <div className="rounded-xl border border-gray-100 bg-white" id="social-media">
                     <div className="p-4">
                         <div className="mb-3 flex items-center gap-2">
                             <Globe className="text-primary h-4 w-4" />

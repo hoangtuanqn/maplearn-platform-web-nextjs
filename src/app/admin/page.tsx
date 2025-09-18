@@ -138,7 +138,7 @@ const AdminPage = () => {
         <div className="min-h-screen bg-white p-6">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="mb-2 text-3xl font-bold text-gray-900">Dashboard Quản Trị</h1>
+                <h1 className="mb-2 text-3xl font-bold text-gray-900">MapLearn Edu - Quản Trị</h1>
                 <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
             </div>
 

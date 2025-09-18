@@ -3,8 +3,11 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { useEffect } from "react";
 import { useAuth } from "~/hooks/useAuth";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 
-export default function TutorialButton() {
+export default function TutorialUsing() {
+    const { tutorial } = useGetSearchQuery(["tutorial"] as const);
+
     const { user } = useAuth();
     useEffect(() => {
         if (!user) return;
@@ -64,8 +67,10 @@ export default function TutorialButton() {
                 },
             ],
         });
-        driverObj.drive();
-    }, [user]);
+        if (tutorial == "1") {
+            driverObj.drive();
+        }
+    }, [user, tutorial]);
 
     return null;
 }
