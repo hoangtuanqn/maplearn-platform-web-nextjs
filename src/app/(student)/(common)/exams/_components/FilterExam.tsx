@@ -20,7 +20,7 @@ const FilterExam = () => {
     const [resetKey, setResetKey] = useState(0);
 
     return (
-        <div className="sticky top-20 h-fit max-h-[85vh] overflow-y-auto rounded-xl border border-gray-100 bg-white px-6 py-5 shadow-sm lg:w-96">
+        <div className="scrollbar sticky top-20 h-fit max-h-[85vh] overflow-y-auto rounded-xl border border-gray-100 bg-white px-6 py-5 shadow-sm lg:w-96">
             {/* Search Section */}
             <div className="mb-6">
                 <div className="mb-3 flex items-center gap-2">

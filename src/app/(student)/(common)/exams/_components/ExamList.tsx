@@ -59,7 +59,7 @@ const ExamList = () => {
                                 </span>
                                 {(examList?.total ?? 0) > 0 && (
                                     <span className="text-sm text-gray-500">
-                                        (Trang {page}/{totalPages})
+                                        (Trang {page ? page : 1}/{totalPages})
                                     </span>
                                 )}
                             </div>
