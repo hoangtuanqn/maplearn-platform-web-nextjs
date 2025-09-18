@@ -4,10 +4,17 @@ import "driver.js/dist/driver.css";
 import { useEffect } from "react";
 import { useAuth } from "~/hooks/useAuth";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+<<<<<<< HEAD:src/components/TutorialUsing.tsx
 
 export default function TutorialUsing() {
     const { tutorial } = useGetSearchQuery(["tutorial"] as const);
 
+=======
+
+export default function TutorialButton() {
+    const { tutorial } = useGetSearchQuery(["tutorial"] as const);
+
+>>>>>>> 1af5a5308f0eeb237ef6e4b23df423aa258581ff:src/components/TutorialButton.tsx
     const { user } = useAuth();
     useEffect(() => {
         if (!user) return;

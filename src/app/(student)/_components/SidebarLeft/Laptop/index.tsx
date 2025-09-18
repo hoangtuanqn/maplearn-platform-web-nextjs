@@ -12,7 +12,7 @@ const SideBarLaptop = () => {
     return (
         <div className="hidden w-[30%] xl:block 2xl:w-[20%]">
             <div
-                className="sticky w-full space-y-4 overflow-auto"
+                className="scrollbar sticky w-full space-y-4 overflow-auto"
                 style={{ top: "76px", maxHeight: "calc(100vh - 76px)" }}
             >
                 {/* User Profile Card */}
