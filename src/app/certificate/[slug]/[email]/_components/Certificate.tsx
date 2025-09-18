@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Playfair_Display, Inter, Dancing_Script } from "next/font/google";
-import QRCode from "react-qr-code";
 import QRCodeBadge from "./QRCodeBadge";
 import Image from "next/image";
 
@@ -51,18 +50,18 @@ const Certificate = ({
                     <h1
                         className={`${playfairDisplay.className} bg-gradient-to-r from-indigo-800 via-blue-500 to-sky-400 bg-clip-text text-4xl font-black tracking-[0.2em] text-transparent uppercase md:text-6xl`}
                     >
-                        Certificate
+                        Chứng nhận
                     </h1>
                     <h2
                         className={`${inter.className} text-xl font-bold tracking-[0.3em] text-slate-600 uppercase md:text-2xl`}
                     >
-                        of Completion
+                        Hoàn thành khóa học
                     </h2>
                 </div>
 
                 {/* Presented to */}
                 <p className={`${inter.className} mb-2 text-base font-medium text-slate-600 md:text-lg`}>
-                    This certificate is proudly presented to
+                    Chứng nhận này được trao cho
                 </p>
 
                 {/* Student Name */}
@@ -73,19 +72,19 @@ const Certificate = ({
                 </div>
 
                 {/* Achievement */}
-                <p className={`${inter.className} mx-auto max-w-2xl text-base leading-7 text-slate-600 md:text-lg`}>
-                    for successfully completing the course
+                <p className={`${inter.className} mx-auto max-w-2xl text-base leading-8 text-slate-600 md:text-lg`}>
+                    vì đã hoàn thành xuất sắc khóa học
                     <br />
                     <span className="text-lg font-bold text-black">“{eventName}”</span>
                     <br />
-                    and demonstrating exceptional dedication to learning and professional development
+                    và thể hiện sự nỗ lực, tinh thần học tập và phát triển chuyên môn vượt trội
                 </p>
 
                 {/* Date & Seal */}
                 <div className="mt-6 flex flex-col items-center justify-center gap-8">
                     <div className="flex flex-col items-center">
                         <div className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                            Date of Completion
+                            Ngày hoàn thành
                         </div>
                         <div className="mt-1 text-lg font-bold text-slate-800">{eventDate}</div>
                     </div>
@@ -98,35 +97,29 @@ const Certificate = ({
                             width={150}
                             height={50}
                             src="/assets/images/signature/signature-instructor.png"
-                            alt="Instructor Signature"
+                            alt="Chữ ký Giảng viên"
                             className="mb-2 h-10 object-contain contrast-125"
                         />
                         <div className="mb-2 h-px w-32 bg-slate-300" />
-                        <div className={`${inter.className} font-bold text-slate-800`}>Le Thanh Nhan</div>
-                        <div className={`${inter.className} text-xs text-slate-600`}>Course Instructor</div>
+                        <div className={`${inter.className} font-bold text-slate-800`}>Lê Thanh Nhân</div>
+                        <div className={`${inter.className} text-xs text-slate-600`}>Giảng viên khóa học</div>
                     </div>
                     <div className="flex flex-col items-center">
                         <Image
                             width={150}
                             height={50}
                             src="/assets/images/signature/signature-director.svg"
-                            alt="Director Signature"
+                            alt="Chữ ký Giám đốc"
                             className="mb-2 h-10 object-contain contrast-125"
                         />
                         <div className="mb-2 h-px w-32 bg-slate-300" />
-                        <div className={`${inter.className} font-bold text-slate-800`}>Tran Phuoc Sinh</div>
-                        <div className={`${inter.className} text-xs text-slate-600`}>Academic Director</div>
+                        <div className={`${inter.className} font-bold text-slate-800`}>Trần Phước Sinh</div>
+                        <div className={`${inter.className} text-xs text-slate-600`}>Giám đốc đào tạo</div>
                     </div>
                 </div>
 
                 {/* QR Code */}
-                {/* <div className="mt-10 flex flex-col items-center gap-2">
-                    <div className="rounded-lg border border-slate-300 bg-white p-2 shadow-sm">
-                        <QRCode value={verifyUrl} size={400} bgColor="#ffffff" fgColor="#1e293b" />
-                    </div>
-                    <p className="text-xs text-slate-500">Scan to verify certificate</p>
-                </div> */}
-                <QRCodeBadge />
+                <QRCodeBadge url={verifyUrl} />
             </div>
         </div>
     );

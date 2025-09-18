@@ -21,6 +21,7 @@ import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/cou
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import ChatBotAI from "./ChatBotAI";
+import { useAuth } from "~/hooks/useAuth";
 
 const Sidebar = ({
     course,
@@ -29,6 +30,7 @@ const Sidebar = ({
     course: CourseDetailResponse["data"];
     lesson: LessonDetailResponse["data"];
 }) => {
+    const { user } = useAuth();
     const [openChapter, setOpenChapter] = useState(lesson.chapter_id);
     const [activeTab, setActiveTab] = useState("lessons"); // "lessons" | "comments" | "resources"
 
@@ -117,7 +119,7 @@ const Sidebar = ({
                 {course.percent_completed === 100 && (
                     <div className="mt-4">
                         <Link
-                            href={`/learn/${course.slug}/certificate`}
+                            href={`/certificate/${course.slug}/${user?.email}`}
                             className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl"
                         >
                             <Trophy className="h-4 w-4" />
