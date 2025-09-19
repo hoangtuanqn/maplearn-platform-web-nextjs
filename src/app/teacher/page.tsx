@@ -2,80 +2,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { Users, BookOpen, FileText, CreditCard, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 import Link from "next/link";
-import {
-    AreaChart,
-    Area,
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Cell,
-} from "recharts";
-import dashboardAdminApi from "~/apiRequest/admin/dashboard";
 import { formatter } from "~/libs/format";
 import DisplayAvatar from "../(student)/_components/DisplayAvatar";
+import dashboardTeacherApi from "~/apiRequest/teacher/dashboard";
+import { useAuth } from "~/hooks/useAuth";
 
 const TeacherPage = () => {
+    const { user } = useAuth();
     const { data: dashboard, isLoading } = useQuery({
-        queryKey: ["admin", "dashboard"],
+        queryKey: ["teacher", "dashboard"],
         queryFn: async () => {
-            const res = await dashboardAdminApi.getDashboard();
+            const res = await dashboardTeacherApi.getDashboard();
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
     });
-
-    // Tính toán data cho charts từ API data
-    const chartData = dashboard
-        ? {
-              // Dữ liệu doanh thu theo tháng từ total_in_this_year
-              revenueData: dashboard.total_in_this_year.map((revenue, index) => ({
-                  month: `T${index + 1}`,
-                  revenue: revenue,
-              })),
-
-              // Phân bố khóa học theo danh mục từ courses_by_category
-              courseCategoryData: Object.entries(dashboard.courses_by_category).map(([category, count], index) => {
-                  const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#6b7280"];
-                  return {
-                      category: category.replace(/-/g, " ").toUpperCase(),
-                      count: count,
-                      color: colors[index % colors.length],
-                  };
-              }),
-
-              // Hoạt động 4 tuần từ activity_in_4_weeks
-              weeklyEnrollmentData: dashboard.activity_in_4_weeks,
-
-              // Phương thức thanh toán từ payment_methods
-              paymentMethodData: Object.entries(dashboard.payment_methods).map(([method, count]) => {
-                  const total = Object.values(dashboard.payment_methods).reduce((a, b) => a + b, 0);
-                  const methodNames = {
-                      vnpay: "VNPay",
-                      momo: "MoMo",
-                      zalopay: "ZaloPay",
-                      transfer: "Chuyển khoản",
-                  };
-                  const colors = {
-                      vnpay: "#3b82f6",
-                      momo: "#ec4899",
-                      zalopay: "#06b6d4",
-                      transfer: "#10b981",
-                  };
-                  return {
-                      method: methodNames[method as keyof typeof methodNames] || method,
-                      count: count,
-                      percentage: Math.round((count / total) * 100),
-                      color: colors[method as keyof typeof colors] || "#6b7280",
-                  };
-              }),
-          }
-        : null;
 
     // Tính phần trăm tăng trưởng
     const calculateGrowth = (current: number, previous: number) => {
@@ -105,13 +46,16 @@ const TeacherPage = () => {
         );
     }
 
-    if (!dashboard) return null;
+    if (!dashboard || !user) return null;
+
     return (
         <div className="min-h-screen bg-white p-6">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="mb-2 text-3xl font-bold text-gray-900">MapLearn Edu - Giáo viên</h1>
-                <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
+                <h1 className="mb-2 text-2xl font-bold text-gray-900">
+                    Xin chào giáo viên <span className="text-primary">{user.full_name}</span>
+                </h1>
+                <p className="text-gray-600">Thống kê tổng quan</p>
             </div>
 
             {/* Thống kê tổng quan - 4 Cards chính */}
@@ -121,10 +65,10 @@ const TeacherPage = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-gray-600">Tổng học sinh của bạn</p>
-                            <p className="text-2xl font-bold text-gray-900">{dashboard.total_users.toLocaleString()}</p>
+                            <p className="text-2xl font-bold text-gray-900">{dashboard.total_students}</p>
                             <div className="mt-2 flex items-center">
                                 <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
-                                <span className="text-sm text-green-600">+{dashboard.new_users.length}</span>
+                                <span className="text-sm text-green-600">+{dashboard.new_students.length}</span>
                                 <span className="ml-1 text-sm text-gray-500">Học sinh mới</span>
                             </div>
                         </div>
@@ -202,199 +146,6 @@ const TeacherPage = () => {
                 </div>
             </div>
 
-            {/* Biểu đồ chính - Row 1: Doanh thu và Danh mục khóa học */}
-            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-2">
-                {/* Biểu đồ doanh thu theo tháng */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">Doanh Thu 12 Tháng</h3>
-                        <div className="text-sm text-gray-500">VNĐ</div>
-                    </div>
-                    <div className="h-80">
-                        {chartData && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={chartData.revenueData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                                    <XAxis
-                                        dataKey="month"
-                                        tick={{ fontSize: 12, fill: "#64748b" }}
-                                        tickLine={{ stroke: "#e2e8f0" }}
-                                    />
-                                    <YAxis
-                                        tick={{ fontSize: 12, fill: "#64748b" }}
-                                        tickLine={{ stroke: "#e2e8f0" }}
-                                        tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
-                                    />
-                                    <Tooltip
-                                        formatter={(value: number) => [
-                                            `${new Intl.NumberFormat("vi-VN").format(value)} VNĐ`,
-                                            "Doanh thu",
-                                        ]}
-                                        labelStyle={{ color: "#1f2937" }}
-                                        contentStyle={{
-                                            backgroundColor: "white",
-                                            border: "1px solid #e5e7eb",
-                                            borderRadius: "8px",
-                                        }}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="revenue"
-                                        stroke="#3b82f6"
-                                        fill="#3b82f6"
-                                        fillOpacity={0.1}
-                                        strokeWidth={2}
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                </div>
-
-                {/* Biểu đồ phân bố danh mục khóa học */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">Phân Bố Khóa Học</h3>
-                        <div className="text-sm text-gray-500">Theo danh mục</div>
-                    </div>
-                    <div className="h-80">
-                        {chartData && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={chartData.courseCategoryData}
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={100}
-                                        fill="#8884d8"
-                                        dataKey="count"
-                                        label={(entry: any) => `${entry.category.substring(0, 10)}...`}
-                                        labelLine={false}
-                                    >
-                                        {chartData.courseCategoryData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        formatter={(value: number, name: string, props: any) => [
-                                            `${value} khóa học`,
-                                            props.payload.category,
-                                        ]}
-                                        contentStyle={{
-                                            backgroundColor: "white",
-                                            border: "1px solid #e5e7eb",
-                                            borderRadius: "8px",
-                                        }}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            {/* Biểu đồ và thống kê - Row 2 */}
-            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
-                {/* Biểu đồ hoạt động hàng tuần */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
-                    <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">Hoạt Động 4 Tuần Gần Đây</h3>
-                        <div className="text-sm text-gray-500">Khóa học, Đề thi, Học sinh mới</div>
-                    </div>
-                    <div className="h-80">
-                        {chartData && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={chartData.weeklyEnrollmentData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                                    <XAxis
-                                        dataKey="week"
-                                        tick={{ fontSize: 12, fill: "#64748b" }}
-                                        tickLine={{ stroke: "#e2e8f0" }}
-                                    />
-                                    <YAxis tick={{ fontSize: 12, fill: "#64748b" }} tickLine={{ stroke: "#e2e8f0" }} />
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: "white",
-                                            border: "1px solid #e5e7eb",
-                                            borderRadius: "8px",
-                                        }}
-                                    />
-                                    <Bar
-                                        dataKey="new_courses"
-                                        fill="#3b82f6"
-                                        name="Khóa học mới"
-                                        radius={[2, 2, 0, 0]}
-                                    />
-                                    <Bar dataKey="new_exams" fill="#10b981" name="Đề thi mới" radius={[2, 2, 0, 0]} />
-                                    <Bar dataKey="new_users" fill="#f59e0b" name="Học sinh mới" radius={[2, 2, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                </div>
-
-                {/* Thống kê phương thức thanh toán */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">Thanh Toán</h3>
-                        <div className="text-sm text-gray-500">Phương thức</div>
-                    </div>
-                    <div className="space-y-4">
-                        {chartData?.paymentMethodData.map((method, index) => (
-                            <div key={index} className="flex items-center justify-between">
-                                <div className="flex items-center space-x-3">
-                                    <div
-                                        className="h-3 w-3 rounded-full"
-                                        style={{ backgroundColor: method.color }}
-                                    ></div>
-                                    <span className="text-sm font-medium text-gray-900">{method.method}</span>
-                                </div>
-                                <div className="text-right">
-                                    <div className="text-sm font-medium text-gray-900">{method.count}</div>
-                                    <div className="text-xs text-gray-500">{method.percentage}%</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    {/* Mini chart for payment methods */}
-                    <div className="mt-4 h-32">
-                        {chartData && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart
-                                    data={chartData.paymentMethodData}
-                                    margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-                                >
-                                    <XAxis
-                                        dataKey="method"
-                                        tick={{ fontSize: 10, fill: "#64748b" }}
-                                        tickLine={{ stroke: "#e2e8f0" }}
-                                        interval={0}
-                                        angle={-45}
-                                        textAnchor="end"
-                                        height={50}
-                                    />
-                                    <YAxis hide />
-                                    <Tooltip
-                                        formatter={(value: number) => [`${value} giao dịch`, "Số lượng"]}
-                                        contentStyle={{
-                                            backgroundColor: "white",
-                                            border: "1px solid #e5e7eb",
-                                            borderRadius: "8px",
-                                        }}
-                                    />
-                                    <Bar dataKey="count" radius={[2, 2, 0, 0]} fill="#3b82f6">
-                                        {chartData &&
-                                            chartData.paymentMethodData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                    </Bar>
-                                </BarChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                </div>
-            </div>
-
             {/* Danh sách hoạt động gần đây */}
             <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
                 {/* Học sinh mới */}
@@ -402,17 +153,11 @@ const TeacherPage = () => {
                     <div className="border-b border-gray-100 p-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-gray-900">Học sinh mới</h3>
-                            <Link
-                                href="/teacher/students"
-                                className="text-sm font-medium text-blue-600 hover:text-blue-700"
-                            >
-                                Xem tất cả
-                            </Link>
                         </div>
                     </div>
                     <div className="p-6">
                         <div className="space-y-4">
-                            {dashboard?.new_users?.slice(0, 5).map((user: any) => (
+                            {dashboard?.new_students?.slice(0, 5).map((user: any) => (
                                 <div key={user.id} className="flex items-center space-x-3">
                                     <DisplayAvatar fullName={user.full_name} avatar={user.avatar} ratio={"10"} />
                                     <div className="min-w-0 flex-1">
@@ -430,7 +175,7 @@ const TeacherPage = () => {
                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm">
                     <div className="border-b border-gray-100 p-6">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900">Khóa Học phổ biến của bạn</h3>
+                            <h3 className="text-lg font-semibold text-gray-900">Khóa học phổ biến của bạn</h3>
                             <Link
                                 href="/teacher/courses"
                                 className="text-sm font-medium text-blue-600 hover:text-blue-700"
@@ -452,7 +197,7 @@ const TeacherPage = () => {
                                         <Link
                                             href={`/courses/${course.slug}`}
                                             target="_blank"
-                                            className="truncate text-sm font-medium text-gray-900"
+                                            className="line-clamp-1 truncate text-sm font-medium text-gray-900"
                                         >
                                             {course.name}
                                         </Link>
@@ -465,7 +210,7 @@ const TeacherPage = () => {
                                             </div>
                                             <div className="flex items-center">
                                                 <span className="text-xs text-gray-500">
-                                                    {formatter.number(course.revenue)}đ
+                                                    {formatter.number(parseInt(course.revenue))}đ
                                                 </span>
                                             </div>
                                         </div>
@@ -494,26 +239,20 @@ const TeacherPage = () => {
                             {dashboard?.new_payments?.slice(0, 5).map((payment: any, index: number) => (
                                 <div key={index} className="flex items-center justify-between">
                                     <div className="flex items-center space-x-3">
-                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-yellow-100">
-                                            <CreditCard className="h-4 w-4 text-yellow-600" />
-                                        </div>
+                                        <DisplayAvatar
+                                            fullName={payment.full_name}
+                                            avatar={payment.avatar}
+                                            ratio={"8"}
+                                        />
                                         <div>
                                             <p className="text-sm font-medium text-gray-900">{payment.full_name}</p>
                                             <p className="text-xs text-gray-500">{payment.course_name}</p>
                                         </div>
                                     </div>
-                                    <div className="text-right">
+                                    <div className="ml-2 text-right">
                                         <p className="text-sm font-medium text-gray-900">
-                                            {new Intl.NumberFormat("vi-VN", {
-                                                style: "currency",
-                                                currency: "VND",
-                                            }).format(payment.amount)}
+                                            {formatter.number(payment.amount)}đ
                                         </p>
-                                        <div className="flex items-center space-x-1">
-                                            <span className="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                                Đã thanh toán
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                             ))}

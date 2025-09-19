@@ -227,7 +227,7 @@ const AdminPage = () => {
                                     />
                                     <Tooltip
                                         formatter={(value: number) => [
-                                            `${new Intl.NumberFormat("vi-VN").format(value)} VNĐ`,
+                                            `${formatter.number(value)} VNĐ`,
                                             "Doanh thu",
                                         ]}
                                         labelStyle={{ color: "#1f2937" }}
@@ -509,10 +509,7 @@ const AdminPage = () => {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-sm font-medium text-gray-900">
-                                            {new Intl.NumberFormat("vi-VN", {
-                                                style: "currency",
-                                                currency: "VND",
-                                            }).format(payment.amount)}
+                                            {formatter.number(payment.amount)}đ
                                         </p>
                                         <div className="flex items-center space-x-1">
                                             <span className="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
