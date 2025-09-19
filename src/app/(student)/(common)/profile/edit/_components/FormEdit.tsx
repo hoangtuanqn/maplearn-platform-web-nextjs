@@ -7,7 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { profileSchema, ProfileType, UserType } from "~/schemaValidate/user.schema";
 import { useAuth } from "~/hooks/useAuth";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "~/components/ui/select";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import profileApi from "~/apiRequest/profile";
@@ -20,8 +28,8 @@ import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdo
 import { notificationErrorApi } from "~/libs/apis/http";
 import { User, Phone, Calendar, MapPin, GraduationCap, Facebook, Save, Upload, CheckCircle } from "lucide-react";
 
-const FormEdit = () => {
-    const { user, updateProfile } = useAuth();
+const FormEdit = ({ user }: { user: UserType }) => {
+    const { updateProfile } = useAuth();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
@@ -213,7 +221,7 @@ const FormEdit = () => {
                                                     <User size={14} />
                                                     Giới tính
                                                 </FormLabel>
-                                                <Select defaultValue={user?.gender} onValueChange={field.onChange}>
+                                                <Select value={field.value} onValueChange={field.onChange}>
                                                     <SelectTrigger className="focus:border-primary focus:ring-primary h-11 w-full border-gray-300">
                                                         <SelectValue placeholder="Chọn giới tính" />
                                                     </SelectTrigger>
@@ -240,16 +248,27 @@ const FormEdit = () => {
                                                     Năm sinh
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <Input
-                                                        placeholder="Nhập năm sinh của bạn"
-                                                        type="number"
-                                                        min="1950"
-                                                        max="2010"
-                                                        className="focus:border-primary focus:ring-primary h-11 border-gray-300"
-                                                        {...field}
-                                                        onChange={(e) => field.onChange(Number(e.target.value))}
-                                                        value={form.watch("birth_year") ?? ""}
-                                                    />
+                                                    <Select
+                                                        value={field.value ? String(field.value) : undefined}
+                                                        onValueChange={(val) => field.onChange(Number(val))}
+                                                    >
+                                                        <SelectTrigger className="focus:border-primary focus:ring-primary h-11 w-full border-gray-300">
+                                                            <SelectValue placeholder="Chọn năm sinh" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectGroup>
+                                                                <SelectLabel>Năm sinh</SelectLabel>
+                                                                {[...Array(20)].map((_, index) => {
+                                                                    const year = 1995 + index;
+                                                                    return (
+                                                                        <SelectItem key={year} value={String(year)}>
+                                                                            {year}
+                                                                        </SelectItem>
+                                                                    );
+                                                                })}
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

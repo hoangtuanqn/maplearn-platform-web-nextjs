@@ -508,11 +508,6 @@ const AdminPage = () => {
                                         <p className="text-sm font-medium text-gray-900">
                                             {formatter.number(payment.amount)}đ
                                         </p>
-                                        <div className="flex items-center space-x-1">
-                                            <span className="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                                Đã thanh toán
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                             ))}
