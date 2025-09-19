@@ -31,7 +31,7 @@ const formSchema = z
         is_shuffle_answers: z.boolean(),
         is_show_result: z.boolean(),
         is_retakeable: z.boolean(),
-        max_attempts: z.number().min(10, { message: "Số lần làm bài tối đa phải lớn hơn 0`." }).optional(),
+        max_attempts: z.number().min(0, { message: "Số lần làm bài tối đa phải lớn hơn 0`." }).optional(),
     })
     .refine(
         (data) => {
