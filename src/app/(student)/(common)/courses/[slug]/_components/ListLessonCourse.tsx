@@ -30,13 +30,6 @@ const ListLessonCourse = () => {
         setOpen((prev) => (prev === chapterId ? 0 : chapterId));
     };
 
-    const handlePreviewLesson = (lesson: any) => {
-        if (lesson.is_free && lesson.video_url) {
-            // Mở modal hoặc redirect để xem video preview
-            console.log("Preview lesson:", lesson.title, lesson.video_url);
-        }
-    };
-
     if (isLoading) {
         return (
             <div className="rounded-xl bg-white p-4 shadow-sm sm:p-8">
