@@ -5,7 +5,6 @@ import {
     Play,
     CheckCircle,
     Clock,
-    Users,
     MessageCircle,
     BookOpen,
     Award,
@@ -22,6 +21,7 @@ import { formatter } from "~/libs/format";
 import Link from "next/link";
 import ChatBotAI from "./ChatBotAI";
 import { useAuth } from "~/hooks/useAuth";
+import CertificateButton from "./CertificateButton";
 
 const Sidebar = ({
     course,
@@ -116,7 +116,7 @@ const Sidebar = ({
                 </div>
 
                 {/* Certificate Button - Only show when course is 100% completed */}
-                {course.percent_completed === 100 && (
+                {course.percent_completed === 100 && user?.email_verified_at ? (
                     <div className="mt-4">
                         <Link
                             href={`/certificate/${course.slug}/${user?.email}`}
@@ -131,6 +131,8 @@ const Sidebar = ({
                             🎉 Chúc mừng! Bạn đã hoàn thành khóa học
                         </p>
                     </div>
+                ) : (
+                    <CertificateButton />
                 )}
             </div>
 
@@ -138,66 +140,6 @@ const Sidebar = ({
             <div className="sticky top-10">
                 {activeTab === "lessons" && (
                     <div className="p-6">
-                        {/* Enhanced Course Overview */}
-                        <div className="mb-8 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-                            <div className="mb-4 flex items-center gap-3">
-                                <div className="bg-primary/10 rounded-lg p-2">
-                                    <BookOpen className="text-primary h-5 w-5" />
-                                </div>
-                                <h3 className="font-bold text-gray-900">Tổng quan khóa học</h3>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="rounded-lg border border-gray-100 bg-white p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="rounded-full bg-blue-100 p-2">
-                                            <BookOpen className="h-4 w-4 text-blue-600" />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-gray-900">
-                                                {formatter.number(course.lesson_count)}
-                                            </div>
-                                            <div className="text-xs text-gray-600">bài học</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="rounded-lg border border-gray-100 bg-white p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="rounded-full bg-emerald-100 p-2">
-                                            <Clock className="h-4 w-4 text-emerald-600" />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-gray-900">
-                                                {formatter.duration(course.duration)}
-                                            </div>
-                                            <div className="text-xs text-gray-600">thời lượng</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="rounded-lg border border-gray-100 bg-white p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="rounded-full bg-yellow-100 p-2">
-                                            <Award className="h-4 w-4 text-yellow-600" />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-gray-900">Chứng chỉ</div>
-                                            <div className="text-xs text-gray-600">hoàn thành</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="rounded-lg border border-gray-100 bg-white p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="rounded-full bg-purple-100 p-2">
-                                            <Users className="h-4 w-4 text-purple-600" />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-gray-900">Trọn đời</div>
-                                            <div className="text-xs text-gray-600">truy cập</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         {/* Chapters */}
                         <div className="space-y-2">
                             {course.chapters.map((chapter, chapterIndex) => (

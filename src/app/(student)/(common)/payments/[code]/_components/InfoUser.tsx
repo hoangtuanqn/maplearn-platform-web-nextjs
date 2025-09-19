@@ -22,10 +22,11 @@ const InfoUser = () => {
                         <Mail className="text-primary h-4 w-4" />
                         <span className="text-sm text-gray-700">{user?.email}</span>
                     </div>
+                    {user?.phone_number && (
                     <div className="flex items-center gap-3">
                         <Phone className="text-primary h-4 w-4" />
                         <span className="text-sm text-gray-700">{user?.phone_number}</span>
-                    </div>
+                    </div>)}
                     {user?.school && (
                         <div className="flex items-center gap-3">
                             <GraduationCap className="text-primary h-4 w-4" />
