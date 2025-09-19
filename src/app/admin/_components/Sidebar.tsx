@@ -47,6 +47,7 @@ const renderMenu = (items: any[], pathname: string) => {
                                 className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
                                     active ? "bg-primary text-white" : "text-slate-800 hover:bg-slate-100"
                                 }`}
+                                id={item.id}
                             >
                                 <Icon className={active ? "text-white" : "text-gray-600"} strokeWidth={3} />
                                 {item.label}

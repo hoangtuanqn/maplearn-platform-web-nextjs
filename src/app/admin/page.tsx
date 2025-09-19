@@ -19,6 +19,8 @@ import {
 import dashboardAdminApi from "~/apiRequest/admin/dashboard";
 import { formatter } from "~/libs/format";
 import DisplayAvatar from "../(student)/_components/DisplayAvatar";
+import { Suspense } from "react";
+import TutorialButtonAdmin from "./_components/TutorialButtonAdmin";
 
 const AdminPage = () => {
     const { data: dashboard, isLoading } = useQuery({
@@ -109,9 +111,16 @@ const AdminPage = () => {
     return (
         <div className="min-h-screen bg-white p-6">
             {/* Header */}
-            <div className="mb-8">
-                <h1 className="mb-2 text-3xl font-bold text-gray-900">Quản trị hệ thống MapLearn</h1>
-                <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
+            <div className="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 className="mb-2 text-3xl font-bold text-gray-900">Quản trị hệ thống MapLearn</h1>
+                    <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
+                </div>
+                <div>
+                    <Suspense>
+                        <TutorialButtonAdmin />
+                    </Suspense>
+                </div>
             </div>
 
             {/* Thống kê tổng quan - 4 Cards chính */}
@@ -517,7 +526,7 @@ const AdminPage = () => {
             </div>
 
             {/* Thao tác nhanh */}
-            <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm" id="quick-actions">
                 <h3 className="mb-4 text-lg font-semibold text-gray-900">Thao Tác Nhanh</h3>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <Link
