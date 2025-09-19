@@ -1,7 +1,5 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,11 +8,8 @@ import { Button } from "~/components/ui/button";
 
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { cn } from "~/lib/utils";
 import { getGender } from "~/libs/hepler";
 import { StudentDetailResponseType } from "~/schemaValidate/user.schema";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { useMutation } from "@tanstack/react-query";
 import studentApi from "~/apiRequest/admin/student";
 import { toast } from "sonner";

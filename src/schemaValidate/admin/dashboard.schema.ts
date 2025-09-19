@@ -27,12 +27,14 @@ const dashboardSchema = z.object({
             full_name: z.string(),
             course_name: z.string(),
             amount: z.number(),
+            avatar: z.string().url(),
         }),
     ),
     top_courses: z.array(
         z.object({
             name: z.string(),
             students_count: z.number(),
+            slug: z.string(),
             revenue: z.string(),
         }),
     ),

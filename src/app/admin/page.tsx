@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import dashboardAdminApi from "~/apiRequest/admin/dashboard";
 import { formatter } from "~/libs/format";
+import DisplayAvatar from "../(student)/_components/DisplayAvatar";
 
 const AdminPage = () => {
     const { data: dashboard, isLoading } = useQuery({
@@ -173,16 +174,13 @@ const AdminPage = () => {
                     </div>
                 </div>
 
-                {/* Tổng doanh thu */}
+                {/* Tổng doanh thu tháng này */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Tổng Doanh Thu</p>
+                            <p className="text-sm font-medium text-gray-600">Doanh Thu tháng này</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {new Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                }).format(dashboard.total)}
+                                {formatter.number(dashboard.total_in_this_year[new Date().getMonth()])}
                             </p>
                             <div className="mt-2 flex items-center">
                                 {revenueGrowth >= 0 ? (
@@ -278,7 +276,10 @@ const AdminPage = () => {
                                         ))}
                                     </Pie>
                                     <Tooltip
-                                        formatter={(value: number) => [`${value} khóa học`, "Số lượng"]}
+                                        formatter={(value: number, name: string, props: any) => [
+                                            `${value} khóa học`,
+                                            props.payload.category,
+                                        ]}
                                         contentStyle={{
                                             backgroundColor: "white",
                                             border: "1px solid #e5e7eb",
@@ -418,11 +419,7 @@ const AdminPage = () => {
                         <div className="space-y-4">
                             {dashboard?.new_users?.slice(0, 5).map((user: any) => (
                                 <div key={user.id} className="flex items-center space-x-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                                        <span className="text-sm font-medium text-blue-600">
-                                            {user.full_name.charAt(0)}
-                                        </span>
-                                    </div>
+                                    <DisplayAvatar fullName={user.full_name} avatar={user.avatar} ratio={"10"} />
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-sm font-medium text-gray-900">{user.full_name}</p>
                                         <p className="truncate text-sm text-gray-500">{user.email}</p>
@@ -457,7 +454,13 @@ const AdminPage = () => {
                                         </div>
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-medium text-gray-900">{course.name}</p>
+                                        <Link
+                                            href={`/courses/${course.slug}`}
+                                            target="_blank"
+                                            className="truncate text-sm font-medium text-gray-900"
+                                        >
+                                            {course.name}
+                                        </Link>
                                         <div className="mt-1 flex items-center space-x-4">
                                             <div className="flex items-center">
                                                 <Users className="mr-1 h-3 w-3 text-gray-400" />
@@ -466,9 +469,8 @@ const AdminPage = () => {
                                                 </span>
                                             </div>
                                             <div className="flex items-center">
-                                                <DollarSign className="mr-1 h-3 w-3 text-gray-400" />
                                                 <span className="text-xs text-gray-500">
-                                                    {formatter.number(course.revenue)}
+                                                    {formatter.number(course.revenue)}đ
                                                 </span>
                                             </div>
                                         </div>

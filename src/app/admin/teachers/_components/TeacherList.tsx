@@ -1,11 +1,9 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { Suspense } from "react";
+import React from "react";
 
-import { USERS_PER_PAGE } from "~/apiRequest/admin/student";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
-import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import { Button } from "~/components/ui/button";
 import { getGender } from "~/libs/hepler";
 import { getStatusBadge } from "~/libs/statusBadge";
