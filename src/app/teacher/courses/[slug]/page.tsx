@@ -1,11 +1,9 @@
 import React from "react";
-import { Edit, BookOpen, Users, Clock, BarChart3 } from "lucide-react";
-import { Button } from "~/components/ui/button";
+import { BookOpen, Users, Clock, BarChart3 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { formatter } from "~/libs/format";
 import courseApi from "~/apiRequest/course";
 import ChaptersList from "./_components/ChaptersList";
-import Link from "next/link";
 import CourseStudentChart from "./_components/CourseStudentChart";
 import { Metadata } from "next";
 import StudentCompletedList from "./_components/StudentCompletedList";

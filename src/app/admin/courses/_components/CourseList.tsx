@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { toast } from "sonner";
 import courseAdminApi from "~/apiRequest/admin/course";
-import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
+import { COURSE_PER_PAGE } from "~/apiRequest/course";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import { DangerConfirm } from "~/components/DangerConfirm";
@@ -22,7 +22,7 @@ const CourseList = () => {
     const { data: courses, isLoading } = useQuery({
         queryKey: ["admin", "courses", page],
         queryFn: async () => {
-            const res = await courseApi.getCourses(+page, COURSE_PER_PAGE);
+            const res = await courseAdminApi.getCourses(+page, COURSE_PER_PAGE);
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
@@ -42,7 +42,7 @@ const CourseList = () => {
     return (
         <>
             <div className="mt-8 overflow-x-auto">
-                 <DisplayTotalResult total={total} />
+                <DisplayTotalResult total={total} />
                 <table className="min-w-full rounded-xl bg-white shadow-sm">
                     <thead>
                         <tr className="border-b border-gray-200">

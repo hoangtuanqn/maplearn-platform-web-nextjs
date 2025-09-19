@@ -110,7 +110,7 @@ const AdminPage = () => {
         <div className="min-h-screen bg-white p-6">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="mb-2 text-3xl font-bold text-gray-900">MapLearn Edu - Quản Trị</h1>
+                <h1 className="mb-2 text-3xl font-bold text-gray-900">Quản trị hệ thống MapLearn</h1>
                 <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
             </div>
 
@@ -226,10 +226,7 @@ const AdminPage = () => {
                                         tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
                                     />
                                     <Tooltip
-                                        formatter={(value: number) => [
-                                            `${formatter.number(value)} VNĐ`,
-                                            "Doanh thu",
-                                        ]}
+                                        formatter={(value: number) => [`${formatter.number(value)} VNĐ`, "Doanh thu"]}
                                         labelStyle={{ color: "#1f2937" }}
                                         contentStyle={{
                                             backgroundColor: "white",

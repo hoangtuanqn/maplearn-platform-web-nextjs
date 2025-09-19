@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
+import { COURSE_PER_PAGE } from "~/apiRequest/course";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import { Button } from "~/components/ui/button";
@@ -11,12 +11,13 @@ import { formatter } from "~/libs/format";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { subjectsMock } from "~/mockdata/subject.data";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
+import courseAdminApi from "~/apiRequest/admin/course";
 const CourseList = () => {
     const { page } = useGetSearchQuery(["page"] as const);
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["admin", "courses", page],
+        queryKey: ["teacher", "courses", page],
         queryFn: async () => {
-            const res = await courseApi.getCourses(+page, COURSE_PER_PAGE);
+            const res = await courseAdminApi.getCourses(+page, COURSE_PER_PAGE);
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
