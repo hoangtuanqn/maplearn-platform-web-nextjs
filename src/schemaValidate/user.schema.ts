@@ -62,7 +62,7 @@ export type FormChangePasswordType = z.infer<typeof changePasswordSchema>;
 export const profileSchema = z.object({
     full_name: z
         .string()
-        .min(2, "Họ và tên phải có ít nhất 2 ký tự")
+        .min(5, "Họ và tên phải có ít nhất 5 ký tự")
         .max(100, "Họ và tên không được vượt quá 100 ký tự")
         .nonempty("Vui lòng không bỏ trống họ và tên"),
     birth_year: z

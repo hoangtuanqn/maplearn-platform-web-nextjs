@@ -13,7 +13,7 @@ const TryLearning = ({ title, video }: { title: string; video: string }) => {
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8 px-3 text-xs">
                     <Play className="mr-1 h-3 w-3" />
-                    Xem thử
+                    Học thử
                 </Button>
             </DialogTrigger>
             <DialogContent className="bg-white sm:max-w-[1000px]">

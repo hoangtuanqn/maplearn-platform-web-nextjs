@@ -22,16 +22,15 @@ import { formatter } from "~/libs/format";
 export const metadata: Metadata = {
     title: "Kết quả bài thi",
 };
-const getResults = cache(async (id: string | null, slug: string) => {
+const getResults = cache(async (id: string, slug: string) => {
     const {
         data: { data: result },
     } = await examApiServer.getExamResults(id, slug);
     return result;
 });
 
-const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; ids: string[] }> }) => {
-    const { ids, slug } = await params;
-    const id = ids?.[0] ?? null; // Chỉ lấy cái đầu tiên
+const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; id: string }> }) => {
+    const { id, slug } = await params;
 
     let result;
     try {

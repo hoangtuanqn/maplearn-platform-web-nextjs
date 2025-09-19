@@ -11,7 +11,6 @@ const EditProfilePage = async () => {
     try {
         const res = await getInfoApi();
         user = res.data.data;
-        console.log(res);
     } catch {
         redirect("/profile");
     }

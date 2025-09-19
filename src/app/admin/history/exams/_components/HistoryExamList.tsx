@@ -265,7 +265,10 @@ const HistoryExamList = () => {
                                       {/* Thao tác */}
                                       <td className="px-4 py-3">
                                           <div className="flex items-center justify-end gap-2">
-                                              <Link href={`/exams/${attempt.paper.slug}/results/${attempt.id}`}>
+                                              <Link
+                                                  href={`/exams/${attempt.paper.slug}/results/${attempt.id}`}
+                                                  target="_blank"
+                                              >
                                                   <Button variant="outlineBlack" size="sm">
                                                       Chi tiết
                                                   </Button>

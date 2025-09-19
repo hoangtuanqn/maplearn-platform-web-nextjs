@@ -103,7 +103,9 @@ const ListLessonCourse = () => {
                                     {chapter.lessons.map((lesson, lessonIndex) => (
                                         <div
                                             key={lesson.id}
-                                            className={`ml-4 flex cursor-pointer items-center gap-3 border-l-2 border-l-gray-200 p-3 transition-colors hover:bg-white`}
+                                            className={`ml-4 flex cursor-pointer items-center gap-3 border-l-2 border-l-gray-200 p-3 transition-colors hover:bg-white ${
+                                                lesson.is_free ? "bg-white" : ""
+                                            }`}
                                         >
                                             {/* Lesson Status Icon */}
                                             <div className="flex-shrink-0">

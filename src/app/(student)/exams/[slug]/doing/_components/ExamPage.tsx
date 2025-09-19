@@ -80,11 +80,13 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     // Submit bài thi
     const submitAnswerMutation = useMutation({
         mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
+            console.log("Nộp bài rồi: ", data);
+
             toast.success("Đã nộp bài làm thành công");
             exitFullscreen();
             removeLocalStorage(slug); // Xóa dữ liệu localStorage sau khi nộp bài
-            router.push(`/exams/${slug}/results`);
+            router.push(`/exams/${slug}/results/${data.data.data.id_attempt}`);
         },
         onError: () => {
             toast.error("Đã có lỗi xảy ra khi nộp bài");

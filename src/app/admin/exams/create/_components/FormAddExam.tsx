@@ -57,6 +57,7 @@ const FormAddExam = () => {
             is_retakeable: false,
             max_attempts: 1,
         },
+        mode: "onBlur",
     });
 
     const mutationExam = useMutation({
@@ -97,7 +98,7 @@ const FormAddExam = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Loại đề thi</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn loại đề thi" />
@@ -122,7 +123,7 @@ const FormAddExam = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Môn học</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn môn học" />
@@ -147,7 +148,7 @@ const FormAddExam = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Cấp bậc</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn cấp bậc" />
@@ -192,7 +193,7 @@ const FormAddExam = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Độ khó</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn độ khó" />
@@ -216,14 +217,14 @@ const FormAddExam = () => {
                             name="max_score"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Điểm tối đa</FormLabel>
+                                    <FormLabel>Điểm tối đa (Thang điểm)</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="number"
                                             placeholder="Nhập điểm tối đa"
                                             {...field}
                                             onChange={(e) => field.onChange(Number(e.target.value))}
-                                            value={form.watch("max_score") ?? 100}
+                                            value={form.watch("max_score") ?? 10}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -243,7 +244,7 @@ const FormAddExam = () => {
                                             placeholder="Nhập điểm qua môn"
                                             {...field}
                                             onChange={(e) => field.onChange(Number(e.target.value))}
-                                            value={form.watch("pass_score") ?? 50}
+                                            value={form.watch("pass_score") ?? 5}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -278,7 +279,11 @@ const FormAddExam = () => {
                                 <FormItem>
                                     <FormLabel>Thời gian bắt đầu</FormLabel>
                                     <FormControl>
-                                        <Input type="datetime-local" {...field} />
+                                        <Input
+                                            type="datetime-local"
+                                            {...field}
+                                            min={new Date().toISOString().slice(0, 16)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -292,7 +297,11 @@ const FormAddExam = () => {
                                 <FormItem>
                                     <FormLabel>Thời gian đóng đề</FormLabel>
                                     <FormControl>
-                                        <Input type="datetime-local" {...field} />
+                                        <Input
+                                            type="datetime-local"
+                                            {...field}
+                                            min={new Date().toISOString().slice(0, 16)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                     <FormDescription>
@@ -309,13 +318,24 @@ const FormAddExam = () => {
                                 <FormItem>
                                     <FormLabel>Số lần làm tối đa</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="Nhập số lần làm tối đa"
-                                            {...field}
-                                            onChange={(e) => field.onChange(Number(e.target.value))}
-                                            value={form.watch("max_attempts") ?? 1}
-                                        />
+                                        <Select
+                                            onValueChange={(value) =>
+                                                field.onChange(value === "unlimited" ? null : Number(value))
+                                            }
+                                            value={field.value === null ? "unlimited" : String(field.value)}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Số lần làm tối đa" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="unlimited">Không giới hạn</SelectItem>
+                                                {[...Array(3)].map((_, index) => (
+                                                    <SelectItem key={index + 1} value={`${index + 1}`}>
+                                                        {index + 1} lần
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
