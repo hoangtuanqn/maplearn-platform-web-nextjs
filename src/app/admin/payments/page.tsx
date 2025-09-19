@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Metadata } from "next";
 import PaymentList from "./_components/PaymentList";
-import { FilterPayments } from "./_components/FilterPayments";
 import StatsPayment from "./_components/StatsPayment";
 
 export const metadata: Metadata = {
@@ -19,10 +18,6 @@ const ExamPage = () => {
                             <h3 className="text-primary text-xl font-bold">Hóa đơn đã thanh toán</h3>
                             <p className="text-sm text-slate-500">Quản lý và theo dõi các hóa đơn trong hệ thống.</p>
                         </div>
-
-                        <Suspense>
-                            <FilterPayments />
-                        </Suspense>
                     </div>
                 </div>
 

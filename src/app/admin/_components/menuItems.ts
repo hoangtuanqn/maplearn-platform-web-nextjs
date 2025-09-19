@@ -77,7 +77,7 @@ const menuItems = [
         children: [
             {
                 type: "link",
-                label: "Hóa đơn",
+                label: "Thanh toán",
                 icon: Receipt,
                 href: "/admin/payments",
                 matcher: ["/admin/payments"],

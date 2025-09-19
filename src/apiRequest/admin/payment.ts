@@ -1,5 +1,5 @@
 import privateApi from "~/libs/apis/privateApi";
-import { PaymentWithCourse } from "~/schemaValidate/admin/payment.schema";
+import { PaymentStats, PaymentWithCourse } from "~/schemaValidate/admin/payment.schema";
 
 export const PAYMENT_PER_PAGE = 20;
 const paymentApi = {
@@ -17,6 +17,9 @@ const paymentApi = {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
         return privateApi.get<PaymentWithCourse>(query);
+    },
+    getStats: (date_from: string, date_to: string) => {
+        return privateApi.get<PaymentStats>(`/admin/payments/stats?date_from=${date_from}&date_to=${date_to}`);
     },
 };
 export default paymentApi;

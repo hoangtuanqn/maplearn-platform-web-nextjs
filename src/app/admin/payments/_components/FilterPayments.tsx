@@ -202,6 +202,7 @@ export function FilterPayments() {
                                             onSelect={handleDateRangeSelect}
                                             numberOfMonths={2}
                                             locale={vi}
+                                            disabled={(date) => date > new Date()}
                                         />
                                     </PopoverContent>
                                 </Popover>

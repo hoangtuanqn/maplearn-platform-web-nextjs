@@ -120,6 +120,7 @@ const Sidebar = ({
                     <div className="mt-4">
                         <Link
                             href={`/certificate/${course.slug}/${user?.email}`}
+                            target="_blank"
                             className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl"
                         >
                             <Trophy className="h-4 w-4" />

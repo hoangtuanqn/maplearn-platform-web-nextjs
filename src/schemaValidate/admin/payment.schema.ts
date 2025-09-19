@@ -27,3 +27,20 @@ const _paymentWithCourseSchema = paymentSchema.extend({
     data: paginationMetaSchemaFn(paymentSchema),
 });
 export type PaymentWithCourse = z.infer<typeof _paymentWithCourseSchema>;
+
+const paymentStatsSchema = z.object({
+    total_payments: z.number(),
+    total_revenue: z.number(),
+    total_students: z.number(),
+    average_order_value: z.number(),
+    total_courses_sold: z.number(),
+    date_from: z.string().date(),
+    date_to: z.string().date(),
+});
+const _paymentStatsResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paymentStatsSchema,
+});
+
+export type PaymentStats = z.infer<typeof _paymentStatsResponseSchema>;
