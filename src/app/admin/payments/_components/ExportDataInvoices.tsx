@@ -6,6 +6,7 @@ import Loading from "~/app/(student)/_components/Loading";
 import { Button } from "~/components/ui/button";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { exportExcel } from "~/libs/exportExcel";
+import { formatter } from "~/libs/format";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
 const allowedFields = [
     "search",
@@ -29,7 +30,7 @@ const ExportDataInvoices = () => {
         amount: "Số tiền",
         status: "Trạng thái",
         paid_at: "Ngày thanh toán",
-        "user.full_name": "Tên người dùng",
+        "user.full_name": "Người mua",
         "course.name": "Tên khóa học",
     };
 
@@ -55,10 +56,19 @@ const ExportDataInvoices = () => {
             // Chuyển đổi dữ liệu để phù hợp với export
             const exportData = data.data.map((payment) => ({
                 transaction_code: payment.transaction_code,
-                payment_method: payment.payment_method,
-                amount: payment.amount,
-                status: payment.status,
-                paid_at: payment.paid_at,
+                payment_method: payment.payment_method.toUpperCase(),
+                amount: formatter.number(payment.amount) + " VND",
+                status: payment.status === "paid" ? "Đã thanh toán" : "Chưa thanh toán",
+                paid_at: payment.paid_at
+                    ? new Date(payment.paid_at).toLocaleString("vi-VN", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                      })
+                    : "",
                 "user.full_name": payment.user.full_name,
                 "course.name": payment.course.name,
             }));

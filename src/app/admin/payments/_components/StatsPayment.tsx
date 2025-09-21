@@ -9,6 +9,7 @@ import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { useQuery } from "@tanstack/react-query";
 import paymentApi from "~/apiRequest/admin/payment";
 import { formatter } from "~/libs/format";
+import ExportDataInvoices from "./ExportDataInvoices";
 
 const allowedFields = ["date_from", "date_to"] as const;
 
@@ -128,9 +129,12 @@ const StatsPayment = () => {
                         Phân tích chi tiết và hiệu suất thanh toán từ {getDateRangeText()}.
                     </p>
                 </div>
-                <Suspense>
-                    <FilterPayments />
-                </Suspense>
+                <div className="flex items-center gap-2">
+                    <Suspense>
+                        <ExportDataInvoices />
+                        <FilterPayments />
+                    </Suspense>
+                </div>
             </div>
 
             {/* Dynamic KPI Cards */}
