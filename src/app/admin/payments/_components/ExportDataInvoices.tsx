@@ -71,16 +71,7 @@ const ExportDataInvoices = () => {
                 payment_method: payment.payment_method.toUpperCase(),
                 amount: formatter.number(payment.amount) + " VND",
                 status: payment.status === "paid" ? "Đã thanh toán" : "Chưa thanh toán",
-                paid_at: payment.paid_at
-                    ? new Date(payment.paid_at).toLocaleString("vi-VN", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                      })
-                    : "",
+                paid_at: formatter.date(payment.paid_at, true),
                 "user.full_name": payment.user.full_name,
                 "course.name": payment.course.name,
             }));

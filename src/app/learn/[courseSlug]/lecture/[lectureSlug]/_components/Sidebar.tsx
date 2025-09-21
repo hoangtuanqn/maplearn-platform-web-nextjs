@@ -111,7 +111,7 @@ const Sidebar = ({
                 </div>
 
                 <div className="flex justify-between text-sm text-gray-500">
-                    <span>{course.percent_completed}% hoàn thành</span>
+                    <span>{Math.floor(course.percent_completed)}% hoàn thành</span>
                     <span>Còn {course.lesson_count - course.completed_lessons} bài</span>
                 </div>
 
