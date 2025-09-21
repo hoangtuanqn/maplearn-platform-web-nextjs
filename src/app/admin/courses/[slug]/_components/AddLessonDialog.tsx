@@ -87,6 +87,18 @@ export function AddLessonDialog({
         addLessonMutation.mutate(values);
     };
 
+    const fillSampleData = () => {
+        form.setValue("title", "Tổng hợp kiến thức Vật lý 12");
+        form.setValue(
+            "content",
+            "Trong bài học này, chúng ta sẽ tổng hợp các kiến thức trọng tâm của môn Vật lý lớp 12 như điện xoay chiều, sóng cơ, sóng âm, lượng tử ánh sáng và hạt nhân nguyên tử. Bài học giúp học sinh chuẩn bị tốt cho kỳ thi THPT Quốc gia.",
+        );
+        form.setValue("video_url", "http://localhost:3000/video.mp4");
+        form.setValue("position", maxPosition + 1);
+        form.setValue("duration", 2700); // 45 phút
+        form.setValue("is_free", false);
+    };
+
     const handleOpenChange = (newOpen: boolean) => {
         setOpen(newOpen);
         if (!newOpen) {
@@ -133,6 +145,9 @@ export function AddLessonDialog({
                             Thêm bài học mới vào chương{" "}
                             <span className="text-primary font-bold uppercase">{nameChapterCourse}</span>
                         </DialogDescription>
+                        <Button className="mb-2 ml-auto text-white" onClick={fillSampleData}>
+                            Điền dữ liệu mẫu
+                        </Button>
                     </DialogHeader>
 
                     <Form {...form}>
@@ -182,7 +197,7 @@ export function AddLessonDialog({
                                                     {...field}
                                                 />
                                             </FormControl>
-                                            <FormDescription>Link video bài học (tùy chọn)</FormDescription>
+
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -246,7 +261,12 @@ export function AddLessonDialog({
                                     )}
                                 />
                             </div>
-
+                            {/* Alert thông báo: Sẽ gửi email cho tất cả học viên đã đăng ký */}
+                            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+                                <p className="text-sm text-yellow-800">
+                                    Sẽ gửi email cho tất cả học viên đã đăng ký khi bài học được thêm mới.
+                                </p>
+                            </div>
                             <DialogFooter>
                                 <DialogClose asChild>
                                     <Button type="button" variant="outline" disabled={addLessonMutation.isPending}>

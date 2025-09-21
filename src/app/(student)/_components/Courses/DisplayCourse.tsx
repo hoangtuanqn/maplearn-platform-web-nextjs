@@ -84,7 +84,7 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                         <div className="mb-1 flex items-center justify-between text-xs text-gray-600">
                             <span>Tiến độ học tập</span>
                             <span className="font-medium">
-                                {(course.lesson_successed / course.lesson_count) * 100}%
+                                {Math.floor((course.lesson_successed / course.lesson_count) * 100)}%
                             </span>
                         </div>
                         <div className="mb-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">

@@ -21,8 +21,20 @@ const allowedFields = [
 ] as const;
 
 const ExportDataInvoices = () => {
-    const { search, payment_method, sort, amount_min, amount_max, date_from, date_to } =
-        useGetSearchQuery(allowedFields);
+    const { search, payment_method, sort, amount_min, amount_max } = useGetSearchQuery(allowedFields);
+
+    let { date_from, date_to } = useGetSearchQuery(allowedFields);
+    if (!date_from || !date_to) {
+        const today = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 7);
+
+        date_from = sevenDaysAgo.toISOString().split("T")[0];
+        date_to = today.toISOString().split("T")[0];
+    } else {
+        date_from = new Date(date_from).toISOString().split("T")[0];
+        date_to = new Date(date_to).toISOString().split("T")[0];
+    }
 
     const headerMap = {
         transaction_code: "Mã giao dịch",

@@ -18,11 +18,11 @@ import { subjectsMock } from "~/mockdata/subject.data";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 const CourseList = () => {
     const queryClient = useQueryClient();
-    const { page } = useGetSearchQuery(["page"] as const);
+    const { page, search } = useGetSearchQuery(["page", "search"] as const);
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["admin", "courses", page],
+        queryKey: ["admin", "courses", page, search],
         queryFn: async () => {
-            const res = await courseAdminApi.getCourses(+page, COURSE_PER_PAGE);
+            const res = await courseAdminApi.getCourses(+page, COURSE_PER_PAGE, search);
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
