@@ -88,6 +88,7 @@ export const profileSchema = z.object({
     facebook_link: z
         .string()
         .url("URL Facebook không hợp lệ")
+        .max(255, "URL Facebook không được vượt quá 255 ký tự")
         .optional()
         .or(z.literal("").transform(() => undefined)),
     phone_number: z
