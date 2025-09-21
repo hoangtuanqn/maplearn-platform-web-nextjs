@@ -33,6 +33,46 @@ const _examSchemaResponse = z.object({
 });
 export type ExamListResponse = z.infer<typeof _examSchemaResponse>;
 
+// Schema cho option của câu hỏi
+const questionOptionSchema = z.object({
+    content: z.string(),
+    is_correct: z.boolean(),
+});
+
+// Schema cho câu hỏi
+const questionSchema = z.object({
+    id: z.number(),
+    exam_paper_id: z.number(),
+    type: z.enum(["SINGLE_CHOICE", "MULTIPLE_CHOICE", "TRUE_FALSE", "NUMERIC_INPUT"]),
+    content: z.string(),
+    explanation: z.string(),
+    images: z.string().nullable(),
+    options: z.array(questionOptionSchema),
+    correct: z.array(z.string()),
+    marks: z.number(),
+});
+
+// Schema cho exam detail (bao gồm questions)
+const examDetailSchema = examSchema
+    .extend({
+        is_in_progress: z.boolean(),
+        question_count: z.number(),
+        total_attempt_count: z.number(),
+        attempt_count: z.number(),
+        questions: z.array(questionSchema),
+    })
+    .omit({ registered_count: true }); // Loại bỏ registered_count vì không có trong detail response
+
+const _examDetailResponse = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: examDetailSchema,
+});
+
+export type ExamDetailResponse = z.infer<typeof _examDetailResponse>;
+export type QuestionType = z.infer<typeof questionSchema>;
+export type QuestionOptionType = z.infer<typeof questionOptionSchema>;
+
 const examAttemptSchema = z.object({
     id: z.number(),
     exam_paper_id: z.number(),
