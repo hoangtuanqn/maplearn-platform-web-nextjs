@@ -190,8 +190,8 @@ const FormAddExam = () => {
             })),
         };
 
-        console.log("✅ Dữ liệu đề thi hợp lệ:", examData);
-        // mutationExam.mutate(examData);
+        // console.log("✅ Dữ liệu đề thi hợp lệ:", examData);
+        mutationExam.mutate(examData);
     };
 
     const getTotalScore = () => {
