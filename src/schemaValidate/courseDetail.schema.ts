@@ -28,6 +28,7 @@ const _courseDetailSchemaResponse = z.object({
     success: z.boolean(),
     message: z.string(),
     data: CourseDetailSchema.extend({
+        code_certificate: z.string().nullable(),
         completed_lessons: z.number(),
         percent_completed: z.number(),
         chapters: z.array(

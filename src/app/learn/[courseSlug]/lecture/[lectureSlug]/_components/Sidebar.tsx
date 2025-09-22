@@ -116,10 +116,10 @@ const Sidebar = ({
                 </div>
 
                 {/* Certificate Button - Only show when course is 100% completed */}
-                {course.percent_completed === 100 && user?.email_verified_at && (
+                {course.code_certificate && user?.email_verified_at && (
                     <div className="mt-4">
                         <Link
-                            href={`/certificate/${course.slug}`}
+                            href={`/certificate/${course.code_certificate}`}
                             target="_blank"
                             className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-xl"
                         >
@@ -132,7 +132,7 @@ const Sidebar = ({
                         </p>
                     </div>
                 )}
-                {course.percent_completed === 100 && !user?.email_verified_at && <CertificateButton />}
+                {course.code_certificate && !user?.email_verified_at && <CertificateButton />}
             </div>
 
             {/* Tab Content */}
