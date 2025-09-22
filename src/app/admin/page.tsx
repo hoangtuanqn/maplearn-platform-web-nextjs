@@ -424,14 +424,19 @@ const AdminPage = () => {
                     <div className="p-6">
                         <div className="space-y-4">
                             {dashboard?.new_users?.slice(0, 5).map((user: any) => (
-                                <div key={user.id} className="flex items-center space-x-3">
+                                <Link
+                                    key={user.id}
+                                    href={`/admin/students/${user.id}`}
+                                    target="_blank"
+                                    className="flex items-center space-x-3"
+                                >
                                     <DisplayAvatar fullName={user.full_name} avatar={user.avatar} ratio={"10"} />
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-sm font-medium text-gray-900">{user.full_name}</p>
                                         <p className="truncate text-sm text-gray-500">{user.email}</p>
                                     </div>
                                     <div className="text-xs text-gray-400">Mới</div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>

@@ -38,6 +38,20 @@ const _courseDetailSchemaResponse = z.object({
                 lessons: z.array(lessonSchema),
             }),
         ),
+        exam: z
+            .object({
+                id: z.number(),
+                slug: z.string(),
+                title: z.string(),
+                pass_score: z.number(),
+                duration_minutes: z.number(),
+                user_highest_exam_score: z.number().nullable(),
+                is_in_progress: z.boolean(),
+                question_count: z.number(),
+                total_attempt_count: z.number(),
+                attempt_count: z.number(),
+            })
+            .nullable(),
     }),
 });
 export type CourseDetailResponse = z.infer<typeof _courseDetailSchemaResponse>;
