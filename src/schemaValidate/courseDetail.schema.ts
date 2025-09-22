@@ -45,6 +45,7 @@ const _courseDetailSchemaResponse = z.object({
                 title: z.string(),
                 pass_score: z.number(),
                 max_score: z.number(),
+                max_attempts: z.number().nullable(),
                 duration_minutes: z.number(),
                 user_highest_exam_score: z.number().nullable(),
                 is_in_progress: z.boolean(),

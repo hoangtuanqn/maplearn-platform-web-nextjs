@@ -131,16 +131,13 @@ const Sidebar = ({
                                 <span>Chứng chỉ của bạn</span>
                                 <ExternalLink className="h-3 w-3" />
                             </Link>
-                            <p className="mt-2 text-center text-xs font-medium text-emerald-600">
-                                🎉 Chúc mừng! Bạn đã hoàn thành khóa học
-                            </p>
                         </div>
                     )}
                     {course.code_certificate && !user?.email_verified_at && <CertificateButton />}
 
                     {/* Exam Section */}
                     {course.exam && course.percent_completed == 100 && (
-                        <div className="mt-4">
+                        <div className="mt-6">
                             <div className="mb-2 flex items-center justify-between">
                                 <h4 className="text-sm font-semibold text-gray-900">Bài kiểm tra cuối khóa</h4>
                                 <div className="flex items-center gap-1 text-xs text-gray-500">
@@ -161,14 +158,13 @@ const Sidebar = ({
                                                 <span className="h-1 w-1 rounded-full bg-gray-300" />
                                                 <Target className="h-3 w-3" />
                                                 <span>
-                                                    Điểm qua: {course.exam.pass_score}/
-                                                    {course.exam.question_count * 2.5}
+                                                    Điểm qua: {course.exam.pass_score}/{course.exam.max_score}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-gray-600">
                                                 <span>
                                                     Số lần làm: {course.exam.attempt_count}/
-                                                    {course.exam.total_attempt_count || "∞"}
+                                                    {course.exam.max_attempts || "∞"}
                                                 </span>
                                             </div>
                                         </div>
@@ -206,7 +202,7 @@ const Sidebar = ({
                                                         : "text-red-600"
                                                 }`}
                                             >
-                                                {course.exam.user_highest_exam_score}/{course.exam.question_count * 2.5}
+                                                {course.exam.user_highest_exam_score}/{course.exam.max_score}
                                             </span>
                                         </div>
                                         <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
@@ -217,7 +213,7 @@ const Sidebar = ({
                                                         : "bg-red-500"
                                                 }`}
                                                 style={{
-                                                    width: `${(course.exam.user_highest_exam_score / (course.exam.question_count * 2.5)) * 100}%`,
+                                                    width: `${(course.exam.user_highest_exam_score / course.exam.max_score) * 100}%`,
                                                 }}
                                             ></div>
                                         </div>
@@ -228,7 +224,7 @@ const Sidebar = ({
                                 <div className="space-y-2">
                                     {course.exam.user_highest_exam_score === null ? (
                                         <>
-                                            <div className="flex items-center gap-2 text-sm text-yellow-700">
+                                            <div className="flex items-center gap-2 text-xs text-yellow-700">
                                                 <Clock className="h-4 w-4" />
                                                 <span>Chưa hoàn thành</span>
                                             </div>
@@ -243,7 +239,7 @@ const Sidebar = ({
                                         </>
                                     ) : course.exam.user_highest_exam_score >= course.exam.pass_score ? (
                                         <>
-                                            <div className="flex items-center gap-2 text-sm text-green-700">
+                                            <div className="flex items-center gap-2 text-xs text-green-700">
                                                 <CheckCircle className="h-4 w-4" />
                                                 <span>Đã hoàn thành</span>
                                             </div>
@@ -258,24 +254,18 @@ const Sidebar = ({
                                         </>
                                     ) : (
                                         <>
-                                            <div className="flex items-center gap-2 text-sm text-red-700">
+                                            <div className="flex items-center gap-2 text-xs text-red-700">
                                                 <AlertCircle className="h-4 w-4" />
                                                 <span>Chưa đạt điểm qua</span>
                                             </div>
                                             <div className="space-y-2">
                                                 <Link
-                                                    href={`/exams/${course.exam.slug}`}
+                                                    href={`/exams/${course.exam.slug}/start`}
+                                                    target="_blank"
                                                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-2 text-sm font-medium text-white transition-all hover:from-orange-600 hover:to-orange-700"
                                                 >
                                                     <PenTool className="h-4 w-4" />
                                                     <span>Làm lại bài thi</span>
-                                                </Link>
-                                                <Link
-                                                    href={`/exams/${course.exam.slug}/results`}
-                                                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-100"
-                                                >
-                                                    <FileText className="h-4 w-4" />
-                                                    <span>Xem kết quả cũ</span>
                                                 </Link>
                                             </div>
                                         </>
@@ -283,12 +273,14 @@ const Sidebar = ({
                                 </div>
 
                                 {/* Exam Progress Note */}
-                                <div className="mt-3 rounded-lg bg-blue-50 p-3">
-                                    <p className="text-xs text-blue-700">
-                                        💡 <strong>Lưu ý:</strong> Hoàn thành tất cả video và đạt điểm qua bài kiểm tra
-                                        để nhận chứng chỉ
-                                    </p>
-                                </div>
+                                {!course.code_certificate && (
+                                    <div className="mt-3 rounded-lg bg-blue-50 p-3">
+                                        <p className="text-xs text-blue-700">
+                                            💡 <strong>Lưu ý:</strong> Hoàn thành tất cả video và đạt điểm qua bài kiểm
+                                            tra để nhận chứng chỉ
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
