@@ -19,69 +19,7 @@ import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
 import courseAdminApi from "~/apiRequest/admin/course";
-const formSchema = z
-    .object({
-        name: z.string().min(2, { message: "Tên khóa học phải có ít nhất 2 ký tự." }),
-        subject: z.string().min(1, { message: "Vui lòng chọn môn học." }),
-        category: z.string().min(1, { message: "Vui lòng chọn danh mục." }),
-        gradeLevel: z.string().min(1, { message: "Vui lòng chọn cấp bậc." }),
-        instructor: z.string().min(1, { message: "Vui lòng chọn giáo viên giảng dạy." }),
-        price: z.number().min(0, { message: "Giá khóa học phải lớn hơn hoặc bằng 0." }),
-        startDate: z.string().min(1, { message: "Vui lòng chọn ngày bắt đầu." }),
-        endDate: z.string().optional(),
-        prerequisiteCourse: z.string().optional(),
-        coverImage: z.string().url("Vui lòng nhập URL hợp lệ."),
-        introVideo: z.string().url("Vui lòng nhập URL hợp lệ."),
-        description: z.string().min(10, { message: "Mô tả khóa học phải có ít nhất 10 ký tự." }),
-    })
-    .refine(
-        (data) => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const startDate = new Date(data.startDate);
-            return startDate >= today;
-        },
-        {
-            message: "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            const startDate = new Date(data.startDate);
-            return startDate.getFullYear() <= 2027;
-        },
-        {
-            message: "Ngày bắt đầu không được lớn hơn năm 2027.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const startDate = new Date(data.startDate);
-            return startDate >= today;
-        },
-        {
-            message: "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            if (!data.endDate) return true;
-            const startDate = new Date(data.startDate);
-            const endDate = new Date(data.endDate);
-            const oneDayAfterStart = new Date(startDate);
-            oneDayAfterStart.setDate(startDate.getDate() + 1);
-            return endDate >= oneDayAfterStart;
-        },
-        {
-            message: "Ngày kết thúc phải sau ngày bắt đầu ít nhất 1 ngày.",
-            path: ["endDate"],
-        },
-    );
+import { formSchema } from "../schema/formAddCourse.schema";
 const FormAddCourse = () => {
     const router = useRouter();
     const { data: teachers = [] } = useQuery({
@@ -269,7 +207,7 @@ const FormAddCourse = () => {
                                 <FormItem>
                                     <FormLabel>Dự kiến bắt đầu</FormLabel>
                                     <FormControl>
-                                        <Input type="date" {...field} />
+                                        <Input type="date" {...field} min={new Date().toISOString().split("T")[0]} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -287,6 +225,16 @@ const FormAddCourse = () => {
                                             type="date"
                                             {...field}
                                             disabled={form.watch("startDate") ? false : true}
+                                            min={
+                                                form.watch("startDate")
+                                                    ? new Date(
+                                                          new Date(form.watch("startDate")).getTime() +
+                                                              24 * 60 * 60 * 1000,
+                                                      )
+                                                          .toISOString()
+                                                          .split("T")[0]
+                                                    : new Date().toISOString().split("T")[0]
+                                            }
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -350,7 +298,7 @@ const FormAddCourse = () => {
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Mô tả khóa học</FormLabel>
+                                <FormLabel>Mô tả khóa học ({form.watch("description")?.length || 0}/5000) </FormLabel>
                                 <FormControl>
                                     <Textarea placeholder="Nhập mô tả chi tiết về khóa học..." rows={4} {...field} />
                                 </FormControl>
