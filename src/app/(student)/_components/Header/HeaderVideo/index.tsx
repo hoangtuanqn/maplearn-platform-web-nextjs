@@ -8,7 +8,7 @@ import LogoMapLearn from "../components/LogoMapLearn";
 
 const HeaderVideo = ({ title }: { title: string }) => {
     const { user } = useAuth();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const menuRef = useRef<HTMLDivElement>(null);
 
     return (
