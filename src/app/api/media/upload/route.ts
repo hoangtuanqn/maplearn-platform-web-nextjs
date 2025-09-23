@@ -1,12 +1,12 @@
-import { UploadApiResponse } from "cloudinary";
 import { NextRequest } from "next/server";
-import cloudinary from "../config";
+import path from "path";
+import fs from "fs/promises";
 
 export async function POST(req: NextRequest) {
     try {
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
-        const folder = (formData.get("folder") as string) ?? "nextjs_uploads";
+        const folder = (formData.get("folder") as string) ?? "uploads";
 
         if (!file) {
             return Response.json({ error: "Không có file để upload" }, { status: 400 });
@@ -16,28 +16,23 @@ export async function POST(req: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Upload lên Cloudinary
-        const result: UploadApiResponse = await new Promise((resolve, reject) => {
-            cloudinary.uploader
-                .upload_stream(
-                    {
-                        folder,
-                        resource_type: "auto",
-                        quality: "auto", // Tự động tối ưu chất lượng ảnh
-                        fetch_format: "auto", // Chuyển sang định dạng WebP/AVIF nếu trình duyệt hỗ trợ
-                    },
-                    (error, result) => {
-                        if (error) return reject(error);
-                        if (!result) return reject(new Error("Không có phản hồi từ Cloudinary"));
-                        resolve(result);
-                    },
-                )
-                .end(buffer);
-        });
+        // Tạo thư mục nếu chưa có
+        const uploadDir = path.join(process.cwd(), "public", folder);
+        await fs.mkdir(uploadDir, { recursive: true });
+
+        // Tạo tên file duy nhất để tránh ghi đè
+        const fileName = `${Date.now()}_${file.name}`;
+        const filePath = path.join(uploadDir, fileName);
+
+        // Ghi file vào thư mục public/uploads
+        await fs.writeFile(filePath, buffer);
+
+        // Trả về URL public
+        const url = `/${folder}/${fileName}`;
 
         return Response.json({
-            url: result.secure_url,
-            public_id: result.public_id,
+            url,
+            fileName,
         });
     } catch (err) {
         if (err instanceof Error) {
