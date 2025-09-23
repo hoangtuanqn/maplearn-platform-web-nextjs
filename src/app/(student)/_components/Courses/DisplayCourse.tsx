@@ -146,12 +146,16 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                         {/* Hiển thị trạng thái đặc biệt cho khóa học sắp bắt đầu */}
                         {isUpcoming ? (
                             <div className="flex flex-col gap-1">
-                                <span className="text-primary text-sm font-bold">
+                                <span
+                                    className={` ${course.price === 0 ? "text-green-600" : "text-primary"} text-sm font-bold`}
+                                >
                                     {course.price === 0 ? "Miễn phí" : formatter.number(course.price ?? 0) + "đ"}
                                 </span>
                             </div>
                         ) : (
-                            <span className="text-primary text-sm font-bold">
+                            <span
+                                className={` ${course.price === 0 ? "text-green-600" : "text-primary"} text-sm font-bold`}
+                            >
                                 {course.price === 0 ? "Miễn phí" : formatter.number(course.price ?? 0) + "đ"}
                             </span>
                         )}
@@ -223,9 +227,6 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                                             <Clock className="h-4 w-4" />
                                             <span className="text-sm font-medium">Khóa học sắp bắt đầu</span>
                                         </div>
-                                        <p className="mt-1 text-xs text-blue-600">
-                                            Đăng ký ngay để được thông báo khi khóa học bắt đầu và nhận ưu đãi đặc biệt!
-                                        </p>
                                     </div>
                                 )}
 
@@ -251,7 +252,9 @@ const DisplayCourse = ({ course }: { course: CourseType }) => {
                                                 {isUpcoming ? "Giá đăng ký sớm" : "Học phí"}
                                             </span>
                                             <div className="text-right">
-                                                <span className="text-primary text-lg font-bold">
+                                                <span
+                                                    className={` ${course.price === 0 ? "text-green-600" : "text-primary"} text-lg font-bold`}
+                                                >
                                                     {course.price === 0
                                                         ? "Miễn phí"
                                                         : formatter.number(course.price ?? 0) + "đ"}

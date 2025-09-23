@@ -67,7 +67,7 @@ const ChaptersList = ({ slug }: { slug: string }) => {
                                     slugCourse={slug}
                                     chapterId={chapter.id}
                                     nameChapterCourse={chapter.title}
-                                    maxPosition={chapter.lessons.length}
+                                    maxPosition={chapter.lessons.length || 0}
                                     style={1}
                                 />
                                 <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
@@ -123,7 +123,7 @@ const ChaptersList = ({ slug }: { slug: string }) => {
                                         slugCourse={slug}
                                         chapterId={chapter.id}
                                         nameChapterCourse={chapter.title}
-                                        maxPosition={chapter.lessons.length + 1}
+                                        maxPosition={chapter.lessons.length || 0}
                                         style={2}
                                     />
                                 </div>

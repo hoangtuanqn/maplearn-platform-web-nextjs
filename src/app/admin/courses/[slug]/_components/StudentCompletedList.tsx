@@ -218,8 +218,8 @@ const StudentEnrolledList = ({ slug }: { slug: string }) => {
                         <div className="mx-auto mb-4 h-24 w-24 text-gray-400">
                             <Users className="h-full w-full" />
                         </div>
-                        <h3 className="mb-2 text-lg font-medium text-gray-900">Chưa có học viên đăng ký</h3>
-                        <p className="text-gray-500">Chưa có học viên nào đăng ký khóa học này.</p>
+                        <h3 className="mb-2 text-base font-medium text-gray-900">Chưa có học viên đăng ký</h3>
+                        <p className="text-xs text-gray-500">Chưa có học viên nào đăng ký khóa học này.</p>
                     </div>
                 )}
             </div>

@@ -62,15 +62,19 @@ const ButtonAction = () => {
                                 </p>
                             ) : (
                                 <>
-                                    {isCheckPrerequisite ? (
-                                        <PrerequisiteCourseDialog course={course!} />
-                                    ) : (
-                                        <PaymentMethodsDialog
-                                            course={course!}
-                                            isCheckPrerequisite={isCheckPrerequisite}
-                                        />
-                                    )}
-                                    <p className="text-center text-xs">Đảm bảo hoàn tiền trong 30 ngày</p>
+                                    <>
+                                        {isCheckPrerequisite ? (
+                                            <PrerequisiteCourseDialog course={course!} />
+                                        ) : (
+                                            <PaymentMethodsDialog
+                                                course={course!}
+                                                isCheckPrerequisite={isCheckPrerequisite}
+                                            />
+                                        )}
+                                        {course?.price !== 0 && (
+                                            <p className="text-center text-xs">Đảm bảo hoàn tiền trong 30 ngày</p>
+                                        )}
+                                    </>
                                 </>
                             )}
                         </>

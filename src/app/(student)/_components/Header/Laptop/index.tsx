@@ -5,13 +5,21 @@ import HomeIcon from "../../Icons/HomeIcon";
 import GraduationIcon from "../../Icons/GraduationIcon";
 import DocumentIcon from "../../Icons/DocumentIcon";
 import NewsIcon from "../../Icons/NewsIcon";
-import Image from "next/image";
 import HeaderLink from "./HeaderLink";
 import BlurBackdrop from "../BlurBackdrop";
 import { Button } from "~/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "~/store";
-import { ChevronDown, User, CreditCard, BookOpen, LogOut, Shield, GraduationCap } from "lucide-react";
+import {
+    ChevronDown,
+    User,
+    CreditCard,
+    BookOpen,
+    LogOut,
+    Shield,
+    GraduationCap,
+    CircleQuestionMark,
+} from "lucide-react";
 import { useAuth } from "~/hooks/useAuth";
 import DisplayAvatar from "../../DisplayAvatar";
 import Notification from "./Notification";
@@ -176,7 +184,13 @@ const HeaderLaptop = () => {
                                             </div>
                                         </div>
                                         {/* Notification Bell */}
-                                        <Notification />
+                                        <Link
+                                            href="/?tutorial=1"
+                                            id="help-center-button"
+                                            className="cursor-pointer rounded-lg border border-gray-400 bg-white/80 p-2 shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+                                        >
+                                            <CircleQuestionMark className="h-5 w-5 text-gray-600" />
+                                        </Link>
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-3">

@@ -105,7 +105,11 @@ const CourseList = () => {
                                                   {course.end_date ? formatter.date(course.end_date) : "Không kết thúc"}
                                               </p>
                                           </td>
-                                          <td className="px-4 py-3 text-zinc-500">{formatter.number(course.price)}đ</td>
+                                          <td
+                                              className={`px-4 py-3 font-bold ${course.price === 0 ? "text-green-600" : "text-blue-600"}`}
+                                          >
+                                              {course.price === 0 ? "Miễn phí" : formatter.number(course.price) + "đ"}
+                                          </td>
                                           <td className="px-4 py-3 text-zinc-500">
                                               <span
                                                   className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
