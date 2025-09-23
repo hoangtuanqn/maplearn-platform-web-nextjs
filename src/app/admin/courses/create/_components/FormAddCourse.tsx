@@ -90,14 +90,14 @@ const FormAddCourse = () => {
 
     // Điền dữ liệu mẫu
     const fillSampleData = () => {
-        form.setValue("name", "Khóa học Toán nâng cao cho học sinh THPT");
+        form.setValue("name", "Phong tỏa Xác Xuất Thống Kê - TOÁN 12");
         form.setValue(
             "description",
             "Khóa học này giúp học sinh THPT củng cố và nâng cao kiến thức môn Toán, bao gồm các chuyên đề đại số, hình học, xác suất và thống kê. Phù hợp với học sinh chuẩn bị cho kỳ thi tốt nghiệp THPT.",
         );
         form.setValue("price", 300000);
         form.setValue("category", courseCategoriesMock[0]?.slug ?? "");
-        form.setValue("gradeLevel", gradeLevelsMock[0]?.slug ?? "");
+        form.setValue("gradeLevel", gradeLevelsMock[2]?.slug ?? "");
         const today = new Date();
         const nextMonth = new Date();
         nextMonth.setMonth(today.getMonth() + 1);
@@ -106,8 +106,8 @@ const FormAddCourse = () => {
         form.setValue("subject", subjectsMock[0]?.slug ?? "");
         form.setValue("instructor", teachers[0]?.id ? String(teachers[0].id) : "");
         form.setValue("prerequisiteCourse", courses[0]?.id ? String(courses[0].id) : "");
-        form.setValue("introVideoUrl", "/assets/images/courses/toan-demo.png");
-        form.setValue("coverImageUrl", "/video.mp4");
+        form.setValue("introVideoUrl", "/video.mp4");
+        form.setValue("coverImageUrl", "/assets/images/courses/toan-demo.jpg");
     };
 
     return (
