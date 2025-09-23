@@ -1,7 +1,7 @@
 "use client";
 import { ArrowLeft, Home, BookOpen } from "lucide-react";
 import Link from "next/link";
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { useAuth } from "~/hooks/useAuth";
 import DisplayAvatar from "../../DisplayAvatar";
 import LogoMapLearn from "../components/LogoMapLearn";

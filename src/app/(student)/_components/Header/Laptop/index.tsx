@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "~/hooks/useAuth";
 import DisplayAvatar from "../../DisplayAvatar";
-import Notification from "./Notification";
 import LogoMapLearn from "../components/LogoMapLearn";
 const headerLinks = [
     {

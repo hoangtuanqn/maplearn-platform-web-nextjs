@@ -27,7 +27,6 @@ import { provinces } from "~/mockdata/other/provinces.data";
 import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { User, Phone, Calendar, MapPin, GraduationCap, Facebook, Save, Upload, CheckCircle } from "lucide-react";
-import { APP } from "~/config/env";
 
 const FormEdit = ({ user }: { user: UserType }) => {
     const { updateProfile } = useAuth();
