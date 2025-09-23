@@ -27,6 +27,7 @@ import { provinces } from "~/mockdata/other/provinces.data";
 import SingleSelectDropdown from "~/app/(student)/_components/SingleSelectDropdown";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { User, Phone, Calendar, MapPin, GraduationCap, Facebook, Save, Upload, CheckCircle } from "lucide-react";
+import { APP } from "~/config/env";
 
 const FormEdit = ({ user }: { user: UserType }) => {
     const { updateProfile } = useAuth();
@@ -55,12 +56,12 @@ const FormEdit = ({ user }: { user: UserType }) => {
                 // Thực hiện upload ảnh
                 const uploadPromise = await uploadMedia.upload(file as File, "avatars");
                 data.avatar = uploadPromise.url; // gán link ảnh đã upload vào data
-                setFile(null);
             }
             await profileApi.update(data);
         },
         onSuccess: (_, data) => {
             updateProfile(data as UserType);
+            setFile(null);
             toast.success("Cập nhật thông tin thành công!");
         },
         onError: notificationErrorApi,

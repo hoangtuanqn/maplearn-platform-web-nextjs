@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +21,8 @@ import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
 import courseAdminApi from "~/apiRequest/admin/course";
 import { formSchema } from "../schema/formAddCourse.schema";
+import uploadMedia from "~/apiRequest/uploadMedia";
+
 const FormAddCourse = () => {
     const router = useRouter();
     const { data: teachers = [] } = useQuery({
@@ -27,6 +30,7 @@ const FormAddCourse = () => {
         queryFn: teacherApi.getTeachers,
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
+
     const { data: courses = [] } = useQuery({
         queryKey: ["user", "courses"],
         queryFn: async () => {
@@ -36,7 +40,6 @@ const FormAddCourse = () => {
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
-    // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,12 +51,12 @@ const FormAddCourse = () => {
             price: 0,
             startDate: "",
             endDate: "",
-            coverImage: "",
-            introVideo: "",
+
             description: "",
         },
         mode: "onBlur",
     });
+
     const mutationCourse = useMutation({
         mutationFn: (data: any) => courseAdminApi.createCourse(data),
         onSuccess: (data) => {
@@ -61,13 +64,58 @@ const FormAddCourse = () => {
         },
         onError: notificationErrorApi,
     });
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        mutationCourse.mutate(values);
-    }
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            // Kiểm tra nếu có ảnh bìa và upload
+            const coverImageFile = form.watch("coverImage"); // Lấy file ảnh
+            if (coverImageFile) {
+                const coverImageResponse = await uploadMedia.upload(coverImageFile, "cover-images");
+                values.coverImageUrl = coverImageResponse.url; // Gán URL vào form data
+            }
+
+            // Kiểm tra nếu có video giới thiệu và upload
+            const introVideoFile = form.watch("introVideo"); // Lấy file video
+            if (introVideoFile) {
+                const introVideoResponse = await uploadMedia.upload(introVideoFile, "intro-videos");
+                values.introVideoUrl = introVideoResponse.url; // Gán URL vào form data
+            }
+
+            // Sau khi đã upload, gửi dữ liệu đến API
+            mutationCourse.mutate(values);
+        } catch (error) {
+            console.error("Error uploading files", error);
+        }
+    };
+
+    // Điền dữ liệu mẫu
+    const fillSampleData = () => {
+        form.setValue("name", "Khóa học Toán nâng cao cho học sinh THPT");
+        form.setValue(
+            "description",
+            "Khóa học này giúp học sinh THPT củng cố và nâng cao kiến thức môn Toán, bao gồm các chuyên đề đại số, hình học, xác suất và thống kê. Phù hợp với học sinh chuẩn bị cho kỳ thi tốt nghiệp THPT.",
+        );
+        form.setValue("price", 300000);
+        form.setValue("category", courseCategoriesMock[0]?.slug ?? "");
+        form.setValue("gradeLevel", gradeLevelsMock[0]?.slug ?? "");
+        const today = new Date();
+        const nextMonth = new Date();
+        nextMonth.setMonth(today.getMonth() + 1);
+        form.setValue("startDate", today.toISOString().split("T")[0]);
+        form.setValue("endDate", nextMonth.toISOString().split("T")[0]);
+        form.setValue("subject", subjectsMock[0]?.slug ?? "");
+        form.setValue("instructor", teachers[0]?.id ? String(teachers[0].id) : "");
+        form.setValue("prerequisiteCourse", courses[0]?.id ? String(courses[0].id) : "");
+    };
 
     return (
         <>
             {mutationCourse.isPending && <Loading />}
+            <div className="flex justify-end">
+                <Button className="mb-2 ml-auto text-white" onClick={fillSampleData}>
+                    Điền dữ liệu mẫu
+                </Button>
+            </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -91,7 +139,7 @@ const FormAddCourse = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Môn học</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn môn học" />
@@ -116,7 +164,7 @@ const FormAddCourse = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Danh mục</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn danh mục" />
@@ -141,7 +189,7 @@ const FormAddCourse = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Cấp bậc</FormLabel>
-                                    <Select onValueChange={(value) => field.onChange(value)}>
+                                    <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Chọn cấp bậc" />
@@ -271,7 +319,16 @@ const FormAddCourse = () => {
                                 <FormItem>
                                     <FormLabel>Ảnh bìa</FormLabel>
                                     <FormControl>
-                                        <Input type="url" placeholder="Link ảnh bìa" {...field} />
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                // Lấy file từ input và gán vào form
+                                                if (e.target.files?.[0]) {
+                                                    field.onChange(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -285,7 +342,16 @@ const FormAddCourse = () => {
                                 <FormItem>
                                     <FormLabel>Video giới thiệu khóa</FormLabel>
                                     <FormControl>
-                                        <Input type="url" placeholder="Link video giới thiệu" {...field} />
+                                        <Input
+                                            type="file"
+                                            accept="video/*"
+                                            onChange={(e) => {
+                                                // Lấy file từ input và gán vào form
+                                                if (e.target.files?.[0]) {
+                                                    field.onChange(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -298,7 +364,7 @@ const FormAddCourse = () => {
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Mô tả khóa học ({form.watch("description")?.length || 0}/5000) </FormLabel>
+                                <FormLabel>Mô tả khóa học ({form.watch("description")?.length || 0}/5000)</FormLabel>
                                 <FormControl>
                                     <Textarea placeholder="Nhập mô tả chi tiết về khóa học..." rows={4} {...field} />
                                 </FormControl>

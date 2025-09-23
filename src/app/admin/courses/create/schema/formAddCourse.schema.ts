@@ -1,5 +1,6 @@
 import z from "zod";
 
+// Cập nhật schema để hỗ trợ kiểu File
 export const formSchema = z
     .object({
         name: z
@@ -17,12 +18,14 @@ export const formSchema = z
         startDate: z.string().min(1, { message: "Vui lòng chọn ngày bắt đầu." }),
         endDate: z.string().optional(),
         prerequisiteCourse: z.string().optional(),
-        coverImage: z.string().url("Vui lòng nhập URL hợp lệ."),
-        introVideo: z.string().url("Vui lòng nhập URL hợp lệ."),
+        coverImage: z.instanceof(File).optional(), // Đổi từ string thành File
+        introVideo: z.instanceof(File).optional(), // Đổi từ string thành File
         description: z
             .string()
             .min(10, { message: "Mô tả khóa học phải có ít nhất 10 ký tự." })
             .max(5000, { message: "Mô tả khóa học không được vượt quá 5000 ký tự." }),
+        coverImageUrl: z.string().optional(), // Thêm URL để lưu URL của ảnh bìa
+        introVideoUrl: z.string().optional(), // Thêm URL để lưu URL của video giới thiệu
     })
     .refine(
         (data) => {
