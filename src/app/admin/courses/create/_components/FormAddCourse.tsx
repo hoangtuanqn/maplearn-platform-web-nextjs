@@ -106,6 +106,8 @@ const FormAddCourse = () => {
         form.setValue("subject", subjectsMock[0]?.slug ?? "");
         form.setValue("instructor", teachers[0]?.id ? String(teachers[0].id) : "");
         form.setValue("prerequisiteCourse", courses[0]?.id ? String(courses[0].id) : "");
+        form.setValue("introVideoUrl", "/assets/images/courses/toan-demo.png");
+        form.setValue("coverImageUrl", "/video.mp4");
     };
 
     return (

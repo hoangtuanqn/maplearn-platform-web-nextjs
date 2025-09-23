@@ -16,13 +16,28 @@ import { formatter } from "~/libs/format";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { subjectsMock } from "~/mockdata/subject.data";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
+import { buildLaravelFilterQuery } from "~/libs/hepler";
 const CourseList = () => {
     const queryClient = useQueryClient();
-    const { page, search } = useGetSearchQuery(["page", "search"] as const);
+    const { page, search, sort, rating, price_range, duration, teachers } = useGetSearchQuery([
+        "page",
+        "search",
+        "sort",
+        "rating",
+        "price_range",
+        "duration",
+        "teachers",
+    ] as const);
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["admin", "courses", page, search],
+        queryKey: ["admin", "courses", { page, search, sort, rating, price_range, duration, teachers }],
         queryFn: async () => {
-            const res = await courseAdminApi.getCourses(+page, COURSE_PER_PAGE, search);
+            const res = await courseAdminApi.getCourses(
+                +page,
+                COURSE_PER_PAGE,
+                search,
+                sort,
+                buildLaravelFilterQuery({ rating, price_range, duration, teachers }),
+            );
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút

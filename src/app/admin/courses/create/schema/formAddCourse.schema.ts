@@ -18,14 +18,33 @@ export const formSchema = z
         startDate: z.string().min(1, { message: "Vui lòng chọn ngày bắt đầu." }),
         endDate: z.string().optional(),
         prerequisiteCourse: z.string().optional(),
-        coverImage: z.instanceof(File).optional(), // Đổi từ string thành File
-        introVideo: z.instanceof(File).optional(), // Đổi từ string thành File
+        coverImage: z.instanceof(File).optional(), // Bắt buộc upload file nếu không có URL
+        introVideo: z.instanceof(File).optional(), // Bắt buộc upload file nếu không có URL
         description: z
             .string()
             .min(10, { message: "Mô tả khóa học phải có ít nhất 10 ký tự." })
             .max(5000, { message: "Mô tả khóa học không được vượt quá 5000 ký tự." }),
-        coverImageUrl: z.string().optional(), // Thêm URL để lưu URL của ảnh bìa
-        introVideoUrl: z.string().optional(), // Thêm URL để lưu URL của video giới thiệu
+        coverImageUrl: z.string().optional(), // URL của ảnh bìa
+        introVideoUrl: z.string().optional(), // URL của video giới thiệu
+    })
+    .superRefine((data, ctx) => {
+        // Kiểm tra nếu không có URL thì yêu cầu upload file cho ảnh bìa
+        if (!data.coverImageUrl && !data.coverImage) {
+            ctx.addIssue({
+                path: ["coverImage"],
+                message: "Vui lòng upload ảnh bìa.",
+                code: "custom", // Mã lỗi là custom
+            });
+        }
+
+        // Kiểm tra nếu không có URL thì yêu cầu upload file cho video giới thiệu
+        if (!data.introVideoUrl && !data.introVideo) {
+            ctx.addIssue({
+                path: ["introVideo"],
+                message: "Vui lòng upload video giới thiệu.",
+                code: "custom", // Mã lỗi là custom
+            });
+        }
     })
     .refine(
         (data) => {
@@ -47,31 +66,5 @@ export const formSchema = z
         {
             message: "Ngày bắt đầu không được lớn hơn năm 2027.",
             path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const startDate = new Date(data.startDate);
-            return startDate >= today;
-        },
-        {
-            message: "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.",
-            path: ["startDate"],
-        },
-    )
-    .refine(
-        (data) => {
-            if (!data.endDate) return true;
-            const startDate = new Date(data.startDate);
-            const endDate = new Date(data.endDate);
-            const oneDayAfterStart = new Date(startDate);
-            oneDayAfterStart.setDate(startDate.getDate() + 1);
-            return endDate >= oneDayAfterStart;
-        },
-        {
-            message: "Ngày kết thúc phải sau ngày bắt đầu ít nhất 1 ngày.",
-            path: ["endDate"],
         },
     );
