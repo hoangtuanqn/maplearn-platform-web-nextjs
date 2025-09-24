@@ -62,7 +62,7 @@ const courseAdminApi = {
         if (queryOther) {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
-        return privateApi.get<CourseListResponse>(query);
+        return privateApi.get<StudentEnrollmentResponse>(query);
     },
 };
 export default courseAdminApi;
