@@ -30,10 +30,7 @@ const fields = [
     "enrolled_at",
     "completion_status",
     "progress_range",
-    "gender",
-    "birth_year",
-    "birth_year_from",
-    "birth_year_to",
+
 ] as const;
 
 // Progress ranges
@@ -47,17 +44,12 @@ const progressRanges = [
 
 // Completion status
 const completionStatuses = [
-    { value: "completed", label: "Đã hoàn thành" },
     { value: "in_progress", label: "Đang học" },
-    { value: "not_started", label: "Chưa bắt đầu" },
+    { value: "completed", label: "Đã hoàn thành" },
+    { value: "not_passed_exam", label: "Chưa đạt bài thi" },
+    { value: "waiting_certificate", label: "Chờ cấp chứng chỉ" },
 ];
 
-// Gender options
-const genderOptions = [
-    { value: "male", label: "Nam" },
-    { value: "female", label: "Nữ" },
-    { value: "other", label: "Khác" },
-];
 export function FilterStudentCourse() {
     const pathName = usePathname();
     const { formValues, setFieldValue, handleSubmit } = useFilterQuery(fields);
@@ -140,52 +132,27 @@ export function FilterStudentCourse() {
                             </div>
                         </div>
 
-                        <div className="grid gap-4 lg:grid-cols-2">
-                            {/* Tiến độ học tập */}
-                            <div className="grid gap-3">
-                                <Label>Tiến độ học tập</Label>
-                                <Select
-                                    value={formValues.filter.progress_range || ""}
-                                    onValueChange={(value) => setFieldValue("progress_range", value, "filter")}
-                                >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Chọn khoảng tiến độ" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Tiến độ</SelectLabel>
-                                            {progressRanges.map((range) => (
-                                                <SelectItem key={range.value} value={range.value}>
-                                                    {range.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Giới tính */}
-                            <div className="grid gap-3">
-                                <Label>Giới tính</Label>
-                                <Select
-                                    value={formValues.filter.gender || ""}
-                                    onValueChange={(value) => setFieldValue("gender", value, "filter")}
-                                >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Chọn giới tính" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Giới tính</SelectLabel>
-                                            {genderOptions.map((gender) => (
-                                                <SelectItem key={gender.value} value={gender.value}>
-                                                    {gender.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                        {/* Tiến độ học tập */}
+                        <div className="grid gap-3">
+                            <Label>Tiến độ học tập</Label>
+                            <Select
+                                value={formValues.filter.progress_range || ""}
+                                onValueChange={(value) => setFieldValue("progress_range", value, "filter")}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Chọn khoảng tiến độ" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Tiến độ</SelectLabel>
+                                        {progressRanges.map((range) => (
+                                            <SelectItem key={range.value} value={range.value}>
+                                                {range.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
 
