@@ -107,7 +107,7 @@ const DashboardStats = () => {
                         </div>
                         <div>
                             <p className="text-center text-4xl font-bold text-[#EE5F06] md:text-start">
-                                {user.hours_in_week || 0}h
+                                {user.hours_in_week || 0}
                             </p>
                             <p className="text-cp l text-center text-[#EE5F06] md:text-start">Giờ học tuần này</p>
                         </div>
