@@ -469,7 +469,7 @@ const AdminPage = () => {
                                         <Link
                                             href={`/courses/${course.slug}`}
                                             target="_blank"
-                                            className="truncate text-sm font-medium text-gray-900"
+                                            className="line-clamp-1 truncate text-sm font-medium text-gray-900"
                                         >
                                             {course.name}
                                         </Link>
