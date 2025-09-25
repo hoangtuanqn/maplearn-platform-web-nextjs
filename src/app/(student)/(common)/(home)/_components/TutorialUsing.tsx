@@ -1,6 +1,6 @@
 "use client";
 import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+
 import { useEffect } from "react";
 import { useAuth } from "~/hooks/useAuth";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";

@@ -1,30 +1,26 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DisplayCourse from "../../../_components/Courses/DisplayCourse";
 import CourseSkeleton from "./CourseSkeleton";
 import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
 import { PaginationNav } from "../../../_components/Pagination";
 import { formatter } from "~/libs/format";
 import DisplayNoData from "../../../_components/Courses/DisplayNoData";
-
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+const allowedFields = ["page", "search", "sort", "rating", "price_range", "duration", "teachers", "is_active"] as const;
 const CourseList = () => {
-    const searchParams = useSearchParams();
-    const page = Number(searchParams.get("page")) || 1;
-    const sort = searchParams.get("sort") || "";
-    const search = searchParams.get("search") || "";
-    const [searchQuery, setSearchQuery] = useState<Record<string, string>>({});
+    const { search, page, sort, rating, price_range, duration, teachers, is_active } = useGetSearchQuery(allowedFields);
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["user", "courses", { page, ...searchQuery, search, sort }],
+        queryKey: ["user", "courses", { page, search, sort, rating, price_range, duration, teachers, is_active }],
         queryFn: async () => {
             const res = await courseApi.getCourses(
-                page,
+                +page || 1,
                 COURSE_PER_PAGE,
                 search,
                 sort,
-                buildLaravelFilterQuery({ ...searchQuery }),
+                buildLaravelFilterQuery({ sort, rating, price_range, duration, teachers, is_active }),
             );
             return res.data.data;
         },
@@ -33,16 +29,6 @@ const CourseList = () => {
     const total = courses?.total || 0;
     const totalPages = Math.ceil(total / COURSE_PER_PAGE);
 
-    useEffect(() => {
-        // loại bỏ key là sort, search, page
-        const searchParamsObj: Record<string, string> = {};
-        searchParams.forEach((value, key) => {
-            if (value && !["sort", "search", "page"].includes(key)) {
-                searchParamsObj[key] = value;
-            }
-        });
-        setSearchQuery(searchParamsObj);
-    }, [searchParams]);
     return (
         <>
             <h2 className="mt-5 text-right text-base font-bold text-black">{formatter.number(total)} kết quả</h2>

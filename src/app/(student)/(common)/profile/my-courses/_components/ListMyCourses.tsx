@@ -34,10 +34,10 @@ const ListMyCourses = () => {
     const totalPages = Math.ceil(total / COURSE_PER_PAGE);
     return (
         <>
+            <h2 className="text-right text-base font-bold text-black">{formatter.number(total)} kết quả</h2>
             {!isLoading && (coursesFavorite?.data?.length ?? 0) == 0 && (
                 <DisplayNoData title="Bạn chưa có khóa học nào" />
             )}
-            <h2 className="text-right text-base font-bold text-black">{formatter.number(total)} kết quả</h2>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
