@@ -106,7 +106,7 @@ const CourseList = () => {
                                               </p>
                                           </td>
                                           <td
-                                              className={`px-4 py-3 font-bold ${course.price === 0 ? "text-green-600" : "text-blue-600"}`}
+                                              className={`px-4 py-3 font-semibold ${course.price === 0 ? "text-green-600" : ""}`}
                                           >
                                               {course.price === 0 ? "Miễn phí" : formatter.number(course.price) + "đ"}
                                           </td>

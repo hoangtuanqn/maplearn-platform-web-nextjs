@@ -129,7 +129,7 @@ const StatsPayment = () => {
                 <div>
                     <h2 className="text-3xl font-bold text-gray-900">Thống Kê Thanh Toán</h2>
                     <p className="mt-1 text-gray-600">
-                        Phân tích chi tiết và hiệu suất thanh toán từ {getDateRangeText()}.
+                        Phân tích chi tiết và hiệu suất thanh toán từ <span className="text-primary font-bold">{getDateRangeText()}</span>.
                     </p>
                 </div>
                 <div className="flex items-center gap-2">

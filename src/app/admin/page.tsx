@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, BookOpen, FileText, CreditCard, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { Users, BookOpen, FileText, CreditCard, TrendingUp, TrendingDown, DollarSign, User, Book } from "lucide-react";
 import Link from "next/link";
 import {
     AreaChart,
@@ -133,9 +133,9 @@ const AdminPage = () => {
                             <p className="text-sm font-medium text-gray-600">Tổng Người Dùng</p>
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_users.toLocaleString()}</p>
                             <div className="mt-2 flex items-center">
-                                <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
-                                <span className="text-sm text-green-600">+{dashboard.new_users.length}</span>
-                                <span className="ml-1 text-sm text-gray-500">người dùng mới</span>
+                                <User className="mr-1 h-4 w-4 text-green-500" />
+                                <span className="text-sm text-green-600">+{dashboard.recent_activity.new_users}</span>
+                                <span className="ml-1 text-sm text-gray-500">trong tháng</span>
                             </div>
                         </div>
                         <div className="rounded-lg bg-blue-50 p-3">
@@ -152,10 +152,8 @@ const AdminPage = () => {
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_courses}</p>
                             <div className="mt-2 flex items-center">
                                 <BookOpen className="mr-1 h-4 w-4 text-green-500" />
-                                <span className="text-sm text-green-600">
-                                    +{dashboard.activity_in_4_weeks.reduce((acc, week) => acc + week.new_courses, 0)}
-                                </span>
-                                <span className="ml-1 text-sm text-gray-500">khóa học mới</span>
+                                <span className="text-sm text-green-600">+{dashboard.recent_activity.new_courses}</span>
+                                <span className="ml-1 text-sm text-gray-500">trong tháng</span>
                             </div>
                         </div>
                         <div className="rounded-lg bg-green-50 p-3">
@@ -171,11 +169,9 @@ const AdminPage = () => {
                             <p className="text-sm font-medium text-gray-600">Tổng Đề Thi</p>
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_exams}</p>
                             <div className="mt-2 flex items-center">
-                                <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
-                                <span className="text-sm text-green-600">
-                                    +{dashboard.activity_in_4_weeks.reduce((acc, week) => acc + week.new_exams, 0)}
-                                </span>
-                                <span className="ml-1 text-sm text-gray-500">đề thi mới</span>
+                                <Book className="mr-1 h-4 w-4 text-green-500" />
+                                <span className="text-sm text-green-600">+{dashboard.recent_activity.new_exams}</span>
+                                <span className="ml-1 text-sm text-gray-500">trong tháng</span>
                             </div>
                         </div>
                         <div className="rounded-lg bg-orange-50 p-3">

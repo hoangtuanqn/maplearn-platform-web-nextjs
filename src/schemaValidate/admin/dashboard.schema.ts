@@ -47,6 +47,11 @@ const dashboardSchema = z.object({
             new_exams: z.number(),
         }),
     ),
+    recent_activity: z.object({
+        new_courses: z.number(),
+        new_users: z.number(),
+        new_exams: z.number(),
+    }),
 });
 const _dashboardResponseSchema = z.object({
     success: z.boolean(),
