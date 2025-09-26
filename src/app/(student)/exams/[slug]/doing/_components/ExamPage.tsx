@@ -77,6 +77,25 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         }
     };
 
+    const handleRemoveAnswer = (questionId: number) => {
+        setAnswers((prev) => {
+            const newAnswers = { ...prev };
+            delete newAnswers[questionId];
+
+            // Xóa luôn khỏi localStorage
+            const dataStr = getLocalStorage(slug);
+            if (dataStr) {
+                const data: AnswerLocalStorage = JSON.parse(dataStr);
+                if (data.answers) {
+                    delete data.answers[questionId];
+                    setLocalStorage(slug, JSON.stringify(data));
+                }
+            }
+
+            return newAnswers;
+        });
+    };
+
     // Submit bài thi
     const submitAnswerMutation = useMutation({
         mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
@@ -196,7 +215,10 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                         <h2 className="text-primary text-2xl font-bold">{questionsRes.title}</h2>
                         <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
                             <Shield className="text-primary h-4 w-4" />
-                            <span>Đang làm bài thi - Vui lòng không rời khỏi trang</span>
+                            <span>
+                                Vui lòng không rời khỏi trang khi làm bài. Hệ thống sẽ tự động lưu lại câu trả lời của
+                                bạn.
+                            </span>
                         </div>
                     </div>
 
@@ -253,6 +275,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                                 handleChoiceAnswer,
                                 mounted,
                                 setQuestionActive,
+                                handleRemoveAnswer,
                             }}
                         />
 

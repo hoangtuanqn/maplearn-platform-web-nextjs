@@ -8,9 +8,10 @@ import Image from "next/image";
 import NumericInput from "./NumericInput";
 import TrueFalseAnswer from "./TrueFalseAnswer";
 import RenderLatex from "~/components/RenderLatex";
+import { RotateCcw } from "lucide-react";
 
 const Questions = ({
-    payload: { questions, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive },
+    payload: { questions, questionActive, answers, handleChoiceAnswer, mounted, setQuestionActive, handleRemoveAnswer },
 }: {
     payload: {
         questions: Question[];
@@ -19,6 +20,7 @@ const Questions = ({
         handleChoiceAnswer: (questionId: number, answer: string, idx?: number) => void;
         mounted: boolean;
         setQuestionActive: React.Dispatch<React.SetStateAction<number>>;
+        handleRemoveAnswer: (questionId: number) => void;
     };
 }) => {
     useEffect(() => {
@@ -116,6 +118,16 @@ const Questions = ({
                                             )}
                                         </div>
                                     </>
+                                )}
+                                {answers[questions[questionActive].id] && (
+                                    <button
+                                        className="mt-4 flex w-fit cursor-pointer items-center gap-2 rounded-md bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200"
+                                        type="button"
+                                        onClick={() => handleRemoveAnswer(questions[questionActive].id)}
+                                    >
+                                        <RotateCcw className="size-4" />
+                                        <span>Xóa lựa chọn</span>
+                                    </button>
                                 )}
                             </>
                         )}

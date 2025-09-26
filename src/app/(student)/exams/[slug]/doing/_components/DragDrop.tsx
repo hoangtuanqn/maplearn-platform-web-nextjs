@@ -135,6 +135,11 @@ const DragDrop = ({
 
     const handleRemoveItem = (dropId: string, itemId: string) => {
         setDroppedItems((prev) => ({ ...prev, [dropId]: null }));
+        Object.entries({ ...droppedItems, [dropId]: null }).forEach(([a, b]) => {
+            if (b?.content && b.content.length > 0) {
+                handleChoiceAnswer(idQuestion, b.content, Number(a.split("drop")[1]));
+            }
+        });
         const removedItem = initialItems.find((i) => `${i.content}` === itemId);
         if (removedItem) setItems((prev) => [...prev, removedItem]);
     };
@@ -145,13 +150,34 @@ const DragDrop = ({
                 handleChoiceAnswer(idQuestion, b.content, Number(a.split("drop")[1]));
             }
         });
-    }, [droppedItems, handleChoiceAnswer, idQuestion]);
+
+        console.log("gọi ");
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [droppedItems, idQuestion]);
 
     useEffect(() => {
         setItems(initialItems.filter((item) => !activeAnswers?.includes(item.content)));
     }, [initialItems, activeAnswers]);
 
     const questionParts = parseQuestion(question);
+
+    // hàm cập nhật nếu activeAnswers thay đổi (vd: xóa lựa chọn thì sẽ gọi hàm này để cập nhật lại giao diện)
+    useEffect(() => {
+        console.log("active", activeAnswers);
+        // setItems(initialItems.filter((item) => !activeAnswers?.includes(item.content)));
+        setDroppedItems(() => {
+            const initial: Record<string, ValueType | null> = {};
+            activeAnswers?.forEach((val, index) => {
+                if (val) {
+                    const dropId = `drop${index + 1}`;
+                    initial[dropId] = { id: index + 1, content: val };
+                }
+            });
+            return initial;
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeAnswers.length]);
 
     return (
         <div>
@@ -169,9 +195,9 @@ const DragDrop = ({
                         <RenderLatex key={`question-part-${index}`} content={part} />
                     ) : (
                         <DropZone
-                            disabled={disabled}
-                            key={part.id}
                             id={part.id}
+                            disabled={disabled}
+                            key={`drop-zone-${part.id}`}
                             droppedItem={droppedItems[part.id] || null}
                             onDropItem={handleDropItem}
                             onRemoveItem={handleRemoveItem}
