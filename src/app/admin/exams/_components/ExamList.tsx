@@ -239,7 +239,7 @@ const ExamList = () => {
                                       </td>
 
                                       <td className="px-4 py-3">
-                                          {getStatusBadge("active_inactive", exam.status ? "1" : "0")}
+                                          {getStatusBadge("public_private", exam.status ? "1" : "0")}
                                       </td>
 
                                       <td className="px-4 py-3">

@@ -81,6 +81,7 @@ const _questionsExamSchema = z.object({
     message: z.string(),
     data: examSchema.extend({
         questions: z.array(questionSchema),
+        url_qr_code_password: z.string().nullable(), // link qr code nếu có
     }),
 });
 

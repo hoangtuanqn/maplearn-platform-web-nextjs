@@ -21,6 +21,7 @@ import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
 import RenderLatex from "~/components/RenderLatex";
 import Image from "next/image";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
+import { ShowPasswordPaper } from "./ShowPasswordPaper";
 
 interface ExamDetailViewProps {
     exam: QuestionsExamResponse["data"];
@@ -173,6 +174,13 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                             <span className="text-sm text-gray-600">Điểm đạt:</span>
                             <span className="font-medium">{exam.pass_score} điểm</span>
                         </div>
+                        {exam.url_qr_code_password && (
+                            <div className="flex items-center gap-3">
+                                <Target className="h-4 w-4 text-gray-500" />
+                                <span className="text-sm text-gray-600">Mật khẩu đề thi:</span>
+                                <ShowPasswordPaper imageBase64={exam.url_qr_code_password} />
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -196,7 +204,7 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                         <div className="flex items-center gap-3">
                             <Shield className="h-4 w-4 text-gray-500" />
                             <span className="text-sm text-gray-600">Chống gian lận:</span>
-                            <Badge variant={exam.anti_cheat_enabled ? "default" : "secondary"}>
+                            <Badge variant={exam.anti_cheat_enabled ? "primary" : "default"}>
                                 {exam.anti_cheat_enabled ? "Bật" : "Tắt"}
                             </Badge>
                         </div>
