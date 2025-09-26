@@ -96,5 +96,11 @@ const examApi = {
 
     getResultDetail: (slug: string, idAttempt: string, headers?: { [key: string]: string }) =>
         privateApi.get(`/exams/${slug}/${idAttempt}/my-attempts`, headers ? { headers } : undefined),
+
+    // lấy đáp án đề thi (chỉ dành cho bảo vệ đồ án)
+    getAnswerExam: (slug: string) =>
+        privateApi.get<{ success: boolean; message: string; data: { [key: string]: string[] } }>(
+            `/exams/${slug}/answers`,
+        ),
 };
 export default examApi;

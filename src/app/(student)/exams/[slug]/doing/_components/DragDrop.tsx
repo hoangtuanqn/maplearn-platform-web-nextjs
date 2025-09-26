@@ -186,11 +186,17 @@ const DragDrop = ({
     return (
         <div>
             <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
-                {items.map((item) => (
-                    <DraggableItem key={item.content} id={`${item.content}`} disabled={disabled}>
-                        <RenderLatex content={item.content} />
-                    </DraggableItem>
-                ))}
+                {items.length > 0 ? (
+                    <>
+                        {items.map((item) => (
+                            <DraggableItem key={item.content} id={`${item.content}`} disabled={disabled}>
+                                <RenderLatex content={item.content} />
+                            </DraggableItem>
+                        ))}
+                    </>
+                ) : (
+                    <span className="text-xs text-gray-500 italic">Đã hết sự lựa chọn</span>
+                )}
             </div>
 
             <div className="mb-4 flex items-end">

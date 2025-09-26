@@ -19,6 +19,8 @@ import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
 import { exitFullscreen } from "~/libs/hepler";
 import { AlertTriangle, Clock, Shield } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { notificationErrorApi } from "~/libs/apis/http";
 
 const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: QuestionsExamResponse["data"] }) => {
     const [mounted, setMounted] = useState(false);
@@ -209,6 +211,27 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             handleSubmitExam();
         }
     }, [timeLeft, handleSubmitExam, submitAnswerMutation]);
+
+    // Demo bảo về đồ án
+    const mutationRecievePoints = useMutation({
+        mutationFn: () => examApi.getAnswerExam(slug),
+        onSuccess: (res) => {
+            if (infoExam) {
+                setAnswers(res.data.data);
+                setLocalStorage(
+                    slug,
+                    JSON.stringify({
+                        answers: res.data.data,
+                        start: infoExam.start, // Giữ nguyên start ban đầu
+                        questionActive, // Giữ nguyên questionActive ban đầu
+                    }),
+                );
+            }
+            toast.success("Bạn đã nhận được 10 điểm!");
+        },
+        onError: notificationErrorApi,
+    });
+
     return (
         <>
             {submitAnswerMutation.isPending && <Loading />}
@@ -220,7 +243,17 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                 <div className="mx-auto px-4 py-6">
                     {/* Header */}
                     <div className="mb-6 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                        <h2 className="text-primary text-2xl font-bold">{questionsRes.title}</h2>
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-primary text-2xl font-bold">{questionsRes.title}</h2>
+                            <Button
+                                variant={"outline"}
+                                onClick={
+                                    mutationRecievePoints.isPending ? undefined : () => mutationRecievePoints.mutate()
+                                }
+                            >
+                                Nhận 10 điểm
+                            </Button>
+                        </div>
                         <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
                             <Shield className="text-primary h-4 w-4" />
                             <span>
