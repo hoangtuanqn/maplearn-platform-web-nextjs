@@ -68,7 +68,14 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                             (_, i) => prev?.[questionId]?.[i],
                         ).filter((ans) => ans);
                         newAnswers[idx - 1] = answer; // idx - 1 vì mảng bắt đầu từ 0
-                        return { ...prev, [questionId]: newAnswers };
+                        const dataNew = { ...prev, [questionId]: newAnswers };
+
+                        // Nếu đáp án rỗng thì xóa luôn key đó đi (nếu là kéo thả từ ô đáp án ra bên ngoài)
+                        if (newAnswers.every((ans) => !ans)) {
+                            delete dataNew[questionId];
+                        }
+
+                        return dataNew;
                     });
                 }
                 break;
@@ -185,6 +192,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     // Lưu lại answers vào localStorage mỗi khi thay đổi
     useEffect(() => {
         if (infoExam) {
+            // lặp qua answers, loại bỏ  key có value rỗng
             setLocalStorage(
                 slug,
                 JSON.stringify({

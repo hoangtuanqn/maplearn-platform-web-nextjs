@@ -148,10 +148,14 @@ const DragDrop = ({
         Object.entries(droppedItems).forEach(([a, b]) => {
             if (b?.content && b.content.length > 0) {
                 handleChoiceAnswer(idQuestion, b.content, Number(a.split("drop")[1]));
+                // console.log("kéo vào");
+            } else {
+                handleChoiceAnswer(idQuestion, "", Number(a.split("drop")[1]));
+                // console.log("kéo ra");
             }
         });
 
-        console.log("gọi ");
+        // console.log("gọi ");
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [droppedItems, idQuestion]);
@@ -164,7 +168,7 @@ const DragDrop = ({
 
     // hàm cập nhật nếu activeAnswers thay đổi (vd: xóa lựa chọn thì sẽ gọi hàm này để cập nhật lại giao diện)
     useEffect(() => {
-        console.log("active", activeAnswers);
+        // console.log("active", activeAnswers);
         // setItems(initialItems.filter((item) => !activeAnswers?.includes(item.content)));
         setDroppedItems(() => {
             const initial: Record<string, ValueType | null> = {};
