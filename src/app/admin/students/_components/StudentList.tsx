@@ -66,7 +66,7 @@ const StudentList = () => {
         queryFn: async () => {
             const res = await studentApi.getStudents(
                 +page || 1,
-                20,
+                USERS_PER_PAGE,
                 search || "",
                 sort,
                 buildLaravelFilterQuery({

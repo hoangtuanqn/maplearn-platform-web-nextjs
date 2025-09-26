@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2, Clock, Users, Target } from "lucide-react";
+import { Trash2, Clock, Users, Target, Lock } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { toast } from "sonner";
@@ -184,6 +184,12 @@ const ExamList = () => {
                                                       </span>
                                                   </div>
                                               </div>
+                                              {exam.is_password_protected && (
+                                                  <span className="inline-flex items-center gap-1 rounded border border-yellow-300 bg-gradient-to-r from-yellow-200 to-yellow-400 px-2 py-0.5 text-xs font-semibold text-yellow-900 shadow-sm">
+                                                      <Lock />
+                                                      Có mật khẩu
+                                                  </span>
+                                              )}
                                           </div>
                                       </td>
 

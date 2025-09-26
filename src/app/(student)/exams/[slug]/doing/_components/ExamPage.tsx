@@ -109,7 +109,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     const submitAnswerMutation = useMutation({
         mutationFn: (data: AnswerLocalStorage) => examApi.submitAnswer(slug, data),
         onSuccess: (data) => {
-            console.log("Nộp bài rồi: ", data);
+            // console.log("Nộp bài rồi: ", data);
 
             toast.success("Đã nộp bài làm thành công");
             exitFullscreen();
@@ -143,9 +143,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             }
             setViolationCount(data.violation_count ?? 0);
         },
-        onError: () => {
-            // router.push(`/exams/${slug}`);
-        },
+        onError: notificationErrorApi,
     });
     // Function sẽ được gọi nếu phát hiện gian lận
     const handleCheatingDetected = () => {
@@ -167,7 +165,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setAnswers(data.answers || {});
             setQuestionActive(data.questionActive || 0);
             // ! Không xóa: mở lại khi đi bảo vệ
-            // setCountdownSubmit(1 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
+            setCountdownSubmit(2 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
         } else {
             const startTime = Date.now();
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };
@@ -175,7 +173,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setLocalStorage(slug, JSON.stringify(newData));
             // setCountdownSubmit(5 * 60);
             // ! Không xóa: mở lại khi đi bảo vệ
-            // setCountdownSubmit(1 * 60); // test thì 1p thôi
+            setCountdownSubmit(2 * 60); // test thì 1p thôi
         }
     }, [setCountdownSubmit, slug]);
 
@@ -285,7 +283,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                             </div>
                         )}
 
-                        {timeLeft > 1 && timeLeft <= 180 && (
+                        {timeLeft > 1 && timeLeft <= 600 && (
                             <div className="rounded-xl border border-red-200 bg-red-50 p-4 shadow-sm">
                                 <div className="flex items-center gap-3">
                                     <Clock className="h-5 w-5 text-red-600" />
@@ -297,7 +295,8 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                                             </span>
                                         </div>
                                         <p className="mt-1 text-sm text-red-700">
-                                            Hệ thống sẽ tự động nộp bài khi hết giờ.
+                                            Hệ thống sẽ tự động nộp bài khi hết giờ. Bạn nên nộp bài trước khi hết giờ
+                                            để tránh xảy ra sự cố ngoài ý muốn.
                                         </p>
                                     </div>
                                 </div>

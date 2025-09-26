@@ -73,6 +73,7 @@ const questionSchema = z.object({
     images: z.array(z.string()).nullable(),
     marks: z.number(),
     options: z.array(answersSchema),
+    correct: z.array(z.string()),
 });
 export type Question = z.infer<typeof questionSchema>;
 

@@ -20,7 +20,7 @@ const CourseList = () => {
                 COURSE_PER_PAGE,
                 search,
                 sort,
-                buildLaravelFilterQuery({ sort, rating, price_range, duration, teachers, is_active }),
+                buildLaravelFilterQuery({ rating, price_range, duration, teachers, is_active }),
             );
             return res.data.data;
         },

@@ -23,6 +23,12 @@ import Image from "next/image";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
 import { ShowPasswordPaper } from "./ShowPasswordPaper";
 
+import SingleChoice from "~/app/(student)/exams/[slug]/doing/_components/SingleChoice";
+import MultipleChoice from "~/app/(student)/exams/[slug]/doing/_components/MultipleChoice";
+import NumericInput from "~/app/(student)/exams/[slug]/doing/_components/NumericInput";
+import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/TrueFalseAnswer";
+import DragDrop from "~/app/(student)/exams/[slug]/doing/_components/DragDrop";
+
 interface ExamDetailViewProps {
     exam: QuestionsExamResponse["data"];
 }
@@ -287,7 +293,7 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                             <div className="p-6">
                                 <div className="mb-4">
                                     <h4 className="mb-2 font-medium text-gray-900">Nội dung câu hỏi:</h4>
-                                    <div className="rounded-lg bg-white p-4 text-gray-800">
+                                    <div className="rounded-lg bg-white p-4 text-[16px] text-gray-800">
                                         <RenderLatex content={question.content} />
                                     </div>
                                 </div>
@@ -316,9 +322,11 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                                     <div className="mb-4">
                                         <h4 className="mb-2 font-medium text-gray-900">Các lựa chọn:</h4>
                                         <div className="space-y-2">
-                                            {question.options.map((option, optionIndex) => {
+                                            {/* {question.options.map((option, optionIndex) => {
                                                 // Tạm thời đánh dấu đáp án A là đúng (cần cập nhật logic này khi có API đầy đủ)
-                                                const isCorrect = option.is_correct; // TODO: Update this logic based on actual correct answer data
+                                                const isCorrect = question.correct.find(
+                                                    (item) => item === option.content,
+                                                ); // TODO: Update this logic based on actual correct answer data
 
                                                 return (
                                                     <div
@@ -351,7 +359,52 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                                                         )}
                                                     </div>
                                                 );
-                                            })}
+                                            })} */}
+                                            {question.type === "SINGLE_CHOICE" && Array.isArray(question.correct) && (
+                                                <SingleChoice
+                                                    activeAnswer={[question.correct[0]]}
+                                                    handleChoiceAnswer={() => {}}
+                                                    idQuestion={question.id}
+                                                    answers={question.options}
+                                                />
+                                            )}
+                                            {question.type === "MULTIPLE_CHOICE" && (
+                                                <MultipleChoice
+                                                    activeAnswers={question.correct}
+                                                    handleChoiceAnswer={() => {}}
+                                                    idQuestion={question.id}
+                                                    answers={question.options}
+                                                />
+                                            )}
+                                            {question.type === "NUMERIC_INPUT" && (
+                                                <NumericInput
+                                                    handleChoiceAnswer={() => {}}
+                                                    idQuestion={question.id}
+                                                    activeAnswer={question.correct}
+                                                />
+                                            )}
+                                            {question.type === "TRUE_FALSE" && (
+                                                <TrueFalseAnswer
+                                                    idQuestion={question.id}
+                                                    answers={question.options || []}
+                                                    activeAnswer={question.correct}
+                                                    handleChoiceAnswer={() => {}}
+                                                />
+                                            )}
+                                            {question.type === "DRAG_DROP" && (
+                                                <DragDrop
+                                                    question={question.content || ""}
+                                                    items={(question.options || []).map((opt: any, idx: number) => ({
+                                                        id: opt.id ?? idx,
+                                                        content: opt.content,
+                                                        is_correct: opt.is_correct,
+                                                    }))}
+                                                    activeAnswers={question.correct ?? []}
+                                                    idQuestion={question.id}
+                                                    handleChoiceAnswer={() => {}}
+                                                    disabled={true}
+                                                />
+                                            )}
                                         </div>
                                     </div>
                                 )}
