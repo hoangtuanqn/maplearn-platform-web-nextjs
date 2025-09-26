@@ -64,7 +64,7 @@ const examApi = {
     getQuestions: (slug: string, headers?: { [key: string]: string }) =>
         publicApi.get<QuestionsExamResponse>(`exams/questions/${slug}`, headers ? { headers } : undefined),
     // Bắt đầu làm bài
-    startExam: (slug: string) => privateApi.post(`/exams/${slug}/start`),
+    startExam: (slug: string, password: string | null) => privateApi.post(`/exams/${slug}/start`, { password }),
     // Nộp bài
     submitAnswer: (slug: string, data: any) =>
         publicApi.post(`/exams/${slug}/submit`, {

@@ -111,7 +111,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                 removeLocalStorage(slug);
                 alert(data.note || "Bài thi đã bị hủy do vi phạm quy chế thi.");
                 exitFullscreen();
-                router.push(`/exams/${slug}/results`);
+                router.push(`/exams/${slug}/results/${data.id}`);
             }
             setViolationCount(data.violation_count ?? 0);
         },

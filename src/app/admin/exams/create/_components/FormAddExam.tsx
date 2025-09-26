@@ -454,13 +454,21 @@ const FormAddExam = () => {
                                 <FormItem>
                                     <FormLabel>Điểm qua môn</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="Nhập điểm qua môn"
-                                            {...field}
-                                            onChange={(e) => field.onChange(Number(e.target.value))}
-                                            value={form.watch("pass_score") ?? 5}
-                                        />
+                                        <Select
+                                            onValueChange={(value) => field.onChange(Number(value))}
+                                            value={String(field.value)}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Chọn điểm qua môn" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="3">Trên 30%</SelectItem>
+                                                <SelectItem value="4">Trên 40%</SelectItem>
+                                                <SelectItem value="5">Trên 50%</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

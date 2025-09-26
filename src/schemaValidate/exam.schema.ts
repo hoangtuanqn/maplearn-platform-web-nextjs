@@ -36,6 +36,7 @@ const examSchema = z.object({
     total_attempt_count: z.number(), // tổng số lượt thi của đề thi
     question_count: z.number(),
     is_in_progress: z.boolean(),
+    is_password_protected: z.boolean(),
     status: z.boolean(),
     start_time: z.string(),
     end_time: z.string(),
