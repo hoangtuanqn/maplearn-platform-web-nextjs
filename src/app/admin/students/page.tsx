@@ -25,7 +25,9 @@ const StudentPage = () => {
                         <FilterStudents />
                     </Suspense>
                 </div>
-                <StudentList />
+                <Suspense>
+                    <StudentList />
+                </Suspense>
             </div>
         </section>
     );
