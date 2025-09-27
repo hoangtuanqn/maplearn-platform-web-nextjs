@@ -30,6 +30,15 @@ const difficultyLevels = [
 
 // Only exam info, not questions
 const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
+    // Chuyển pass_score và max_score sang phần trăm (chỉ quy ước 30% = 3, 40% = 4, 50% = 5)
+    const percentPassScore = (() => {
+        const pass = Number(exam.pass_score);
+        const max = Number(exam.max_score);
+        const percent = Math.round((pass / max) * 100);
+        if (percent >= 50) return 5;
+        if (percent >= 40) return 4;
+        return 3;
+    })();
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -40,12 +49,12 @@ const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
             province: exam.province || "",
             difficulty: exam.difficulty || "normal",
             max_score: exam.max_score ?? 10,
-            pass_score: exam.pass_score ?? 5,
+            pass_score: percentPassScore ?? 5,
             duration_minutes: exam.duration_minutes ?? 60,
-
             is_active: exam.status ?? true,
             max_attempts: exam.max_attempts ?? 1,
             is_password_protected: exam.is_password_protected ?? false,
+            anti_cheat_enabled: exam.anti_cheat_enabled ?? false,
         },
         mode: "onBlur",
     });
@@ -229,12 +238,21 @@ const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                                 <FormItem>
                                     <FormLabel className="mb-0.5 block">Điểm qua môn</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            className="mb-2"
-                                            placeholder="Nhập điểm qua môn"
-                                            {...field}
-                                        />
+                                        <Select
+                                            onValueChange={(value) => field.onChange(Number(value))}
+                                            value={String(field.value)}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="mb-1">
+                                                    <SelectValue placeholder="Chọn điểm qua môn" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="3">Trên 30%</SelectItem>
+                                                <SelectItem value="4">Trên 40%</SelectItem>
+                                                <SelectItem value="5">Trên 50%</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -276,28 +294,52 @@ const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="is_password_protected"
-                            render={({ field }) => (
-                                <FormItem className="col-span-3">
-                                    <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
-                                        <Checkbox
-                                            id="toggle-2"
-                                            checked={field.value}
-                                            onCheckedChange={(checked) => field.onChange(checked === true)}
-                                            className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-                                        />
-                                        <div className="grid gap-1.5 font-normal">
-                                            <p className="text-sm leading-none font-medium">Mật khẩu đề thi</p>
-                                            <p className="text-muted-foreground text-sm">
-                                                Bảo vệ đề thi bằng mật khẩu (TOTP)
-                                            </p>
-                                        </div>
-                                    </Label>
-                                </FormItem>
-                            )}
-                        />
+                        <div className="col-span-2 grid grid-cols-2 gap-2">
+                            <FormField
+                                control={form.control}
+                                name="is_password_protected"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+                                            <Checkbox
+                                                id="toggle-2"
+                                                checked={field.value}
+                                                onCheckedChange={(checked) => field.onChange(checked === true)}
+                                                className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+                                            />
+                                            <div className="grid gap-1.5 font-normal">
+                                                <p className="text-sm leading-none font-medium">Mật khẩu đề thi</p>
+                                                <p className="text-muted-foreground text-sm">
+                                                    Bảo vệ đề thi bằng mật khẩu (TOTP)
+                                                </p>
+                                            </div>
+                                        </Label>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="anti_cheat_enabled"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+                                            <Checkbox
+                                                id="toggle-2"
+                                                checked={field.value}
+                                                onCheckedChange={(checked) => field.onChange(checked === true)}
+                                                className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+                                            />
+                                            <div className="grid gap-1.5 font-normal">
+                                                <p className="text-sm leading-none font-medium">Chống gian lận</p>
+                                                <p className="text-muted-foreground text-sm">
+                                                    Khóa màn hình của thí sinh khi làm bài
+                                                </p>
+                                            </div>
+                                        </Label>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                     </div>
                     <div className="flex justify-end space-x-4 pt-6">
                         <Button type="submit" variant="primary" disabled={mutationEdit.isPending}>

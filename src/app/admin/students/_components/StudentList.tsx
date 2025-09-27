@@ -100,8 +100,9 @@ const StudentList = () => {
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
                                 Thông tin cơ bản
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Email</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Số điện thoại</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
+                                Thông tin học tập
+                            </th>
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Trạng thái</th>
                             <th className="px-4 py-3 text-right text-xs font-semibold text-zinc-600">Thao tác</th>
                         </tr>
@@ -143,19 +144,55 @@ const StudentList = () => {
                                                   {getGender(student.gender)}
                                               </p>
                                           )}
-                                      </td>
-                                      <td className="px-4 py-3 text-zinc-500">
-                                          <Link href={`mailto:${student.email}`} className="underline">
-                                              {student.email}
-                                          </Link>
-                                      </td>
-                                      <td className="px-4 py-3 text-zinc-500">
-                                          {student.phone_number ? (
-                                              <Link href={`tel:${student.phone_number}`} className="underline">
+                                          {student.email && (
+                                              <p>
+                                                  <span className="font-bold">Email:</span> {student.email}
+                                              </p>
+                                          )}
+                                          {student.phone_number && (
+                                              <p>
+                                                  <span className="font-bold">Số điện thoại:</span>{" "}
                                                   {student.phone_number}
-                                              </Link>
-                                          ) : (
-                                              "Chưa cập nhật"
+                                              </p>
+                                          )}
+                                      </td>
+                                      <td className="px-4 py-3 text-zinc-500">
+                                          {student.full_name && (
+                                              <p>
+                                                  <span className="font-bold">Họ tên:</span> {student.full_name}
+                                              </p>
+                                          )}
+                                          {student.city && (
+                                              <p>
+                                                  <span className="font-bold">Thành phố:</span> {student.city}
+                                              </p>
+                                          )}
+                                          {student.school && (
+                                              <p>
+                                                  <span className="font-bold">Trường học:</span> {student.school}
+                                              </p>
+                                          )}
+                                          {student.birth_year && (
+                                              <p>
+                                                  <span className="font-bold">Năm sinh:</span> {student.birth_year}
+                                              </p>
+                                          )}
+                                          {student.gender && (
+                                              <p>
+                                                  <span className="font-bold">Giới tính:</span>{" "}
+                                                  {getGender(student.gender)}
+                                              </p>
+                                          )}
+                                          {student.email && (
+                                              <p>
+                                                  <span className="font-bold">Email:</span> {student.email}
+                                              </p>
+                                          )}
+                                          {student.phone_number && (
+                                              <p>
+                                                  <span className="font-bold">Số điện thoại:</span>{" "}
+                                                  {student.phone_number}
+                                              </p>
                                           )}
                                       </td>
 

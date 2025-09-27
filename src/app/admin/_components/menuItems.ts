@@ -103,6 +103,14 @@ const menuItems = [
                 matcher: ["/admin/history/exams"],
                 id: "history-exams",
             },
+            {
+                type: "link",
+                label: "Học bài",
+                icon: History,
+                href: "/admin/history/learns",
+                matcher: ["/admin/history/learns"],
+                id: "history-learns",
+            },
         ],
     },
     {

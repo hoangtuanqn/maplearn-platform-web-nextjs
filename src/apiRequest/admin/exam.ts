@@ -54,7 +54,7 @@ const examApi = {
         return privateApi.get<ExamAttemptResponse>(query);
     },
 
-    // delete question
+    addQuestion: (data: any) => privateApi.post<ResponseSchemaBasic>("/exam-questions", data),
     deleteQuestion: (id: number) => privateApi.delete<ResponseSchemaBasic>(`/exam-questions/${id}`),
     editQuestion: (id: number, data: any) => privateApi.patch<ResponseSchemaBasic>(`/exam-questions/${id}`, data),
 };

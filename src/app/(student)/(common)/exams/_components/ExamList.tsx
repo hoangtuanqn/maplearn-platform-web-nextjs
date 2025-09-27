@@ -156,7 +156,21 @@ const ExamList = () => {
                                             <div className="flex items-center gap-1">
                                                 <Calendar className="h-4 w-4" />
                                                 <span>
-                                                    {exam.end_time ? formatter.date(exam.end_time) : "Không giới hạn"}
+                                                    Đóng đề:{" "}
+                                                    {exam.end_time
+                                                        ? (() => {
+                                                              const date = new Date(exam.end_time);
+                                                              const hours = date.getHours();
+                                                              const minutes = date
+                                                                  .getMinutes()
+                                                                  .toString()
+                                                                  .padStart(2, "0");
+                                                              const day = date.getDate();
+                                                              const month = date.getMonth() + 1;
+                                                              const year = date.getFullYear();
+                                                              return `${hours}:${minutes} ${day}/${month}/${year}`;
+                                                          })()
+                                                        : "Không giới hạn"}
                                                 </span>
                                             </div>
                                         </div>

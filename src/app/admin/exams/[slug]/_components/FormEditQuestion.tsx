@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import examApi from "~/apiRequest/admin/exam";
 import { useRouter } from "next/navigation";
 
-export function EditQuestion({ question }: { question: QuestionsExamResponse["data"]["questions"][number] }) {
+export function FormEditQuestion({ question }: { question: QuestionsExamResponse["data"]["questions"][number] }) {
     const router = useRouter();
     // Question types
     const questionTypes = [

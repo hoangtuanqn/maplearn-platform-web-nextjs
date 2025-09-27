@@ -17,7 +17,7 @@ import examApi from "~/apiRequest/admin/exam";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { toast } from "sonner";
 import Loading from "~/app/(student)/_components/Loading";
-import { EditQuestion } from "./EditQuestion";
+import { FormEditQuestion } from "./FormEditQuestion";
 import { useRouter } from "next/navigation";
 const getQuestionTypeColor = (type: string) => {
     switch (type) {
@@ -88,7 +88,7 @@ const QuestionList = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                                 </div>
                             </div>
                             <div className="flex gap-2">
-                                <EditQuestion question={question} />
+                                <FormEditQuestion question={question} />
                                 <DangerConfirm
                                     message={`Bạn có chắc chắn muốn xóa câu hỏi có ID "${question.id}" này? Hành động này không thể hoàn tác.`}
                                     action={() => mutationDeleteQuestion.mutate(question.id)}

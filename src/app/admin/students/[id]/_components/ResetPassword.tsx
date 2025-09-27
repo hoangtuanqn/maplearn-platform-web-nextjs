@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { Bell } from "lucide-react";
+import { Bell, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import studentApi from "~/apiRequest/admin/student";
@@ -68,7 +68,7 @@ export function ResetPassword({ id }: { id: string }) {
                                         <Input id="password" value={newPassword} readOnly className="flex-1" />
                                     </div>
                                     <Button type="button" variant="outline" onClick={handleGenerate}>
-                                        Làm mới
+                                        <RefreshCcw />
                                     </Button>
                                 </div>
                             </div>

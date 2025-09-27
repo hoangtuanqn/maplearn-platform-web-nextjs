@@ -7,6 +7,7 @@ import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
 import QuestionList from "./QuestionList";
 import InfomationExam from "./InfomationExam";
 import Link from "next/link";
+import { FormAddQuestion } from "./FormAddQuestion";
 
 interface ExamDetailViewProps {
     exam: QuestionsExamResponse["data"];
@@ -105,14 +106,16 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                             </p>
                         </div>
                     </div>
-                    <Button onClick={handleAddQuestion} variant="outline" className="flex items-center gap-2">
-                        <Plus className="h-4 w-4" />
-                        Thêm câu hỏi
-                    </Button>
+                    <div className="flex">
+                        <FormAddQuestion idPaper={exam.id} />
+                    </div>
                 </div>
 
                 {/* Questions List */}
                 <QuestionList exam={exam} />
+                <div className="mt-6">
+                    <FormAddQuestion idPaper={exam.id} />
+                </div>
             </div>
         </div>
     );
