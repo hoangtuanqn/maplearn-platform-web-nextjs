@@ -15,7 +15,7 @@ const formSchema = z
         }),
         max_score: z
             .number()
-            .min(1, { message: "Điểm tối đa phải lớn hơn 0." })
+            .min(10, { message: "Điểm thiểu phải từ 10 trở lên." })
             .max(100, { message: "Điểm tối đa không được vượt quá 100." }),
         pass_score: z.number().min(0, { message: "Điểm qua môn phải lớn hơn hoặc bằng 0." }),
         duration_minutes: z

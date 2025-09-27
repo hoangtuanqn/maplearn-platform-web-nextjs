@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { BookOpen, Edit3, Plus, FileText } from "lucide-react";
+import { BookOpen, Edit3, FileText } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
@@ -14,16 +14,6 @@ interface ExamDetailViewProps {
 }
 
 const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
-    const handleEditExam = () => {
-        // TODO: Implement edit exam logic
-        console.log("Edit exam:", exam.id);
-    };
-
-    const handleAddQuestion = () => {
-        // TODO: Implement add question logic
-        console.log("Add new question to exam:", exam.id);
-    };
-
     const getDifficultyColor = (difficulty: string) => {
         switch (difficulty) {
             case "easy":
@@ -53,6 +43,7 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                 return "Không xác định";
         }
     };
+    const totalMarks = exam.questions.reduce((sum, q) => sum + q.marks, 0);
 
     return (
         <div className="space-y-6">
@@ -78,7 +69,7 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                     </div>
                     <div className="flex gap-2">
                         <Link href={`/admin/exams/${exam.slug}/edit`}>
-                            <Button onClick={handleEditExam} variant="outline" className="flex items-center gap-2">
+                            <Button variant="outline" className="flex items-center gap-2">
                                 <Edit3 className="h-4 w-4" />
                                 Chỉnh sửa đề thi
                             </Button>
@@ -101,14 +92,15 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                             <h3 className="text-lg font-semibold text-gray-900">
                                 Danh sách câu hỏi ({exam.questions.length})
                             </h3>
-                            <p className="text-sm text-gray-600">
-                                Tổng điểm: {exam.questions.reduce((sum, q) => sum + q.marks, 0)} điểm
-                            </p>
+                            <p className="text-sm text-gray-600">Tổng điểm: {totalMarks} điểm</p>
+                            {totalMarks < exam.max_score && (
+                                <p className="mt-1 text-lg text-red-600">
+                                    Tổng điểm các câu hỏi nhỏ hơn điểm tối đa của đề thi. Vui lòng kiểm tra lại!
+                                </p>
+                            )}
                         </div>
                     </div>
-                    <div className="flex">
-                        <FormAddQuestion idPaper={exam.id} />
-                    </div>
+                    <div className="flex">{totalMarks < exam.max_score && <FormAddQuestion idPaper={exam.id} />}</div>
                 </div>
 
                 {/* Questions List */}

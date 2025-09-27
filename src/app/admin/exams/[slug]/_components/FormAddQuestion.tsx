@@ -121,6 +121,17 @@ export function FormAddQuestion({ idPaper }: { idPaper: number }) {
         onSuccess: () => {
             setOpen(false);
             router.refresh();
+            setAddData({
+                content: "",
+                marks: 0,
+                type: "SINGLE_CHOICE",
+                options: [
+                    { content: "", is_correct: false },
+                    { content: "", is_correct: false },
+                ],
+                correct: [],
+                explanation: "",
+            });
             toast.success("Thêm câu hỏi thành công");
         },
         onError: notificationErrorApi,
@@ -234,11 +245,12 @@ export function FormAddQuestion({ idPaper }: { idPaper: number }) {
                         </div>
                     </div>
                     <div>
-                        <Label className="mb-2 block">Nội dung câu hỏi</Label>
+                        <Label className="mb-2 block">Nội dung câu hỏi ({addData.content.length}/1000)</Label>
                         <Textarea
                             value={addData.content}
                             onChange={(e) => updateField("content", e.target.value)}
                             placeholder="Nhập nội dung câu hỏi..."
+                            maxLength={1000}
                             rows={3}
                             className="mb-2"
                         />
@@ -273,6 +285,7 @@ export function FormAddQuestion({ idPaper }: { idPaper: number }) {
                                                 onChange={(e) => updateOption(idx, e.target.value)}
                                                 placeholder={`Lựa chọn ${idx + 1}`}
                                                 className="mb-2 w-full"
+                                                maxLength={255}
                                             />
                                         </div>
                                         {addData.options.length > 2 && (
@@ -405,12 +418,13 @@ export function FormAddQuestion({ idPaper }: { idPaper: number }) {
                         </div>
                     )}
                     <div>
-                        <Label className="mb-2 block">Giải thích (tùy chọn)</Label>
+                        <Label className="mb-2 block">Giải thích (tùy chọn 0/5000)</Label>
                         <Textarea
                             value={addData.explanation}
                             onChange={(e) => updateField("explanation", e.target.value)}
                             placeholder="Nhập giải thích cho câu hỏi..."
                             rows={2}
+                            maxLength={5000}
                             className="mb-2"
                         />
                     </div>

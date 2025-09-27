@@ -210,7 +210,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
         }
     }, [timeLeft, handleSubmitExam, submitAnswerMutation]);
 
-    // Demo bảo về đồ án
+    // Demo bảo về đồ án (cái nhận 10 điểm bài thi)
     const mutationRecievePoints = useMutation({
         mutationFn: () => examApi.getAnswerExam(slug),
         onSuccess: (res) => {

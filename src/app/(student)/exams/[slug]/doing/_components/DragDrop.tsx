@@ -188,8 +188,8 @@ const DragDrop = ({
             <div className="border-primary/30 mb-4 flex flex-wrap gap-3 rounded border-2 p-2">
                 {items.length > 0 ? (
                     <>
-                        {items.map((item) => (
-                            <DraggableItem key={item.content} id={`${item.content}`} disabled={disabled}>
+                        {items.map((item, index) => (
+                            <DraggableItem key={index} id={`${item.content}`} disabled={disabled}>
                                 <RenderLatex content={item.content} />
                             </DraggableItem>
                         ))}

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Plus, Trash2, CheckCircle, Circle, Square, ArrowUpDown, Hash } from "lucide-react";
+import { toast } from "sonner";
 
 // Question types
 const questionTypes = [
@@ -104,6 +105,10 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
     const addQuestionOption = (questionId: string) => {
         const question = questions.find((q) => q.id === questionId);
         if (question) {
+            if (question.options.length >= 10) {
+                toast.error("Không thể thêm quá 10 lựa chọn.");
+                return;
+            }
             const newOptions = [...question.options, { content: "", is_correct: false }];
             updateQuestion(questionId, { options: newOptions });
         }
@@ -170,7 +175,7 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
                                         // Reset options based on question type
                                         if (newType === "TRUE_FALSE") {
                                             newOptions = [
-                                                { content: "Đúng", is_correct: false },
+                                                { content: "Đúng", is_correct: true },
                                                 { content: "Sai", is_correct: false },
                                             ];
                                         } else if (newType === "NUMERIC_INPUT") {
@@ -230,12 +235,15 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
 
                         {/* Question Content */}
                         <div>
-                            <label className="text-sm font-medium text-gray-700">Nội dung câu hỏi</label>
+                            <label className="text-sm font-medium text-gray-700">
+                                Nội dung câu hỏi ({question.content.length}/1000)
+                            </label>
                             <Textarea
                                 value={question.content}
                                 onChange={(e) => updateQuestion(question.id, { content: e.target.value })}
                                 placeholder="Nhập nội dung câu hỏi..."
                                 rows={3}
+                                maxLength={1000}
                             />
                         </div>
 
@@ -433,12 +441,15 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
 
                         {/* Explanation */}
                         <div>
-                            <label className="text-sm font-medium text-gray-700">Giải thích (tùy chọn)</label>
+                            <label className="text-sm font-medium text-gray-700">
+                                Giải thích (tùy chọn {question.explanation?.length || 0}/5000)
+                            </label>
                             <Textarea
                                 value={question.explanation || ""}
                                 onChange={(e) => updateQuestion(question.id, { explanation: e.target.value })}
                                 placeholder="Nhập giải thích cho câu hỏi..."
                                 rows={2}
+                                maxLength={5000}
                             />
                         </div>
                     </CardContent>
