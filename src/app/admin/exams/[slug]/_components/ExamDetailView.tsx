@@ -6,6 +6,7 @@ import { Badge } from "~/components/ui/badge";
 import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
 import QuestionList from "./QuestionList";
 import InfomationExam from "./InfomationExam";
+import Link from "next/link";
 
 interface ExamDetailViewProps {
     exam: QuestionsExamResponse["data"];
@@ -75,10 +76,12 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <Button onClick={handleEditExam} variant="outline" className="flex items-center gap-2">
-                            <Edit3 className="h-4 w-4" />
-                            Chỉnh sửa đề thi
-                        </Button>
+                        <Link href={`/admin/exams/${exam.slug}/edit`}>
+                            <Button onClick={handleEditExam} variant="outline" className="flex items-center gap-2">
+                                <Edit3 className="h-4 w-4" />
+                                Chỉnh sửa đề thi
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

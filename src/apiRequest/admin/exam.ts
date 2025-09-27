@@ -27,13 +27,13 @@ const examApi = {
 
     // get detail
     // getExamDetail: (slug: string) => privateApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`),
-    
+
     getExamDetail: (slug: string, headers?: { [key: string]: string }) =>
         publicApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`, headers ? { headers } : undefined),
 
     addPaperExam: (data: any) => privateApi.post("/exams-admin", data),
     deletePaperExam: (slug: string) => privateApi.delete(`/exams-admin/${slug}`),
-    updatePaperExam: (slug: string, data: any) => privateApi.put(`/exams-admin/${slug}`, data),
+    updatePaperExam: (slug: string, data: any) => privateApi.patch(`/exams-admin/${slug}`, data),
 
     // get tất cả lịch sử làm bài thi
     getAllExamAttempts: (
@@ -55,6 +55,7 @@ const examApi = {
         }
         return privateApi.get<ExamAttemptResponse>(query);
     },
+
 
     // delete question
     deleteQuestion: (id: number) => privateApi.delete<ResponseSchemaBasic>(`/exam-questions/${id}`),

@@ -18,8 +18,8 @@ export type ExamCategoriesResponse = z.infer<typeof _examCategoriesResponseSchem
 
 const examSchema = z.object({
     id: z.number(),
-    exam_category_id: z.number(),
-    subject_id: z.number(),
+    exam_category: z.string(),
+    subject: z.string(),
     grade_level: z.string(),
     title: z.string(),
     slug: z.string(),

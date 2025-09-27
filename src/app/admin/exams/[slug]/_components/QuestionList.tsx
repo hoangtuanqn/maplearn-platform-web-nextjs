@@ -12,12 +12,13 @@ import TrueFalseAnswer from "~/app/(student)/exams/[slug]/doing/_components/True
 import DragDrop from "~/app/(student)/exams/[slug]/doing/_components/DragDrop";
 import { FileText, Plus, Trash2 } from "lucide-react";
 import { DangerConfirm } from "~/components/DangerConfirm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import examApi from "~/apiRequest/admin/exam";
 import { notificationErrorApi } from "~/libs/apis/http";
 import { toast } from "sonner";
 import Loading from "~/app/(student)/_components/Loading";
 import { EditQuestion } from "./EditQuestion";
+import { useRouter } from "next/navigation";
 const getQuestionTypeColor = (type: string) => {
     switch (type) {
         case "SINGLE_CHOICE":
@@ -51,13 +52,13 @@ const getQuestionTypeText = (type: string) => {
     }
 };
 const QuestionList = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
-    const queryClient = useQueryClient();
+    const router = useRouter();
 
     const mutationDeleteQuestion = useMutation({
         mutationFn: (id: number) => examApi.deleteQuestion(id),
         onSuccess: () => {
             // Sau khi xóa thành công, refetch lại danh sách câu hỏi
-            queryClient.invalidateQueries({ queryKey: ["exam", "detail", exam.slug] });
+            router.refresh();
             toast.success("Xóa câu hỏi thành công");
         },
         onError: notificationErrorApi,

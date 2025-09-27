@@ -7,7 +7,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Textarea } from "~/components/ui/textarea";
 
 import { subjectsMock } from "~/mockdata/subject.data";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
@@ -69,13 +68,7 @@ const FormAddExam = () => {
             duration_minutes: 60,
             start_time: "",
             end_time: "",
-            description: "",
-            instructions: "",
             is_active: true,
-            is_shuffle_questions: false,
-            is_shuffle_answers: false,
-            is_show_result: true,
-            is_retakeable: false,
             max_attempts: 1,
             is_password_protected: false,
         },
@@ -219,16 +212,7 @@ const FormAddExam = () => {
         const nowVN = new Date(Date.now() + 7 * 60 * 60 * 1000);
         form.setValue("start_time", new Date(nowVN.getTime() + 60 * 60 * 1000).toISOString().slice(0, 16)); // 1h sau giờ VN
         form.setValue("end_time", new Date(nowVN.getTime() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16)); // 2h sau giờ VN
-        form.setValue(
-            "description",
-            "Đề thi thử môn Toán học lớp 10 học kỳ 1, gồm các câu hỏi trắc nghiệm và tự luận.",
-        );
-        form.setValue("instructions", "Thí sinh đọc kỹ đề trước khi làm bài. Không sử dụng tài liệu.");
         form.setValue("is_active", true);
-        form.setValue("is_shuffle_questions", true);
-        form.setValue("is_shuffle_answers", true);
-        form.setValue("is_show_result", true);
-        form.setValue("is_retakeable", false);
         form.setValue("max_attempts", 1);
         form.setValue("is_password_protected", true);
 
@@ -601,24 +585,6 @@ const FormAddExam = () => {
                             )}
                         />
                     </div>
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className="mb-0.5 block">Mô tả đề thi</FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        className="mb-2"
-                                        placeholder="Nhập mô tả chi tiết về đề thi..."
-                                        rows={3}
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
 
                     {/* Questions Section */}
                     <FormAddQuestion

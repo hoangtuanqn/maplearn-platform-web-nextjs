@@ -70,7 +70,7 @@ const menuItems = [
                 label: "Đề thi",
                 icon: ClipboardList,
                 href: "/admin/exams",
-                matcher: ["/admin/exams", "/admin/exams/:slug"],
+                matcher: ["/admin/exams", "/admin/exams/:slug", "/admin/exams/:slug/edit"],
                 id: "exams",
             },
         ],

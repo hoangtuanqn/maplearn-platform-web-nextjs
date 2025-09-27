@@ -22,8 +22,6 @@ const formSchema = z
             .number()
             .min(15, { message: "Thời gian làm bài phải lớn hơn 15 phút." })
             .max(300, { message: "Thời gian làm bài không được vượt quá 300 phút." }),
-        start_time: z.string().min(1, { message: "Vui lòng chọn thời gian bắt đầu." }),
-        end_time: z.string(),
         is_active: z.boolean(),
         max_attempts: z.number().min(0, { message: "Số lần làm bài tối đa phải lớn hơn 0." }).optional(),
         is_password_protected: z.boolean().optional(),
@@ -46,58 +44,6 @@ const formSchema = z
         {
             message: "Điểm qua môn phải nhỏ hơn điểm tối đa.",
             path: ["pass_score"],
-        },
-    )
-    .refine(
-        (data) => {
-            // Nếu end_time không có giá trị, bỏ qua kiểm tra
-            if (!data.end_time) return true;
-            const startTime = new Date(data.start_time);
-            const endTime = new Date(data.end_time);
-            // end_time phải sau start_time ít nhất 1 phút
-            return endTime > startTime && endTime.getTime() - startTime.getTime() >= 60000;
-        },
-        {
-            message: "Thời gian kết thúc phải sau thời gian bắt đầu ít nhất 1 phút.",
-            path: ["end_time"],
-        },
-    )
-    .refine(
-        (data) => {
-            // Nếu end_time không có giá trị, bỏ qua kiểm tra
-            if (!data.end_time) return true;
-            const startTime = new Date(data.start_time);
-            const endTime = new Date(data.end_time);
-            const diffMinutes = Math.floor((endTime.getTime() - startTime.getTime()) / 60000);
-            return data.duration_minutes <= diffMinutes;
-        },
-        {
-            message: "Thời lượng làm bài không được vượt quá tổng thời gian giữa bắt đầu và kết thúc.",
-            path: ["duration_minutes"],
-        },
-    )
-    .refine(
-        (data) => {
-            const startTime = new Date(data.start_time);
-            const now = new Date();
-            return startTime >= now;
-        },
-        {
-            message: "Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại.",
-            path: ["start_time"],
-        },
-    )
-    .refine(
-        (data) => {
-            const startTime = new Date(data.start_time);
-            const now = new Date();
-            // 1 tháng = 30 ngày
-            const oneMonthLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-            return startTime <= oneMonthLater;
-        },
-        {
-            message: "Thời gian bắt đầu không được lớn hơn hiện tại quá 1 tháng.",
-            path: ["start_time"],
         },
     );
 export default formSchema;
