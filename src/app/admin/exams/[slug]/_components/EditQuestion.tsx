@@ -18,8 +18,14 @@ import { useState } from "react";
 import { Plus, Trash2, CheckCircle, Square, Circle, ArrowUpDown, Hash } from "lucide-react";
 import { Textarea } from "~/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { useMutation } from "@tanstack/react-query";
+import { notificationErrorApi } from "~/libs/apis/http";
+import { toast } from "sonner";
+import examApi from "~/apiRequest/admin/exam";
+import { useRouter } from "next/navigation";
 
 export function EditQuestion({ question }: { question: QuestionsExamResponse["data"]["questions"][number] }) {
+    const router = useRouter();
     // Question types
     const questionTypes = [
         { value: "SINGLE_CHOICE", label: "Trắc nghiệm một đáp án", icon: Circle },
@@ -73,8 +79,23 @@ export function EditQuestion({ question }: { question: QuestionsExamResponse["da
         } else if (editData.type === "MULTIPLE_CHOICE") {
             newOptions[idx].is_correct = !newOptions[idx].is_correct;
             newCorrect = newOptions.filter((opt) => opt.is_correct).map((opt) => opt.content);
+        } else if (editData.type === "DRAG_DROP") {
+            // For DRAG_DROP, correct is ordered array of contents
+            newOptions[idx].is_correct = !newOptions[idx].is_correct;
+            // Keep order as in options
+            newCorrect = newOptions.filter((opt) => opt.is_correct).map((opt) => opt.content);
         }
         setEditData((prev) => ({ ...prev, options: newOptions, correct: newCorrect }));
+    };
+
+    // For DRAG_DROP: move correct option up/down
+    const moveCorrect = (idx: number, direction: "up" | "down") => {
+        if (editData.type !== "DRAG_DROP") return;
+        const correct = [...editData.correct];
+        if ((direction === "up" && idx === 0) || (direction === "down" && idx === correct.length - 1)) return;
+        const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+        [correct[idx], correct[swapIdx]] = [correct[swapIdx], correct[idx]];
+        setEditData((prev) => ({ ...prev, correct }));
     };
 
     // Handle type change
@@ -101,12 +122,21 @@ export function EditQuestion({ question }: { question: QuestionsExamResponse["da
         setEditData((prev) => ({ ...prev, type: value as typeof prev.type, options: newOptions, correct: [] }));
     };
 
+    const mutationEditQuestion = useMutation({
+        mutationFn: (data: typeof editData) => examApi.editQuestion(question.id, data),
+        onSuccess: () => {
+            setOpen(false);
+            router.refresh();
+            toast.success("Cập nhật câu hỏi thành công");
+        },
+        onError: notificationErrorApi,
+    });
+
     // Demo save handler
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setOpen(false);
-        // Demo: log data
-        console.log("Edited question:", editData);
+        mutationEditQuestion.mutate(editData);
+        // console.log("Edited question:", editData);
     };
 
     return (
@@ -239,7 +269,7 @@ export function EditQuestion({ question }: { question: QuestionsExamResponse["da
                     {editData.type === "DRAG_DROP" && (
                         <div>
                             <div className="mb-3 flex items-center justify-between">
-                                <Label className="mb-2 block">Các phần tử kéo thả</Label>
+                                <Label className="mb-2 block">Các phần tử kéo thả (chọn đáp án đúng và thứ tự)</Label>
                                 <Button type="button" variant="ghost" size="sm" onClick={addOption}>
                                     <Plus className="h-4 w-4" /> Thêm phần tử
                                 </Button>
@@ -247,6 +277,18 @@ export function EditQuestion({ question }: { question: QuestionsExamResponse["da
                             <div className="space-y-2">
                                 {editData.options.map((option, idx) => (
                                     <div key={idx} className="flex items-center gap-3">
+                                        <Button
+                                            type="button"
+                                            variant={option.is_correct ? "default" : "outline"}
+                                            size="sm"
+                                            onClick={() => toggleCorrect(idx)}
+                                        >
+                                            {option.is_correct ? (
+                                                <CheckCircle className="h-4 w-4 text-green-600" />
+                                            ) : (
+                                                <Circle className="h-4 w-4 text-gray-400" />
+                                            )}
+                                        </Button>
                                         <div className="flex-1">
                                             <Input
                                                 value={option.content}
@@ -268,6 +310,38 @@ export function EditQuestion({ question }: { question: QuestionsExamResponse["da
                                     </div>
                                 ))}
                             </div>
+                            {/* Show correct answers in order if any */}
+                            {editData.correct.length > 1 && (
+                                <div className="mt-4">
+                                    <Label className="mb-2 block">Thứ tự đáp án đúng</Label>
+                                    <div className="space-y-2">
+                                        {editData.correct.map((content, idx) => (
+                                            <div key={idx} className="flex items-center gap-2">
+                                                <span className="rounded bg-gray-100 px-2 py-1 text-sm">{idx + 1}</span>
+                                                <span className="font-medium">{content}</span>
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    disabled={idx === 0}
+                                                    onClick={() => moveCorrect(idx, "up")}
+                                                >
+                                                    ↑
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    disabled={idx === editData.correct.length - 1}
+                                                    onClick={() => moveCorrect(idx, "down")}
+                                                >
+                                                    ↓
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                     {editData.type === "NUMERIC_INPUT" && (

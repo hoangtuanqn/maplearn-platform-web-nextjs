@@ -26,8 +26,6 @@ const examApi = {
     },
 
     // get detail
-    // getExamDetail: (slug: string) => privateApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`),
-
     getExamDetail: (slug: string, headers?: { [key: string]: string }) =>
         publicApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`, headers ? { headers } : undefined),
 
@@ -56,8 +54,8 @@ const examApi = {
         return privateApi.get<ExamAttemptResponse>(query);
     },
 
-
     // delete question
     deleteQuestion: (id: number) => privateApi.delete<ResponseSchemaBasic>(`/exam-questions/${id}`),
+    editQuestion: (id: number, data: any) => privateApi.patch<ResponseSchemaBasic>(`/exam-questions/${id}`, data),
 };
 export default examApi;
