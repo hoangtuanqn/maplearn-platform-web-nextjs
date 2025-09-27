@@ -32,6 +32,7 @@ const formSchema = z
         is_show_result: z.boolean(),
         is_retakeable: z.boolean(),
         max_attempts: z.number().min(0, { message: "Số lần làm bài tối đa phải lớn hơn 0." }).optional(),
+        is_password_protected: z.boolean().optional(),
     })
     .refine(
         (data) => {

@@ -1,6 +1,8 @@
 import privateApi from "~/libs/apis/privateApi";
+import publicApi from "~/libs/apis/publicApi";
 import { ExamAttemptResponse, ExamListResponse } from "~/schemaValidate/admin/exam.schema";
 import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
+import { ResponseSchemaBasic } from "~/schemaValidate/response.schema";
 export const EXAM_PER_PAGE = 20;
 const examApi = {
     getExams: (
@@ -24,7 +26,10 @@ const examApi = {
     },
 
     // get detail
-    getExamDetail: (slug: string) => privateApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`),
+    // getExamDetail: (slug: string) => privateApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`),
+    
+    getExamDetail: (slug: string, headers?: { [key: string]: string }) =>
+        publicApi.get<QuestionsExamResponse>(`/exams-admin/${slug}`, headers ? { headers } : undefined),
 
     addPaperExam: (data: any) => privateApi.post("/exams-admin", data),
     deletePaperExam: (slug: string) => privateApi.delete(`/exams-admin/${slug}`),
@@ -50,5 +55,8 @@ const examApi = {
         }
         return privateApi.get<ExamAttemptResponse>(query);
     },
+
+    // delete question
+    deleteQuestion: (id: number) => privateApi.delete<ResponseSchemaBasic>(`/exam-questions/${id}`),
 };
 export default examApi;

@@ -194,7 +194,7 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
                                         });
                                     }}
                                 >
-                                    <SelectTrigger>
+                                    <SelectTrigger className="w-full">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

@@ -66,15 +66,17 @@ const InfomationExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                     <div className="flex items-center gap-3">
                         <Shield className="h-4 w-4 text-gray-500" />
                         <span className="text-sm text-gray-600">Chống gian lận:</span>
-                        <Badge variant={exam.anti_cheat_enabled ? "primary" : "default"}>
-                            {exam.anti_cheat_enabled ? "Bật" : "Tắt"}
+                        <Badge variant={exam.anti_cheat_enabled ? "primary" : "outline"}>
+                            {exam.anti_cheat_enabled ? "Bật" : "Không có"}
                         </Badge>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <AlertCircle className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">Số lần vi phạm tối đa:</span>
-                        <span className="font-medium">{exam.max_violation_attempts}</span>
-                    </div>
+                    {exam.anti_cheat_enabled && (
+                        <div className="flex items-center gap-3">
+                            <AlertCircle className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-600">Số lần vi phạm tối đa:</span>
+                            <span className="font-medium">{exam.max_violation_attempts}</span>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
