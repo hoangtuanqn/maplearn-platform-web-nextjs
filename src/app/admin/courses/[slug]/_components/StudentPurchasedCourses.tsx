@@ -288,7 +288,7 @@ const StudentPurchasedCourses = ({ slug }: { slug: string }) => {
                                                   href={`/admin/courses/${slug}/students/${student.id}`}
                                                   target="_blank"
                                               >
-                                                  <Button variant={"primary"}>Xem quá trình</Button>
+                                                  <Button variant={"primary"}>Quá trình học</Button>
                                               </Link>
                                           </div>
                                       </td>

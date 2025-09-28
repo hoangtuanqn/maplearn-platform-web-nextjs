@@ -52,3 +52,35 @@ const _importStudentSuccessSchema = z.object({
     }),
 });
 export type ImportStudentSuccessSchema = z.infer<typeof _importStudentSuccessSchema>;
+
+// quá trình học tập trong 7 ngày gần nhất
+const last7DaysItemSchema = z.object({
+    date: z.string(),
+    lessons_completed: z.number(),
+    total_duration: z.number(),
+});
+export type Last7DaysItemSchema = z.infer<typeof last7DaysItemSchema>;
+
+const examAttemptSchema = z.object({
+    date: z.string(),
+    title: z.string(),
+    score: z.number(),
+    max_score: z.number(),
+});
+export type ExamAttemptSchema = z.infer<typeof examAttemptSchema>;
+
+const studyProgress7DaysSchema = z.object({
+    total_lessons: z.number(),
+    total_duration: z.string(),
+    total_attempt_exam: z.number(),
+    max_streak: z.number(),
+    last_7_days: z.array(last7DaysItemSchema),
+    exam_attempts: z.array(examAttemptSchema),
+});
+
+const _studyProgress7DaysResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: studyProgress7DaysSchema,
+});
+export type StudyProgress7DaysResponse = z.infer<typeof _studyProgress7DaysResponseSchema>;
