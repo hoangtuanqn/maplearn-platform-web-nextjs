@@ -95,7 +95,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (isLoading) {
         return (
-            <div className="rounded-xl bg-gradient-to-br from-white to-blue-50 p-6">
+            <div className="rounded-xl bg-white p-6">
                 <div className="animate-pulse">
                     <div className="mb-6">
                         <div className="mb-4 flex items-center justify-between">
@@ -119,7 +119,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (error) {
         return (
-            <div className="rounded-xl bg-gradient-to-br from-white to-blue-50 p-6">
+            <div className="rounded-xl bg-white p-6">
                 <div className="py-8 text-center">
                     <p className="text-red-600">Không thể tải dữ liệu thống kê</p>
                     <p className="mt-2 text-xs text-gray-500">Vui lòng thử lại sau</p>
@@ -130,7 +130,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (!chartData || chartData.length === 0) {
         return (
-            <div className="rounded-xl bg-gradient-to-br from-white to-blue-50 p-6">
+            <div className="rounded-xl bg-white p-6">
                 <div className="py-8 text-center">
                     <Users className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                     <p className="text-gray-600">Chưa có dữ liệu thống kê</p>
@@ -143,7 +143,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
     }
 
     return (
-        <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-white to-blue-50 p-6 shadow-lg">
+        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
             {/* Header with stats */}
             <div className="mb-6">
                 <div className="mb-4 flex items-center justify-between">
@@ -216,16 +216,16 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
             {/* Legend */}
             <div className="mt-4 flex items-center justify-center space-x-6 text-xs">
                 <div className="flex items-center">
-                    <div className="mr-2 h-3 w-3 rounded bg-green-500"></div>
-                    <span className="text-gray-600">Cao (≥10)</span>
+                    <div className="mr-2 h-3 w-3 rounded bg-orange-500"></div>
+                    <span className="text-gray-600">Thấp (&lt;7)</span>
                 </div>
                 <div className="flex items-center">
                     <div className="mr-2 h-3 w-3 rounded bg-blue-500"></div>
                     <span className="text-gray-600">Trung bình (7-9)</span>
                 </div>
                 <div className="flex items-center">
-                    <div className="mr-2 h-3 w-3 rounded bg-orange-500"></div>
-                    <span className="text-gray-600">Thấp (&lt;7)</span>
+                    <div className="mr-2 h-3 w-3 rounded bg-green-500"></div>
+                    <span className="text-gray-600">Cao (&gt;10)</span>
                 </div>
             </div>
         </div>
