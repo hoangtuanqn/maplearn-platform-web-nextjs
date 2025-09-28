@@ -11,6 +11,7 @@ import { buildLaravelFilterQuery, getGender } from "~/libs/hepler";
 import { getStatusBadge } from "~/libs/statusBadge";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import { formatter } from "~/libs/format";
 const allowedFields = [
     "sort",
     "page",
@@ -155,45 +156,40 @@ const StudentList = () => {
                                                   {student.phone_number}
                                               </p>
                                           )}
+                                          <p>
+                                              <span className="font-bold">Tham gia:</span>{" "}
+                                              {formatter.date(student.created_at)}
+                                          </p>
                                       </td>
                                       <td className="px-4 py-3 text-zinc-500">
-                                          {student.full_name && (
-                                              <p>
-                                                  <span className="font-bold">Họ tên:</span> {student.full_name}
-                                              </p>
-                                          )}
-                                          {student.city && (
-                                              <p>
-                                                  <span className="font-bold">Thành phố:</span> {student.city}
-                                              </p>
-                                          )}
-                                          {student.school && (
-                                              <p>
-                                                  <span className="font-bold">Trường học:</span> {student.school}
-                                              </p>
-                                          )}
-                                          {student.birth_year && (
-                                              <p>
-                                                  <span className="font-bold">Năm sinh:</span> {student.birth_year}
-                                              </p>
-                                          )}
-                                          {student.gender && (
-                                              <p>
-                                                  <span className="font-bold">Giới tính:</span>{" "}
-                                                  {getGender(student.gender)}
-                                              </p>
-                                          )}
-                                          {student.email && (
-                                              <p>
-                                                  <span className="font-bold">Email:</span> {student.email}
-                                              </p>
-                                          )}
-                                          {student.phone_number && (
-                                              <p>
-                                                  <span className="font-bold">Số điện thoại:</span>{" "}
-                                                  {student.phone_number}
-                                              </p>
-                                          )}
+                                          <p>
+                                              <span className="font-bold text-blue-700">Bài đã học trong tuần:</span>{" "}
+                                              <span className="font-semibold text-blue-600">
+                                                  {student.learning_info.lessons}
+                                              </span>
+                                          </p>
+                                          <p>
+                                              <span className="font-bold text-green-700">
+                                                  Tổng số giờ học trong tuần:
+                                              </span>{" "}
+                                              <span className="font-semibold text-green-600">
+                                                  {student.learning_info.hours}
+                                              </span>
+                                          </p>
+                                          <p>
+                                              <span className="font-bold text-purple-700">Số khóa học đã mua:</span>{" "}
+                                              <span className="font-semibold text-purple-600">
+                                                  {student.learning_info.enrollments_count}
+                                              </span>
+                                          </p>
+                                          <p>
+                                              <span className="font-bold text-orange-700">
+                                                  Số khóa học đã hoàn thành:
+                                              </span>{" "}
+                                              <span className="font-semibold text-orange-600">
+                                                  {student.learning_info.completed_courses_count}
+                                              </span>
+                                          </p>
                                       </td>
 
                                       <td className="px-4 py-3">
