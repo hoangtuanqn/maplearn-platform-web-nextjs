@@ -14,8 +14,9 @@ import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
 import { FilterStudentCourse } from "./FilterStudentCourse";
 import { buildLaravelFilterQuery } from "~/libs/hepler";
+import ExportDataCourses from "./ExportDataCourses";
 
-const StudentEnrolledList = ({ slug }: { slug: string }) => {
+const StudentPurchasedCourses = ({ slug }: { slug: string }) => {
     const { page, search, sort, completion_status, progress_range } = useGetSearchQuery([
         "page",
         "search",
@@ -89,7 +90,10 @@ const StudentEnrolledList = ({ slug }: { slug: string }) => {
                         </div>
                         <h3 className="text-xl font-bold text-gray-900">Học viên đăng ký khóa học</h3>
                     </div>
-                    <FilterStudentCourse />
+                    <div className="flex items-center gap-2">
+                        <ExportDataCourses />
+                        <FilterStudentCourse />
+                    </div>
                 </div>
                 <p className="text-gray-600">Danh sách tất cả học viên đã đăng ký khóa học này</p>
             </div>
@@ -258,7 +262,7 @@ const StudentEnrolledList = ({ slug }: { slug: string }) => {
                                       </td>
 
                                       <td className="px-4 py-4 text-right">
-                                          <div className="flex flex-col items-end gap-2">
+                                          <div className="flex flex-row items-center justify-end gap-2">
                                               {student.certificate_code ? (
                                                   <Link
                                                       href={`/certificate/${student.certificate_code}`}
@@ -278,8 +282,14 @@ const StudentEnrolledList = ({ slug }: { slug: string }) => {
                                                       Đang xử lý
                                                   </Button>
                                               ) : (
-                                                  <span className="text-xs text-gray-400">Chưa có</span>
+                                                  ""
                                               )}
+                                              <Link
+                                                  href={`/admin/courses/${slug}/students/${student.id}`}
+                                                  target="_blank"
+                                              >
+                                                  <Button variant={"primary"}>Xem quá trình</Button>
+                                              </Link>
                                           </div>
                                       </td>
                                   </tr>
@@ -311,4 +321,4 @@ const StudentEnrolledList = ({ slug }: { slug: string }) => {
     );
 };
 
-export default StudentEnrolledList;
+export default StudentPurchasedCourses;

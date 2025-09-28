@@ -25,13 +25,7 @@ import { usePathname } from "next/navigation";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 import { Input } from "~/components/ui/input";
 
-const fields = [
-    "search",
-    "enrolled_at",
-    "completion_status",
-    "progress_range",
-
-] as const;
+const fields = ["search", "enrolled_at", "completion_status", "progress_range"] as const;
 
 // Progress ranges
 const progressRanges = [
@@ -80,7 +74,7 @@ export function FilterStudentCourse() {
                             <Label>Tìm kiếm học viên</Label>
                             <Input
                                 type="text"
-                                placeholder="Nhập tên, email học viên..."
+                                placeholder="Nhập tên học viên..."
                                 value={formValues.filter.search || ""}
                                 onChange={(e) => setFieldValue("search", e.target.value, "filter")}
                             />
@@ -90,7 +84,7 @@ export function FilterStudentCourse() {
                         <div className="grid gap-4 lg:grid-cols-2">
                             {/* Thời gian đăng ký */}
                             <div className="grid gap-3">
-                                <Label>Thời gian đăng ký</Label>
+                                <Label>Thời gian đăng ký khóa</Label>
                                 <Select
                                     value={formValues.sort.enrolled_at || "-enrolled_at"}
                                     onValueChange={(value) => setFieldValue("enrolled_at", value, "sort")}

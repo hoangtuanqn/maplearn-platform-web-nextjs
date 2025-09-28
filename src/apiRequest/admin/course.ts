@@ -54,7 +54,7 @@ const courseAdminApi = {
     ) => {
         let query = `/courses/${slug}/enrollments?page=${page}&limit=${limit}`;
         if (search) {
-            query += `&filter[name]=${search}`;
+            query += `&filter[full_name]=${search}`;
         }
         if (querySortOther) {
             query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...

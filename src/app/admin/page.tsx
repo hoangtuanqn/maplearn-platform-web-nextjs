@@ -22,7 +22,7 @@ import DisplayAvatar from "../(student)/_components/DisplayAvatar";
 import { Suspense } from "react";
 import TutorialButtonAdmin from "./_components/TutorialButtonAdmin";
 
-const AdminPage = () => {
+const AdminDashboard = () => {
     const { data: dashboard, isLoading } = useQuery({
         queryKey: ["admin", "dashboard"],
         queryFn: async () => {
@@ -601,4 +601,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default AdminDashboard;
