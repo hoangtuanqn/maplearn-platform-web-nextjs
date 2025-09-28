@@ -4,7 +4,7 @@ import DisplayCourse from "../../../_components/Courses/DisplayCourse";
 import CourseSkeleton from "./CourseSkeleton";
 import courseApi, { COURSE_PER_PAGE } from "~/apiRequest/course";
 import { useQuery } from "@tanstack/react-query";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery } from "~/libs/helper";
 import { PaginationNav } from "../../../_components/Pagination";
 import { formatter } from "~/libs/format";
 import DisplayNoData from "../../../_components/Courses/DisplayNoData";
@@ -35,7 +35,7 @@ const CourseList = () => {
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 xl:grid-cols-5">
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
                 {courses?.data?.map((course) => {
-                    return <DisplayCourse key={course.id} course={course} />;
+                    return <DisplayCourse key={course.id} course={course} keyword={search ?? null} />;
                 })}
             </div>
             {!isLoading && Number(courses?.data?.length) == 0 && <DisplayNoData title="Không tìm thấy khóa học nào!" />}

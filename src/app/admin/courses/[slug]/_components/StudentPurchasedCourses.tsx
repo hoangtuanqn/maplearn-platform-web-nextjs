@@ -13,7 +13,7 @@ import { Button } from "~/components/ui/button";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
 import { FilterStudentCourse } from "./FilterStudentCourse";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery } from "~/libs/helper";
 import ExportDataCourses from "./ExportDataCourses";
 
 const StudentPurchasedCourses = ({ slug }: { slug: string }) => {

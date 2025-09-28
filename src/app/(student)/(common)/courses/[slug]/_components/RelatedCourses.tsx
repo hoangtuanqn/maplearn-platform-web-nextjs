@@ -5,7 +5,7 @@ import React from "react";
 import courseApi from "~/apiRequest/course";
 import DisplayCourse from "~/app/(student)/_components/Courses/DisplayCourse";
 import CourseSkeleton from "../../_components/CourseSkeleton";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery } from "~/libs/helper";
 
 const RelatedCourses = ({ category }: { category: string }) => {
     const { data: courses, isLoading } = useQuery({

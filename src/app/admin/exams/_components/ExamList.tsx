@@ -11,7 +11,7 @@ import { DangerConfirm } from "~/components/DangerConfirm";
 import { Button } from "~/components/ui/button";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery, highlightKeyword } from "~/libs/helper";
 import { getStatusBadge } from "~/libs/statusBadge";
 import { examCategories } from "~/mockdata/exam/examCategories.data";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
@@ -150,7 +150,12 @@ const ExamList = () => {
 
                                       <td className="px-4 py-3 align-top text-zinc-500">
                                           <div className="space-y-1">
-                                              <p className="text-base font-semibold text-gray-900">{exam.title}</p>
+                                              <p
+                                                  className="text-base font-semibold text-gray-900"
+                                                  dangerouslySetInnerHTML={{
+                                                      __html: highlightKeyword(exam.title, search),
+                                                  }}
+                                              ></p>
                                               <div className="mt-1 flex flex-wrap items-center gap-2">
                                                   {getDifficultyBadge(exam.difficulty)}
                                                   {getExamTypeBadge(exam.exam_type)}

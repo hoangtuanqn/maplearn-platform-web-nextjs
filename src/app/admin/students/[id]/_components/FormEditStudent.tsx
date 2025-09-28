@@ -8,7 +8,7 @@ import { Button } from "~/components/ui/button";
 
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { getGender } from "~/libs/hepler";
+import { getGender } from "~/libs/helper";
 import { StudentDetailResponseType } from "~/schemaValidate/user.schema";
 import { useMutation } from "@tanstack/react-query";
 import studentApi from "~/apiRequest/admin/student";

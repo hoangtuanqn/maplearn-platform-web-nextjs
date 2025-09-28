@@ -9,7 +9,7 @@ import { Calendar, Clock, Users, Filter, BookOpen } from "lucide-react";
 import clsx from "clsx";
 import { formatter } from "~/libs/format";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery, highlightKeyword } from "~/libs/helper";
 import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 const allowedFields = ["search", "page", "categories", "provinces", "difficulties", "subject"] as const;
 const ExamList = () => {
@@ -139,9 +139,12 @@ const ExamList = () => {
                                         </div>
 
                                         {/* Title */}
-                                        <div className="group-hover:text-primary mt-4 line-clamp-2 min-h-[48px] text-base font-semibold text-gray-900 transition-colors">
-                                            {exam.title}
-                                        </div>
+                                        <div
+                                            className="group-hover:text-primary mt-4 line-clamp-2 min-h-[48px] text-base font-semibold text-gray-900 transition-colors"
+                                            dangerouslySetInnerHTML={{
+                                                __html: highlightKeyword(exam.title, search),
+                                            }}
+                                        />
 
                                         {/* Stats Row */}
                                         <div className="mt-4 flex items-center justify-between text-sm text-gray-600">

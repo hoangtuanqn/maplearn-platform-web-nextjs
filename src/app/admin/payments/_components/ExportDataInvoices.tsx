@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { exportExcel } from "~/libs/exportExcel";
 import { formatter } from "~/libs/format";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery } from "~/libs/helper";
 const allowedFields = [
     "search",
     "page",

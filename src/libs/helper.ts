@@ -90,3 +90,14 @@ export const generateStrongPassword = (length = 12) => {
     }
     return password;
 };
+
+export const highlightKeyword = (text: string, keyword: string | null | undefined = null): string => {
+    if (!keyword) {
+        return text;
+    }
+    const regex = new RegExp(`(${keyword})`, "gi");
+    const highlightedText = text.replace(regex, (match) => {
+        return `<span class="bg-yellow-200 text-gray-900">${match}</span>`;
+    });
+    return highlightedText;
+};

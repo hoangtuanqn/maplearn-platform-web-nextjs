@@ -22,7 +22,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { notificationErrorApi } from "~/libs/apis/http";
-import { generateStrongPassword } from "~/libs/hepler";
+import { generateStrongPassword } from "~/libs/helper";
 
 export function ResetPassword({ id }: { id: string }) {
     const [newPassword, setNewPassword] = useState("");

@@ -8,7 +8,7 @@ import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 import profileApi from "~/apiRequest/profile";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
-import { buildLaravelFilterQuery } from "~/libs/hepler";
+import { buildLaravelFilterQuery } from "~/libs/helper";
 import { formatter } from "~/libs/format";
 const allowedFields = ["page", "search", "sort", "completion_status", "progress_range"] as const;
 const ListMyCourses = () => {
@@ -43,7 +43,7 @@ const ListMyCourses = () => {
                 {isLoading && [...Array(COURSE_PER_PAGE)].map((_, index) => <CourseSkeleton key={index} />)}
                 {coursesFavorite?.data?.map((course) => (
                     // Ch có data thật
-                    <DisplayCourse key={course.id} course={course} />
+                    <DisplayCourse key={course.id} course={course} keyword={search ?? null} />
                 ))}
             </div>
             {!isLoading && totalPages > 1 && (coursesFavorite?.data?.length ?? 0) > 0 && (

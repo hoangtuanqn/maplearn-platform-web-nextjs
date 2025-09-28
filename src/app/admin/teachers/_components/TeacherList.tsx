@@ -5,7 +5,7 @@ import React from "react";
 
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { Button } from "~/components/ui/button";
-import { getGender } from "~/libs/hepler";
+import { getGender } from "~/libs/helper";
 import { getStatusBadge } from "~/libs/statusBadge";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 import teacherApi from "~/apiRequest/teachers";

@@ -7,7 +7,7 @@ import studentApi, { USERS_PER_PAGE } from "~/apiRequest/admin/student";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import { Button } from "~/components/ui/button";
-import { buildLaravelFilterQuery, getGender } from "~/libs/hepler";
+import { buildLaravelFilterQuery, getGender } from "~/libs/helper";
 import { getStatusBadge } from "~/libs/statusBadge";
 import DisplayTotalResult from "../../_components/DisplayTotalResult";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";

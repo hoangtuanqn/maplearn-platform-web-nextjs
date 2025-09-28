@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { useUnsavedChangesWarning } from "~/hooks/useUnsavedChangesWarning";
 import Loading from "~/app/(student)/_components/Loading";
 import { useRouter } from "next/navigation";
-import { exitFullscreen } from "~/libs/hepler";
+import { exitFullscreen } from "~/libs/helper";
 import { AlertTriangle, Clock, Shield } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { notificationErrorApi } from "~/libs/apis/http";
