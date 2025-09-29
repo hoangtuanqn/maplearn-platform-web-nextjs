@@ -45,7 +45,7 @@ const Questions = ({
     }, [questionActive, answers, questions, setQuestionActive]);
     return (
         <section className="flex-1">
-            <section className="space-y-4 rounded-lg bg-white px-6 py-8 shadow-xs">
+            <section className="sticky top-20 space-y-4 rounded-lg bg-white px-6 py-8 shadow-xs">
                 <h1 className="text-primary text-base font-bold">Câu hỏi:</h1>
                 <div className="flex flex-col items-start gap-4 xl:flex-row">
                     <div className="t1-flex-center size-8.5 shrink-0 rounded-full bg-slate-300 font-bold">

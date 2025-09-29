@@ -246,7 +246,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                     {/* Header */}
                     <div className="mb-6 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                         <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
-                            <h2 className="text-primary text-2xl font-bold tẽ">{questionsRes.title}</h2>
+                            <h2 className="text-primary tẽ text-2xl font-bold">{questionsRes.title}</h2>
                             <Button
                                 variant={"outline"}
                                 onClick={
