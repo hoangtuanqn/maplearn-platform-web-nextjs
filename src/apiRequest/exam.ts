@@ -57,12 +57,12 @@ const examApi = {
         return publicApi.get<ExamListResponse>(query);
     },
     getDetailExam: (slug: string, headers?: { [key: string]: string }) => {
-        return publicApi.get<ExamDetailResponse>(`exams/${slug}`, headers ? { headers } : undefined);
+        return publicApi.get<ExamDetailResponse>(`/exams/${slug}`, headers ? { headers } : undefined);
     },
     getExamDifficulties: () => publicApi.get("/exam-difficulties"),
 
     getQuestions: (slug: string, headers?: { [key: string]: string }) =>
-        publicApi.get<QuestionsExamResponse>(`exams/questions/${slug}`, headers ? { headers } : undefined),
+        publicApi.get<QuestionsExamResponse>(`/exams/questions/${slug}`, headers ? { headers } : undefined),
     // Bắt đầu làm bài
     startExam: (slug: string, password: string | null) => privateApi.post(`/exams/${slug}/start`, { password }),
     // Nộp bài
@@ -76,13 +76,7 @@ const examApi = {
 
     // Lấy kết quả thi
     getExamResults: (id: string | null, slug: string, headers?: { [key: string]: string }) => {
-        let query;
-        if (id) {
-            query = `/exams/${slug}/${id}/results`;
-        } else {
-            query = `/exams/${slug}/results`;
-        }
-
+        const query = `/exams/${slug}/${id}/results`;
         return publicApi.get(query, headers ? { headers } : undefined);
     },
 
