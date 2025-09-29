@@ -5,6 +5,8 @@ import AttemptsExams from "./_components/AttemptsExams";
 import { redirect } from "next/navigation";
 import studentApiServer from "~/apiRequest/server/admin/student";
 import Breadcrumb from "~/app/admin/_components/Breadcrumb";
+import HistoriesLearning from "./_components/HistoriesLearning";
+import { formatter } from "~/libs/format";
 
 // Demo data for 7 days
 const learningStats = [
@@ -48,6 +50,7 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
     const streak = statsStudent.max_streak || 0;
     const testResults = statsStudent.exam_attempts;
     const learningStats = statsStudent.last_7_days || [];
+    const lastLearningAt = statsStudent.last_learned_at || null;
 
     return (
         <div className="mt-5 min-h-screen bg-[#F5F5F5]">
@@ -59,6 +62,16 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
                 <div className="mb-8">
                     <h1 className="mb-2 text-2xl font-bold text-gray-900">Báo cáo quá trình học tập</h1>
                     <p className="text-gray-600">Tổng quan về hoạt động học tập của học viên trong khóa học này!</p>
+                </div>
+                {/* Báo cáo lần học gần nhất */}
+                <div className="mb-8 flex items-center gap-4 rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
+                    <Clock className="h-6 w-6 text-orange-500" />
+                    <div>
+                        <span className="text-lg font-bold">Lần gần nhất học: {formatter.timeAgo(lastLearningAt)}</span>
+                        <p className="text-sm text-gray-500">
+                            Thời gian cập nhật lần cuối hoạt động học tập của học viên này.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Tổng quan nhanh */}
@@ -105,51 +118,7 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
                 <LearingChart7Days learningStats={learningStats} />
 
                 {/* Lịch sử bài giảng đã học */}
-                <div className="mb-8 rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
-                    <h2 className="mb-4 text-base font-semibold text-gray-900">Lịch sử bài giảng đã học</h2>
-                    <table className="min-w-full rounded-lg border border-gray-200 bg-white shadow-sm">
-                        <thead>
-                            <tr className="border-b border-gray-200 bg-gray-50">
-                                <th className="px-4 py-3 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
-                                    STT
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
-                                    Tên bài giảng
-                                </th>
-                                <th className="px-4 py-3 text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
-                                    Ngày học
-                                </th>
-                                <th className="px-4 py-3 text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
-                                    Thời lượng (phút)
-                                </th>
-                                <th className="px-4 py-3 text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
-                                    Trạng thái
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                            {lessonHistory.map((lesson, idx) => (
-                                <tr key={idx} className="transition-colors hover:bg-gray-50">
-                                    <td className="px-4 py-4 text-sm text-gray-500">{idx + 1}</td>
-                                    <td className="px-4 py-4 font-medium text-gray-900">{lesson.title}</td>
-                                    <td className="px-4 py-4 text-center text-sm text-gray-500">{lesson.date}</td>
-                                    <td className="px-4 py-4 text-center text-sm text-gray-500">{lesson.duration}</td>
-                                    <td className="px-4 py-4 text-center">
-                                        {lesson.completed ? (
-                                            <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                                                <CheckCircle className="h-3 w-3" /> Đã hoàn thành
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
-                                                <Clock className="h-3 w-3" /> Chưa hoàn thành
-                                            </span>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <HistoriesLearning slug={slug} id={id} />
 
                 {/* Bài kiểm tra đã làm */}
                 <AttemptsExams testResults={testResults} />

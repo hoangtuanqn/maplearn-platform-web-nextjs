@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import menuItems from "./menuItems";
 import { isActiveRoute } from "~/libs/routeMatcher";
+import { Tooltip } from "react-tooltip";
 
 const hasActiveChild = (children: any[], pathname: string): boolean => {
     return children?.some((child) => {
@@ -137,6 +138,7 @@ const Sidebar = () => {
 
                 <div className="py-5">{renderMenu(menuItems, pathname)}</div>
             </nav>
+            <Tooltip anchorSelect=".view_tooltip" className="z-300" />
         </>
     );
 };

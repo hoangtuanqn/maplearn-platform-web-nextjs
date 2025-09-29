@@ -235,7 +235,7 @@ const StudentPurchasedCourses = ({ slug }: { slug: string }) => {
                                               <div className="grid grid-cols-1 gap-2 text-xs">
                                                   <div className="rounded bg-green-50 px-2 py-1">
                                                       <div className="font-medium text-green-700">
-                                                          {student.lessons_in_week} bài học
+                                                          {student.lessons_in_week} bài đã học
                                                       </div>
                                                       <div className="text-green-500">tuần này</div>
                                                   </div>

@@ -1,5 +1,5 @@
 import privateApi from "~/libs/apis/privateApi";
-import { StudentEnrollmentResponse } from "~/schemaValidate/admin/course.schema";
+import { HistoryLearningResponse, StudentEnrollmentResponse } from "~/schemaValidate/admin/course.schema";
 import { ChapterLesson } from "~/schemaValidate/chapterLessonCourse.schema";
 import { CourseGetDetailResponse, CourseListResponse, CourseStats } from "~/schemaValidate/course.schema";
 import { LessonResponse } from "~/schemaValidate/courseDetail.schema";
@@ -64,5 +64,9 @@ const courseAdminApi = {
         }
         return privateApi.get<StudentEnrollmentResponse>(query);
     },
+
+    // get lịch sử học video
+    getHistoriesLearning: (slug: string, userId: string) =>
+        privateApi.get<HistoryLearningResponse>(`/courses-admin/${slug}/student/${userId}/histories`),
 };
 export default courseAdminApi;

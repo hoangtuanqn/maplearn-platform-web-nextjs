@@ -76,6 +76,7 @@ const studyProgress7DaysSchema = z.object({
     max_streak: z.number(),
     last_7_days: z.array(last7DaysItemSchema),
     exam_attempts: z.array(examAttemptSchema),
+    last_learned_at: z.string().nullable(),
 });
 
 const _studyProgress7DaysResponseSchema = z.object({

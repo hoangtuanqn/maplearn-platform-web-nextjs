@@ -31,3 +31,33 @@ const _studentEnrollmentResponse = z.object({
     data: paginationMetaSchemaFn(studentEnrollment),
 });
 export type StudentEnrollmentResponse = z.infer<typeof _studentEnrollmentResponse>;
+
+// get thông tin bài giảng đã học
+export const historyLearning = z.object({
+    id: z.number(),
+    user_id: z.number(),
+    lesson_id: z.number(),
+    progress: z.number(),
+    is_completed: z.boolean(),
+    created_at: z.string(),
+    updated_at: z.string(),
+    lesson: z.object({
+        id: z.number(),
+        chapter_id: z.number(),
+        title: z.string(),
+        slug: z.string(),
+        content: z.string(),
+        video_url: z.string(),
+        position: z.number(),
+        duration: z.number(),
+        is_free: z.boolean(),
+        created_at: z.string(),
+        updated_at: z.string(),
+    }),
+});
+const _historyLearningResponse = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(historyLearning),
+});
+export type HistoryLearningResponse = z.infer<typeof _historyLearningResponse>;
