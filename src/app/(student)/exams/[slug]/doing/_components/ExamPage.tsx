@@ -73,9 +73,9 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
                         const dataNew = { ...prev, [questionId]: newAnswers };
 
                         // Nếu đáp án rỗng thì xóa luôn key đó đi (nếu là kéo thả từ ô đáp án ra bên ngoài)
-                        if (newAnswers.every((ans) => !ans)) {
-                            delete dataNew[questionId];
-                        }
+                        // if (newAnswers.every((ans) => !ans)) {
+                        //     delete dataNew[questionId];
+                        // }
 
                         return dataNew;
                     });
@@ -84,8 +84,13 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             default:
                 toast.error("Loại câu hỏi không hợp lệ!");
         }
+
+        setAnswers((prev) =>
+            Object.fromEntries(Object.entries(prev).filter(([_, v]) => v && v.length > 0 && v[0] !== "")),
+        );
     };
 
+    // Xóa sự lựa chọn sau khi đã chọn nhầm
     const handleRemoveAnswer = (questionId: number) => {
         setAnswers((prev) => {
             const newAnswers = { ...prev };
@@ -192,7 +197,6 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
     // Lưu lại answers vào localStorage mỗi khi thay đổi
     useEffect(() => {
         if (infoExam) {
-            // lặp qua answers, loại bỏ  key có value rỗng
             setLocalStorage(
                 slug,
                 JSON.stringify({

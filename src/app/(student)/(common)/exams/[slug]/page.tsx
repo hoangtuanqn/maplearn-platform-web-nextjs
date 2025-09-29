@@ -110,7 +110,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                                 <div className="flex gap-3">
                                     {exam.is_in_progress && !isNotYetOpen && (
                                         <Link
-                                            className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-full px-6 py-3 text-white transition-colors"
+                                            className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-2xl px-6 py-3 text-white transition-colors"
                                             href={`/exams/${slug}/doing`}
                                         >
                                             <Disc className="h-5 w-5" />
@@ -119,7 +119,7 @@ const DetailExamPage = async ({ params }: { params: Promise<{ slug: string }> })
                                     )}
                                     {!exam.is_in_progress && !isNotYetOpen && (
                                         <Link
-                                            className={`flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-colors ${
+                                            className={`flex items-center gap-2 rounded-2xl px-6 py-3 font-medium transition-colors ${
                                                 isMaxAttempt
                                                     ? "cursor-not-allowed bg-gray-300 text-gray-500"
                                                     : "bg-emerald-500 text-white hover:bg-emerald-600"
