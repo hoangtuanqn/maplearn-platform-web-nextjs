@@ -153,7 +153,6 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
 
                 {/* Bài kiểm tra đã làm */}
                 <AttemptsExams testResults={testResults} />
-
             </div>
         </div>
     );
