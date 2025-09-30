@@ -24,8 +24,6 @@ import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/cou
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import ChatBotAI from "./ChatBotAI";
-import { useAuth } from "~/hooks/useAuth";
-import CertificateButton from "./CertificateButton";
 
 const Sidebar = ({
     course,
@@ -34,7 +32,6 @@ const Sidebar = ({
     course: CourseDetailResponse["data"];
     lesson: LessonDetailResponse["data"];
 }) => {
-    const { user } = useAuth();
     const [openChapter, setOpenChapter] = useState(lesson.chapter_id);
     const [activeTab, setActiveTab] = useState("lessons"); // "lessons" | "comments" | "resources"
 
