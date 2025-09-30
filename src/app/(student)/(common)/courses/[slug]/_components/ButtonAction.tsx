@@ -41,7 +41,13 @@ const ButtonAction = () => {
             ) : (
                 <>
                     {!user ? (
-                        <p className="text-center font-bold text-red-500">Vui lòng đăng nhập để mua khóa học này</p>
+                        <Link
+                            href={`/auth/login?redirect=/courses/${slug}`}
+                            target="_blank"
+                            className="block w-full text-center"
+                        >
+                            <Button variant={"outline"}>Đăng nhập để mua khóa học</Button>
+                        </Link>
                     ) : course?.is_enrolled ? (
                         <>
                             <Link

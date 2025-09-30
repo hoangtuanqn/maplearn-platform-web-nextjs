@@ -69,15 +69,30 @@ const examAttemptSchema = z.object({
 });
 export type ExamAttemptSchema = z.infer<typeof examAttemptSchema>;
 
+const chapterProgressItemSchema = z.object({
+    chapter_id: z.number(),
+    chapter_title: z.string(),
+    completion_rate: z.number(),
+});
 const studyProgress7DaysSchema = z.object({
+    full_name: z.string(),
+    avatar: z.string().url(),
+    email: z.string().email(),
+    enrolled_at: z.string(),
     total_lessons: z.number(),
-    total_duration: z.string(),
+    total_duration: z.number(),
     total_attempt_exam: z.number(),
     max_streak: z.number(),
     last_7_days: z.array(last7DaysItemSchema),
     exam_attempts: z.array(examAttemptSchema),
     last_learned_at: z.string().nullable(),
+    highest_score: z.number().nullable(),
+    completion_rate: z.number(),
+    violation_count: 0,
+    chapter_progress: z.array(chapterProgressItemSchema),
+    max_score_exam_paper: z.number().nullable(),
 });
+export type StudyProgress7DaysSchema = z.infer<typeof studyProgress7DaysSchema>;
 
 const _studyProgress7DaysResponseSchema = z.object({
     success: z.boolean(),

@@ -42,9 +42,9 @@ const FormLogin = () => {
             } else {
                 login(res.data.data);
                 if (searchParams.get("redirect")) {
-                    router.push(searchParams.get("redirect") || "/?tutorial=1");
+                    router.push(searchParams.get("redirect") || "/");
                 } else {
-                    router.push("/?tutorial=1");
+                    router.push("/");
                 }
                 toast.success("Đăng nhập thành công!");
             }

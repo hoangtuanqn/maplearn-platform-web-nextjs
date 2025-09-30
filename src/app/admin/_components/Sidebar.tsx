@@ -1,7 +1,11 @@
 "use client";
 import { ChevronUp, X } from "lucide-react";
 import type React from "react";
-
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import menuItems from "./menuItems";
+import { isActiveRoute } from "~/libs/routeMatcher";
+import { Tooltip } from "react-tooltip";
 declare global {
     interface Window {
         sidebarManager?: {
@@ -9,13 +13,6 @@ declare global {
         };
     }
 }
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import menuItems from "./menuItems";
-import { isActiveRoute } from "~/libs/routeMatcher";
-import { Tooltip } from "react-tooltip";
-
 const hasActiveChild = (children: any[], pathname: string): boolean => {
     return children?.some((child) => {
         if (child.type === "link") {

@@ -61,7 +61,7 @@ const menuItems = [
                     "/admin/courses/edit/:slug",
                     "/admin/courses/:slug",
                     "/admin/courses/:slug/students/:id",
-                    "/admin/courses/:slug/compare/:id",
+                    "/admin/courses/:slug/:id/compare/:id2",
                 ],
                 id: "courses",
             },

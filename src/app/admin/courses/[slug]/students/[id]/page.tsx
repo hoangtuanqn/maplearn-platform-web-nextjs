@@ -1,5 +1,5 @@
 import React from "react";
-import { BookOpen, Clock, CheckCircle, BarChart3 } from "lucide-react";
+import { BookOpen, Clock, BarChart3, Award } from "lucide-react";
 import LearingChart7Days from "./_components/LearingChart7Days";
 import AttemptsExams from "./_components/AttemptsExams";
 import { redirect } from "next/navigation";
@@ -7,28 +7,7 @@ import studentApiServer from "~/apiRequest/server/admin/student";
 import Breadcrumb from "~/app/admin/_components/Breadcrumb";
 import HistoriesLearning from "./_components/HistoriesLearning";
 import { formatter } from "~/libs/format";
-
-// Demo data for 7 days
-const learningStats = [
-    { date: "2025-09-22", lessons: 2, hours: 1.5 },
-    { date: "2025-09-23", lessons: 3, hours: 2.2 },
-    { date: "2025-09-24", lessons: 1, hours: 0.8 },
-    { date: "2025-09-25", lessons: 4, hours: 3.1 },
-    { date: "2025-09-26", lessons: 2, hours: 1.7 },
-    { date: "2025-09-27", lessons: 3, hours: 2.5 },
-    { date: "2025-09-28", lessons: 2, hours: 1.2 },
-];
-
-// Demo lesson history
-const lessonHistory = [
-    { title: "Bài giảng 1: Giới thiệu", date: "2025-09-22", duration: 30, completed: true },
-    { title: "Bài giảng 2: Cơ bản", date: "2025-09-23", duration: 45, completed: true },
-    { title: "Bài giảng 3: Nâng cao", date: "2025-09-24", duration: 40, completed: true },
-    { title: "Bài giảng 4: Thực hành", date: "2025-09-25", duration: 60, completed: true },
-    { title: "Bài giảng 5: Ôn tập", date: "2025-09-26", duration: 35, completed: true },
-    { title: "Bài giảng 6: Kiểm tra", date: "2025-09-27", duration: 50, completed: false },
-];
-
+import { CompareOtherStudentDialog } from "./_components/CompareOtherStudentDialog";
 const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string; id: string }> }) => {
     const { slug, id } = await params;
     const breadcrumbData = [
@@ -51,6 +30,7 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
     const testResults = statsStudent.exam_attempts;
     const learningStats = statsStudent.last_7_days || [];
     const lastLearningAt = statsStudent.last_learned_at || null;
+    const highestScore = statsStudent.highest_score || null;
 
     return (
         <div className="mt-5 min-h-screen bg-[#F5F5F5]">
@@ -59,9 +39,14 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
             </div>
             <div className="min-h-screen bg-white p-6">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="mb-2 text-2xl font-bold text-gray-900">Báo cáo quá trình học tập</h1>
-                    <p className="text-gray-600">Tổng quan về hoạt động học tập của học viên trong khóa học này!</p>
+                <div className="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 className="mb-2 text-2xl font-bold text-gray-900">
+                            Báo cáo quá trình học tập của {statsStudent.full_name}
+                        </h1>
+                        <p className="text-gray-600">Tổng quan về hoạt động học tập của học viên trong khóa học này!</p>
+                    </div>
+                    <CompareOtherStudentDialog slug={slug} idCurrentStudent={id} />
                 </div>
                 {/* Báo cáo lần học gần nhất */}
                 <div className="mb-8 flex items-center gap-4 rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
@@ -69,7 +54,8 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
                     <div>
                         <span className="text-lg font-bold">Lần gần nhất học: {formatter.timeAgo(lastLearningAt)}</span>
                         <p className="text-sm text-gray-500">
-                            Thời gian cập nhật lần cuối hoạt động học tập của học viên này.
+                            Thời gian cập nhật lần cuối hoạt động học tập của học viên{" "}
+                            <b className="font-semibold">trong khóa học này</b>.
                         </p>
                     </div>
                 </div>
@@ -106,10 +92,12 @@ const ProcessLearningPage = async ({ params }: { params: Promise<{ slug: string;
                     <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <CheckCircle className="h-6 w-6 text-emerald-500" />
-                                <span className="text-lg font-bold">{testResults.length}</span>
+                                <Award className="h-6 w-6 text-emerald-500" />
+                                <span className="text-lg font-bold">
+                                    {highestScore ? `${highestScore} điểm` : "Chưa làm bài"}
+                                </span>
                             </div>
-                            <span className="text-sm text-gray-500">Bài kiểm tra đã làm</span>
+                            <span className="text-sm text-gray-500">Điểm thi cao nhất</span>
                         </div>
                     </div>
                 </div>

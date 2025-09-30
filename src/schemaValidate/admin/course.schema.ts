@@ -61,3 +61,17 @@ const _historyLearningResponse = z.object({
     data: paginationMetaSchemaFn(historyLearning),
 });
 export type HistoryLearningResponse = z.infer<typeof _historyLearningResponse>;
+
+// get danh sách học sinh trong hệ thống (dùng để so sánh)
+export const studentList = z.object({
+    id: z.number(),
+    username: z.string(),
+    full_name: z.string(),
+    email: z.string().email(),
+});
+const _studentListResponse = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(studentList),
+});
+export type StudentListResponse = z.infer<typeof _studentListResponse>;
