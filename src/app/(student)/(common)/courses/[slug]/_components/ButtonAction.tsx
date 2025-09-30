@@ -11,6 +11,7 @@ import { useAuth } from "~/hooks/useAuth";
 import { PrerequisiteCourseDialog } from "./PrerequisiteCourseDialog";
 import { Button } from "~/components/ui/button";
 import { formatter } from "~/libs/format";
+import VerifyEmail from "./VerifyEmail";
 
 const ButtonAction = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -48,6 +49,8 @@ const ButtonAction = () => {
                         >
                             <Button variant={"outline"}>Đăng nhập để mua khóa học</Button>
                         </Link>
+                    ) : !user.email_verified_at ? (
+                        <VerifyEmail />
                     ) : course?.is_enrolled ? (
                         <>
                             <Link

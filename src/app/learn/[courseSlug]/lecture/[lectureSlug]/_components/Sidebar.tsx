@@ -120,7 +120,7 @@ const Sidebar = ({
                     </div>
 
                     {/* Certificate Button - Only show when course is 100% completed */}
-                    {course.code_certificate && user?.email_verified_at && (
+                    {course.code_certificate && (
                         <div className="mt-4">
                             <Link
                                 href={`/certificate/${course.code_certificate}`}
@@ -133,7 +133,6 @@ const Sidebar = ({
                             </Link>
                         </div>
                     )}
-                    {course.code_certificate && !user?.email_verified_at && <CertificateButton />}
 
                     {/* Exam Section */}
                     {course.exam && course.percent_completed == 100 && (
