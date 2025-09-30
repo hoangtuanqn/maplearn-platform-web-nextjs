@@ -62,10 +62,14 @@ const last7DaysItemSchema = z.object({
 export type Last7DaysItemSchema = z.infer<typeof last7DaysItemSchema>;
 
 const examAttemptSchema = z.object({
+    id: z.number(),
+    slug_exam: z.string(),
     date: z.string(),
     title: z.string(),
     score: z.number(),
     max_score: z.number(),
+    pass_score: z.number(),
+    created_at: z.string(),
 });
 export type ExamAttemptSchema = z.infer<typeof examAttemptSchema>;
 
@@ -88,7 +92,8 @@ const studyProgress7DaysSchema = z.object({
     last_learned_at: z.string().nullable(),
     highest_score: z.number().nullable(),
     completion_rate: z.number(),
-    violation_count: 0,
+    no_violation_count: z.number(),
+    violation_count: z.number(),
     chapter_progress: z.array(chapterProgressItemSchema),
     max_score_exam_paper: z.number().nullable(),
 });

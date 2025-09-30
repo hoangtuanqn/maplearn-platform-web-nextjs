@@ -6,6 +6,7 @@ import { COURSE_PER_PAGE } from "~/apiRequest/course";
 import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import DisplayTotalResult from "~/app/admin/_components/DisplayTotalResult";
+import { Badge } from "~/components/ui/badge";
 
 const HistoriesLearning = ({ slug, id }: { slug: string; id: string }) => {
     const { data: histories } = useQuery({
@@ -53,8 +54,10 @@ const HistoriesLearning = ({ slug, id }: { slug: string; id: string }) => {
                                 <td className="px-4 py-3 text-zinc-500">
                                     {his.is_completed ? 100 : Math.ceil((his.progress / his.lesson.duration) * 100)}%
                                 </td>
-                                <td className="px-4 py-3 text-zinc-500">
-                                    {his.is_completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
+                                <td className="px-4 py-3">
+                                    <Badge variant={his.is_completed ? "success" : "warning"}>
+                                        {his.is_completed ? "Đã hoàn thành" : "Chưa hoàn thành"}
+                                    </Badge>
                                 </td>
                             </tr>
                         ))}

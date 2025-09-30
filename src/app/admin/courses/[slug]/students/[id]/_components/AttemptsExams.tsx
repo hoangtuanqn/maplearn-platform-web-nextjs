@@ -1,6 +1,8 @@
+import Link from "next/link";
 import React from "react";
 import DisplayNoData from "~/app/(student)/_components/Courses/DisplayNoData";
 import DisplayTotalResult from "~/app/admin/_components/DisplayTotalResult";
+import { formatter } from "~/libs/format";
 import { ExamAttemptSchema } from "~/schemaValidate/admin/student.schema";
 
 const AttemptsExams = ({ testResults }: { testResults: ExamAttemptSchema[] }) => {
@@ -33,9 +35,22 @@ const AttemptsExams = ({ testResults }: { testResults: ExamAttemptSchema[] }) =>
                                 key={idx}
                                 className="border-b border-gray-100 transition-colors last:border-b-0 hover:bg-blue-50"
                             >
-                                <td className="px-4 py-3 text-zinc-500">{attempt.title}</td>
-                                <td className="px-4 py-3 text-zinc-500">{attempt.title}</td>
-                                <td className="px-4 py-3 text-right text-zinc-500">
+                                <td className="px-4 py-3 text-zinc-500">{idx + 1}</td>
+                                <td className="px-4 py-3 text-zinc-500">
+                                    <Link
+                                        href={`/exams/${attempt.slug_exam}/results/${attempt.id}`}
+                                        className="text-blue-500"
+                                        target="_blank"
+                                    >
+                                        {attempt.title}
+                                    </Link>
+                                </td>
+                                <td className="px-4 py-3 text-zinc-500">{formatter.date(attempt.created_at, true)}</td>
+                                <td
+                                    className={`px-4 py-3 ${
+                                        attempt.score >= attempt.pass_score ? "text-green-600" : "text-red-600"
+                                    }`}
+                                >
                                     {attempt.score}/{attempt.max_score} điểm
                                 </td>
                             </tr>

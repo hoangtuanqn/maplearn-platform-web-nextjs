@@ -21,7 +21,7 @@ const Stats = ({ studentA, studentB }: { studentA: StudyProgress7DaysSchema; stu
     const violationDataA = [
         {
             name: "Không vi phạm",
-            value: (studentA.exam_attempts?.length ?? 0) - Number(studentA.violation_count ?? 0),
+            value: Number(studentA.no_violation_count ?? 0),
             color: "#10b981",
         },
         {
@@ -34,7 +34,7 @@ const Stats = ({ studentA, studentB }: { studentA: StudyProgress7DaysSchema; stu
     const violationDataB = [
         {
             name: "Không vi phạm",
-            value: (studentB.exam_attempts?.length ?? 0) - Number(studentB.violation_count ?? 0),
+            value: Number(studentB.no_violation_count ?? 0),
             color: "#10b981",
         },
         {
@@ -268,18 +268,14 @@ const Stats = ({ studentA, studentB }: { studentA: StudyProgress7DaysSchema; stu
                                         <div className="h-2 w-2 rounded-full bg-green-500" />
                                         <span className="text-muted-foreground">Không vi phạm</span>
                                     </div>
-                                    <span className="text-foreground font-semibold">
-                                        {typeof violationDataA[0].value === "number" ? violationDataA[0].value : 0}
-                                    </span>
+                                    <span className="text-foreground font-semibold">{violationDataA[0].value}</span>
                                 </div>
                                 <div className="flex items-center justify-between text-xs">
                                     <div className="flex items-center gap-2">
                                         <div className="h-2 w-2 rounded-full bg-red-500" />
                                         <span className="text-muted-foreground">Có vi phạm</span>
                                     </div>
-                                    <span className="text-foreground font-semibold">
-                                        {typeof violationDataA[0].value === "number" ? violationDataA[0].value : 0}
-                                    </span>
+                                    <span className="text-foreground font-semibold">{violationDataA[1].value}</span>
                                 </div>
                             </div>
                         </div>
