@@ -33,7 +33,7 @@ const progressRanges = [
     { value: "26-50", label: "26% - 50%" },
     { value: "51-75", label: "51% - 75%" },
     { value: "76-99", label: "76% - 99%" },
-    { value: "100", label: "100% (Hoàn thành)" },
+    { value: "100", label: "100%" },
 ];
 
 // Completion status

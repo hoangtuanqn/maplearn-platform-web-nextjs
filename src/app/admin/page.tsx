@@ -8,7 +8,6 @@ import {
     DollarSign,
     User,
     Book,
-    // HandCoins,
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
@@ -264,19 +263,6 @@ const AdminDashboard = () => {
                                 )}
                                 đ
                             </p>
-                            {/* <div className="mt-2 flex items-center">
-                                <HandCoins className="mr-1 h-4 w-4 text-green-500" />
-                                <span className={`text-sm text-green-600`}>
-                                    +
-                                    {formatter.number(
-                                        Object.values(dashboard.total_in_this_year)[
-                                            Object.values(dashboard.total_in_this_year).length - 1
-                                        ] || 0,
-                                    )}
-                                    đ
-                                </span>
-                                <span className="ml-1 text-sm text-gray-500">tháng gần nhất</span>
-                            </div> */}
                         </div>
                         <div className="rounded-lg bg-yellow-50 p-3">
                             <DollarSign className="h-6 w-6 text-yellow-600" />
