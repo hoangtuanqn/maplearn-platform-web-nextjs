@@ -268,7 +268,7 @@ const StudentPurchasedCourses = ({ slug }: { slug: string }) => {
                                                       href={`/certificate/${student.certificate_code}`}
                                                       target="_blank"
                                                   >
-                                                      <Button variant="primary" size="sm">
+                                                      <Button variant="outline" size="sm">
                                                           Xem chứng chỉ
                                                       </Button>
                                                   </Link>

@@ -14,7 +14,7 @@ const AttemptsExams = ({ testResults }: { testResults: ExamAttemptSchema[] }) =>
                 <table className="min-w-full rounded-xl bg-white shadow-sm">
                     <thead>
                         <tr className="border-b border-gray-200">
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">STT</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Lần làm bài</th>
                             <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
                                 Tên bài kiểm tra
                             </th>

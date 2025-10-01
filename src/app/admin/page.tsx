@@ -1,6 +1,17 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Users, BookOpen, FileText, CreditCard, TrendingUp, TrendingDown, DollarSign, User, Book } from "lucide-react";
+import {
+    Users,
+    BookOpen,
+    FileText,
+    CreditCard,
+    DollarSign,
+    User,
+    Book,
+    HandCoins,
+    ChevronLeft,
+    ChevronRight,
+} from "lucide-react";
 import Link from "next/link";
 import {
     AreaChart,
@@ -19,14 +30,28 @@ import {
 import dashboardAdminApi from "~/apiRequest/admin/dashboard";
 import { formatter } from "~/libs/format";
 import DisplayAvatar from "../(student)/_components/DisplayAvatar";
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import TutorialButtonAdmin from "./_components/TutorialButtonAdmin";
-
+import { FilterDashboard } from "./_components/FilterDashboard";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import DashboardSkeleton from "./_components/DashboardSkeleton";
+const allowedFields = ["start_date", "end_date"] as const;
 const AdminDashboard = () => {
+    const { start_date, end_date } = useGetSearchQuery(allowedFields);
+    const [revenueCurrentPage, setRevenueCurrentPage] = useState(0);
+    const [activityCurrentPage, setActivityCurrentPage] = useState(0);
+    const itemsPerPage = 12; // Hiển thị 12 tháng mỗi lần
+
+    // Reset pages khi filter thay đổi
+    useEffect(() => {
+        setRevenueCurrentPage(0);
+        setActivityCurrentPage(0);
+    }, [start_date, end_date]);
+
     const { data: dashboard, isLoading } = useQuery({
-        queryKey: ["admin", "dashboard"],
+        queryKey: ["admin", "dashboard", { start_date, end_date }],
         queryFn: async () => {
-            const res = await dashboardAdminApi.getDashboard();
+            const res = await dashboardAdminApi.getDashboard(start_date ?? "", end_date ?? "");
             return res.data.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
@@ -35,11 +60,14 @@ const AdminDashboard = () => {
     // Tính toán data cho charts từ API data
     const chartData = dashboard
         ? {
-              // Dữ liệu doanh thu theo tháng từ total_in_this_year
-              revenueData: dashboard.total_in_this_year.map((revenue, index) => ({
-                  month: `T${index + 1}`,
-                  revenue: revenue,
-              })),
+              // Dữ liệu doanh thu theo tháng từ total_in_this_year (object với key là YYYY-MM)
+              allRevenueData: Object.entries(dashboard.total_in_this_year)
+                  .map(([monthKey, revenue]) => ({
+                      month: monthKey.split("-")[1] + "/" + monthKey.split("-")[0], // MM/YYYY
+                      monthKey: monthKey,
+                      revenue: revenue,
+                  }))
+                  .sort((a, b) => a.monthKey.localeCompare(b.monthKey)), // Sort tăng dần để có thứ tự đúng
 
               // Phân bố khóa học theo danh mục từ courses_by_category
               courseCategoryData: Object.entries(dashboard.courses_by_category).map(([category, count], index) => {
@@ -51,8 +79,10 @@ const AdminDashboard = () => {
                   };
               }),
 
-              // Hoạt động 4 tuần từ activity_in_4_weeks
-              weeklyEnrollmentData: dashboard.activity_in_4_weeks,
+              // Hoạt động 12 tháng từ activity_in_12_months - sắp xếp theo thứ tự thời gian
+              allActivityData: dashboard.activity_in_12_months
+                  .slice()
+                  .sort((a: any, b: any) => a.month.localeCompare(b.month)), // Sort tăng dần theo tháng
 
               // Phương thức thanh toán từ payment_methods
               paymentMethodData: Object.entries(dashboard.payment_methods).map(([method, count]) => {
@@ -79,32 +109,51 @@ const AdminDashboard = () => {
           }
         : null;
 
-    // Tính phần trăm tăng trưởng
-    const calculateGrowth = (current: number, previous: number) => {
-        if (previous === 0) return 0;
-        return Math.round(((current - previous) / previous) * 100);
-    };
+    // Tính toán dữ liệu phân trang cho biểu đồ doanh thu - Dữ liệu mới nhất ở bên phải
+    const revenueDataForChart = chartData
+        ? (() => {
+              const totalItems = chartData.allRevenueData.length;
+              const totalPagesCount = Math.ceil(totalItems / itemsPerPage);
 
-    const lastMonthRevenue = dashboard?.total_last_month || 0;
-    const currentMonthRevenue = dashboard?.total_in_this_year[new Date().getMonth()] || 0;
-    const revenueGrowth = calculateGrowth(currentMonthRevenue, lastMonthRevenue);
+              // Tính toán để dữ liệu mới nhất luôn ở bên phải
+              // Trang cuối cùng (index cao nhất) = dữ liệu mới nhất
+              const pageFromEnd = totalPagesCount - 1 - revenueCurrentPage;
+              const endIndex = totalItems - pageFromEnd * itemsPerPage;
+              const startIndex = Math.max(0, endIndex - itemsPerPage);
 
+              return chartData.allRevenueData.slice(startIndex, endIndex);
+          })()
+        : [];
+
+    const revenueTotalPages = chartData ? Math.ceil(chartData.allRevenueData.length / itemsPerPage) : 0;
+    const showRevenuePagination = chartData ? chartData.allRevenueData.length > itemsPerPage : false;
+
+    // Tính toán dữ liệu phân trang cho biểu đồ hoạt động - Dữ liệu mới nhất ở bên phải
+    const activityDataForChart = chartData
+        ? (() => {
+              const totalItems = chartData.allActivityData.length;
+              const totalPagesCount = Math.ceil(totalItems / itemsPerPage);
+
+              // Tính toán để dữ liệu mới nhất luôn ở bên phải
+              // Trang cuối cùng (index cao nhất) = dữ liệu mới nhất
+              const pageFromEnd = totalPagesCount - 1 - activityCurrentPage;
+              const endIndex = totalItems - pageFromEnd * itemsPerPage;
+              const startIndex = Math.max(0, endIndex - itemsPerPage);
+
+              return chartData.allActivityData.slice(startIndex, endIndex);
+          })()
+        : [];
+
+    const activityTotalPages = chartData ? Math.ceil(chartData.allActivityData.length / itemsPerPage) : 0;
+    const showActivityPagination = chartData ? chartData.allActivityData.length > itemsPerPage : false;
+    useEffect(() => {
+        if (revenueTotalPages > 0) {
+            setRevenueCurrentPage(revenueTotalPages - 1);
+        }
+        console.log("run");
+    }, [revenueTotalPages]);
     if (isLoading) {
-        return (
-            <div className="min-h-screen bg-white p-6">
-                <div className="animate-pulse">
-                    <div className="mb-8">
-                        <div className="mb-2 h-8 w-64 rounded bg-gray-200"></div>
-                        <div className="h-4 w-96 rounded bg-gray-200"></div>
-                    </div>
-                    <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
-                        {[...Array(4)].map((_, i) => (
-                            <div key={i} className="h-32 rounded-lg bg-gray-200"></div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
+        return <DashboardSkeleton />;
     }
 
     if (!dashboard) return null;
@@ -115,22 +164,25 @@ const AdminDashboard = () => {
             <div className="mb-8 flex items-center justify-between">
                 <div>
                     <h1 className="mb-2 text-3xl font-bold text-gray-900">Quản trị hệ thống MapLearn</h1>
-                    <p className="text-gray-600">Tổng quan về hệ thống MapLearn Platform</p>
+                    <p className="text-gray-600">
+                        Tổng quan về hệ thống MapLearn Platform <b className="font-bold">trong 12 tháng qua</b>
+                    </p>
                 </div>
-                <div>
+                <div className="flex items-center gap-2">
                     <Suspense>
                         <TutorialButtonAdmin />
                     </Suspense>
+                    <FilterDashboard />
                 </div>
             </div>
 
             {/* Thống kê tổng quan - 4 Cards chính */}
             <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
-                {/* Tổng người dùng */}
+                {/* Người đăng ký */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Tổng Người Dùng</p>
+                            <p className="text-sm font-medium text-gray-600">Người đăng ký</p>
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_users.toLocaleString()}</p>
                             <div className="mt-2 flex items-center">
                                 <User className="mr-1 h-4 w-4 text-green-500" />
@@ -144,11 +196,11 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Tổng khóa học */}
+                {/* Số khóa học */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Tổng Khóa Học</p>
+                            <p className="text-sm font-medium text-gray-600">Số khóa học</p>
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_courses}</p>
                             <div className="mt-2 flex items-center">
                                 <BookOpen className="mr-1 h-4 w-4 text-green-500" />
@@ -162,11 +214,11 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Tổng đề thi */}
+                {/* Số đề thi */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Tổng Đề Thi</p>
+                            <p className="text-sm font-medium text-gray-600">Số đề thi</p>
                             <p className="text-2xl font-bold text-gray-900">{dashboard.total_exams}</p>
                             <div className="mt-2 flex items-center">
                                 <Book className="mr-1 h-4 w-4 text-green-500" />
@@ -184,21 +236,28 @@ const AdminDashboard = () => {
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Doanh Thu tháng này</p>
+                            <p className="text-sm font-medium text-gray-600">Doanh Thu</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {formatter.number(dashboard.total_in_this_year[new Date().getMonth()])}
+                                {formatter.number(
+                                    Object.values(dashboard.total_in_this_year).reduce(
+                                        (a: number, b: number) => a + b,
+                                        0,
+                                    ),
+                                )}
+                                đ
                             </p>
                             <div className="mt-2 flex items-center">
-                                {revenueGrowth >= 0 ? (
-                                    <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
-                                ) : (
-                                    <TrendingDown className="mr-1 h-4 w-4 text-red-500" />
-                                )}
-                                <span className={`text-sm ${revenueGrowth >= 0 ? "text-green-600" : "text-red-600"}`}>
-                                    {revenueGrowth >= 0 ? "+" : ""}
-                                    {revenueGrowth}%
+                                <HandCoins className="mr-1 h-4 w-4 text-green-500" />
+                                <span className={`text-sm text-green-600`}>
+                                    +
+                                    {formatter.number(
+                                        Object.values(dashboard.total_in_this_year)[
+                                            Object.values(dashboard.total_in_this_year).length - 1
+                                        ] || 0,
+                                    )}
+                                    đ
                                 </span>
-                                <span className="ml-1 text-sm text-gray-500">so với tháng trước</span>
+                                <span className="ml-1 text-sm text-gray-500">tháng gần nhất</span>
                             </div>
                         </div>
                         <div className="rounded-lg bg-yellow-50 p-3">
@@ -213,13 +272,48 @@ const AdminDashboard = () => {
                 {/* Biểu đồ doanh thu theo tháng */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
                     <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-base font-semibold text-gray-900">Doanh Thu 12 Tháng</h3>
-                        <div className="text-sm text-gray-500">VNĐ</div>
+                        <div>
+                            <h3 className="text-base font-semibold text-gray-900">Doanh Thu</h3>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="text-sm text-gray-500">VNĐ</div>
+                            {revenueDataForChart.length > 0 && (
+                                <div className="text-xs text-gray-400">
+                                    {revenueDataForChart.length} tháng: {revenueDataForChart[0].month} đến{" "}
+                                    {revenueDataForChart[revenueDataForChart.length - 1].month}
+                                </div>
+                            )}
+                            {showRevenuePagination && (
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        onClick={() => setRevenueCurrentPage((prev) => Math.max(0, prev - 1))}
+                                        disabled={revenueCurrentPage === 0}
+                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        title="Xem dữ liệu cũ hơn (về trái)"
+                                    >
+                                        <ChevronLeft className="h-4 w-4" />
+                                    </button>
+                                    <span className="px-2 text-sm text-gray-600">
+                                        {revenueCurrentPage + 1}/{revenueTotalPages}
+                                    </span>
+                                    <button
+                                        onClick={() =>
+                                            setRevenueCurrentPage((prev) => Math.min(revenueTotalPages - 1, prev + 1))
+                                        }
+                                        disabled={revenueCurrentPage === revenueTotalPages - 1}
+                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        title="Về dữ liệu mới hơn (về phải)"
+                                    >
+                                        <ChevronRight className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="h-80">
                         {chartData && (
                             <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={chartData.revenueData}>
+                                <AreaChart data={revenueDataForChart}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                                     <XAxis
                                         dataKey="month"
@@ -301,16 +395,57 @@ const AdminDashboard = () => {
                 {/* Biểu đồ hoạt động hàng tuần */}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
                     <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-base font-semibold text-gray-900">Hoạt Động 4 Tuần Gần Đây</h3>
-                        <div className="text-sm text-gray-500">Khóa học, Đề thi, Người dùng mới</div>
+                        <div>
+                            <h3 className="text-base font-semibold text-gray-900">Hoạt Động</h3>
+                            {showActivityPagination && (
+                                <p className="text-xs font-medium text-purple-600">
+                                    📈 Hiển thị {activityDataForChart.length}/12 tháng - Có {activityTotalPages} trang
+                                    dữ liệu
+                                </p>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="text-sm text-gray-500">Khóa học, Đề thi, Người dùng mới</div>
+                            {activityDataForChart.length > 0 && (
+                                <div className="text-xs text-gray-400">
+                                    {activityDataForChart.length} tháng: {activityDataForChart[0].month} đến{" "}
+                                    {activityDataForChart[activityDataForChart.length - 1].month}
+                                </div>
+                            )}
+                            {showActivityPagination && (
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        onClick={() => setActivityCurrentPage((prev) => Math.max(0, prev - 1))}
+                                        disabled={activityCurrentPage === 0}
+                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        title="Xem dữ liệu cũ hơn (về trái)"
+                                    >
+                                        <ChevronLeft className="h-4 w-4" />
+                                    </button>
+                                    <span className="px-2 text-sm text-gray-600">
+                                        {activityCurrentPage + 1}/{activityTotalPages}
+                                    </span>
+                                    <button
+                                        onClick={() =>
+                                            setActivityCurrentPage((prev) => Math.min(activityTotalPages - 1, prev + 1))
+                                        }
+                                        disabled={activityCurrentPage === activityTotalPages - 1}
+                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        title="Về dữ liệu mới hơn (về phải)"
+                                    >
+                                        <ChevronRight className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="h-80">
                         {chartData && (
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={chartData.weeklyEnrollmentData}>
+                                <BarChart data={activityDataForChart}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                                     <XAxis
-                                        dataKey="week"
+                                        dataKey="month"
                                         tick={{ fontSize: 12, fill: "#64748b" }}
                                         tickLine={{ stroke: "#e2e8f0" }}
                                     />

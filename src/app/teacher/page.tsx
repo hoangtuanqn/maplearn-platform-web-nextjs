@@ -87,7 +87,8 @@ const TeacherPage = () => {
                             <div className="mt-2 flex items-center">
                                 <BookOpen className="mr-1 h-4 w-4 text-green-500" />
                                 <span className="text-sm text-green-600">
-                                    +{dashboard.activity_in_4_weeks.reduce((acc, week) => acc + week.new_courses, 0)}
+                                    +
+                                    {dashboard.activity_in_12_months.reduce((acc, month) => acc + month.new_courses, 0)}
                                 </span>
                                 <span className="ml-1 text-sm text-gray-500">khóa học mới</span>
                             </div>
@@ -107,7 +108,7 @@ const TeacherPage = () => {
                             <div className="mt-2 flex items-center">
                                 <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
                                 <span className="text-sm text-green-600">
-                                    +{dashboard.activity_in_4_weeks.reduce((acc, week) => acc + week.new_exams, 0)}
+                                    +{dashboard.activity_in_12_months.reduce((acc, month) => acc + month.new_exams, 0)}
                                 </span>
                                 <span className="ml-1 text-sm text-gray-500">đề thi mới</span>
                             </div>

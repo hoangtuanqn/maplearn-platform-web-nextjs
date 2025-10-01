@@ -2,7 +2,6 @@ import z from "zod";
 
 const dashboardSchema = z.object({
     total: z.number(),
-    total_in_12_months: z.number(),
     total_last_month: z.number(),
     total_in_this_year: z.array(z.number()).length(12),
     total_courses: z.number(),
@@ -37,9 +36,9 @@ const dashboardSchema = z.object({
             revenue: z.number(),
         }),
     ),
-    activity_in_4_weeks: z.array(
+    activity_in_12_months: z.array(
         z.object({
-            week: z.string(),
+            month: z.string(),
             new_courses: z.number(),
             new_students: z.number(),
             new_exams: z.number(),
