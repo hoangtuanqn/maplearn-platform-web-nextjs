@@ -20,13 +20,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { notificationErrorApi } from "~/libs/apis/http";
 import Loading from "~/app/(student)/_components/Loading";
-import { Plus } from "lucide-react";
-import { Textarea } from "~/components/ui/textarea";
+import { Edit } from "lucide-react";
 import { Switch } from "~/components/ui/switch";
+import { Textarea } from "~/components/ui/textarea";
 import courseAdminApi from "~/apiRequest/admin/course";
 import { formatter } from "~/libs/format";
-// Schema validation
-const addLessonSchema = z.object({
+// Schema validation - giống AddLessonDialog
+const editLessonSchema = z.object({
     title: z
         .string()
         .min(15, { message: "Tiêu đề bài học phải có ít nhất 15 ký tự." })
@@ -48,51 +48,51 @@ const addLessonSchema = z.object({
     is_free: z.boolean(),
 });
 
-type AddLessonFormData = z.infer<typeof addLessonSchema>;
-export function AddLessonDialog({
-    slugCourse,
-    chapterId,
-    nameChapterCourse,
-    maxPosition,
-    style,
+type EditLessonFormData = z.infer<typeof editLessonSchema>;
+export function EditLessonDialog({
+    lesson,
 }: {
-    slugCourse: string;
-    chapterId: number;
-    nameChapterCourse: string;
-    maxPosition: number;
-    style: number;
+    lesson: {
+        slug: string;
+        title: string;
+        content: string;
+        position: number;
+        duration: number;
+        is_free: boolean;
+        video_url: string;
+    };
 }) {
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
 
-    const form = useForm<AddLessonFormData>({
-        resolver: zodResolver(addLessonSchema),
+    const form = useForm<EditLessonFormData>({
+        resolver: zodResolver(editLessonSchema),
         defaultValues: {
-            title: "",
-            content: "",
-            video_url: "",
-            position: maxPosition + 1,
-            duration: 15,
-            is_free: false,
+            title: lesson.title,
+            content: lesson.content,
+            video_url: lesson.video_url,
+            position: lesson.position,
+            duration: lesson.duration,
+            is_free: lesson.is_free,
         },
     });
-    // Mutation for adding lesson
-    const addLessonMutation = useMutation({
-        mutationFn: async (data: AddLessonFormData) => {
-            const res = await courseAdminApi.createLesson(chapterId, data);
+
+    // Mutation for editing lesson
+    const editLessonMutation = useMutation({
+        mutationFn: async (data: EditLessonFormData) => {
+            const res = await courseAdminApi.editLesson(lesson.slug, data);
             return res.data.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["course", "chapters", slugCourse] });
-            toast.success("Thêm bài học mới thành công!");
-            form.reset();
+            toast.success("Cập nhật bài học thành công!");
             setOpen(false);
+            queryClient.invalidateQueries({ queryKey: ["course", "chapters"] });
         },
         onError: notificationErrorApi,
     });
 
-    const onSubmit = (values: AddLessonFormData) => {
-        addLessonMutation.mutate(values);
+    const onSubmit = (values: EditLessonFormData) => {
+        editLessonMutation.mutate(values);
     };
 
     const fillSampleData = () => {
@@ -102,7 +102,7 @@ export function AddLessonDialog({
             "Trong bài học này, chúng ta sẽ tổng hợp các kiến thức trọng tâm của môn Vật lý lớp 12 như điện xoay chiều, sóng cơ, sóng âm, lượng tử ánh sáng và hạt nhân nguyên tử. Bài học giúp học sinh chuẩn bị tốt cho kỳ thi THPT Quốc gia.",
         );
         form.setValue("video_url", "http://localhost:3000/video.mp4");
-        form.setValue("position", maxPosition + 1);
+        form.setValue("position", lesson.position);
         form.setValue("duration", 2700); // 45 phút
         form.setValue("is_free", false);
     };
@@ -111,47 +111,29 @@ export function AddLessonDialog({
         setOpen(newOpen);
         if (!newOpen) {
             form.reset({
-                title: "",
-                content: "",
-                video_url: "",
-                position: maxPosition + 1,
-                duration: 0,
-                is_free: false,
+                title: lesson.title,
+                content: lesson.content,
+                video_url: lesson.video_url,
+                position: lesson.position,
+                duration: lesson.duration,
+                is_free: lesson.is_free,
             });
         }
     };
     return (
         <>
-            {addLessonMutation.isPending && <Loading />}
+            {editLessonMutation.isPending && <Loading />}
             <Dialog open={open} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
-                    {style === 1 ? (
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex items-center gap-1"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <Plus className="h-3 w-3" />
-                            Thêm bài học
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex w-full items-center justify-center gap-2 border-dashed text-gray-600"
-                        >
-                            <Plus className="h-4 w-4" />
-                            Thêm bài học vào chương này
-                        </Button>
-                    )}
+                    <Button variant="ghost" size="sm">
+                        <Edit className="h-4 w-4 text-blue-600" />
+                    </Button>
                 </DialogTrigger>
                 <DialogContent className="max-h-[90vh] overflow-y-auto bg-white sm:max-w-[800px]">
                     <DialogHeader>
-                        <DialogTitle>Thêm bài học mới</DialogTitle>
+                        <DialogTitle>Chỉnh sửa bài học</DialogTitle>
                         <DialogDescription>
-                            Thêm bài học mới vào chương{" "}
-                            <span className="text-primary font-bold uppercase">{nameChapterCourse}</span>
+                            Cập nhật thông tin bài học: <span className="text-primary font-bold">{lesson.title}</span>
                         </DialogDescription>
                         <Button className="mb-2 ml-auto text-white" onClick={fillSampleData}>
                             Điền dữ liệu mẫu
@@ -212,7 +194,6 @@ export function AddLessonDialog({
                                                     {...field}
                                                 />
                                             </FormControl>
-
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -276,26 +257,20 @@ export function AddLessonDialog({
                                     )}
                                 />
                             </div>
-                            {/* Alert thông báo: Sẽ gửi email cho tất cả học viên đã đăng ký */}
-                            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-                                <p className="text-sm text-yellow-800">
-                                    Hệ thống sẽ tự động gửi email cho tất cả học viên đã đăng ký khi bài giảng được thêm
-                                    mới.
-                                </p>
-                            </div>
+
                             <DialogFooter>
                                 <DialogClose asChild>
-                                    <Button type="button" variant="outline" disabled={addLessonMutation.isPending}>
+                                    <Button type="button" variant="outline" disabled={editLessonMutation.isPending}>
                                         Hủy
                                     </Button>
                                 </DialogClose>
                                 <Button
                                     type="submit"
-                                    disabled={addLessonMutation.isPending}
+                                    disabled={editLessonMutation.isPending}
                                     className="text-white"
                                     onClick={form.handleSubmit(onSubmit)}
                                 >
-                                    Thêm bài học
+                                    Cập nhật bài học
                                 </Button>
                             </DialogFooter>
                         </form>

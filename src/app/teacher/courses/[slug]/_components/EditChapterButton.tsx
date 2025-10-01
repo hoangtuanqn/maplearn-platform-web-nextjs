@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Plus } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
     Dialog,
@@ -24,7 +24,7 @@ import Loading from "~/app/(student)/_components/Loading";
 import courseAdminApi from "~/apiRequest/admin/course";
 
 // Schema validation
-const addChapterSchema = z.object({
+const editChapterSchema = z.object({
     title: z
         .string()
         .min(10, { message: "Tên chương phải có ít nhất 10 ký tự." })
@@ -32,83 +32,72 @@ const addChapterSchema = z.object({
     position: z.number().min(1, { message: "Vị trí phải lớn hơn 0." }).max(30, { message: "Vị trí phải nhỏ hơn 30." }),
 });
 
-type AddChapterFormData = z.infer<typeof addChapterSchema>;
+type EditChapterFormData = z.infer<typeof editChapterSchema>;
 
-export function AddChapterDialog({
-    courseSlug,
-    maxPosition,
-    style,
+export function EditChapterButton({
+    chapterId,
+    nameChapterCourse,
+    currentPosition,
 }: {
-    courseSlug: string;
-    maxPosition: number;
-    style: number;
+    chapterId: number;
+    nameChapterCourse: string;
+    currentPosition: number;
 }) {
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
 
-    const form = useForm<AddChapterFormData>({
-        resolver: zodResolver(addChapterSchema),
+    const form = useForm<EditChapterFormData>({
+        resolver: zodResolver(editChapterSchema),
         defaultValues: {
-            title: "",
-            position: maxPosition + 1,
+            title: nameChapterCourse,
+            position: currentPosition,
         },
         mode: "onBlur",
     });
 
-    // Mutation for adding chapter
-    const addChapterMutation = useMutation({
-        mutationFn: async (data: AddChapterFormData) => {
-            const res = await courseAdminApi.addChapter({
-                course_slug: courseSlug,
-                ...data,
-            });
+    // Mutation for editing chapter
+    const editChapterMutation = useMutation({
+        mutationFn: async (data: EditChapterFormData) => {
+            const res = await courseAdminApi.editChapter(chapterId, data);
             return res.data.data;
         },
         onSuccess: () => {
-            toast.success("Thêm chương mới thành công!");
-            queryClient.invalidateQueries({ queryKey: ["course", "chapters", courseSlug] });
-            form.reset();
+            toast.success("Cập nhật chương thành công!");
+            queryClient.invalidateQueries({ queryKey: ["course", "chapters"] });
             setOpen(false);
         },
         onError: notificationErrorApi,
     });
 
-    const onSubmit = (values: AddChapterFormData) => {
-        addChapterMutation.mutate(values);
+    const onSubmit = (values: EditChapterFormData) => {
+        editChapterMutation.mutate(values);
     };
 
     const handleOpenChange = (newOpen: boolean) => {
         setOpen(newOpen);
         if (!newOpen) {
-            form.reset();
+            form.reset({
+                title: nameChapterCourse,
+                position: currentPosition,
+            });
         }
     };
 
     return (
         <>
-            {addChapterMutation.isPending && <Loading />}
+            {editChapterMutation.isPending && <Loading />}
             <Dialog open={open} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
-                    {style == 1 ? (
-                        <Button className="flex items-center gap-2 text-white">
-                            <Plus className="h-4 w-4" />
-                            Thêm chương mới
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="outline"
-                            className="flex h-12 w-full items-center justify-center gap-2 border-dashed text-gray-600"
-                        >
-                            <Plus className="h-5 w-5" />
-                            Thêm chương học mới
-                        </Button>
-                    )}
+                    <Button variant="outline" size="sm" className="flex items-center gap-2">
+                        <Pencil className="h-4 w-4" />
+                        Sửa
+                    </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-white sm:max-w-[500px]">
                     <DialogHeader>
-                        <DialogTitle>Thêm chương mới</DialogTitle>
+                        <DialogTitle>Chỉnh sửa chương</DialogTitle>
                         <DialogDescription>
-                            Thêm chương học mới vào khóa học. Vui lòng điền đầy đủ thông tin.
+                            Cập nhật thông tin chương học. Vui lòng điền đầy đủ thông tin.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -157,17 +146,17 @@ export function AddChapterDialog({
 
                             <DialogFooter>
                                 <DialogClose asChild>
-                                    <Button type="button" variant="outline" disabled={addChapterMutation.isPending}>
+                                    <Button type="button" variant="outline" disabled={editChapterMutation.isPending}>
                                         Hủy
                                     </Button>
                                 </DialogClose>
                                 <Button
                                     type="submit"
-                                    disabled={addChapterMutation.isPending}
+                                    disabled={editChapterMutation.isPending}
                                     className="text-white"
                                     onClick={form.handleSubmit(onSubmit)}
                                 >
-                                    Thêm chương
+                                    Cập nhật chương
                                 </Button>
                             </DialogFooter>
                         </form>
