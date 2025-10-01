@@ -24,7 +24,6 @@ import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/cou
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import ChatBotAI from "./ChatBotAI";
-import Comments from "./Comments";
 
 const Sidebar = ({
     course,
@@ -68,19 +67,7 @@ const Sidebar = ({
                         <span>Nội dung</span>
                     </div>
                 </button>
-                <button
-                    onClick={() => setActiveTab("comments")}
-                    className={`relative flex-1 cursor-pointer px-4 py-4 text-sm font-semibold ${
-                        activeTab === "comments"
-                            ? "text-primary bg-white"
-                            : "text-gray-600 hover:bg-white/60 hover:text-gray-900"
-                    }`}
-                >
-                    <div className="flex items-center justify-center gap-2">
-                        <MessageCircle className="h-4 w-4" />
-                        <span>Bình luận</span>
-                    </div>
-                </button>
+
                 <button
                     onClick={() => setActiveTab("resources")}
                     className={`relative flex-1 cursor-pointer px-4 py-4 text-sm font-semibold ${
@@ -437,8 +424,6 @@ const Sidebar = ({
                         </div>
                     </div>
                 )}
-
-                {activeTab === "comments" && <Comments />}
 
                 {activeTab === "resources" && <ChatBotAI lesson={lesson} courseName={course.name} />}
             </div>

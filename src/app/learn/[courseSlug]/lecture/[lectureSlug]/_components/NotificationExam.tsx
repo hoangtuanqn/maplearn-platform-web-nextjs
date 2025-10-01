@@ -16,12 +16,6 @@ interface NotificationExamProps {
     course: CourseDetailResponse["data"];
 }
 
-/**
- * Primary-themed Notification for Exam
- * - Uses shadcn/ui tokens (primary, background, ring, muted-foreground)
- * - Accessible roles/labels
- * - Subtle motion via CSS utilities (no extra deps)
- */
 export function NotificationExam({ course }: NotificationExamProps) {
     const [open, setOpen] = useState(false);
 
