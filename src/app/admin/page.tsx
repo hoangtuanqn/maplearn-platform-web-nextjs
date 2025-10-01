@@ -8,7 +8,7 @@ import {
     DollarSign,
     User,
     Book,
-    HandCoins,
+    // HandCoins,
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";

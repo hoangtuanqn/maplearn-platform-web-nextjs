@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { ChevronDown, ChevronRight, Edit } from "lucide-react";
-import { Button } from "~/components/ui/button";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import courseApi from "~/apiRequest/course";
 import { formatter } from "~/libs/format";
@@ -11,6 +10,7 @@ import DeleteLessonButton from "./DeleteLessonButton";
 import DeleteChapterButton from "./DeleteChapterButton";
 import Loading from "~/app/(student)/_components/Loading";
 import { EditChapterButton } from "./EditChapterButton";
+import { EditLessonDialog } from "./EditLessonDialog";
 
 const ChaptersList = ({ slug }: { slug: string }) => {
     const { data: chapters } = useQuery({
@@ -115,9 +115,17 @@ const ChaptersList = ({ slug }: { slug: string }) => {
                                         </div>
 
                                         <div className="flex items-center gap-2">
-                                            <Button variant="ghost" size="sm">
-                                                <Edit className="h-4 w-4 text-blue-600" />
-                                            </Button>
+                                            <EditLessonDialog
+                                                lesson={{
+                                                    slug: lesson.slug,
+                                                    title: lesson.title,
+                                                    content: lesson.content,
+                                                    position: lesson.position,
+                                                    duration: lesson.duration,
+                                                    is_free: lesson.is_free,
+                                                    video_url: lesson.video_url,
+                                                }}
+                                            />
                                             <DeleteLessonButton
                                                 slugCourse={slug}
                                                 slugLesson={lesson.slug}

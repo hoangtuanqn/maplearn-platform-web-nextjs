@@ -3,6 +3,7 @@ import Sidebar from "./_components/Sidebar";
 import { Toaster } from "sonner";
 import Header from "./_components/Header";
 import Script from "next/script";
+import { Suspense } from "react";
 
 const LayoutAdminRoot = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -13,7 +14,7 @@ const LayoutAdminRoot = ({ children }: { children: React.ReactNode }) => {
                     <Sidebar />
                     <main className="min-h-screen 2xl:ml-65">
                         <Header />
-                        {children}
+                        <Suspense>{children}</Suspense>
                     </main>
                 </section>
             </LayoutGetInfoMe>

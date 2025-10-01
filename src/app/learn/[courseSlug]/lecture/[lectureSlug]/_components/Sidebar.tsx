@@ -24,6 +24,7 @@ import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/cou
 import { formatter } from "~/libs/format";
 import Link from "next/link";
 import ChatBotAI from "./ChatBotAI";
+import Comments from "./Comments";
 
 const Sidebar = ({
     course,
@@ -437,14 +438,7 @@ const Sidebar = ({
                     </div>
                 )}
 
-                {activeTab === "comments" && (
-                    <div className="p-4">
-                        <div className="py-8 text-center">
-                            <MessageCircle className="mx-auto mb-3 h-12 w-12 text-gray-400" />
-                            <p className="text-gray-600">Chức năng bình luận đang được phát triển</p>
-                        </div>
-                    </div>
-                )}
+                {activeTab === "comments" && <Comments />}
 
                 {activeTab === "resources" && <ChatBotAI lesson={lesson} courseName={course.name} />}
             </div>
