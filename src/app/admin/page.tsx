@@ -79,10 +79,17 @@ const AdminDashboard = () => {
                   };
               }),
 
-              // Hoạt động 12 tháng từ activity_in_12_months - sắp xếp theo thứ tự thời gian
+              // Hoạt động 12 tháng từ activity_in_12_months - format và sắp xếp theo thứ tự thời gian
               allActivityData: dashboard.activity_in_12_months
-                  .slice()
-                  .sort((a: any, b: any) => a.month.localeCompare(b.month)), // Sort tăng dần theo tháng
+                  .map((item: any) => {
+                      const [month, year] = item.month.split("-"); // "01-2025" -> ["01", "2025"]
+                      return {
+                          ...item,
+                          month: month + "/" + year, // MM/YYYY format giống revenue
+                          monthKey: year + "-" + month, // YYYY-MM để sort đúng thứ tự thời gian
+                      };
+                  })
+                  .sort((a: any, b: any) => a.monthKey.localeCompare(b.monthKey)), // Sort tăng dần theo YYYY-MM
 
               // Phương thức thanh toán từ payment_methods - cấu trúc mới có count và total
               paymentMethodData: Object.entries(dashboard.payment_methods).map(([method, data]) => {
@@ -159,8 +166,10 @@ const AdminDashboard = () => {
         if (revenueTotalPages > 0) {
             setRevenueCurrentPage(revenueTotalPages - 1);
         }
-        console.log("run");
-    }, [revenueTotalPages]);
+        if (activityTotalPages > 0) {
+            setActivityCurrentPage(activityTotalPages - 1);
+        }
+    }, [revenueTotalPages, activityTotalPages]);
     if (isLoading) {
         return <DashboardSkeleton />;
     }
@@ -255,7 +264,7 @@ const AdminDashboard = () => {
                                 )}
                                 đ
                             </p>
-                            <div className="mt-2 flex items-center">
+                            {/* <div className="mt-2 flex items-center">
                                 <HandCoins className="mr-1 h-4 w-4 text-green-500" />
                                 <span className={`text-sm text-green-600`}>
                                     +
@@ -267,7 +276,7 @@ const AdminDashboard = () => {
                                     đ
                                 </span>
                                 <span className="ml-1 text-sm text-gray-500">tháng gần nhất</span>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="rounded-lg bg-yellow-50 p-3">
                             <DollarSign className="h-6 w-6 text-yellow-600" />
@@ -277,9 +286,9 @@ const AdminDashboard = () => {
             </div>
 
             {/* Biểu đồ chính - Row 1: Doanh thu và Danh mục khóa học */}
-            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-2">
+            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
                 {/* Biểu đồ doanh thu theo tháng */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
+                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
                     <div className="mb-4 flex items-center justify-between">
                         <div>
                             <h3 className="text-base font-semibold text-gray-900">Doanh Thu</h3>
@@ -297,7 +306,7 @@ const AdminDashboard = () => {
                                     <button
                                         onClick={() => setRevenueCurrentPage((prev) => Math.max(0, prev - 1))}
                                         disabled={revenueCurrentPage === 0}
-                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                                         title="Xem dữ liệu cũ hơn (về trái)"
                                     >
                                         <ChevronLeft className="h-4 w-4" />
@@ -310,7 +319,7 @@ const AdminDashboard = () => {
                                             setRevenueCurrentPage((prev) => Math.min(revenueTotalPages - 1, prev + 1))
                                         }
                                         disabled={revenueCurrentPage === revenueTotalPages - 1}
-                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                                         title="Về dữ liệu mới hơn (về phải)"
                                     >
                                         <ChevronRight className="h-4 w-4" />
@@ -401,17 +410,11 @@ const AdminDashboard = () => {
 
             {/* Biểu đồ và thống kê - Row 2 */}
             <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
-                {/* Biểu đồ hoạt động hàng tuần */}
+                {/* Biểu đồ hoạt động*/}
                 <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
                     <div className="mb-4 flex items-center justify-between">
                         <div>
                             <h3 className="text-base font-semibold text-gray-900">Hoạt Động</h3>
-                            {showActivityPagination && (
-                                <p className="text-xs font-medium text-purple-600">
-                                    📈 Hiển thị {activityDataForChart.length}/12 tháng - Có {activityTotalPages} trang
-                                    dữ liệu
-                                </p>
-                            )}
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="text-sm text-gray-500">Khóa học, Đề thi, Người dùng mới</div>
@@ -426,7 +429,7 @@ const AdminDashboard = () => {
                                     <button
                                         onClick={() => setActivityCurrentPage((prev) => Math.max(0, prev - 1))}
                                         disabled={activityCurrentPage === 0}
-                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                                         title="Xem dữ liệu cũ hơn (về trái)"
                                     >
                                         <ChevronLeft className="h-4 w-4" />
@@ -439,7 +442,7 @@ const AdminDashboard = () => {
                                             setActivityCurrentPage((prev) => Math.min(activityTotalPages - 1, prev + 1))
                                         }
                                         disabled={activityCurrentPage === activityTotalPages - 1}
-                                        className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                                         title="Về dữ liệu mới hơn (về phải)"
                                     >
                                         <ChevronRight className="h-4 w-4" />

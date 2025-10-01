@@ -1,6 +1,5 @@
 "use client";
 import { driver, type DriveStep } from "driver.js";
-import "driver.js/dist/driver.css";
 import { Button } from "~/components/ui/button";
 
 export default function TutorialButtonAdmin() {
@@ -9,7 +8,7 @@ export default function TutorialButtonAdmin() {
             element: "#dashboard-stats",
             popover: {
                 title: "Thông tin thống kê",
-                description: "Thống kê dữ liệu tổng quan của hệ thống dành cho quản trị viên.",
+                description: "Thống kê dữ liệu tổng quan của hệ thố ng dành cho quản trị viên.",
             },
         },
         {
@@ -79,7 +78,7 @@ export default function TutorialButtonAdmin() {
     };
 
     return (
-        <Button variant="outline" onClick={handleStart}>
+        <Button variant="primary" onClick={handleStart}>
             Hướng dẫn sử dụng
         </Button>
     );

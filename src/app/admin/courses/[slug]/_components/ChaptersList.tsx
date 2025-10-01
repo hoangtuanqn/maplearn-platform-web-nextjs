@@ -10,6 +10,7 @@ import { AddLessonDialog } from "./AddLessonDialog";
 import DeleteLessonButton from "./DeleteLessonButton";
 import DeleteChapterButton from "./DeleteChapterButton";
 import Loading from "~/app/(student)/_components/Loading";
+import { EditChapterButton } from "./EditChapterButton";
 
 const ChaptersList = ({ slug }: { slug: string }) => {
     const { data: chapters } = useQuery({
@@ -49,21 +50,23 @@ const ChaptersList = ({ slug }: { slug: string }) => {
                 {chapters.map((chapter, chapterIndex) => (
                     <div key={chapter.id} className="overflow-hidden rounded-lg border border-gray-200 shadow-xs">
                         {/* Chapter Header */}
-                        <div
-                            className="bg-gray-80 flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-blue-50"
-                            onClick={() => toggleChapter(chapter.id)} // Sửa lại sự kiện onClick cho logic toggle
-                        >
-                            <div className="flex items-center gap-3">
-                                {expandedChapters.includes(chapter.id) ? (
-                                    <ChevronDown className="h-5 w-5 text-blue-600" />
-                                ) : (
-                                    <ChevronRight className="h-5 w-5 text-gray-600" />
-                                )}
-                                <div>
-                                    <h3 className="font-medium text-gray-900">
-                                        Chương {chapterIndex + 1}: {chapter.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-500">{chapter.lessons.length} bài học</p>
+                        <div className="bg-gray-80 flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-blue-50">
+                            <div
+                                className="w-full"
+                                onClick={() => toggleChapter(chapter.id)} // Sửa lại sự kiện onClick cho logic toggle
+                            >
+                                <div className="flex items-center gap-3">
+                                    {expandedChapters.includes(chapter.id) ? (
+                                        <ChevronDown className="h-5 w-5 text-blue-600" />
+                                    ) : (
+                                        <ChevronRight className="h-5 w-5 text-gray-600" />
+                                    )}
+                                    <div>
+                                        <h3 className="font-medium text-gray-900">
+                                            Chương {chapterIndex + 1}: {chapter.title}
+                                        </h3>
+                                        <p className="text-sm text-gray-500">{chapter.lessons.length} bài học</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -75,9 +78,12 @@ const ChaptersList = ({ slug }: { slug: string }) => {
                                     maxPosition={chapter.lessons.length || 0}
                                     style={1}
                                 />
-                                <Button variant="ghost" size="sm">
-                                    <Edit className="h-4 w-4 text-blue-600" />
-                                </Button>
+
+                                <EditChapterButton
+                                    chapterId={chapter.id}
+                                    nameChapterCourse={chapter.title}
+                                    currentPosition={chapter.position ?? 0}
+                                />
                                 <DeleteChapterButton slugCourse={slug} name={chapter.title} chapterId={chapter.id} />
                             </div>
                         </div>

@@ -31,6 +31,10 @@ const courseAdminApi = {
     },
     addChapter: (data: { course_slug: string; title: string; position: number }) =>
         privateApi.post<ChapterLesson>(`/chapters/`, data),
+    editChapter: (chapterId: number, data: { title: string; position: number }) =>
+        privateApi.patch<ChapterLesson>(`/chapters/${chapterId}`, data),
+    editLesson: (lessonSlug: string, data: { title: string; position: number; is_free: boolean; video_url: string }) =>
+        privateApi.patch<LessonResponse>(`/lessons/${lessonSlug}`, data),
     // Admin
     createCourse: (data: any) => privateApi.post<CourseGetDetailResponse>("/courses", data),
     createLesson: (chapterId: number, data: any) =>
