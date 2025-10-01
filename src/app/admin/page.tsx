@@ -84,9 +84,16 @@ const AdminDashboard = () => {
                   .slice()
                   .sort((a: any, b: any) => a.month.localeCompare(b.month)), // Sort tăng dần theo tháng
 
-              // Phương thức thanh toán từ payment_methods
-              paymentMethodData: Object.entries(dashboard.payment_methods).map(([method, count]) => {
-                  const total = Object.values(dashboard.payment_methods).reduce((a, b) => a + b, 0);
+              // Phương thức thanh toán từ payment_methods - cấu trúc mới có count và total
+              paymentMethodData: Object.entries(dashboard.payment_methods).map(([method, data]) => {
+                  const totalCount = Object.values(dashboard.payment_methods).reduce(
+                      (sum, item) => sum + item.count,
+                      0,
+                  );
+                  const totalRevenue = Object.values(dashboard.payment_methods).reduce(
+                      (sum, item) => sum + item.total,
+                      0,
+                  );
                   const methodNames = {
                       vnpay: "VNPay",
                       momo: "MoMo",
@@ -101,8 +108,10 @@ const AdminDashboard = () => {
                   };
                   return {
                       method: methodNames[method as keyof typeof methodNames] || method,
-                      count: count,
-                      percentage: Math.round((count / total) * 100),
+                      count: data.count,
+                      total: data.total,
+                      percentage: Math.round((data.count / totalCount) * 100),
+                      revenuePercentage: Math.round((data.total / totalRevenue) * 100),
                       color: colors[method as keyof typeof colors] || "#6b7280",
                   };
               }),
@@ -493,8 +502,10 @@ const AdminDashboard = () => {
                                     <span className="text-sm font-medium text-gray-900">{method.method}</span>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-sm font-medium text-gray-900">{method.count}</div>
-                                    <div className="text-xs text-gray-500">{method.percentage}%</div>
+                                    <div className="text-sm font-medium text-gray-900">{method.count} giao dịch</div>
+                                    <div className="text-xs text-gray-500">
+                                        {formatter.number(method.total)}đ ({method.revenuePercentage}%)
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -518,7 +529,10 @@ const AdminDashboard = () => {
                                     />
                                     <YAxis hide />
                                     <Tooltip
-                                        formatter={(value: number) => [`${value} giao dịch`, "Số lượng"]}
+                                        formatter={(value: number, name: string, props: any) => [
+                                            `${value} giao dịch`,
+                                            `Doanh thu: ${formatter.number(props.payload.total)}đ`,
+                                        ]}
                                         contentStyle={{
                                             backgroundColor: "white",
                                             border: "1px solid #e5e7eb",

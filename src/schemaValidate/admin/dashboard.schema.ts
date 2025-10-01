@@ -5,12 +5,13 @@ const dashboardSchema = z.object({
     total_courses: z.number(),
     total_exams: z.number(),
     total_users: z.number(),
-    payment_methods: z.object({
-        zalopay: z.number(),
-        momo: z.number(),
-        transfer: z.number(),
-        vnpay: z.number(),
-    }),
+    payment_methods: z.record(
+        z.string(),
+        z.object({
+            count: z.number(),
+            total: z.number(),
+        }),
+    ),
     courses_by_category: z.record(z.string(), z.number()),
     new_users: z.array(
         z.object({
