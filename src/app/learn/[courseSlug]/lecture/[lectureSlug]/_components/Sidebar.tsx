@@ -5,7 +5,6 @@ import {
     Play,
     CheckCircle,
     Clock,
-    MessageCircle,
     BookOpen,
     Award,
     FileText,

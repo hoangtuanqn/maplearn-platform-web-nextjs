@@ -7,24 +7,22 @@ import { formatter } from "~/libs/format";
 import { Suspense, useState, useEffect } from "react";
 import TutorialButtonAdmin from "./_components/TutorialButtonAdmin";
 import { FilterDashboard } from "./_components/FilterDashboard";
-import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+// import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import DashboardSkeleton from "./_components/DashboardSkeleton";
 import dashboardTeacherApi from "~/apiRequest/teacher/dashboard";
-const allowedFields = ["start_date", "end_date"] as const;
 const AdminDashboard = () => {
-    const { start_date, end_date } = useGetSearchQuery(allowedFields);
     const [revenueCurrentPage, setRevenueCurrentPage] = useState(0);
     const [activityCurrentPage, setActivityCurrentPage] = useState(0);
     const itemsPerPage = 12; // Hiển thị 12 tháng mỗi lần
 
     // Reset pages khi filter thay đổi
-    useEffect(() => {
-        setRevenueCurrentPage(0);
-        setActivityCurrentPage(0);
-    }, [start_date, end_date]);
+    // useEffect(() => {
+    //     setRevenueCurrentPage(0);
+    //     setActivityCurrentPage(0);
+    // }, [start_date, end_date]);
 
     const { data: dashboard, isLoading } = useQuery({
-        queryKey: ["teacher", "dashboard", { start_date, end_date }],
+        queryKey: ["teacher", "dashboard"],
         queryFn: async () => {
             const res = await dashboardTeacherApi.getDashboard();
             return res.data.data;
