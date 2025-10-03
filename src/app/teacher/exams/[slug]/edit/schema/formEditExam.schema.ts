@@ -22,7 +22,7 @@ const formSchema = z
             .number()
             .min(15, { message: "Thời gian làm bài phải lớn hơn 15 phút." })
             .max(300, { message: "Thời gian làm bài không được vượt quá 300 phút." }),
-        is_active: z.boolean(),
+        status: z.boolean("Vui lòng chọn trạng thái đề."),
         max_attempts: z.number().min(0, { message: "Số lần làm bài tối đa phải lớn hơn 0." }).optional(),
         is_password_protected: z.boolean().optional(),
         anti_cheat_enabled: z.boolean().optional(),

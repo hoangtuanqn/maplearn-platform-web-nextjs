@@ -51,7 +51,7 @@ const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
             max_score: exam.max_score ?? 10,
             pass_score: percentPassScore ?? 5,
             duration_minutes: exam.duration_minutes ?? 60,
-            is_active: exam.status ?? true,
+            status: exam.status ?? true,
             max_attempts: exam.max_attempts ?? 1,
             is_password_protected: exam.is_password_protected ?? false,
             anti_cheat_enabled: exam.anti_cheat_enabled ?? false,
@@ -278,17 +278,51 @@ const FormEditExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                         />
                         <FormField
                             control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="mb-0.5 block">Trạng thái đề</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => field.onChange(value === "true")}
+                                            value={field.value === undefined ? "true" : String(field.value)}
+                                        >
+                                            <SelectTrigger className="mb-2 w-full">
+                                                <SelectValue placeholder="Trạng thái đề" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="true">Công khai</SelectItem>
+                                                <SelectItem value="false">Riêng tư</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="max_attempts"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="mb-0.5 block">Số lần làm tối đa</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            className="mb-2"
-                                            placeholder="Số lần làm tối đa"
-                                            {...field}
-                                        />
+                                        <Select
+                                            onValueChange={(value) => field.onChange(Number(value))}
+                                            value={field.value === null ? "unlimited" : String(field.value)}
+                                        >
+                                            <SelectTrigger className="mb-2 w-full">
+                                                <SelectValue placeholder="Số lần làm tối đa" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {[...Array(3)].map((_, index) => (
+                                                    <SelectItem key={index + 1} value={`${index + 1}`}>
+                                                        {index + 1} lần
+                                                    </SelectItem>
+                                                ))}
+                                                <SelectItem value="999">Không giới hạn</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
