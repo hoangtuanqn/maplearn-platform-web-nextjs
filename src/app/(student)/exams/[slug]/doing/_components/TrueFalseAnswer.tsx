@@ -12,9 +12,12 @@ const TrueFalseAnswer = ({
 }: {
     idQuestion: number;
     answers: Answers[];
-    activeAnswer: string[] | [];
+    activeAnswer: string[] | [] | string;
     handleChoiceAnswer: (questionId: number, answer: string) => void;
 }) => {
+    console.log("Answers in TrueFalseAnswer:", answers);
+    console.log("Active Answer in TrueFalseAnswer:", activeAnswer);
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "ArrowUp" || e.key === "ArrowDown") {
@@ -62,7 +65,7 @@ const TrueFalseAnswer = ({
                         selectedColor: "border-red-500 bg-red-50",
                     },
                 ]?.map((answer) => {
-                    const isSelected = activeAnswer?.[0] === answer.value;
+                    const isSelected = activeAnswer?.[0] === answer.value || activeAnswer === answer.value;
                     return (
                         <div key={answer.name} className="relative">
                             <div

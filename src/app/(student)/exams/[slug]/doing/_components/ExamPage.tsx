@@ -170,7 +170,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setAnswers(data.answers || {});
             setQuestionActive(data.questionActive || 0);
             // ! Không xóa: mở lại khi đi bảo vệ
-            setCountdownSubmit(2 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
+            // setCountdownSubmit(2 * 60 - Math.floor((Date.now() - data.start) / 1000)); // tính thời gian còn lại
         } else {
             const startTime = Date.now();
             const newData: AnswerLocalStorage = { answers: {}, start: startTime, questionActive: 0 };
@@ -178,7 +178,7 @@ const ExamPage = ({ slug, questionsRes }: { slug: string; questionsRes: Question
             setLocalStorage(slug, JSON.stringify(newData));
             // setCountdownSubmit(5 * 60);
             // ! Không xóa: mở lại khi đi bảo vệ
-            setCountdownSubmit(2 * 60); // test thì 1p thôi
+            // setCountdownSubmit(2 * 60); // test thì 1p thôi
         }
     }, [setCountdownSubmit, slug]);
 
