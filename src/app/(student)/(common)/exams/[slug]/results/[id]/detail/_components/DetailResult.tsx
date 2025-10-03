@@ -154,6 +154,7 @@ const DetailResult = ({
                                                 handleChoiceAnswer={() => {}}
                                                 idQuestion={result.id}
                                                 activeAnswer={result.your_choice?.value}
+                                                disabled={true}
                                             />
                                         )}
                                         {result.type === "TRUE_FALSE" && (

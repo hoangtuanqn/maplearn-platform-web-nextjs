@@ -95,7 +95,7 @@ const VirtualAssistant = ({ payload: { handleSubmit, chatHistories, isPending } 
                             ))}
                             {isPending && (
                                 <div className="flex justify-start">
-                                    <div className="flex items-start gap-3">
+                                    <div className="flex w-full items-start gap-3">
                                         <ChatLoading />
                                     </div>
                                 </div>

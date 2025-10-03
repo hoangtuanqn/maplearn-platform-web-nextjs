@@ -6,17 +6,25 @@ const NumericInput = ({
     idQuestion,
     activeAnswer,
     handleChoiceAnswer,
+    disabled = false,
 }: {
     idQuestion: number;
     activeAnswer: string[] | [];
     handleChoiceAnswer: (questionId: number, answer: string) => void;
+    disabled: boolean;
 }) => {
     return (
         <div className="space-y-3">
             <div className="rounded-lg border border-gray-200 bg-white p-4">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <Edit3 className="text-primary h-4 w-4" />
-                    <span>Nhập câu trả lời của bạn:</span>
+                    {disabled ? (
+                        "Câu trả lời"
+                    ) : (
+                        <>
+                            <Edit3 className="text-primary h-4 w-4" />
+                            <span>Nhập câu trả lời:</span>
+                        </>
+                    )}
                 </div>
 
                 <div className="relative">
@@ -26,12 +34,14 @@ const NumericInput = ({
                         value={activeAnswer[0] || ""}
                         onChange={(e) => handleChoiceAnswer(idQuestion, e.target.value)}
                         placeholder="Nhập đáp án..."
+                        disabled={disabled}
                     />
                 </div>
-
-                <div className="mt-2 text-xs text-gray-500">
-                    Lưu ý: Nhập số thập phân sử dụng dấu phẩy (,) và không nhập đơn vị
-                </div>
+                {!disabled && (
+                    <div className="mt-2 text-xs text-gray-500">
+                        Lưu ý: Nhập số thập phân sử dụng dấu phẩy (,) và không nhập đơn vị
+                    </div>
+                )}
             </div>
         </div>
     );
