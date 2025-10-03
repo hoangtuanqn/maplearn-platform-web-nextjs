@@ -3,10 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Star, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import courseApi, { REVIEW_PER_PAGE } from "~/apiRequest/course";
-import Skeleton from "react-loading-skeleton";
-import { ReviewCourse } from "~/schemaValidate/reviewCourse.schema";
-import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
-import { formatter } from "~/libs/format";
+import ReviewSkeleton from "./ReviewSkeleton";
+import ReviewItem from "./ReviewItem";
 const ReviewsCourse = ({ slug }: { slug: string }) => {
     const [page, setPage] = useState(1);
 
@@ -33,7 +31,7 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
             1: ratings.filter((r) => r === 1).length,
         };
 
-        return { averageRating, ratingCounts, totalReviews: ratings.length };
+        return { averageRating, ratingCounts, totalReviews: reviewsData.total };
     };
 
     const ratingStats = calculateRatingStats();
@@ -49,7 +47,7 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
                     <div className="text-center">
                         <div className="text-3xl font-bold text-gray-900">{ratingStats.averageRating.toFixed(1)}</div>
                         <div className="mb-1 flex items-center justify-center gap-1">
-                            {renderStars(Math.round(ratingStats.averageRating))}
+                            {/* {renderStars(Math.round(ratingStats.averageRating))} */}
                         </div>
                         <div className="text-sm text-gray-600">{ratingStats.totalReviews} đánh giá</div>
                     </div>
@@ -86,70 +84,6 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
             </div>
         );
     };
-    const renderStars = (rating: number) => {
-        return (
-            <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                        key={star}
-                        className={`h-4 w-4 ${star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
-                    />
-                ))}
-            </div>
-        );
-    };
-
-    // Component Review Item với UI cải tiến
-    const ReviewItem = ({ review }: { review: ReviewCourse }) => (
-        <div className="rounded-lg border border-gray-100 bg-white p-4 transition-shadow">
-            <div className="flex items-start gap-4">
-                {/* <UserAvatar user={review.user} /> */}
-                <DisplayAvatar fullName={review.user.full_name} avatar={review.user.avatar} ratio={"10"} />
-
-                <div className="flex-1 space-y-3">
-                    {/* Header với tên và rating */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <h4 className="font-semibold text-gray-900">{review.user.full_name}</h4>
-                            <div className="flex items-center gap-1">{renderStars(review.rating)}</div>
-                        </div>
-                        <span className="text-sm text-gray-500">{formatter.date(review.created_at)}</span>
-                    </div>
-
-                    {/* Nội dung comment */}
-
-                    <p className="leading-relaxed text-gray-700">{review.comment}</p>
-                </div>
-            </div>
-        </div>
-    );
-
-    // Loading skeleton cải tiến với react-loading-skeleton
-    const ReviewSkeleton = () => (
-        <div className="rounded-lg border border-gray-100 bg-white p-4">
-            <div className="flex items-start gap-4">
-                <Skeleton width={40} height={40} className="shrink-0 rounded-full" />
-                <div className="flex-1 space-y-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <Skeleton width={96} height={16} />
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((i) => (
-                                    <Skeleton key={i} width={16} height={16} />
-                                ))}
-                            </div>
-                        </div>
-                        <Skeleton width={80} height={12} />
-                    </div>
-                    <div className="space-y-2">
-                        <Skeleton height={16} />
-                        <Skeleton height={16} width="75%" />
-                        <Skeleton height={16} width="50%" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 
     // Component Pagination
     const Pagination = () => {
@@ -165,7 +99,7 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
                     <button
                         onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                         disabled={page === 1}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                         title="Trang trước"
                     >
                         <ChevronLeft className="h-4 w-4" />
@@ -178,9 +112,9 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
                                 <button
                                     key={pageNum}
                                     onClick={() => setPage(pageNum)}
-                                    className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                                    className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                                         page === pageNum
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-primary text-white"
                                             : "border border-gray-200 text-gray-600 hover:bg-gray-50"
                                     }`}
                                 >
@@ -193,7 +127,7 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
                     <button
                         onClick={() => setPage((prev) => Math.min(reviewsData.last_page, prev + 1))}
                         disabled={page === reviewsData.last_page}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                         title="Trang sau"
                     >
                         <ChevronRight className="h-4 w-4" />
@@ -203,7 +137,6 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
         );
     };
 
-    // Component chính
     return (
         <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
             {/* Header */}
@@ -224,9 +157,8 @@ const ReviewsCourse = ({ slug }: { slug: string }) => {
             <div className="space-y-4">
                 {isLoading ? (
                     // Loading state
-                    Array.from({ length: 3 }, (_, i) => <ReviewSkeleton key={i} />)
+                    Array.from({ length: REVIEW_PER_PAGE }, (_, i) => <ReviewSkeleton key={i} />)
                 ) : reviewsData?.data && reviewsData.data.length > 0 ? (
-                    // Reviews exist
                     reviewsData.data.map((review) => <ReviewItem key={review.id} review={review} />)
                 ) : (
                     // No reviews
