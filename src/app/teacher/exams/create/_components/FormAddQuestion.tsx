@@ -254,7 +254,7 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
                                     <label className="text-sm font-medium text-gray-700">Các lựa chọn</label>
                                     <Button
                                         type="button"
-                                        variant="ghost"
+                                        variant="outline"
                                         size="sm"
                                         onClick={() => addQuestionOption(question.id)}
                                     >
@@ -309,7 +309,7 @@ const FormAddQuestion: React.FC<FormAddQuestionProps> = ({ questions, setQuestio
                                     </label>
                                     <Button
                                         type="button"
-                                        variant="ghost"
+                                        variant="outline"
                                         size="sm"
                                         onClick={() => addQuestionOption(question.id)}
                                     >

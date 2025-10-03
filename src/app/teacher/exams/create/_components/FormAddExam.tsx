@@ -68,7 +68,6 @@ const FormAddExam = () => {
             duration_minutes: 60,
             start_time: "",
             end_time: "",
-            is_active: true,
             max_attempts: 1,
             is_password_protected: false,
             anti_cheat_enabled: false,
@@ -79,7 +78,7 @@ const FormAddExam = () => {
     const mutationExam = useMutation({
         mutationFn: examAdminApi.addPaperExam,
         onSuccess: (data) => {
-            router.push(`/admin/exams/${data.data.data.slug}`);
+            router.push(`/teacher/exams/${data.data.data.slug}`);
         },
         onError: notificationErrorApi,
     });
@@ -213,9 +212,9 @@ const FormAddExam = () => {
         const nowVN = new Date(Date.now() + 7 * 60 * 60 * 1000);
         form.setValue("start_time", new Date(nowVN.getTime() + 60 * 60 * 1000).toISOString().slice(0, 16)); // 1h sau giờ VN
         form.setValue("end_time", new Date(nowVN.getTime() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16)); // 2h sau giờ VN
-        form.setValue("is_active", true);
         form.setValue("max_attempts", 1);
         form.setValue("is_password_protected", true);
+        form.setValue("status", true);
         form.setValue("anti_cheat_enabled", true);
 
         // Add sample questions
@@ -479,52 +478,55 @@ const FormAddExam = () => {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="start_time"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="mb-0.5 block">Thời gian mở đề</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="datetime-local"
-                                            {...field}
-                                            min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                                                .toISOString()
-                                                .slice(0, 16)}
-                                            className="mb-2"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="end_time"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="mb-0.5 block">Thời gian đóng đề</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="datetime-local"
-                                            {...field}
-                                            min={
-                                                form.watch("start_time") ||
-                                                new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                        {/* Responsive: stack on mobile, side by side on md+ */}
+                        <div className="col-span-1 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+                            <FormField
+                                control={form.control}
+                                name="start_time"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="mb-0.5 block">Thời gian mở đề</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="datetime-local"
+                                                {...field}
+                                                min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
                                                     .toISOString()
-                                                    .slice(0, 16)
-                                            }
-                                            className="mb-2"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                    <FormDescription>
-                                        Để trống nếu muốn không giới hạn thời gian đóng đề
-                                    </FormDescription>
-                                </FormItem>
-                            )}
-                        />
+                                                    .slice(0, 16)}
+                                                className="mb-2"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="end_time"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="mb-0.5 block">Thời gian đóng đề</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="datetime-local"
+                                                {...field}
+                                                min={
+                                                    form.watch("start_time") ||
+                                                    new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                                                        .toISOString()
+                                                        .slice(0, 16)
+                                                }
+                                                className="mb-2"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                        <FormDescription>
+                                            Để trống nếu muốn không giới hạn thời gian đóng đề
+                                        </FormDescription>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField
                             control={form.control}
                             name="max_attempts"
@@ -546,6 +548,30 @@ const FormAddExam = () => {
                                                     </SelectItem>
                                                 ))}
                                                 <SelectItem value="999">Không giới hạn</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="mb-0.5 block">Trạng thái đề</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => field.onChange(value === "true")}
+                                            value={field.value === undefined ? "true" : String(field.value)}
+                                        >
+                                            <SelectTrigger className="mb-2 w-full">
+                                                <SelectValue placeholder="Trạng thái đề" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="true">Công khai</SelectItem>
+                                                <SelectItem value="false">Riêng tư</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>

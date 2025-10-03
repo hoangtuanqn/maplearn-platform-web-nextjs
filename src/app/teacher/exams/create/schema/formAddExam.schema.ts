@@ -24,7 +24,7 @@ const formSchema = z
             .max(300, { message: "Thời gian làm bài không được vượt quá 300 phút." }),
         start_time: z.string().min(1, { message: "Vui lòng chọn thời gian bắt đầu." }),
         end_time: z.string(),
-        is_active: z.boolean(),
+        status: z.boolean("Vui lòng chọn trạng thái đề."),
         max_attempts: z.number().min(0, { message: "Số lần làm bài tối đa phải lớn hơn 0." }).optional(),
         is_password_protected: z.boolean().optional(),
         anti_cheat_enabled: z.boolean().optional(),
@@ -81,10 +81,12 @@ const formSchema = z
         (data) => {
             const startTime = new Date(data.start_time);
             const now = new Date();
-            return startTime >= now;
+            // Cho phép chọn trong quá khứ nhưng không quá 1 tiếng (60 phút)
+            const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+            return startTime >= oneHourAgo;
         },
         {
-            message: "Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại.",
+            message: "Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại quá 1 tiếng.",
             path: ["start_time"],
         },
     )

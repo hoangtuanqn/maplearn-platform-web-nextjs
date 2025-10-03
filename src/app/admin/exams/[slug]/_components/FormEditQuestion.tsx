@@ -200,7 +200,7 @@ export function FormEditQuestion({ question }: { question: QuestionsExamResponse
                         <div>
                             <div className="mb-3 flex items-center justify-between">
                                 <Label className="mb-2 block">Các lựa chọn</Label>
-                                <Button type="button" variant="ghost" size="sm" onClick={addOption}>
+                                <Button type="button" variant="outline" size="sm" onClick={addOption}>
                                     <Plus className="h-4 w-4" /> Thêm lựa chọn
                                 </Button>
                             </div>
@@ -270,7 +270,7 @@ export function FormEditQuestion({ question }: { question: QuestionsExamResponse
                         <div>
                             <div className="mb-3 flex items-center justify-between">
                                 <Label className="mb-2 block">Các phần tử kéo thả (chọn đáp án đúng và thứ tự)</Label>
-                                <Button type="button" variant="ghost" size="sm" onClick={addOption}>
+                                <Button type="button" variant="outline" size="sm" onClick={addOption}>
                                     <Plus className="h-4 w-4" /> Thêm phần tử
                                 </Button>
                             </div>
