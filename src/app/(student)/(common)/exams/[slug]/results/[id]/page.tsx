@@ -207,7 +207,7 @@ const ResultExamPage = async ({ params }: { params: Promise<{ slug: string; id: 
                                     </Link>
                                 )}
 
-                                {result.status && (
+                                {result.status && result.results.status !== "detected" &&(
                                     <Link
                                         href={`/exams/${slug}/results/${result.results.id}/detail`}
                                         className="w-full"
