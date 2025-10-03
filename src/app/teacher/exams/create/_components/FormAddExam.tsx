@@ -479,54 +479,52 @@ const FormAddExam = () => {
                             )}
                         />
                         {/* Responsive: stack on mobile, side by side on md+ */}
-                        <div className="col-span-1 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-                            <FormField
-                                control={form.control}
-                                name="start_time"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="mb-0.5 block">Thời gian mở đề</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="datetime-local"
-                                                {...field}
-                                                min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                        <FormField
+                            control={form.control}
+                            name="start_time"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="mb-0.5 block">Thời gian mở đề</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="datetime-local"
+                                            {...field}
+                                            min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                                                .toISOString()
+                                                .slice(0, 16)}
+                                            className="mb-2"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="end_time"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="mb-0.5 block">Thời gian đóng đề</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="datetime-local"
+                                            {...field}
+                                            min={
+                                                form.watch("start_time") ||
+                                                new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
                                                     .toISOString()
-                                                    .slice(0, 16)}
-                                                className="mb-2"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="end_time"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="mb-0.5 block">Thời gian đóng đề</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="datetime-local"
-                                                {...field}
-                                                min={
-                                                    form.watch("start_time") ||
-                                                    new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                                                        .toISOString()
-                                                        .slice(0, 16)
-                                                }
-                                                className="mb-2"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                        <FormDescription>
-                                            Để trống nếu muốn không giới hạn thời gian đóng đề
-                                        </FormDescription>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                                                    .slice(0, 16)
+                                            }
+                                            className="mb-2"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                    <FormDescription>
+                                        Để trống nếu muốn không giới hạn thời gian đóng đề
+                                    </FormDescription>
+                                </FormItem>
+                            )}
+                        />
                         <FormField
                             control={form.control}
                             name="max_attempts"
@@ -579,52 +577,50 @@ const FormAddExam = () => {
                                 </FormItem>
                             )}
                         />
-                        <div className="grid grid-cols-2 gap-2">
-                            <FormField
-                                control={form.control}
-                                name="is_password_protected"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
-                                            <Checkbox
-                                                id="toggle-2"
-                                                checked={field.value}
-                                                onCheckedChange={(checked) => field.onChange(checked === true)}
-                                                className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-                                            />
-                                            <div className="grid gap-1.5 font-normal">
-                                                <p className="text-sm leading-none font-medium">Mật khẩu đề thi</p>
-                                                <p className="text-muted-foreground text-sm">
-                                                    Bảo vệ đề thi bằng mật khẩu (TOTP)
-                                                </p>
-                                            </div>
-                                        </Label>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="anti_cheat_enabled"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
-                                            <Checkbox
-                                                id="toggle-2"
-                                                checked={field.value}
-                                                onCheckedChange={(checked) => field.onChange(checked === true)}
-                                                className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-                                            />
-                                            <div className="grid gap-1.5 font-normal">
-                                                <p className="text-sm leading-none font-medium">Chống gian lận</p>
-                                                <p className="text-muted-foreground text-sm">
-                                                    Khóa màn hình của thí sinh khi làm bài
-                                                </p>
-                                            </div>
-                                        </Label>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                        <FormField
+                            control={form.control}
+                            name="is_password_protected"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+                                        <Checkbox
+                                            id="toggle-2"
+                                            checked={field.value}
+                                            onCheckedChange={(checked) => field.onChange(checked === true)}
+                                            className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+                                        />
+                                        <div className="grid gap-1.5 font-normal">
+                                            <p className="text-sm leading-none font-medium">Mật khẩu đề thi</p>
+                                            <p className="text-muted-foreground text-sm">
+                                                Bảo vệ đề thi bằng mật khẩu (TOTP)
+                                            </p>
+                                        </div>
+                                    </Label>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="anti_cheat_enabled"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+                                        <Checkbox
+                                            id="toggle-2"
+                                            checked={field.value}
+                                            onCheckedChange={(checked) => field.onChange(checked === true)}
+                                            className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+                                        />
+                                        <div className="grid gap-1.5 font-normal">
+                                            <p className="text-sm leading-none font-medium">Chống gian lận</p>
+                                            <p className="text-muted-foreground text-sm">
+                                                Khóa màn hình của thí sinh khi làm bài
+                                            </p>
+                                        </div>
+                                    </Label>
+                                </FormItem>
+                            )}
+                        />
                     </div>
 
                     {/* Questions Section */}

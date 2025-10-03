@@ -95,7 +95,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (isLoading) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="animate-pulse">
                     <div className="mb-6">
                         <div className="mb-4 flex items-center justify-between">
@@ -123,7 +123,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (error) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="py-12 text-center">
                     <BarChart3 className="mx-auto mb-4 h-16 w-16 text-red-300" />
                     <h3 className="mb-2 text-lg font-semibold text-red-600">Không thể tải dữ liệu</h3>
@@ -135,7 +135,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (!chartData || chartData.length === 0) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="py-12 text-center">
                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-indigo-100">
                         <Users className="h-8 w-8 text-blue-500" />
@@ -150,78 +150,87 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
     }
 
     return (
-        <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+        <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm md:p-6">
             {/* Header */}
-            <div className="mb-6">
-                <div className="mb-4 flex items-center justify-between">
-                    <h3 className="flex items-center text-lg font-bold text-gray-900">
-                        <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
-                            <BarChart3 className="h-5 w-5 text-white" />
+            <div className="mb-4 md:mb-6">
+                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between md:mb-4">
+                    <h3 className="flex items-center text-base font-bold text-gray-900 md:text-lg">
+                        <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 md:mr-3 md:h-10 md:w-10">
+                            <BarChart3 className="h-4 w-4 text-white md:h-5 md:w-5" />
                         </div>
-                        Thống kê khóa học 7 ngày qua
+                        <span className="hidden sm:inline">Thống kê khóa học 7 ngày qua</span>
+                        <span className="sm:hidden">Thống kê 7 ngày</span>
                     </h3>
                 </div>
 
-                {/* Stats cards với design mới */}
-                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                {/* Stats cards với responsive design */}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
                     {/* Tổng học sinh */}
-                    <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-blue-100 p-4 transition-all hover:shadow-md">
+                    <div className="rounded-lg border border-blue-100 bg-gradient-to-br from-blue-50 to-blue-100 p-3 transition-all hover:shadow-md md:rounded-xl md:p-4">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-xs font-medium text-blue-600">Tổng học sinh</p>
-                                <p className="text-2xl font-bold text-blue-700">{totalStudents}</p>
+                                <p className="text-lg font-bold text-blue-700 md:text-2xl">{totalStudents}</p>
                             </div>
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500">
-                                <Users className="h-6 w-6 text-white" />
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 md:h-12 md:w-12 md:rounded-xl">
+                                <Users className="h-4 w-4 text-white md:h-6 md:w-6" />
                             </div>
                         </div>
                     </div>
 
                     {/* Tổng doanh thu */}
-                    <div className="rounded-xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-100 p-4 transition-all hover:shadow-md">
+                    <div className="rounded-lg border border-green-100 bg-gradient-to-br from-green-50 to-emerald-100 p-3 transition-all hover:shadow-md md:rounded-xl md:p-4">
                         <div className="flex items-center justify-between">
-                            <div>
+                            <div className="min-w-0 flex-1">
                                 <p className="text-xs font-medium text-green-600">Tổng doanh thu</p>
-                                <p className="text-2xl font-bold text-green-700">{formatter.number(totalRevenue)}đ</p>
+                                <p className="truncate text-lg font-bold text-green-700 md:text-2xl">
+                                    {formatter.number(totalRevenue)}đ
+                                </p>
                             </div>
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500">
-                                <DollarSign className="h-6 w-6 text-white" />
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500 md:h-12 md:w-12 md:rounded-xl">
+                                <DollarSign className="h-4 w-4 text-white md:h-6 md:w-6" />
                             </div>
                         </div>
                     </div>
 
                     {/* Trung bình học sinh */}
-                    <div className="rounded-xl border border-purple-100 bg-gradient-to-br from-purple-50 to-purple-100 p-4 transition-all hover:shadow-md">
+                    <div className="rounded-lg border border-purple-100 bg-gradient-to-br from-purple-50 to-purple-100 p-3 transition-all hover:shadow-md md:rounded-xl md:p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-xs font-medium text-purple-600">TB/ngày (học sinh)</p>
-                                <p className="text-2xl font-bold text-purple-700">{averageStudents}</p>
+                                <p className="text-xs font-medium text-purple-600">
+                                    <span className="hidden sm:inline">TB/ngày (học sinh)</span>
+                                    <span className="sm:hidden">TB học sinh</span>
+                                </p>
+                                <p className="text-lg font-bold text-purple-700 md:text-2xl">{averageStudents}</p>
                             </div>
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500">
-                                <Target className="h-6 w-6 text-white" />
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500 md:h-12 md:w-12 md:rounded-xl">
+                                <Target className="h-4 w-4 text-white md:h-6 md:w-6" />
                             </div>
                         </div>
                     </div>
 
                     {/* Trung bình doanh thu */}
-                    <div className="rounded-xl border border-orange-100 bg-gradient-to-br from-orange-50 to-orange-100 p-4 transition-all hover:shadow-md">
+                    <div className="rounded-lg border border-orange-100 bg-gradient-to-br from-orange-50 to-orange-100 p-3 transition-all hover:shadow-md md:rounded-xl md:p-4">
                         <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs font-medium text-orange-600">TB/ngày (doanh thu)</p>
-                                <p className="text-2xl font-bold text-orange-700">
+                            <div className="min-w-0 flex-1">
+                                <p className="text-xs font-medium text-orange-600">
+                                    <span className="hidden sm:inline">TB/ngày (doanh thu)</span>
+                                    <span className="sm:hidden">TB doanh thu</span>
+                                </p>
+                                <p className="truncate text-lg font-bold text-orange-700 md:text-2xl">
                                     {formatter.number(averageRevenue)}đ
                                 </p>
                             </div>
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500">
-                                <Calendar className="h-6 w-6 text-white" />
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 md:h-12 md:w-12 md:rounded-xl">
+                                <Calendar className="h-4 w-4 text-white md:h-6 md:w-6" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Chart with dual axis */}
-            <div className="h-96 w-full">
+            {/* Chart với responsive height */}
+            <div className="h-64 w-full sm:h-80 md:h-96">
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                         <defs>
@@ -292,8 +301,8 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
                 </ResponsiveContainer>
             </div>
 
-            {/* Legend */}
-            <div className="mt-6 flex items-center justify-center space-x-8">
+            {/* Legend với responsive */}
+            <div className="mt-4 flex flex-col items-center justify-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-8 md:mt-6">
                 <div className="flex items-center">
                     <div className="mr-2 h-3 w-3 rounded-full bg-blue-500"></div>
                     <span className="text-sm font-medium text-gray-600">Học sinh đăng ký</span>

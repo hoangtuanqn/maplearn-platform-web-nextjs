@@ -46,24 +46,26 @@ const StatsPayment = () => {
     // Loading state
     if (isLoading) {
         return (
-            <div className="w-full space-y-6 rounded-lg bg-white p-6">
-                <div className="flex items-center justify-between border-b pb-4">
+            <div className="w-full space-y-4 rounded-lg bg-white p-4 md:space-y-6 md:p-6">
+                <div className="flex flex-col justify-between gap-3 border-b pb-3 md:flex-row md:items-center md:gap-0 md:pb-4">
                     <div>
-                        <h2 className="text-3xl font-bold text-gray-900">Thống Kê Thanh Toán</h2>
-                        <p className="mt-1 text-gray-600">Phân tích chi tiết và hiệu suất thanh toán.</p>
+                        <h2 className="text-xl font-bold text-gray-900 md:text-3xl">Thống Kê Thanh Toán</h2>
+                        <p className="mt-1 text-sm text-gray-600 md:text-base">
+                            Phân tích chi tiết và hiệu suất thanh toán.
+                        </p>
                     </div>
                     <Suspense>
                         <FilterPayments />
                     </Suspense>
                 </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 xl:grid-cols-4">
                     {[1, 2, 3, 4].map((i) => (
                         <Card key={i} className="border-gray-200">
                             <CardHeader className="pb-2">
                                 <div className="h-4 animate-pulse rounded bg-gray-200"></div>
                             </CardHeader>
                             <CardContent>
-                                <div className="h-8 animate-pulse rounded bg-gray-200"></div>
+                                <div className="h-6 animate-pulse rounded bg-gray-200 md:h-8"></div>
                             </CardContent>
                         </Card>
                     ))}
@@ -75,18 +77,20 @@ const StatsPayment = () => {
     // Error state
     if (error) {
         return (
-            <div className="w-full space-y-6 rounded-lg bg-white p-6">
-                <div className="flex items-center justify-between border-b pb-4">
+            <div className="w-full space-y-4 rounded-lg bg-white p-4 md:space-y-6 md:p-6">
+                <div className="flex flex-col justify-between gap-3 border-b pb-3 md:flex-row md:items-center md:gap-0 md:pb-4">
                     <div>
-                        <h2 className="text-3xl font-bold text-gray-900">Thống Kê Thanh Toán</h2>
-                        <p className="mt-1 text-gray-600">Có lỗi xảy ra khi tải dữ liệu</p>
+                        <h2 className="text-xl font-bold text-gray-900 md:text-3xl">Thống Kê Thanh Toán</h2>
+                        <p className="mt-1 text-sm text-gray-600 md:text-base">Có lỗi xảy ra khi tải dữ liệu</p>
                     </div>
                     <Suspense>
                         <FilterPayments />
                     </Suspense>
                 </div>
-                <div className="py-8 text-center">
-                    <p className="text-red-600">Không thể tải dữ liệu thống kê. Vui lòng thử lại.</p>
+                <div className="py-6 text-center md:py-8">
+                    <p className="text-sm text-red-600 md:text-base">
+                        Không thể tải dữ liệu thống kê. Vui lòng thử lại.
+                    </p>
                 </div>
             </div>
         );
@@ -95,18 +99,22 @@ const StatsPayment = () => {
     // No data state
     if (!stats) {
         return (
-            <div className="w-full space-y-6 rounded-lg bg-white p-6">
-                <div className="flex items-center justify-between border-b pb-4">
+            <div className="w-full space-y-4 rounded-lg bg-white p-4 md:space-y-6 md:p-6">
+                <div className="flex flex-col justify-between gap-3 border-b pb-3 md:flex-row md:items-center md:gap-0 md:pb-4">
                     <div>
-                        <h2 className="text-3xl font-bold text-gray-900">Thống Kê Thanh Toán</h2>
-                        <p className="mt-1 text-gray-600">Không có dữ liệu trong khoảng thời gian này</p>
+                        <h2 className="text-xl font-bold text-gray-900 md:text-3xl">Thống Kê Thanh Toán</h2>
+                        <p className="mt-1 text-sm text-gray-600 md:text-base">
+                            Không có dữ liệu trong khoảng thời gian này
+                        </p>
                     </div>
                     <Suspense>
                         <FilterPayments />
                     </Suspense>
                 </div>
-                <div className="py-8 text-center">
-                    <p className="text-gray-600">Chưa có dữ liệu thanh toán trong khoảng thời gian được chọn.</p>
+                <div className="py-6 text-center md:py-8">
+                    <p className="text-sm text-gray-600 md:text-base">
+                        Chưa có dữ liệu thanh toán trong khoảng thời gian được chọn.
+                    </p>
                 </div>
             </div>
         );
@@ -123,17 +131,19 @@ const StatsPayment = () => {
     };
 
     return (
-        <div className="w-full space-y-6 rounded-lg bg-white p-6">
+        <div className="w-full space-y-4 rounded-lg bg-white p-4 md:space-y-6 md:p-6">
             {/* Header Section */}
-            <div className="flex items-center justify-between border-b pb-4">
+            <div className="flex flex-col justify-between gap-3 border-b pb-3 md:flex-row md:items-center md:gap-0 md:pb-4">
                 <div>
-                    <h2 className="text-3xl font-bold text-gray-900">Thống Kê Thanh Toán</h2>
-                    <p className="mt-1 text-gray-600">
-                        Phân tích chi tiết và hiệu suất thanh toán từ{" "}
-                        <span className="text-primary font-bold">{getDateRangeText()}</span>.
+                    <h2 className="text-xl font-bold text-gray-900 md:text-3xl">Thống Kê Thanh Toán</h2>
+                    <p className="mt-1 text-sm text-gray-600 md:text-base">
+                        <span className="hidden md:inline">Phân tích chi tiết và hiệu suất thanh toán từ</span>
+                        <span className="md:hidden">Từ</span>{" "}
+                        <span className="text-primary font-bold">{getDateRangeText()}</span>
+                        <span className="hidden md:inline">.</span>
                     </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     <Suspense>
                         <ExportDataInvoices />
                         <FilterPayments />
@@ -142,18 +152,20 @@ const StatsPayment = () => {
             </div>
 
             {/* Dynamic KPI Cards */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 xl:grid-cols-4">
                 {/* Tổng Doanh Thu */}
                 <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-blue-700">
                             <DollarSign className="mr-2 h-4 w-4" />
-                            Tổng Thanh Toán
+                            <span className="truncate">Tổng Thanh Toán</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-900">{formatter.number(stats.total_revenue)}</div>
-                        <div className="mt-1 text-xs text-gray-600">{getDateRangeText()}</div>
+                        <div className="truncate text-xl font-bold text-blue-900 md:text-2xl">
+                            {formatter.number(stats.total_revenue)}
+                        </div>
+                        <div className="mt-1 truncate text-xs text-gray-600">{getDateRangeText()}</div>
                     </CardContent>
                 </Card>
 
@@ -162,11 +174,11 @@ const StatsPayment = () => {
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-purple-700">
                             <CreditCard className="mr-2 h-4 w-4" />
-                            Tổng Thanh Toán
+                            <span className="truncate">Số Giao Dịch</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-purple-900">
+                        <div className="text-xl font-bold text-purple-900 md:text-2xl">
                             {stats.total_payments.toLocaleString("vi-VN")}
                         </div>
                         <div className="mt-1 text-xs text-gray-600">Giao dịch thành công</div>
@@ -178,14 +190,14 @@ const StatsPayment = () => {
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-green-700">
                             <Users className="mr-2 h-4 w-4" />
-                            Tổng Học Viên
+                            <span className="truncate">Tổng Học Viên</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-900">
+                        <div className="text-xl font-bold text-green-900 md:text-2xl">
                             {stats.total_students.toLocaleString("vi-VN")}
                         </div>
-                        <div className="mt-1 text-xs text-gray-600">Học viên đã mua khóa học</div>
+                        <div className="mt-1 text-xs text-gray-600">Học viên đã mua</div>
                     </CardContent>
                 </Card>
 
@@ -194,30 +206,30 @@ const StatsPayment = () => {
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-orange-700">
                             <ShoppingCart className="mr-2 h-4 w-4" />
-                            Giá Trị Đơn TB
+                            <span className="truncate">Giá Trị Đơn TB</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-orange-900">
+                        <div className="truncate text-xl font-bold text-orange-900 md:text-2xl">
                             {formatter.number(stats.average_order_value)}
                         </div>
-                        <div className="mt-1 text-xs text-gray-600">Trung bình mỗi giao dịch</div>
+                        <div className="mt-1 text-xs text-gray-600">Trung bình/giao dịch</div>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Additional Stats Row */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
                 {/* Khóa Học Đã Bán */}
                 <Card className="border-indigo-200 bg-gradient-to-br from-indigo-50 to-indigo-100">
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-indigo-700">
                             <ShoppingCart className="mr-2 h-4 w-4" />
-                            Tổng Khóa Học Đã Bán
+                            <span className="truncate">Tổng Khóa Học Đã Bán</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-indigo-900">
+                        <div className="text-xl font-bold text-indigo-900 md:text-2xl">
                             {stats.total_courses_sold.toLocaleString("vi-VN")}
                         </div>
                         <div className="mt-1 text-xs text-gray-600">Khóa học đã được mua</div>
@@ -229,15 +241,15 @@ const StatsPayment = () => {
                     <CardHeader className="pb-2">
                         <CardTitle className="flex items-center text-sm font-medium text-gray-700">
                             <CreditCard className="mr-2 h-4 w-4" />
-                            Khoảng Thời Gian
+                            <span className="truncate">Khoảng Thời Gian</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="truncate text-sm font-bold text-gray-900 md:text-lg">
                             {new Date(stats.date_from).toLocaleDateString("vi-VN")}
                         </div>
-                        <div className="text-sm text-gray-600">đến</div>
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="text-xs text-gray-600 md:text-sm">đến</div>
+                        <div className="truncate text-sm font-bold text-gray-900 md:text-lg">
                             {new Date(stats.date_to).toLocaleDateString("vi-VN")}
                         </div>
                     </CardContent>

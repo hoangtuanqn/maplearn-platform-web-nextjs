@@ -212,7 +212,7 @@ const FormEditStudent = ({ studentData }: FormEditStudentProps) => {
                                         <FormItem>
                                             <FormLabel>Số điện thoại</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="0123456789" {...field} />
+                                                <Input placeholder="0123456789" {...field} disabled />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
