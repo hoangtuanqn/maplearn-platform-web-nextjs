@@ -38,9 +38,15 @@ export const historyLearning = z.object({
     user_id: z.number(),
     lesson_id: z.number(),
     progress: z.number(),
-    is_completed: z.boolean(),
+    is_completed: z.boolean().or(z.number()), // Accepts boolean or 1/0
     created_at: z.string(),
     updated_at: z.string(),
+    user: z.object({
+        id: z.number(),
+        full_name: z.string(),
+        avatar: z.string(),
+        email: z.string().email(),
+    }),
     lesson: z.object({
         id: z.number(),
         chapter_id: z.number(),
@@ -53,6 +59,10 @@ export const historyLearning = z.object({
         is_free: z.boolean(),
         created_at: z.string(),
         updated_at: z.string(),
+        chapter: z.object({
+            id: z.number(),
+            title: z.string(),
+        }),
     }),
 });
 const _historyLearningResponse = z.object({

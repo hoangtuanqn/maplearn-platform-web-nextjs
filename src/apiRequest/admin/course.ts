@@ -81,5 +81,8 @@ const courseAdminApi = {
     getAllStudents: (slug: string) => {
         return privateApi.get<StudentListResponse>(`courses-admin/${slug}/students`);
     },
+
+    // get lịch sử học bài của 1 khóa học
+    getLessonHistories: () => privateApi.get<HistoryLearningResponse>(`/lesson-history`),
 };
 export default courseAdminApi;

@@ -39,9 +39,9 @@ const DashboardSkeleton = () => {
             </div>
 
             {/* Row 1: Biểu đồ doanh thu và Phân bố khóa học */}
-            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-2">
+            <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
                 {/* Biểu đồ doanh thu */}
-                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
+                <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
                     <div className="mb-4 flex items-center justify-between">
                         <div>
                             <Skeleton height={20} width={100} className="mb-1" />
