@@ -10,6 +10,7 @@ import { formatter } from "~/libs/format";
 import ButtonAction from "./_components/ButtonAction";
 import RelatedCourses from "./_components/RelatedCourses";
 import SaveLocalStorage from "./_components/SaveLocalStorage";
+import ReviewsCourse from "./_components/ReviewsCourse";
 const getCourse = cache(async (slug: string) => {
     const {
         data: { data: post },
@@ -53,6 +54,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                     <div className="flex-1 space-y-6 max-lg:order-2">
                         <ContentLesson course={course as CourseDetail} />
                         <ListLessonCourse />
+                        <ReviewsCourse slug={course.slug} />
                         <RelatedCourses category={course.category} />
                         <SaveLocalStorage courseId={String(course.id)} />
                     </div>

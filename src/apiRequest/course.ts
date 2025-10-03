@@ -7,8 +7,10 @@ import {
     CourseListRecommendedResponse,
     CourseListResponse,
 } from "~/schemaValidate/course.schema";
+import { ReviewCourseListResponse } from "~/schemaValidate/reviewCourse.schema";
 
 export const CATEGORY_COURSE_PER_PAGE = 20;
+export const REVIEW_PER_PAGE = 5;
 export const COURSE_PER_PAGE = 20;
 const courseApi = {
     getCourses: (
@@ -65,6 +67,26 @@ const courseApi = {
 
     getChapterLessonList: (slugCourse: string) => {
         return publicApi.get<ChapterLessonList>(`/chapters/${slugCourse}`);
+    },
+    getReviewCourses: (
+        slug: string,
+        page: number = 1,
+        limit: number = REVIEW_PER_PAGE,
+        search: string = "",
+        querySortOther: string = "",
+        queryOther: string = "",
+    ) => {
+        let query = `/courses/${slug}/reviews?page=${page}&limit=${limit}`;
+        if (search) {
+            query += `&filter[name]=${search}`;
+        }
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
+        }
+        if (queryOther) {
+            query += `&${queryOther}`; // Các value khác nếu cần
+        }
+        return publicApi.get<ReviewCourseListResponse>(query);
     },
 };
 export default courseApi;

@@ -95,7 +95,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (isLoading) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="animate-pulse">
                     <div className="mb-6">
                         <div className="mb-4 flex items-center justify-between">
@@ -123,7 +123,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (error) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="py-12 text-center">
                     <BarChart3 className="mx-auto mb-4 h-16 w-16 text-red-300" />
                     <h3 className="mb-2 text-lg font-semibold text-red-600">Không thể tải dữ liệu</h3>
@@ -135,7 +135,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
 
     if (!chartData || chartData.length === 0) {
         return (
-            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <div className="py-12 text-center">
                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-indigo-100">
                         <Users className="h-8 w-8 text-blue-500" />
@@ -150,7 +150,7 @@ export default function CourseStudentChart({ slug }: { slug: string }) {
     }
 
     return (
-        <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-lg">
+        <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
             {/* Header */}
             <div className="mb-6">
                 <div className="mb-4 flex items-center justify-between">
