@@ -148,7 +148,7 @@ const ExamList = () => {
                                           {Math.max(0, +page - 1) * EXAM_PER_PAGE + idx + 1}
                                       </td>
 
-                                      <td className="px-4 py-3 align-top text-zinc-500">
+                                      <td className="px-4 py-3 align-top text-zinc-500 break-all">
                                           <div className="space-y-1">
                                               <p
                                                   className="text-base font-semibold text-gray-900"
