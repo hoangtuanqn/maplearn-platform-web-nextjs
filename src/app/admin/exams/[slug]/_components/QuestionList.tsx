@@ -158,6 +158,7 @@ const QuestionList = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
                                         )}
                                         {question.type === "NUMERIC_INPUT" && (
                                             <NumericInput
+                                                disabled={true}
                                                 handleChoiceAnswer={() => {}}
                                                 idQuestion={question.id}
                                                 activeAnswer={question.correct}

@@ -11,6 +11,8 @@ import DeleteChapterButton from "./DeleteChapterButton";
 import Loading from "~/app/(student)/_components/Loading";
 import { EditChapterButton } from "./EditChapterButton";
 import { EditLessonDialog } from "./EditLessonDialog";
+import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 const ChaptersList = ({ slug }: { slug: string }) => {
     const { data: chapters } = useQuery({
@@ -43,7 +45,14 @@ const ChaptersList = ({ slug }: { slug: string }) => {
         <>
             <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center md:mb-6">
                 <h2 className="text-lg font-semibold text-gray-900 md:text-xl">Nội dung khóa học</h2>
-                <AddChapterDialog courseSlug={slug} maxPosition={chapters.length || 0} style={1} />
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <Link href={`/teacher/courses/${slug}/histories`} className="w-full">
+                        <Button variant={"outline"} className="w-full">
+                            Xem lịch sử học bài
+                        </Button>
+                    </Link>
+                    <AddChapterDialog courseSlug={slug} maxPosition={chapters.length || 0} style={1} />
+                </div>
             </div>
 
             <div className="space-y-3 md:space-y-4">

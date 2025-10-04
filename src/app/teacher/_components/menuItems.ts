@@ -27,6 +27,7 @@ const menuItems = [
                 matcher: [
                     "/teacher/courses",
                     "/teacher/courses/edit/:slug",
+                    "/teacher/courses/:slug/histories",
                     "/teacher/courses/:slug",
                     "/teacher/courses/:slug/students/:id",
                     "/teacher/courses/:slug/:id/compare/:id2",
@@ -49,7 +50,7 @@ const menuItems = [
                     "/teacher/exams/:create",
                     "/teacher/exams/:slug",
                     "/teacher/exams/:slug/edit",
-                    "/admin/exams/:slug/histories",
+                    "/teacher/exams/:slug/histories",
                 ],
                 id: "exams",
             },

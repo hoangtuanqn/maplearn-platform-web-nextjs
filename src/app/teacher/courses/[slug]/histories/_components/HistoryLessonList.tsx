@@ -30,7 +30,7 @@ const HistoryLessonList = ({ slug }: { slug: string }) => {
     // Gọi API để lấy lịch sử học bài
     const { data: lessonHistories, isLoading } = useQuery({
         queryKey: [
-            "admin",
+            "teacher",
             "lesson-histories",
             { slug, page, search, user_id, lesson_id, progress_min, progress_max, is_completed, sort },
         ],
@@ -327,7 +327,7 @@ const HistoryLessonList = ({ slug }: { slug: string }) => {
 
             <div className="mt-4 ml-auto w-fit md:mt-6">
                 <Suspense>
-                    <PaginationNav totalPages={totalPages} basePath="/admin/history/lessons" />
+                    <PaginationNav totalPages={totalPages} basePath="/teacher/history/lessons" />
                 </Suspense>
             </div>
         </>
