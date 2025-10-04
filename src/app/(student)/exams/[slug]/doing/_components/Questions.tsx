@@ -103,6 +103,7 @@ const Questions = ({
                                             )}
                                             {questions[questionActive].type === "NUMERIC_INPUT" && (
                                                 <NumericInput
+                                                    disabled={false}
                                                     handleChoiceAnswer={handleChoiceAnswer}
                                                     idQuestion={questions[questionActive].id}
                                                     activeAnswer={answers[questions[questionActive].id] || []}
