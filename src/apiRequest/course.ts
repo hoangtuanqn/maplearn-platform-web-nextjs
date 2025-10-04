@@ -7,6 +7,7 @@ import {
     CourseListRecommendedResponse,
     CourseListResponse,
 } from "~/schemaValidate/course.schema";
+import { ResponseSchemaBasic } from "~/schemaValidate/response.schema";
 import { ReviewCourseListResponse } from "~/schemaValidate/reviewCourse.schema";
 
 export const CATEGORY_COURSE_PER_PAGE = 20;
@@ -87,6 +88,11 @@ const courseApi = {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
         return publicApi.get<ReviewCourseListResponse>(query);
+    },
+
+    // demo completed course
+    demoCompletedCourse: (slug: string) => {
+        return privateApi.post<ResponseSchemaBasic>(`/courses/${slug}/complete-demo`);
     },
 };
 export default courseApi;

@@ -46,7 +46,7 @@ export function NotificationExam({ course }: NotificationExamProps) {
                     </div>
 
                     <AlertDialogTitle className="text-foreground mb-2 text-center text-2xl font-semibold tracking-tight">
-                        🎉 Chúc mừng bạn đã hoàn thành khóa học!
+                        🎉 Chúc mừng bạn đã hoàn thành các bài học!
                     </AlertDialogTitle>
 
                     <AlertDialogDescription className="text-muted-foreground mb-4 max-w-md text-center text-sm">

@@ -9,6 +9,7 @@ import { CourseGetDetailResponse, CourseListResponse, CourseStats } from "~/sche
 import { LessonResponse } from "~/schemaValidate/courseDetail.schema";
 import { ResponseSchemaBasic } from "~/schemaValidate/response.schema";
 const COURSE_PER_PAGE = 20;
+export const LESSON_PER_PAGE = 20;
 const courseAdminApi = {
     getCourses: (
         page: number = 1,

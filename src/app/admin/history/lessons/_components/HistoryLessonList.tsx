@@ -1,18 +1,16 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Clock, User, BookOpen, PlayCircle } from "lucide-react";
+import { Clock, User, BookOpen } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import React, { Suspense } from "react";
-import courseAdminApi from "~/apiRequest/admin/course";
+import courseAdminApi, { LESSON_PER_PAGE } from "~/apiRequest/admin/course";
 import TableSkeleton from "~/app/(student)/(common)/profile/_components/TableSkeleton";
 import { PaginationNav } from "~/app/(student)/_components/Pagination";
 import DisplayTotalResult from "~/app/admin/_components/DisplayTotalResult";
 import { Badge } from "~/components/ui/badge";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { formatter } from "~/libs/format";
-
-const LESSON_PER_PAGE = 20;
 
 const allowedFields = [
     "page",

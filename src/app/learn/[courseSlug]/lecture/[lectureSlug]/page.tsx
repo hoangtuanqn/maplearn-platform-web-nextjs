@@ -24,6 +24,7 @@ import HeaderVideo from "~/app/(student)/_components/Header/HeaderVideo";
 import { NotificationExam } from "./_components/NotificationExam";
 
 import DisplayVideoLearn from "./_components/DisplayVideoLearn";
+import DemoCompletedCourse from "./_components/DemoCompletedCourse";
 const VideoPage = async ({ params }: { params: Promise<{ courseSlug: string; lectureSlug: string }> }) => {
     const { courseSlug, lectureSlug } = await params;
     let course;
@@ -355,6 +356,7 @@ const VideoPage = async ({ params }: { params: Promise<{ courseSlug: string; lec
                                         </div>
                                     </div>
                                 </div>
+                                <DemoCompletedCourse slug={course.slug} />
 
                                 {/* Action Buttons */}
                                 <div className="flex gap-3">
