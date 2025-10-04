@@ -127,7 +127,7 @@ const CourseList = () => {
                                               <div className="flex items-center justify-end gap-2">
                                                   <Link href={`/teacher/courses/${course.slug}`}>
                                                       <Button variant="outlineBlack" size="sm">
-                                                          Xem
+                                                          Xem chi tiết
                                                       </Button>
                                                   </Link>
                                               </div>

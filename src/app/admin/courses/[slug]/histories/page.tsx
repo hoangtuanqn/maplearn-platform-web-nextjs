@@ -1,17 +1,21 @@
 import React, { Suspense } from "react";
 import { Metadata } from "next";
 
-import Breadcrumb from "../../_components/Breadcrumb";
 import HistoryLessonList from "./_components/HistoryLessonList";
+import Breadcrumb from "~/app/admin/_components/Breadcrumb";
 
 export const metadata: Metadata = {
     title: "Lịch sử học bài",
 };
-const breadcrumbData = [
-    { label: "Dashboard", href: "/admin" },
-    { label: "Lịch sử học bài", href: "/admin/exams" },
-];
-const LessonPage = () => {
+
+const HistoriesLessonPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params;
+    const breadcrumbData = [
+        { label: "Dashboard", href: "/admin" },
+        { label: "Khóa học", href: "/admin/courses" },
+        { label: "Chi tiết khóa học", href: `/admin/courses/${slug}` },
+        { label: "Lịch sử học bài", href: `/admin/courses/${slug}/histories` },
+    ];
     return (
         <section className="mt-5 bg-[#F5F5F5]">
             <div className="mb-6 flex flex-col gap-5">
@@ -28,11 +32,11 @@ const LessonPage = () => {
                     </div>
                 </div>
                 <Suspense>
-                    <HistoryLessonList />
+                    <HistoryLessonList slug={slug} />
                 </Suspense>
             </div>
         </section>
     );
 };
 
-export default LessonPage;
+export default HistoriesLessonPage;

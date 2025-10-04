@@ -23,7 +23,7 @@ const allowedFields = [
     "sort",
 ] as const;
 
-const HistoryLessonList = () => {
+const HistoryLessonList = ({ slug }: { slug: string }) => {
     const { page, search, user_id, lesson_id, progress_min, progress_max, is_completed, sort } =
         useGetSearchQuery(allowedFields);
 
@@ -32,10 +32,10 @@ const HistoryLessonList = () => {
         queryKey: [
             "admin",
             "lesson-histories",
-            { page, search, user_id, lesson_id, progress_min, progress_max, is_completed, sort },
+            { slug, page, search, user_id, lesson_id, progress_min, progress_max, is_completed, sort },
         ],
         queryFn: async () => {
-            const res = await courseAdminApi.getLessonHistories();
+            const res = await courseAdminApi.getLessonHistories(slug, +page, LESSON_PER_PAGE, search, sort);
             return res.data;
         },
         staleTime: 5 * 60 * 1000, // 5 phút
@@ -68,7 +68,7 @@ const HistoryLessonList = () => {
                         </thead>
                         <tbody className="text-xs">
                             {isLoading
-                                ? [...Array(10)].map((_, index) => <TableSkeleton key={index} col={7} />)
+                                ? [...Array(LESSON_PER_PAGE)].map((_, index) => <TableSkeleton key={index} col={7} />)
                                 : lessonHistories?.data?.data.map((history, idx) => (
                                       <tr
                                           key={history.id}
@@ -191,7 +191,7 @@ const HistoryLessonList = () => {
                 {/* Mobile Card View */}
                 <div className="space-y-4 lg:hidden">
                     {isLoading
-                        ? [...Array(10)].map((_, index) => (
+                        ? [...Array(LESSON_PER_PAGE)].map((_, index) => (
                               <div key={index} className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
                                   <div className="animate-pulse space-y-4">
                                       <div className="flex items-start justify-between">

@@ -1,13 +1,4 @@
-import {
-    LayoutDashboard,
-    UserRound,
-    UserCog,
-    GraduationCap,
-    ClipboardList,
-    Receipt,
-    History,
-    Undo2,
-} from "lucide-react";
+import { LayoutDashboard, UserRound, UserCog, GraduationCap, ClipboardList, Receipt, Undo2 } from "lucide-react";
 const menuItems = [
     {
         type: "title",
@@ -59,6 +50,7 @@ const menuItems = [
                 matcher: [
                     "/admin/courses",
                     "/admin/courses/edit/:slug",
+                    "/admin/courses/:slug/histories",
                     "/admin/courses/:slug",
                     "/admin/courses/:slug/students/:id",
                     "/admin/courses/:slug/:id/compare/:id2",
@@ -99,21 +91,6 @@ const menuItems = [
                 href: "/admin/payments",
                 matcher: ["/admin/payments"],
                 id: "payments",
-            },
-        ],
-    },
-
-    {
-        type: "title",
-        label: "Lịch sử",
-        children: [
-            {
-                type: "link",
-                label: "Học bài",
-                icon: History,
-                href: "/admin/history/learns",
-                matcher: ["/admin/history/learns"],
-                id: "history-learns",
             },
         ],
     },

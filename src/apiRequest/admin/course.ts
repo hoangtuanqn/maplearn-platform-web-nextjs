@@ -84,6 +84,25 @@ const courseAdminApi = {
     },
 
     // get lịch sử học bài của 1 khóa học
-    getLessonHistories: () => privateApi.get<HistoryLearningResponse>(`/lesson-history`),
+    getLessonHistories: (
+        slug: string,
+        page: number = 1,
+        limit: number = COURSE_PER_PAGE,
+        search: string = "",
+        querySortOther: string = "",
+        queryOther: string = "",
+    ) => {
+        let query = `/lesson-histories/${slug}?page=${page}&limit=${limit}`;
+        if (search) {
+            query += `&filter[full_name]=${search}`;
+        }
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
+        }
+        if (queryOther) {
+            query += `&${queryOther}`; // Các value khác nếu cần
+        }
+        return privateApi.get<HistoryLearningResponse>(query);
+    },
 };
 export default courseAdminApi;
