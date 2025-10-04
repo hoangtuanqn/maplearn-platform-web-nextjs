@@ -44,7 +44,13 @@ const menuItems = [
                 label: "Đề thi",
                 icon: ClipboardList,
                 href: "/teacher/exams",
-                matcher: ["/teacher/exams", "/teacher/exams/:slug", "/teacher/exams/:slug/edit"],
+                matcher: [
+                    "/teacher/exams",
+                    "/teacher/exams/:create",
+                    "/teacher/exams/:slug",
+                    "/teacher/exams/:slug/edit",
+                    "/admin/exams/:slug/histories",
+                ],
                 id: "exams",
             },
         ],
@@ -54,14 +60,6 @@ const menuItems = [
         type: "title",
         label: "Lịch sử",
         children: [
-            {
-                type: "link",
-                label: "Làm bài thi",
-                icon: History,
-                href: "/teacher/history/exams",
-                matcher: ["/teacher/history/exams"],
-                id: "history-exams",
-            },
             {
                 type: "link",
                 label: "Học bài",

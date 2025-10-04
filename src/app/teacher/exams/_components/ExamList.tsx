@@ -261,7 +261,7 @@ const ExamList = () => {
                                                   <Link href={`/teacher/exams/${exam.slug}`}>
                                                       <Button variant="outlineBlack">Chi tiết</Button>
                                                   </Link>
-                                                  <Link href={`/teacher/exams/${exam.slug}`}>
+                                                  <Link href={`/teacher/exams/${exam.slug}/histories`} target="_blank">
                                                       <Button variant="outlineBlack">Lịch sử làm bài thi</Button>
                                                   </Link>
 
@@ -413,7 +413,11 @@ const ExamList = () => {
                                                   Chi tiết
                                               </Button>
                                           </Link>
-                                          <Link href={`/teacher/exams/${exam.slug}`} className="w-full">
+                                          <Link
+                                              href={`/teacher/exams/${exam.slug}/histories`}
+                                              target="_blank"
+                                              className="w-full"
+                                          >
                                               <Button variant="outlineBlack" className="w-full text-xs">
                                                   Lịch sử
                                               </Button>

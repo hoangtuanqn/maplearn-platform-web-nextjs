@@ -34,14 +34,15 @@ const examApi = {
     updatePaperExam: (slug: string, data: any) => privateApi.patch(`/exams-admin/${slug}`, data),
 
     // get tất cả lịch sử làm bài thi
-    getAllExamAttempts: (
+    getExamAttempts: (
+        slug: string,
         page: number = 1,
         limit: number = EXAM_PER_PAGE,
         search: string = "",
         querySortOther: string = "",
         queryOther: string = "",
     ) => {
-        let query = `/exams-admin/all-history?page=${page}&limit=${limit}`;
+        let query = `/exams-admin/${slug}/history?page=${page}&limit=${limit}`;
         if (search) {
             query += `&filter[search]=${search}`;
         }

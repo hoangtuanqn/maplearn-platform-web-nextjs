@@ -261,7 +261,7 @@ const ExamList = () => {
                                                   <Link href={`/admin/exams/${exam.slug}`}>
                                                       <Button variant="outlineBlack">Chi tiết</Button>
                                                   </Link>
-                                                  <Link href={`/admin/exams/${exam.slug}`}>
+                                                  <Link href={`/admin/exams/${exam.slug}/histories`} target="_blank">
                                                       <Button variant="outlineBlack">Lịch sử làm bài thi</Button>
                                                   </Link>
 

@@ -76,7 +76,13 @@ const menuItems = [
                 label: "Đề thi",
                 icon: ClipboardList,
                 href: "/admin/exams",
-                matcher: ["/admin/exams", "/admin/exams/:slug", "/admin/exams/:slug/edit"],
+                matcher: [
+                    "/admin/exams",
+                    "/admin/exams/create",
+                    "/admin/exams/:slug",
+                    "/admin/exams/:slug/edit",
+                    "/admin/exams/:slug/histories",
+                ],
                 id: "exams",
             },
         ],
@@ -101,14 +107,6 @@ const menuItems = [
         type: "title",
         label: "Lịch sử",
         children: [
-            {
-                type: "link",
-                label: "Làm bài thi",
-                icon: History,
-                href: "/admin/history/exams",
-                matcher: ["/admin/history/exams"],
-                id: "history-exams",
-            },
             {
                 type: "link",
                 label: "Học bài",

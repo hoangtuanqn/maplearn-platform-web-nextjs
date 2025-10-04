@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Clock, User, FileText, AlertCircle } from "lucide-react";
+import { Clock, User, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import examApi, { EXAM_PER_PAGE } from "~/apiRequest/admin/exam";
@@ -15,7 +15,7 @@ import { formatter } from "~/libs/format";
 import { buildLaravelFilterQuery } from "~/libs/helper";
 import { gradeLevelsMock } from "~/mockdata/gradeLevels";
 import { subjectsMock } from "~/mockdata/subject.data";
-const HistoryExamList = () => {
+const HistoryExamList = ({ slug }: { slug: string }) => {
     const { page, search, min_score, max_score, status, violation_count, time_spent, full_name, sort } =
         useGetSearchQuery([
             "page",
@@ -34,10 +34,11 @@ const HistoryExamList = () => {
         queryKey: [
             "admin",
             "exam-attempts",
-            { page, search, min_score, max_score, status, violation_count, time_spent, full_name, sort },
+            { slug, page, search, min_score, max_score, status, violation_count, time_spent, full_name, sort },
         ],
         queryFn: async () => {
-            const res = await examApi.getAllExamAttempts(
+            const res = await examApi.getExamAttempts(
+                slug,
                 +page,
                 EXAM_PER_PAGE,
                 search,
@@ -87,9 +88,7 @@ const HistoryExamList = () => {
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
                                     Thông tin học sinh
                                 </th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">
-                                    Thông tin đề thi
-                                </th>
+
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Điểm số</th>
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Thời gian</th>
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600">Vi phạm</th>
@@ -99,7 +98,7 @@ const HistoryExamList = () => {
                         </thead>
                         <tbody className="text-xs">
                             {isLoading
-                                ? [...Array(EXAM_PER_PAGE)].map((_, index) => <TableSkeleton key={index} col={8} />)
+                                ? [...Array(EXAM_PER_PAGE)].map((_, index) => <TableSkeleton key={index} col={7} />)
                                 : examAttempts?.data.map((attempt, idx) => (
                                       <tr
                                           key={attempt.id}
@@ -128,70 +127,6 @@ const HistoryExamList = () => {
                                                       </div>
                                                   </div>
                                               </Link>
-                                          </td>
-
-                                          {/* Đề thi */}
-                                          <td className="px-4 py-3 text-zinc-500">
-                                              <div className="flex items-start space-x-2">
-                                                  <FileText className="mt-0.5 h-4 w-4 text-gray-400" />
-                                                  <div className="space-y-1">
-                                                      <Link
-                                                          href={`/admin/exams/${attempt.paper.slug}`}
-                                                          className="text-sm font-medium text-gray-900 hover:text-blue-600"
-                                                      >
-                                                          {attempt.paper.title}
-                                                      </Link>
-                                                      <div className="space-y-0.5">
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Môn:</span>{" "}
-                                                              {subjectsMock.find(
-                                                                  (sub) => sub.slug === attempt.paper.subject,
-                                                              )?.name || attempt.paper.subject}
-                                                          </p>
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Lớp:</span>{" "}
-                                                              {gradeLevelsMock.find(
-                                                                  (grade) => grade.slug === attempt.paper.grade_level,
-                                                              )?.name || attempt.paper.grade_level}
-                                                          </p>
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Loại:</span>{" "}
-                                                              {difficulties.find(
-                                                                  (diff) => diff.slug === attempt.paper.exam_type,
-                                                              )?.name || attempt.paper.exam_type}
-                                                          </p>
-
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Độ khó:</span>
-                                                              <span
-                                                                  className={`ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium ${
-                                                                      attempt.paper.difficulty === "very_hard"
-                                                                          ? "bg-red-100 text-red-800"
-                                                                          : attempt.paper.difficulty === "hard"
-                                                                            ? "bg-orange-100 text-orange-800"
-                                                                            : attempt.paper.difficulty === "normal"
-                                                                              ? "bg-yellow-100 text-yellow-800"
-                                                                              : attempt.paper.difficulty === "easy"
-                                                                                ? "bg-green-100 text-green-800"
-                                                                                : "bg-gray-100 text-gray-800"
-                                                                  }`}
-                                                              >
-                                                                  {difficulties.find(
-                                                                      (diff) => diff.slug === attempt.paper.difficulty,
-                                                                  )?.name || attempt.paper.difficulty}
-                                                              </span>
-                                                          </p>
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Thời gian:</span>{" "}
-                                                              {attempt.paper.duration_minutes} phút
-                                                          </p>
-                                                          <p className="text-xs text-gray-500">
-                                                              <span className="font-medium">Điểm tối đa:</span>{" "}
-                                                              {attempt.paper.max_score}
-                                                          </p>
-                                                      </div>
-                                                  </div>
-                                              </div>
                                           </td>
 
                                           {/* Điểm số */}
