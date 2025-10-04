@@ -60,8 +60,6 @@ const emailStatuses = [
     { value: "unverified", label: "Chưa xác thực" },
 ];
 
-
-
 export function FilterStudents() {
     const pathName = usePathname();
     const { formValues, setFieldValue, handleSubmit } = useFilterQuery(fields);
@@ -89,10 +87,10 @@ export function FilterStudents() {
                     <div className="grid gap-6">
                         {/* Tìm kiếm chung */}
                         <div className="grid gap-3">
-                            <Label>Tìm kiếm tổng quát</Label>
+                            <Label>Tìm kiếm theo tên</Label>
                             <Input
                                 type="text"
-                                placeholder="Tìm theo tên, email, username..."
+                                placeholder="Tìm theo tên"
                                 value={formValues.filter.search || ""}
                                 onChange={(e) => setFieldValue("search", e.target.value, "filter")}
                             />

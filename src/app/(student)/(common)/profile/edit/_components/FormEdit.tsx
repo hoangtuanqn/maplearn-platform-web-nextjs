@@ -360,9 +360,7 @@ const FormEdit = ({ user }: { user: UserType }) => {
                                                     {...field}
                                                 />
                                             </FormControl>
-                                            <p className="text-xs text-gray-500">
-                                                Liên kết này sẽ được hiển thị trong hồ sơ công khai của bạn
-                                            </p>
+
                                             <FormMessage />
                                         </FormItem>
                                     )}
