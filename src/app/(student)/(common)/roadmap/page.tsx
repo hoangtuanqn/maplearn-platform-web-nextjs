@@ -10,19 +10,7 @@ import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
-import {
-    Target,
-    GraduationCap,
-    BookOpen,
-    Star,
-    CheckCircle,
-    Brain,
-    Trophy,
-    Lightbulb,
-    ArrowRight,
-    Award,
-    Rocket,
-} from "lucide-react";
+import { Target, GraduationCap, BookOpen, Star, Brain, Trophy, Lightbulb, ArrowRight, Rocket } from "lucide-react";
 
 // Schema validation cho form
 const roadmapSchema = z.object({
@@ -40,7 +28,6 @@ type RoadmapFormType = z.infer<typeof roadmapSchema>;
 
 const RoadMapPage = () => {
     const [isGenerating, setIsGenerating] = useState(false);
-    const [generatedRoadmap, setGeneratedRoadmap] = useState<any>(null);
 
     // Form configuration
     const form = useForm<RoadmapFormType>({
@@ -107,13 +94,6 @@ const RoadMapPage = () => {
         { value: "4+", label: "Hơn 4 giờ/ngày", icon: "📚" },
     ];
 
-    const learningStyles = [
-        { value: "visual", label: "Học qua hình ảnh, sơ đồ", icon: "👁️" },
-        { value: "auditory", label: "Học qua nghe, thảo luận", icon: "👂" },
-        { value: "kinesthetic", label: "Học qua thực hành, làm bài tập", icon: "✋" },
-        { value: "reading", label: "Học qua đọc, ghi chép", icon: "📖" },
-    ];
-
     const difficultyLevels = [
         {
             value: "easy",
@@ -144,34 +124,6 @@ const RoadMapPage = () => {
 
     const onSubmit = async (data: RoadmapFormType) => {
         setIsGenerating(true);
-
-        setTimeout(() => {
-            setGeneratedRoadmap({
-                title: `Lộ trình học tập lớp ${data.current_grade}`,
-                description: "Lộ trình được tùy chỉnh dựa trên mục tiêu và sở thích của bạn",
-                phases: [
-                    {
-                        name: "Giai đoạn 1: Nền tảng",
-                        duration: "Tuần 1-4",
-                        subjects: data.preferred_subjects.slice(0, 2),
-                        tasks: ["Ôn lại kiến thức cơ bản", "Làm bài tập nền tảng", "Đánh giá năng lực hiện tại"],
-                    },
-                    {
-                        name: "Giai đoạn 2: Phát triển",
-                        duration: "Tuần 5-8",
-                        subjects: data.preferred_subjects,
-                        tasks: ["Học kiến thức mới", "Thực hành bài tập nâng cao", "Ôn tập định kỳ"],
-                    },
-                    {
-                        name: "Giai đoạn 3: Hoàn thiện",
-                        duration: "Tuần 9-12",
-                        subjects: data.preferred_subjects,
-                        tasks: ["Ôn tập tổng hợp", "Luyện đề thi", "Đánh giá kết quả"],
-                    },
-                ],
-            });
-            setIsGenerating(false);
-        }, 2000);
     };
 
     return (
@@ -463,26 +415,25 @@ const RoadMapPage = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                            <Button
-                                type="submit"
-                                disabled={isGenerating}
-                                className="h-12 w-full bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white transition-all hover:from-blue-700 hover:to-indigo-700"
-                            >
-                                {isGenerating ? (
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                        AI đang phân tích và tạo lộ trình...
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center gap-2">
-                                        <Rocket className="h-5 w-5" />
-                                        Tạo Lộ Trình Học Tập Với AI
-                                        <ArrowRight className="h-5 w-5" />
-                                    </div>
-                                )}
-                            </Button>
-                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={isGenerating}
+                            className="h-12 w-full bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white transition-all hover:from-blue-700 hover:to-indigo-700"
+                        >
+                            {isGenerating ? (
+                                <div className="flex items-center gap-2">
+                                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                    AI đang phân tích và tạo lộ trình...
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    <Rocket className="h-5 w-5" />
+                                    Tạo Lộ Trình Học Tập Với AI
+                                    <ArrowRight className="h-5 w-5" />
+                                </div>
+                            )}
+                        </Button>
                     </form>
                 </Form>
             </div>

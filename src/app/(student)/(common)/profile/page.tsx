@@ -9,7 +9,6 @@ const ProfilePage = () => {
     return (
         <>
             <h3 className="block-heading mb-6 uppercase">Thông tin cá nhân</h3>
-
             <ShowProfile />
         </>
     );
