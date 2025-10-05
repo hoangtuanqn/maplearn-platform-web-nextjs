@@ -9,18 +9,44 @@ import { PaginationNav } from "../../../_components/Pagination";
 import { formatter } from "~/libs/format";
 import DisplayNoData from "../../../_components/Courses/DisplayNoData";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
-const allowedFields = ["page", "search", "sort", "rating", "price_range", "duration", "teachers", "is_active"] as const;
+const allowedFields = [
+    "page",
+    "search",
+    "sort",
+    "rating",
+    "price_range",
+    "duration",
+    "teachers",
+    "is_active",
+    "category",
+    "subject",
+    "grade_level",
+] as const;
 const CourseList = () => {
-    const { search, page, sort, rating, price_range, duration, teachers, is_active } = useGetSearchQuery(allowedFields);
+    const { search, page, sort, rating, price_range, duration, teachers, is_active, category, subject, grade_level } =
+        useGetSearchQuery(allowedFields);
     const { data: courses, isLoading } = useQuery({
-        queryKey: ["user", "courses", { page, search, sort, rating, price_range, duration, teachers, is_active }],
+        queryKey: [
+            "user",
+            "courses",
+            { page, search, sort, rating, price_range, duration, teachers, is_active, category, subject, grade_level },
+        ],
         queryFn: async () => {
             const res = await courseApi.getCourses(
                 +page || 1,
                 COURSE_PER_PAGE,
                 search,
                 sort,
-                buildLaravelFilterQuery({ rating, price_range, duration, teachers, is_active }),
+                buildLaravelFilterQuery({
+                    rating,
+                    price_range,
+                    duration,
+                    teachers,
+                    is_active,
+                    category,
+                    subject,
+                    grade_level,
+                }),
             );
             return res.data.data;
         },
