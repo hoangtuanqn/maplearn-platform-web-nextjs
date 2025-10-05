@@ -11,9 +11,11 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { toast } from "sonner";
 
-export function ShareButton() {
+export function ShareButton({ url = "" }: { url?: string }) {
     const [copied, setCopied] = useState(false);
-    const url = typeof window !== "undefined" ? window.location.href : "";
+    if (!url) {
+        url = typeof window !== "undefined" ? window.location.href : "";
+    }
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(url);

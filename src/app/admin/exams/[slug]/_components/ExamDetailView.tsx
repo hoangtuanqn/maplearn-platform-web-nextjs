@@ -55,7 +55,7 @@ const ExamDetailView: React.FC<ExamDetailViewProps> = ({ exam }) => {
                             <BookOpen className="h-7 w-7" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900 break-all">{exam.title}</h1>
+                            <h1 className="text-2xl font-bold break-all text-gray-900">{exam.title}</h1>
 
                             <div className="mt-2 flex items-center gap-2">
                                 <Badge variant="outline" className={getDifficultyColor(exam.difficulty)}>
