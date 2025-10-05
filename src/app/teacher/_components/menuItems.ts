@@ -1,4 +1,4 @@
-import { LayoutDashboard, GraduationCap, ClipboardList, History, Undo2 } from "lucide-react";
+import { LayoutDashboard, GraduationCap, ClipboardList, Undo2 } from "lucide-react";
 const menuItems = [
     {
         type: "title",
@@ -53,21 +53,6 @@ const menuItems = [
                     "/teacher/exams/:slug/histories",
                 ],
                 id: "exams",
-            },
-        ],
-    },
-
-    {
-        type: "title",
-        label: "Lịch sử",
-        children: [
-            {
-                type: "link",
-                label: "Học bài",
-                icon: History,
-                href: "/teacher/history/learns",
-                matcher: ["/teacher/history/learns"],
-                id: "history-learns",
             },
         ],
     },

@@ -393,18 +393,6 @@ const Stats = ({ studentA, studentB }: { studentA: StudyProgress7DaysSchema; stu
                                     <ComparisonIndicator value={streakDiff} />
                                 </td>
                             </tr>
-                            <tr className="hover:bg-secondary/50 transition-colors">
-                                <td className="text-foreground py-4 text-sm">Tỷ lệ hoàn thành</td>
-                                <td className="py-4 text-center text-sm font-semibold text-blue-400">
-                                    {studentA.completion_rate}%
-                                </td>
-                                <td className="py-4 text-center text-sm font-semibold text-green-400">
-                                    {studentB.completion_rate}%
-                                </td>
-                                <td className="py-4 text-center text-sm font-semibold">
-                                    <ComparisonIndicator value={studentB.completion_rate - studentA.completion_rate} />
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -462,7 +462,7 @@ const HistoryExamList = ({ slug }: { slug: string }) => {
             </div>
             <div className="mt-4 ml-auto w-fit md:mt-6">
                 <Suspense>
-                    <PaginationNav totalPages={totalPages} basePath="/admin/history/exams" />
+                    <PaginationNav totalPages={totalPages} basePath={`/teacher/exams/${slug}/histories`} />
                 </Suspense>
             </div>
         </>
