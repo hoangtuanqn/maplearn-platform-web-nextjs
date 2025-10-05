@@ -8,9 +8,10 @@ const formSchema = z.object({
     user_id: z.string().min(1, { message: "Vui lòng chọn giáo viên giảng dạy." }),
     price: z.number().min(0, { message: "Giá khóa học phải lớn hơn hoặc bằng 0." }),
     prerequisite_course_id: z.string(),
-    thumbnail: z.string().url("Vui lòng nhập URL hợp lệ."),
-    intro_video: z.string().url("Vui lòng nhập URL hợp lệ."),
+    coverImage: z.instanceof(File).optional(), // Bắt buộc upload file nếu không có URL
+    introVideo: z.instanceof(File).optional(), // Bắt buộc upload file nếu không có URL
     description: z.string().min(10, { message: "Mô tả khóa học phải có ít nhất 10 ký tự." }),
+    coverImageUrl: z.string().optional(), // URL của ảnh bìa
+    introVideoUrl: z.string().optional(), // URL của video giới thiệu
 });
-
 export default formSchema;

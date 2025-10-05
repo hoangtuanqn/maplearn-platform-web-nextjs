@@ -21,6 +21,7 @@ import courseAdminApi from "~/apiRequest/admin/course";
 import { CourseGetDetailResponse } from "~/schemaValidate/course.schema";
 import formSchema from "../schema/formEditCourse.schema";
 import { toast } from "sonner";
+import uploadMedia from "~/apiRequest/uploadMedia";
 
 const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] }) => {
     const { data: teachers = [] } = useQuery({
@@ -48,8 +49,7 @@ const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] })
             user_id: String(course.teacher.id),
             price: course.price || 0,
             prerequisite_course_id: String(course.prerequisite_course?.id ?? ""),
-            thumbnail: course.thumbnail || "",
-            intro_video: course.intro_video || "",
+
             description: course.description || "",
         },
         mode: "onBlur",
@@ -67,23 +67,32 @@ const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] })
                 price: course.price || 0,
                 prerequisite_course_id: String(course.prerequisite_course?.id ?? ""),
 
-                thumbnail: course.thumbnail || "",
-                intro_video: course.intro_video || "",
                 description: course.description || "",
             });
         }
     }, [course, form]);
 
     const mutationCourse = useMutation({
-        mutationFn: (data: any) => courseAdminApi.updateCourse(course.slug, data),
+        mutationFn: async (data: any) => {
+            const coverImageFile = form.watch("coverImage"); // Lấy file ảnh
+            if (coverImageFile) {
+                const coverImageResponse = await uploadMedia.upload(coverImageFile, "cover-images");
+                data.coverImageUrl = coverImageResponse.url; // Gán URL vào form data
+            }
+            // Kiểm tra nếu có video giới thiệu và upload
+            const introVideoFile = form.watch("introVideo"); // Lấy file video
+            if (introVideoFile) {
+                const introVideoResponse = await uploadMedia.upload(introVideoFile, "intro-videos");
+                data.introVideoUrl = introVideoResponse.url; // Gán URL vào form data
+            }
+            return courseAdminApi.updateCourse(course.slug, data);
+        },
         onSuccess: () => {
             toast.success("Cập nhật khóa học thành công.");
         },
         onError: notificationErrorApi,
     });
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // console.log(values);
-
         mutationCourse.mutate(values);
     }
 
@@ -247,12 +256,21 @@ const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] })
 
                         <FormField
                             control={form.control}
-                            name="thumbnail"
+                            name="coverImage"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Ảnh bìa</FormLabel>
                                     <FormControl>
-                                        <Input type="url" placeholder="Link ảnh bìa" {...field} />
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                // Lấy file từ input và gán vào form
+                                                if (e.target.files?.[0]) {
+                                                    field.onChange(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -261,12 +279,21 @@ const FormEditCourse = ({ course }: { course: CourseGetDetailResponse["data"] })
 
                         <FormField
                             control={form.control}
-                            name="intro_video"
+                            name="introVideo"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Video giới thiệu khóa</FormLabel>
                                     <FormControl>
-                                        <Input type="url" placeholder="Link video giới thiệu" {...field} />
+                                        <Input
+                                            type="file"
+                                            accept="video/*"
+                                            onChange={(e) => {
+                                                // Lấy file từ input và gán vào form
+                                                if (e.target.files?.[0]) {
+                                                    field.onChange(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

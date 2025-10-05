@@ -58,7 +58,21 @@ const FormAddCourse = () => {
     });
 
     const mutationCourse = useMutation({
-        mutationFn: (data: any) => courseAdminApi.createCourse(data),
+        mutationFn: async (data: any) => {
+            const coverImageFile = form.watch("coverImage"); // Lấy file ảnh
+            if (coverImageFile) {
+                const coverImageResponse = await uploadMedia.upload(coverImageFile, "cover-images");
+                data.coverImageUrl = coverImageResponse.url; // Gán URL vào form data
+            }
+
+            // Kiểm tra nếu có video giới thiệu và upload
+            const introVideoFile = form.watch("introVideo"); // Lấy file video
+            if (introVideoFile) {
+                const introVideoResponse = await uploadMedia.upload(introVideoFile, "intro-videos");
+                data.introVideoUrl = introVideoResponse.url; // Gán URL vào form data
+            }
+            return await courseAdminApi.createCourse(data);
+        },
         onSuccess: (data) => {
             router.push(`/admin/courses/${data.data.data.slug}`);
         },
@@ -66,26 +80,7 @@ const FormAddCourse = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            // Kiểm tra nếu có ảnh bìa và upload
-            const coverImageFile = form.watch("coverImage"); // Lấy file ảnh
-            if (coverImageFile) {
-                const coverImageResponse = await uploadMedia.upload(coverImageFile, "cover-images");
-                values.coverImageUrl = coverImageResponse.url; // Gán URL vào form data
-            }
-
-            // Kiểm tra nếu có video giới thiệu và upload
-            const introVideoFile = form.watch("introVideo"); // Lấy file video
-            if (introVideoFile) {
-                const introVideoResponse = await uploadMedia.upload(introVideoFile, "intro-videos");
-                values.introVideoUrl = introVideoResponse.url; // Gán URL vào form data
-            }
-
-            // Sau khi đã upload, gửi dữ liệu đến API
-            mutationCourse.mutate(values);
-        } catch (error) {
-            console.error("Error uploading files", error);
-        }
+        mutationCourse.mutate(values);
     };
 
     // Điền dữ liệu mẫu

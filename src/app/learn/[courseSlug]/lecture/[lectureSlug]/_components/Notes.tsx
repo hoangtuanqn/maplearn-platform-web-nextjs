@@ -1,6 +1,7 @@
 "use client";
 import { Clock, PenTool, Trash2, Edit3, Check, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { DangerConfirm } from "~/components/DangerConfirm";
 import { Button } from "~/components/ui/button";
 
 interface Note {
@@ -19,24 +20,18 @@ const getStorageKey = (courseSlug: string, lectureSlug: string) => `notes_${cour
 const loadNotesFromStorage = (courseSlug: string, lectureSlug: string): Note[] => {
     if (typeof window === "undefined") return [];
 
-    try {
-        const key = getStorageKey(courseSlug, lectureSlug);
-        const stored = localStorage.getItem(key);
-        console.log(`Loading notes from localStorage with key: ${key}`, stored);
-        if (stored) {
-            const notes = JSON.parse(stored);
-            // Convert createdAt string back to Date object
-            const parsedNotes = notes.map((note: any) => ({
-                ...note,
-                createdAt: new Date(note.createdAt),
-            }));
-            console.log(`Loaded ${parsedNotes.length} notes from storage`);
-            return parsedNotes;
-        }
-    } catch (error) {
-        console.error("Error loading notes from localStorage:", error);
+    const key = getStorageKey(courseSlug, lectureSlug);
+    const stored = localStorage.getItem(key);
+    if (stored) {
+        const notes = JSON.parse(stored);
+        // Convert createdAt string back to Date object
+        const parsedNotes = notes.map((note: any) => ({
+            ...note,
+            createdAt: new Date(note.createdAt),
+        }));
+        return parsedNotes;
     }
-    console.log("No notes found, returning empty array");
+
     return [];
 };
 
@@ -44,53 +39,39 @@ const loadNotesFromStorage = (courseSlug: string, lectureSlug: string): Note[] =
 const getAllCourseNotes = (courseSlug: string): Note[] => {
     if (typeof window === "undefined") return [];
 
-    try {
-        const allNotes: Note[] = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith(`notes_${courseSlug}_`)) {
-                const stored = localStorage.getItem(key);
-                if (stored) {
-                    const notes = JSON.parse(stored);
-                    allNotes.push(
-                        ...notes.map((note: any) => ({
-                            ...note,
-                            createdAt: new Date(note.createdAt),
-                        })),
-                    );
-                }
+    const allNotes: Note[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(`notes_${courseSlug}_`)) {
+            const stored = localStorage.getItem(key);
+            if (stored) {
+                const notes = JSON.parse(stored);
+                allNotes.push(
+                    ...notes.map((note: any) => ({
+                        ...note,
+                        createdAt: new Date(note.createdAt),
+                    })),
+                );
             }
         }
-        return allNotes.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    } catch (error) {
-        console.error("Error loading course notes:", error);
-        return [];
     }
+    return allNotes.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 };
 
 // Clear all notes for current lecture
 const clearLectureNotes = (courseSlug: string, lectureSlug: string) => {
     if (typeof window === "undefined") return;
 
-    try {
-        const key = getStorageKey(courseSlug, lectureSlug);
-        localStorage.removeItem(key);
-    } catch (error) {
-        console.error("Error clearing notes:", error);
-    }
+    const key = getStorageKey(courseSlug, lectureSlug);
+    localStorage.removeItem(key);
 };
 
 const saveNotesToStorage = (notes: Note[], courseSlug: string, lectureSlug: string) => {
     if (typeof window === "undefined") return;
 
-    try {
-        const key = getStorageKey(courseSlug, lectureSlug);
-        const dataToSave = JSON.stringify(notes);
-        localStorage.setItem(key, dataToSave);
-        console.log(`Saved ${notes.length} notes to localStorage with key: ${key}`);
-    } catch (error) {
-        console.error("Error saving notes to localStorage:", error);
-    }
+    const key = getStorageKey(courseSlug, lectureSlug);
+    const dataToSave = JSON.stringify(notes);
+    localStorage.setItem(key, dataToSave);
 };
 
 // Format timestamp helper
@@ -126,7 +107,6 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
     // Load notes from localStorage on component mount
     useEffect(() => {
         const loadedNotes = loadNotesFromStorage(courseSlug, lectureSlug);
-        console.log("Component mounted, loaded notes:", loadedNotes);
         setNotes(loadedNotes);
 
         // Count total notes for this course
@@ -140,7 +120,6 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
         const isInitialLoad = notes.length === 0 && loadNotesFromStorage(courseSlug, lectureSlug).length > 0;
 
         if (!isInitialLoad) {
-            console.log("Notes changed, saving to localStorage:", notes);
             saveNotesToStorage(notes, courseSlug, lectureSlug);
 
             // Update total course notes count
@@ -172,14 +151,10 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
                 lectureSlug,
             };
 
-            console.log("Adding new note:", note);
-
             // Add new note to the beginning of the array (newest first)
             const updatedNotes = [note, ...notes];
             setNotes(updatedNotes);
             setNewNote("");
-
-            console.log("Updated notes array:", updatedNotes);
         }
     };
 
@@ -209,31 +184,14 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
 
     // Xóa tất cả ghi chú của bài học hiện tại
     const handleClearAllNotes = () => {
-        if (
-            window.confirm(
-                "Bạn có chắc chắn muốn xóa tất cả ghi chú của bài học này? Hành động này không thể hoàn tác.",
-            )
-        ) {
-            setNotes([]);
-            clearLectureNotes(courseSlug, lectureSlug);
-        }
+        setNotes([]);
+        clearLectureNotes(courseSlug, lectureSlug);
     };
 
     // Hủy chỉnh sửa
     const handleCancelEdit = () => {
         setEditingId(null);
         setEditContent("");
-    };
-
-    // Debug function
-    const handleDebugStorage = () => {
-        const key = getStorageKey(courseSlug, lectureSlug);
-        const stored = localStorage.getItem(key);
-        console.log("Debug localStorage:");
-        console.log("Key:", key);
-        console.log("Stored data:", stored);
-        console.log("Current notes state:", notes);
-        alert(`Stored: ${stored ? JSON.parse(stored).length : 0} notes. State: ${notes.length} notes.`);
     };
 
     // Handle Enter key in textarea
@@ -254,23 +212,21 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleDebugStorage}
-                        className="text-blue-600 hover:bg-blue-50 hover:text-blue-700"
-                    >
-                        Debug
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleClearAllNotes}
-                        className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                    >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Xóa tất cả
-                    </Button>
+                    {notes.length > 0 && (
+                        <DangerConfirm
+                            message="Bạn có chắc chắn muốn xóa tất cả ghi chú của bài học này? Hành động này không thể hoàn tác."
+                            action={handleClearAllNotes}
+                        >
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                            >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Xóa tất cả
+                            </Button>
+                        </DangerConfirm>
+                    )}
                 </div>
             </div>
 
@@ -400,14 +356,14 @@ const Notes = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: s
                                     <div className="flex items-center gap-1">
                                         <button
                                             onClick={() => handleStartEdit(note)}
-                                            className="rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                                            className="cursor-pointer rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
                                             title="Chỉnh sửa"
                                         >
                                             <Edit3 className="h-4 w-4" />
                                         </button>
                                         <button
                                             onClick={() => handleDeleteNote(note.id)}
-                                            className="rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                                            className="cursor-pointer rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
                                             title="Xóa"
                                         >
                                             <Trash2 className="h-4 w-4" />
