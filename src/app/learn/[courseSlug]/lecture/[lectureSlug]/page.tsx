@@ -134,7 +134,7 @@ const VideoPage = async ({ params }: { params: Promise<{ courseSlug: string; lec
                         </div>
 
                         {/* Video Lesson Tabs */}
-                        <VideoLessonTab />
+                        <VideoLessonTab courseSlug={courseSlug} lectureSlug={lectureSlug} />
 
                         {/* Course Info - Udemy/Coursera Style */}
                         <div className="bg-white">

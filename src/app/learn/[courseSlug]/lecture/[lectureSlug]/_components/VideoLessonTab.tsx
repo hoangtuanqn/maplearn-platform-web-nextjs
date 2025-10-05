@@ -7,7 +7,7 @@ import Quiz from "./Quiz";
 import Overview from "./Overview";
 import Resources from "./Resources";
 
-const VideoLessonTab = () => {
+const VideoLessonTab = ({ courseSlug, lectureSlug }: { courseSlug: string; lectureSlug: string }) => {
     const [activeVideoTab, setActiveVideoTab] = useState("overview");
 
     return (
@@ -66,7 +66,7 @@ const VideoLessonTab = () => {
 
                 {activeVideoTab === "discussion" && <Discussion />}
 
-                {activeVideoTab === "notes" && <Notes />}
+                {activeVideoTab === "notes" && <Notes courseSlug={courseSlug} lectureSlug={lectureSlug} />}
 
                 {activeVideoTab === "resources" && <Resources />}
 

@@ -290,7 +290,7 @@ const AttemptExams = () => {
             <div className="flex items-end justify-between lg:flex-col">
                 <div className="ml-auto">
                     {!isLoading && totalPages > 1 && (data?.data?.length ?? 0) > 0 && (
-                        <PaginationNav totalPages={totalPages} basePath="/profile/recently-viewed-courses" />
+                        <PaginationNav totalPages={totalPages} basePath="/profile/exam-histories" />
                     )}
                 </div>
             </div>

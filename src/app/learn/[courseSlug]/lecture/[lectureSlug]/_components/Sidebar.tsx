@@ -6,7 +6,6 @@ import {
     CheckCircle,
     Clock,
     BookOpen,
-    Award,
     FileText,
     PlayCircle,
     CircleCheckBig,
@@ -17,6 +16,7 @@ import {
     AlertCircle,
     Target,
     Timer,
+    Video,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CourseDetailResponse, LessonDetailResponse } from "~/schemaValidate/courseDetail.schema";
@@ -400,15 +400,10 @@ const Sidebar = ({
                                                                     </span>
                                                                 </div>
 
-                                                                {/* Lesson Resources */}
                                                                 <div className="mt-2 flex items-center gap-2">
                                                                     <span className="flex items-center gap-1 rounded bg-orange-100 px-1.5 py-0.5 text-xs text-orange-600">
-                                                                        <Award className="h-3 w-3" />
-                                                                        Quiz
-                                                                    </span>
-                                                                    <span className="flex items-center gap-1 rounded bg-purple-100 px-1.5 py-0.5 text-xs text-purple-600">
-                                                                        <FileText className="h-3 w-3" />
-                                                                        Tài liệu
+                                                                        <Video className="h-3 w-3" />
+                                                                        Video
                                                                     </span>
                                                                 </div>
                                                             </div>
