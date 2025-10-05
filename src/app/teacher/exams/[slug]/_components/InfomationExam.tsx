@@ -4,15 +4,20 @@ import { ShowPasswordPaper } from "./ShowPasswordPaper";
 import { AlertCircle, Clock, MapPin, Settings, Shield, Target, Trophy, Users } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { QuestionsExamResponse } from "~/schemaValidate/exam.schema";
+import { ShareButton } from "~/app/(student)/_components/Shared/ShareButton";
+import { APP } from "~/config/env";
 const InfomationExam = ({ exam }: { exam: QuestionsExamResponse["data"] }) => {
     return (
         <div className="grid gap-6 lg:grid-cols-2">
             {/* Basic Information */}
             <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-                <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900">
-                    <Settings className="h-5 w-5" />
-                    Thông tin cơ bản
-                </h3>
+                <div className="flex items-center justify-between">
+                    <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900">
+                        <Settings className="h-5 w-5" />
+                        Thông tin cơ bản
+                    </h3>
+                    <ShareButton url={`${APP.APP_URL}/exams/${exam.slug}`} />
+                </div>
                 <div className="space-y-4">
                     <div className="flex items-center gap-3">
                         <MapPin className="h-4 w-4 text-gray-500" />

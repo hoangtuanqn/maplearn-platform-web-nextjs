@@ -242,7 +242,7 @@ const ExamList = () => {
                                                   <p className="text-xs text-gray-500">
                                                       {exam.registered_count === 0
                                                           ? "Chưa có thí sinh"
-                                                          : "thí sinh đăng ký"}
+                                                          : "thí sinh làm bài"}
                                                   </p>
                                                   {exam.anti_cheat_enabled && (
                                                       <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">

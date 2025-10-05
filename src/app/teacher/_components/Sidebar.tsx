@@ -120,7 +120,7 @@ const Sidebar = () => {
                 </button>
 
                 <div className="from-primary/8 sticky top-2 z-10 flex flex-col items-center rounded-lg bg-gradient-to-r to-white pt-2 pb-4">
-                    <Link href="/admin">
+                    <Link href="/teacher">
                         <h2 className="text-center text-2xl font-extrabold tracking-wide text-slate-800">
                             <span className="text-primary text-3xl drop-shadow-lg">M</span>
                             <span className="text-slate-700">

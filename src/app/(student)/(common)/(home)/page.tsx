@@ -8,6 +8,7 @@ import SidebarRight from "../../_components/SidebarRight";
 import TopStudents from "../../_components/SidebarRight/TopStudents";
 import TutorialUsing from "~/app/(student)/(common)/(home)/_components/TutorialUsing";
 import { Suspense } from "react";
+import Roadmap from "./_components/Roadmap";
 
 const StudentHomePage = () => {
     return (
@@ -28,6 +29,10 @@ const StudentHomePage = () => {
 
                     {/* Dashboard Stats */}
                     <DashboardStats />
+
+                    {/* Section tạo roadmap */}
+                    <Roadmap />
+
                     {/* Giáo viên */}
                     <Teachers />
 
