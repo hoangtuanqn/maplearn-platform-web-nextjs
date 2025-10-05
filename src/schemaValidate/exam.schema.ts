@@ -182,3 +182,34 @@ const _resultDetailExamResponseSchema = z.object({
     data: z.array(resultDetailSchema),
 });
 export type ResultDetailExamResponse = z.infer<typeof _resultDetailExamResponseSchema>;
+
+const attemptExamProfileSchema = z.object({
+    id: z.number(),
+    exam_paper_id: z.number(),
+    user_id: z.number(),
+    score: z.number(),
+    violation_count: z.number(),
+    time_spent: z.number(),
+    started_at: z.string(),
+    submitted_at: z.string().nullable(),
+    note: z.string().nullable(),
+    status: z.enum(["in_progress", "submitted", "detected", "canceled"]),
+    created_at: z.string(),
+    updated_at: z.string(),
+    paper: z.object({
+        id: z.number(),
+        slug: z.string(),
+        title: z.string(),
+        is_in_progress: z.boolean(),
+        question_count: z.number(),
+        total_attempt_count: z.number(),
+        attempt_count: z.number(),
+        is_password_protected: z.boolean(),
+    }),
+});
+const _attemptExamProfileResponseSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(attemptExamProfileSchema),
+});
+export type AttemptExamProfileResponse = z.infer<typeof _attemptExamProfileResponseSchema>;

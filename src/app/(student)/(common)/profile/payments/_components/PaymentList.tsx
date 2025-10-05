@@ -18,7 +18,7 @@ const InvoiceList = () => {
         queryKey: ["user", "invoices", { page, sort, status, date }],
         queryFn: async () => {
             const res = await profileApi.getPayments(
-                Number(page ?? 1),
+                +page || 1,
                 PAYMENT_PER_PAGE,
                 "",
                 sort,

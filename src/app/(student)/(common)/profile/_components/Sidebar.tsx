@@ -2,7 +2,7 @@
 import { useAuth } from "~/hooks/useAuth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, ContactRound, GraduationCap, ReceiptCent, User } from "lucide-react";
+import { Book, ChevronRight, ContactRound, GraduationCap, History, ReceiptCent, User } from "lucide-react";
 import { ElementType } from "react";
 import DisplayAvatar from "~/app/(student)/_components/DisplayAvatar";
 import { isActiveRoute } from "~/libs/routeMatcher";
@@ -69,6 +69,20 @@ const sidebarMenuLink = [
         name: "Hóa đơn của tôi",
         description: "Lịch sử thanh toán và hóa đơn",
         icon: ReceiptCent,
+    },
+    {
+        url: "/profile/exam-histories",
+        matcher: ["/profile/exam-histories"],
+        name: "Lịch sử làm bài thi",
+        description: "Lịch sử làm bài thi của tôi",
+        icon: Book,
+    },
+    {
+        url: "/profile/recently-viewed-courses",
+        matcher: ["/profile/recently-viewed-courses"],
+        name: "Các khóa học xem gần đây",
+        description: "Lịch sử xem các khóa học của tôi",
+        icon: History,
     },
 ];
 
