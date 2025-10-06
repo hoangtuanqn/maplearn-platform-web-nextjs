@@ -1,10 +1,8 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React, { memo } from "react";
-import Link from "next/link";
-import { Clock, FileText, AlertCircle, Trophy, TrendingUp } from "lucide-react";
+import { Clock, FileText, AlertCircle, Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getStatusBadge } from "~/libs/statusBadge";
 import { formatter } from "~/libs/format";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/libs/helper";

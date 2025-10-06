@@ -122,7 +122,7 @@ const RoadMapPage = () => {
         { value: "1_year", label: "1 năm", description: "Lộ trình toàn diện" },
     ];
 
-    const onSubmit = async (data: RoadmapFormType) => {
+    const onSubmit = async (_: RoadmapFormType) => {
         setIsGenerating(true);
     };
 

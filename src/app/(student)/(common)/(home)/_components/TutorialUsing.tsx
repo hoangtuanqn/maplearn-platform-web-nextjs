@@ -29,17 +29,25 @@ export default function TutorialUsing() {
                     },
                 },
                 {
-                    element: "#suggest-courses",
-                    popover: {
-                        title: "Hệ thống gợi ý khóa học",
-                        description: "Xem các khóa học được gợi ý cho bạn tại đây.",
-                    },
-                },
-                {
                     element: "#dashboard-stats",
                     popover: {
                         title: "Thông tin thống kê",
                         description: "Thống kê dữ liệu của bạn khi học tập trên hệ thống!",
+                    },
+                },
+                {
+                    element: "#roadmap",
+                    popover: {
+                        title: "Lộ trình học tập",
+                        description:
+                            "MapLearn hỗ trợ xây dựng lộ trình học tập cho bạn bằng AI. Tự động phân tích và đưa ra lộ trình học đúng đắn nhất!",
+                    },
+                },
+                {
+                    element: "#suggest-courses",
+                    popover: {
+                        title: "Hệ thống gợi ý khóa học",
+                        description: "Xem các khóa học được gợi ý cho bạn tại đây.",
                     },
                 },
 

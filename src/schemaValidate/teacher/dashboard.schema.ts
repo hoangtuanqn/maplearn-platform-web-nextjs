@@ -40,6 +40,8 @@ const recentExamSubmissionSchema = z.object({
 });
 
 const dashboardSchema = z.object({
+    total_in_this_year: z.record(z.string(), z.number()),
+
     // số khóa học đang giảng dạy
     total_courses: z.number(),
     // số học viên đang theo học

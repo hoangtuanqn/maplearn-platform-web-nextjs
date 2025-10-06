@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Roadmap = () => {
     return (
-        <section className="relative mt-3.5 overflow-hidden border border-blue-100/60 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 px-4 py-6 shadow-lg md:rounded-xl xl:mt-6">
+        <section id="roadmap" className="relative mt-3.5 overflow-hidden border border-blue-100/60 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 px-4 py-6 shadow-lg md:rounded-xl xl:mt-6">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-gradient-to-br from-blue-400/10 to-indigo-500/10 blur-3xl"></div>
             <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-gradient-to-tr from-cyan-400/10 to-blue-500/10 blur-2xl"></div>
