@@ -5,7 +5,7 @@ import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Clock, Star, Users, Award, ExternalLink, Code, Database, Monitor, BookOpen } from "lucide-react";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
-import "react-vertical-timeline-component/style.min.css";
+ 
 const ResultRoadMapPage = () => {
     // Mock data - bạn sẽ thay thế bằng dữ liệu thật
     const roadmapData = {

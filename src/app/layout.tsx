@@ -7,6 +7,7 @@ import "katex/dist/katex.min.css";
 import "driver.js/dist/driver.css";
 import "swiper/css";
 import "swiper/css/pagination";
+import "react-vertical-timeline-component/style.min.css";
 import QueryProvider from "~/wrapper/QueryProvider";
 import { ReduxProvider } from "~/wrapper/ReduxProvider";
 import TopProgressBar from "~/components/TopProgressBar";
