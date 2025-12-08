@@ -31,7 +31,7 @@ const StudentHomePage = () => {
                     <DashboardStats />
 
                     {/* Section tạo roadmap */}
-                    <Roadmap />
+                    {/* <Roadmap /> */}
 
                     {/* Giáo viên */}
                     <Teachers />

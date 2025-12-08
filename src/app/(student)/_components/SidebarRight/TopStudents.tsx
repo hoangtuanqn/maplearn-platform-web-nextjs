@@ -11,9 +11,13 @@ const TopStudents = ({ className = "" }: { className?: string }) => {
         {
             rank: 1,
             name: "Phạm Hoàng Tuấn",
-            avatar: "https://res.cloudinary.com/dbu1zfbhv/image/upload/v1755032358/avatar/urwizwtbosve0rg7miq2.jpg",
+            avatar: "https://res.cloudinary.com/dbu1zfbhv/image/upload/v1765225608/avatar_srg591.jpg",
         },
-        { rank: 2, name: "Trần Thị Bích" },
+        {
+            rank: 2,
+            name: "Lâm Hoàng An",
+            avatar: "https://res.cloudinary.com/dbu1zfbhv/image/upload/v1765225659/z7065952858591_000_b48f4ba5cd1296635eb1e3c63105a195_qayltt.jpg",
+        },
         { rank: 3, name: "Lê Hoàng Minh" },
         { rank: 4, name: "Phạm Thu Hương" },
         { rank: 5, name: "Vũ Đức Thành" },

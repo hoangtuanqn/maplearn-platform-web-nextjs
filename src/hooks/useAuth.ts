@@ -22,7 +22,6 @@ export function useAuth() {
     }
     user = useSelector((state: RootState) => state.user.user);
 
-    // ✅ Hàm login
     const login = (user: UserType) => {
         if (typeof window !== "undefined") {
             setLocalStorage("user", JSON.stringify(user));
@@ -52,7 +51,6 @@ export function useAuth() {
         },
     });
 
-    // ✅ Mutation để logout
     const logoutUser = useMutation({
         mutationFn: async () => {
             await privateApi.post("/auth/logout");

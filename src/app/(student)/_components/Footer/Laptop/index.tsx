@@ -110,7 +110,7 @@ const FooterLaptop = () => {
                 <address className="border-t-2 border-t-white p-8 text-center">
                     &copy; Bản quyền thuộc về{" "}
                     <Link href="/" className="font-bold">
-                        MapLearn
+                        Phạm Hoàng Tuấn - Maplearn Academy
                     </Link>
                 </address>
             </div>
