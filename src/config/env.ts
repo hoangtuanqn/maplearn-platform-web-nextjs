@@ -1,9 +1,8 @@
-import { getEnv, getEnvServer } from "~/libs/env";
+import { getEnvServer } from "~/libs/env";
 
 const API_VERSION_PATH = "/api/v1";
-console.log(`getEnv("API_ENV") ${process.env.NEXT_PUBLIC_API_URL}}`);
 
-const URL_API = getEnv("API_URL", process.env.NEXT_PUBLIC_API_URL);
+const URL_API = process.env.NEXT_PUBLIC_API_URL;
 export const APP = {
     API_VERSION_PATH,
     API_ROOT: URL_API,
