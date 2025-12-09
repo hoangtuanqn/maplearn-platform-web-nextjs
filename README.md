@@ -314,18 +314,17 @@ Frontend này cần kết nối với Backend API. Vui lòng cài đặt backend
 
 #### Học sinh
 
-- **Email**: `student@maplearn.edu.vn`
-- **Password**: `Student123!`
+- Bạn có thể tự tạo được tài khoản học sinh mới qua trang đăng ký.
 
 #### Giảng viên
 
-- **Email**: `teacher@maplearn.edu.vn`
-- **Password**: `Teacher123!`
+- **Username**: `nguyen_anh_phong_2`
+- **Password**: `Aptech@123`
 
 #### Quản trị viên
 
-- **Email**: `admin@maplearn.edu.vn`
-- **Password**: `Admin123!`
+- **Email**: `vu_ngoc_anh_1`
+- **Password**: `Aptech@123`
 
 **Lưu ý**: Đây là tài khoản demo. Vui lòng không thay đổi thông tin quan trọng.
 
@@ -342,10 +341,6 @@ npm run build
 
 # Chạy production server
 npm run start
-
-# Lint code
-npm run lint
-```
 
 ---
 
